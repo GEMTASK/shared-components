@@ -1,0 +1,25 @@
+{
+  "name": "bare",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "exports": "./dist/components/index.js",
+  "types": "./dist/components/index.d.ts",
+  "scripts": {
+    "start": "tsc --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "open-color": "^1.9.1",
+    "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.7"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  }
+}
