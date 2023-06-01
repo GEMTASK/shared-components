@@ -3,7 +3,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Button } from 'cra';
-import { MyButton } from 'vite';
+// import { MyButton } from 'vite';
 import { Button as BareButton } from 'bare';
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
           Learn React
         </a>
         <Button />
-        <MyButton />
+        {/* <MyButton /> */}
         <BareButton />
       </header>
     </div>
