@@ -5,11 +5,11 @@ import { View, Text } from 'bare';
 
 function App() {
   return (
-    <View horizontal className="App">
-      <Text flex fillColor="gray-2" style={{ alignItems: 'center' }}>
+    <View className="App">
+      <Text horizontal flex fillColor="gray-2" alignVertical="middle">
         Hello<br />World
       </Text>
-      <Text flex fillColor="gray-3" style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <Text flex fillColor="gray-3">
         Hello, <Text fontWeight="bold">World<Text fontWeight="normal">!!!</Text></Text>
       </Text>
     </View>
