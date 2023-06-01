@@ -27,13 +27,13 @@ type ViewProps<T extends React.ElementType> = {
   horizontal?: boolean,
   fillColor?: Color,
   className?: string,
-  children?: React.ReactNode,
+  children?: React.ReactElement | React.ReactElement[],
 } & React.ComponentPropsWithoutRef<T>;
 
 const View = <T extends React.ElementType = 'div'>({
   as,
-  flex,
   horizontal,
+  flex,
   fillColor,
   className,
   children,
@@ -46,8 +46,8 @@ const View = <T extends React.ElementType = 'div'>({
 
   const viewClassName = clsx(
     styles.View,
-    flex && styles.flex,
     horizontal && styles.horizontal,
+    flex && styles.flex,
     fillColor && fillColorStyles[fillColor],
     className,
   );

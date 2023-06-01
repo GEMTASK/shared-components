@@ -1,17 +1,17 @@
 import React from 'react';
 
 import './App.css';
-import { View } from 'bare';
+import { View, Text } from 'bare';
 
 function App() {
   return (
     <View horizontal className="App">
-      <View flex as="a" href="abc" fillColor="gray-5">
-        Hello
-      </View>
-      <View flex as="a" href="abc" fillColor="gray-6">
-        Hello
-      </View>
+      <Text flex fillColor="gray-2" style={{ alignItems: 'center' }}>
+        Hello<br />World
+      </Text>
+      <Text flex fillColor="gray-3" style={{ alignItems: 'center', justifyContent: 'center' }}>
+        Hello, <Text fontWeight="bold">World<Text fontWeight="normal">!!!</Text></Text>
+      </Text>
     </View>
   );
 }
