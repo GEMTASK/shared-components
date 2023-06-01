@@ -1,2 +1,1 @@
-declare const Button: () => import("react/jsx-runtime").JSX.Element;
-export { Button };
+export { default as View } from './view/index.js';

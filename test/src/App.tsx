@@ -4,7 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Button } from 'cra';
 // import { MyButton } from 'vite';
-import { Button as BareButton } from 'bare';
+import { View as BareButton } from 'bare';
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
         </a>
         <Button />
         {/* <MyButton /> */}
-        <BareButton />
+        <BareButton as="a" href="abc" />
       </header>
     </div>
   );
