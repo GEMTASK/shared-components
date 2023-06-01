@@ -2,9 +2,7 @@ import React from 'react';
 
 import logo from './logo.svg';
 import './App.css';
-import { Button } from 'cra';
-// import { MyButton } from 'vite';
-import { View as BareButton } from 'bare';
+import { View } from 'bare';
 
 function App() {
   return (
@@ -22,9 +20,9 @@ function App() {
         >
           Learn React
         </a>
-        <Button />
-        {/* <MyButton /> */}
-        <BareButton as="a" href="abc" />
+        <View as="a" href="abc">
+          Hello
+        </View>
       </header>
     </div>
   );
