@@ -1,30 +1,18 @@
 import React from 'react';
 
-import logo from './logo.svg';
 import './App.css';
 import { View } from 'bare';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <View as="a" href="abc">
-          Hello
-        </View>
-      </header>
-    </div>
+    <View horizontal className="App">
+      <View flex as="a" href="abc" fillColor="gray-5">
+        Hello
+      </View>
+      <View flex as="a" href="abc" fillColor="gray-6">
+        Hello
+      </View>
+    </View>
   );
 }
 
