@@ -1,14 +1,16 @@
 import { createUseStyles } from 'react-jss';
 
+import Size from '../types/Size.js';
+
 const useSpacingStyles = createUseStyles({
   xsmall: {
-    gap: 4,
+    gap: Size.xsmall,
   },
   small: {
-    gap: 8,
+    gap: Size.small,
   },
   medium: {
-    gap: 16,
+    gap: Size.medium,
   },
 });
 

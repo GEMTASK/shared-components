@@ -1,17 +1,19 @@
 import { createUseStyles } from 'react-jss';
 
+import Size from '../types/Size.js';
+
 const usePaddingVerticalStyles = createUseStyles({
   xsmall: {
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingTop: Size.xsmall,
+    paddingBottom: Size.xsmall,
   },
   small: {
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingTop: Size.small,
+    paddingBottom: Size.small,
   },
   medium: {
-    paddingTop: 16,
-    paddingBottom: 16,
+    paddingTop: Size.medium,
+    paddingBottom: Size.medium,
   },
 });
 
