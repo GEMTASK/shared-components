@@ -14,16 +14,16 @@ function App() {
           Hello, <Text fontWeight="bold">World<Text fontWeight="normal">!!!</Text></Text>
         </Text>
       </View>
-      <Stack horizontal spacing="small">
+      <Stack horizontal spacing="small" alignHorizontal="center" paddingVertical="medium">
         <Text>1</Text>
         <Text>2</Text>
         <Text>3</Text>
       </Stack>
       <View flex horizontal>
-        <Text flex fillColor="gray-2" alignVertical="middle" textAlign="center">
+        <Text flex fillColor="gray-2" align="center" textAlign="center">
           {'Hello\\nWorld'}
         </Text>
-        <Text flex fillColor="white" alignVertical="middle" textAlign="center">
+        <Text flex fillColor="white" align="right" textAlign="right">
           {'Hello\nWorld'}
         </Text>
       </View>

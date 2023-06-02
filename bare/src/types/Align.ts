@@ -1,3 +1,7 @@
-type Align = 'start' | 'center' | 'end';
+type AlignVertical = 'top' | 'middle' | 'bottom';
+type AlignHorizontal = 'left' | 'center' | 'right';
 
-export default Align;
+export type {
+  AlignVertical,
+  AlignHorizontal
+};
