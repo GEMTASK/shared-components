@@ -1,14 +1,14 @@
 import OpenColor from 'open-color';
 import { createUseStyles } from 'react-jss';
 
-const colors = [
+const colorNames = [
   'gray-0', 'gray-1', 'gray-2', 'gray-3', 'gray-4', 'gray-5', 'gray-6', 'gray-7', 'gray-8', 'gray-9',
   'red-0', 'red-1', 'red-2', 'red-3', 'red-4', 'red-5', 'red-6', 'red-7', 'red-8', 'red-9',
 ] as const;
 
-type Color = typeof colors[number];
+type Color = typeof colorNames[number];
 
-const gray2 = colors.reduce((accum, color) => {
+const gray2 = colorNames.reduce((accum, color) => {
   const [hue, level] = color.split('-');
 
   return ({
@@ -19,16 +19,21 @@ const gray2 = colors.reduce((accum, color) => {
   });
 }, {} as { [key in Color]: string; });
 
-// const hues = ['gray', 'red'];
+const hues = ['gray', 'red', 'green'] as const;
 
-// const gray3 = [...OpenColor.gray, ...OpenColor.red].reduce((accum, color, index) => ({
-//   ...accum,
-//   [`${hues[Math.floor(index / 10)]}-${index % 10}`]: {
-//     background: color
-//   }
-// }), {} as { [key in Color]: string; });
+const gray3 = hues.flatMap(hue => OpenColor[hue]).reduce((colors, color, index) => ({
+  ...colors,
+  [`${hues[Math.floor(index / 10)]}-${index % 10}`]: {
+    background: color
+  }
+}), {} as { [key in Color]: string; });
 
-// console.log('gray3', gray3);
+const gray5 = Object.assign({}, ...hues.map(hue => OpenColor[hue].reduce((colors, color, index) => ({
+  ...colors,
+  [`${hue}-${index}`]: {
+    background: color
+  }
+}), {}))) as { [key in Color]: string; };
 
 const gray = {
   'gray-0': {
@@ -73,7 +78,7 @@ const useFillColorStyles = createUseStyles({
   'white': {
     background: OpenColor.white
   },
-  ...gray2,
+  ...gray5,
 });
 
 export default useFillColorStyles;
