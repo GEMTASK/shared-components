@@ -19,8 +19,6 @@ const gray2 = colors.reduce((accum, color) => {
   });
 }, {} as { [key in Color]: string; });
 
-console.log(gray2);
-
 // const hues = ['gray', 'red'];
 
 // const gray3 = [...OpenColor.gray, ...OpenColor.red].reduce((accum, color, index) => ({
