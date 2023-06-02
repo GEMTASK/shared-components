@@ -58,7 +58,7 @@ const Text = ({
 
   const childrenElement = typeof children === 'string'
     ? children.split(/\n|\\n/).reduce<Child<TextProps>[]>((string, word, index) => (
-      index > 0 ? [...string, <br />, word] : [...string, word]
+      index > 0 ? [...string, <br key={index} />, word] : [...string, word]
     ), [])
     : children;
 

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
 
@@ -61,6 +61,8 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
     fillColor && fillColorStyles[fillColor],
     className,
   );
+
+  // const contextValue = useMemo(() => ({ isHorizontal: horizontal ?? false }), [horizontal]);
 
   return (
     <ViewContext.Provider value={{ isHorizontal: horizontal ?? false }}>
