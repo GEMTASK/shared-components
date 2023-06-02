@@ -10,8 +10,14 @@ const useStyles = createUseStyles({
 });
 
 const useSpacingStyles = createUseStyles({
+  xsmall: {
+    gap: 4,
+  },
   small: {
     gap: 8,
+  },
+  medium: {
+    gap: 16,
   },
 });
 
@@ -22,9 +28,9 @@ type StackProps = {
 } & React.ComponentProps<typeof View>;
 
 const Stack = ({
-  children,
   spacing,
   className,
+  children,
   ...props
 }: StackProps) => {
   const styles = useStyles();

@@ -5,7 +5,7 @@ import { View, Text, Stack } from 'bare';
 
 function App() {
   return (
-    <View fillColor="gray-4" className={styles.App}>
+    <View fillColor="red-4" className={styles.App}>
       <View flex horizontal>
         <Text flex fillColor="white" alignVertical="middle">
           Hello<br />World
