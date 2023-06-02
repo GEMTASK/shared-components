@@ -1,11 +1,11 @@
 import React from 'react';
 
-import './App.css';
+import styles from './App.module.css';
 import { View, Text } from 'bare';
 
 function App() {
   return (
-    <View className="App">
+    <View fillColor="gray-5" className={styles.App}>
       <View flex horizontal>
         <Text flex fillColor="white" alignVertical="middle">
           Hello<br />World

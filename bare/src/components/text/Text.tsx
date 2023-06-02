@@ -30,16 +30,16 @@ const useFontWeightStyles = createUseStyles({
 type Child<T> = string | number | React.ReactElement<T | HTMLBRElement>;
 
 type TextProps = {
-  className?: string,
   fontWeight?: 'normal' | 'bold',
   textAlign?: 'left' | 'center' | 'right',
+  className?: string,
   children?: Child<TextProps> | Child<TextProps>[],
 } & Omit<React.ComponentProps<typeof View>, 'children'>;
 
 const Text = ({
-  className,
   fontWeight,
   textAlign,
+  className,
   children,
   ...props
 }: TextProps) => {
