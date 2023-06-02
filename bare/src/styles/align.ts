@@ -1,14 +1,6 @@
-import { createUseStyles } from 'react-jss';
+import { ShorthandAlign, AlignVertical, AlignHorizontal } from '../types/Align';
 
-import { AlignVertical, AlignHorizontal } from '../types/Align';
-
-type ShorthandAlign =
-  | 'top left' | 'top' | 'top center' | 'top right'
-  | 'left' | 'middle left' | 'center' | 'middle center' | 'middle right' | 'right'
-  | 'bottom left' | 'bottom' | 'bottom center' | 'bottom right'
-  ;
-
-function alignToStyle(align: ShorthandAlign | undefined): [AlignVertical | undefined, AlignHorizontal | undefined] {
+function shorthandAlignToStyle(align: ShorthandAlign | undefined): [AlignVertical | undefined, AlignHorizontal | undefined] {
   switch (align) {
     case 'top left':
       return ['top', 'left'];
@@ -39,5 +31,5 @@ function alignToStyle(align: ShorthandAlign | undefined): [AlignVertical | undef
 }
 
 export {
-  alignToStyle,
+  shorthandAlignToStyle,
 };
