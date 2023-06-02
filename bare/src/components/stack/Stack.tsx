@@ -2,22 +2,11 @@ import React, { useContext, useMemo } from 'react';
 import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
 
+import useSpacingStyles from '../../styles/spacing.js';
 import View from '../view/index.js';
 
 const useStyles = createUseStyles({
   Stack: {
-  },
-});
-
-const useSpacingStyles = createUseStyles({
-  xsmall: {
-    gap: 4,
-  },
-  small: {
-    gap: 8,
-  },
-  medium: {
-    gap: 16,
   },
 });
 

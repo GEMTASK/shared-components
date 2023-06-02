@@ -6,6 +6,7 @@ import useFillColorStyles from '../../styles/fillColor.js';
 import useAlignVerticalStyles from '../../styles/alignVertical.js';
 import useAlignHorizontalStyles from '../../styles/alignHorizontal.js';
 import Color from '../../types/Color';
+import Align from '../../types/Align';
 import ViewContext from './ViewContext.js';
 
 const DEFAULT_ELEMENT = 'div';
