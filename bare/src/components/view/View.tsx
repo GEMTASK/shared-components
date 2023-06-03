@@ -1,33 +1,20 @@
 import React, { useContext, useMemo } from 'react';
-import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
 
 import Color from '../../types/Color';
 import { ShorthandAlign, AlignVertical, AlignHorizontal } from '../../types/Align';
 
+import useStyles from './ViewStyles.js';
 import { shorthandAlignToStyle } from '../../styles/align.js';
 import useAlignHorizontalStyles from '../../styles/alignHorizontal.js';
 import useAlignVerticalStyles from '../../styles/alignVertical.js';
 import usePaddingVerticalStyles from '../../styles/paddingVertical.js';
+import usePaddingHorizontalStyles from '../../styles/paddingHorizontal.js';
 import useFillColorStyles from '../../styles/fillColor.js';
 
 import ViewContext from './ViewContext.js';
 
 const DEFAULT_ELEMENT = 'div';
-
-const useStyles = createUseStyles({
-  View: {
-    display: 'flex',
-    flexDirection: 'column',
-    boxSizing: 'border-box',
-  },
-  horizontal: {
-    flexDirection: 'row',
-  },
-  flex: {
-    flex: 1,
-  },
-});
 
 type ViewProps<T extends React.ElementType> = {
   as?: T,
@@ -36,7 +23,8 @@ type ViewProps<T extends React.ElementType> = {
   align?: ShorthandAlign,
   alignVertical?: AlignVertical,
   alignHorizontal?: AlignHorizontal,
-  paddingVertical?: 'small' | 'medium',
+  paddingVertical?: 'small' | 'medium' | 'large',
+  paddingHorizontal?: 'small' | 'medium' | 'large',
   fillColor?: Color,
   className?: string,
   children?: React.ReactElement | React.ReactElement[],
@@ -50,6 +38,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   alignVertical = shorthandAlignToStyle(align)[0],
   alignHorizontal = shorthandAlignToStyle(align)[1],
   paddingVertical,
+  paddingHorizontal,
   fillColor,
   className,
   children,
@@ -61,6 +50,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   const alignVerticalStyles = useAlignVerticalStyles();
   const alignHorizontalStyles = useAlignHorizontalStyles();
   const paddingVerticalStyles = usePaddingVerticalStyles();
+  const paddingHorizontalStyles = usePaddingHorizontalStyles();
 
   const viewClassName = clsx(
     styles.View,
@@ -69,6 +59,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
     alignVertical && alignVerticalStyles[`${alignVertical}${horizontal ? 'Horizontal' : 'Vertical'}`],
     alignHorizontal && alignHorizontalStyles[`${alignHorizontal}${horizontal ? 'Horizontal' : 'Vertical'}`],
     paddingVertical && paddingVerticalStyles[paddingVertical],
+    paddingHorizontal && paddingHorizontalStyles[paddingHorizontal],
     fillColor && fillColorStyles[fillColor],
     className,
   );
