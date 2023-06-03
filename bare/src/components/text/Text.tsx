@@ -1,6 +1,5 @@
-import React, { CSSProperties, useContext } from 'react';
+import React, { useContext } from 'react';
 import { createUseStyles } from 'react-jss';
-import OpenColor from 'open-color';
 import clsx from 'clsx';
 
 import Color from '../../types/Color';
@@ -12,15 +11,48 @@ import View from '../view/index.js';
 
 import TextContext from './TextContext.js';
 
-const useStyles = createUseStyles({
+const useInnerStyles = createUseStyles({
   Text: {
     fontSize: 14,
-    lineHeight: '22px',
+    display: 'inline-block',
     cursor: 'default',
     '&[contenteditable], &:active': {
       cursor: 'text'
     },
   },
+});
+
+const useFontSizeStyles = createUseStyles({
+  xxsmall: {
+    fontSize: 11,
+    lineHeight: '18px',
+    margin: '-6px 0 -5px 0'
+  },
+  xsmall: {
+    fontSize: 12,
+    lineHeight: '19px',
+    margin: '-5px 0 -4px 0'
+  },
+  small: {
+    fontSize: 14,
+    lineHeight: '22px',
+    margin: '-6px 0 -5px 0'
+  },
+  medium: {
+    fontSize: 18,
+    lineHeight: '25px',
+    margin: '-5px 0 -5px 0'
+  },
+  large: {
+    fontSize: 24,
+    lineHeight: '30px',
+    margin: '-6px 0 -5px 0'
+  },
+  xlarge: {
+    fontSize: 32,
+    lineHeight: '40px',
+    margin: '-8px 0 -7px 0'
+  }
 });
 
 const useFontWeightStyles = createUseStyles({
@@ -41,6 +73,7 @@ const useFontWeightStyles = createUseStyles({
 type Child<T> = string | number | React.ReactElement<T | HTMLBRElement>;
 
 type TextProps = {
+  fontSize?: 'xxsmall' | 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge',
   fontWeight?: 'normal' | 'medium' | 'semibold' | 'bold',
   textAlign?: 'left' | 'center' | 'right',
   textColor?: Color,
@@ -50,34 +83,28 @@ type TextProps = {
 } & Omit<React.ComponentProps<typeof View>, 'children'>;
 
 const Text = ({
+  fontSize,
   fontWeight,
   textAlign,
   textColor,
-  className,
-  style,
   children,
   ...props
 }: TextProps) => {
   const isTextParent = useContext(TextContext);
 
-  const styles = useStyles();
+  const innerStyles = useInnerStyles();
+  const fontSizeStyles = useFontSizeStyles();
   const fontWeightStyles = useFontWeightStyles();
   const textAlignStyles = useTextAlignStyles();
   const textColorStyles = useTextColorStyles();
 
   const textClassName = clsx(
-    styles.Text,
+    innerStyles.Text,
+    fontSizeStyles[fontSize || 'small'],
     fontWeight && fontWeightStyles[fontWeight],
     textAlign && textAlignStyles[textAlign],
     textColor && textColorStyles[textColor],
-    className,
   );
-
-  const textStyle = {
-    display: 'inline-block',
-    margin: '-3px 0 -3px 0',
-    ...style,
-  };
 
   const childrenElement = typeof children === 'string'
     ? children.split(/\n|\\n/).reduce<Child<TextProps>[]>((string, word, index) => (
@@ -94,7 +121,7 @@ const Text = ({
   return (
     <TextContext.Provider value={true}>
       <View {...props}>
-        <span className={textClassName} style={textStyle}>
+        <span className={textClassName}>
           {childrenElement}
         </span>
       </View>

@@ -27,6 +27,7 @@ type ViewProps<T extends React.ElementType> = {
   paddingHorizontal?: 'small' | 'medium' | 'large',
   fillColor?: Color,
   className?: string,
+  style?: React.CSSProperties,
   children?: React.ReactElement | React.ReactElement[],
 } & React.ComponentPropsWithoutRef<T>;
 
@@ -41,6 +42,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   paddingHorizontal,
   fillColor,
   className,
+  style,
   children,
 }: ViewProps<T>) => {
   const Component = as ?? DEFAULT_ELEMENT;
@@ -64,9 +66,13 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
     className,
   );
 
+  const viewStyle = {
+    ...style,
+  };
+
   return (
     <ViewContext.Provider value={{ isHorizontal: horizontal ?? false }}>
-      <Component className={viewClassName}>
+      <Component className={viewClassName} style={viewStyle}>
         {children}
       </Component>
     </ViewContext.Provider>

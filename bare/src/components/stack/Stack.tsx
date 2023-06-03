@@ -11,7 +11,7 @@ const useStyles = createUseStyles({
 });
 
 type StackProps = {
-  spacing?: 'small',
+  spacing?: 'line' | 'xxsmall' | 'xsmall' | 'small',
   className?: string,
   children?: React.ComponentProps<typeof View>['children'],
 } & React.ComponentProps<typeof View>;

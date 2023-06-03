@@ -15,6 +15,10 @@ const usePaddingVerticalStyles = createUseStyles({
     paddingTop: Size.medium,
     paddingBottom: Size.medium,
   },
+  large: {
+    paddingTop: Size.large,
+    paddingBottom: Size.large,
+  },
 });
 
 export default usePaddingVerticalStyles;

@@ -11,7 +11,7 @@ function shorthandAlignToStyle(align: ShorthandAlign | undefined): [AlignVertica
       return ['top', 'right'];
     case 'left':
     case 'middle left':
-      return ['middle', 'center'];
+      return ['middle', 'left'];
     case 'center':
     case 'middle center':
       return ['middle', 'center'];

@@ -12,7 +12,7 @@ const useStyles = createUseStyles({
     appearance: 'none',
     border: 'none',
     borderRadius: Size.xxsmall,
-    cursor: 'pointer',
+    // cursor: 'pointer',
     '&:hover': { filter: 'brightness(1.1)' },
     '&:active': { filter: 'brightness(0.9)' },
   },
@@ -36,7 +36,7 @@ const Button = ({
   );
 
   return (
-    <View as="button" fillColor="blue-5" paddingVertical="small" paddingHorizontal="large" className={buttonClassName} {...props}>
+    <View as="button" fillColor="blue-5" paddingVertical="medium" paddingHorizontal="large" className={buttonClassName} {...props}>
       <Text fontWeight="semibold" textColor="white" style={{ pointerEvents: 'none', cursor: 'pointer' }}>
         {title}
       </Text>
