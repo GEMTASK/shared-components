@@ -11,6 +11,7 @@ import useAlignVerticalStyles from '../../styles/alignVertical.js';
 import usePaddingVerticalStyles from '../../styles/paddingVertical.js';
 import usePaddingHorizontalStyles from '../../styles/paddingHorizontal.js';
 import useFillColorStyles from '../../styles/fillColor.js';
+import useBorderColorStyles from '../../styles/borderColor.js';
 
 import ViewContext from './ViewContext.js';
 
@@ -26,6 +27,8 @@ type ViewProps<T extends React.ElementType> = {
   paddingVertical?: 'small' | 'medium' | 'large',
   paddingHorizontal?: 'small' | 'medium' | 'large',
   fillColor?: Color,
+  border?: boolean,
+  borderColor?: Color,
   className?: string,
   style?: React.CSSProperties,
   children?: React.ReactElement | React.ReactElement[],
@@ -41,6 +44,8 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   paddingVertical,
   paddingHorizontal,
   fillColor,
+  border,
+  borderColor,
   className,
   style,
   children,
@@ -49,6 +54,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
 
   const styles = useStyles();
   const fillColorStyles = useFillColorStyles();
+  const borderColorStyles = useBorderColorStyles();
   const alignVerticalStyles = useAlignVerticalStyles();
   const alignHorizontalStyles = useAlignHorizontalStyles();
   const paddingVerticalStyles = usePaddingVerticalStyles();
@@ -63,6 +69,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
     paddingVertical && paddingVerticalStyles[paddingVertical],
     paddingHorizontal && paddingHorizontalStyles[paddingHorizontal],
     fillColor && fillColorStyles[fillColor],
+    border && borderColorStyles[borderColor ?? 'gray-3'],
     className,
   );
 

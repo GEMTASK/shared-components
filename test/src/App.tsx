@@ -19,7 +19,7 @@ function App() {
             Middle Center<br />
             Hello, <Text fontWeight="bold">World <Text textColor="red-9">!!!</Text></Text>
           </Text>
-          <Text flex align="middle right" fillColor="white">Middle Bottom</Text>
+          <Text flex align="middle right" fillColor="white">Middle Right</Text>
         </Stack>
         <Divider />
         <Stack flex horizontal spacing="line">
@@ -49,8 +49,17 @@ function App() {
       </Stack>
       <Divider />
       <Stack spacing="small" alignHorizontal="center" paddingVertical="small">
-        <Button title="Primary Solid" />
-        <Button title="Multiline\nPrimary Solid" />
+        <Stack horizontal spacing="small">
+          <Button hover title="Hover" />
+          <Button title="Default" />
+          <Button solid title="Solid" />
+          <Button primary title="Primary" />
+          <Button primary solid title="Primary Solid" />
+        </Stack>
+        <Stack horizontal spacing="small">
+          <Button solid title="Multiline\nPrimary" />
+          <Button primary solid title="Multiline\nPrimary Solid" />
+        </Stack>
       </Stack>
       <View flex horizontal>
         <Text flex fillColor="gray-2" align="center" textAlign="center">
