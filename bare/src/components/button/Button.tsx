@@ -1,5 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import { createUseStyles } from 'react-jss';
+import OpenColor from 'open-color';
 import clsx from 'clsx';
 
 import Size from '../../types/Size.js';
@@ -14,6 +15,9 @@ const useStyles = createUseStyles({
     borderRadius: Size.xxsmall,
     '&:hover': { filter: 'brightness(1.05)' },
     '&:active': { filter: 'brightness(0.95)' },
+  },
+  default: {
+    '&:hover': { background: OpenColor.gray[3] },
   },
   hover: {
     '&:hover': { background: 'hsla(0, 0%, 0%, 0.05)' },
@@ -75,6 +79,7 @@ const Button = ({
   const buttonClassName = clsx(
     styles.Button,
     hover && styles.hover,
+    !primary && !solid && styles.default,
     className,
   );
 
