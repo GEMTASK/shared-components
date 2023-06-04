@@ -13,15 +13,20 @@ const useStyles = createUseStyles({
     appearance: 'none',
     border: 'none',
     borderRadius: Size.xxsmall,
-    '&:hover': { filter: 'brightness(1.05)' },
-    '&:active': { filter: 'brightness(0.95)' },
+    '&:hover': { filter: 'brightness(1.04)' },
+    '&:active': { filter: 'brightness(0.94)' },
   },
   default: {
-    '&:hover': { background: OpenColor.gray[3] },
+    '&:hover': { background: OpenColor.gray[3], filter: 'brightness(1.04)' },
+    '&:active': { background: OpenColor.gray[3], filter: 'brightness(0.94)' },
   },
   hover: {
-    '&:hover': { background: 'hsla(0, 0%, 0%, 0.05)' },
-    '&:active': { background: 'hsla(0, 0%, 0%, 0.15)' },
+    '&:hover': { background: `${OpenColor.gray[6]}30`, filter: 'brightness(1.04)' },
+    '&:active': { background: `${OpenColor.gray[6]}30`, filter: 'brightness(0.0)' },
+  },
+  primary: {
+    '&:hover': { background: OpenColor.blue[0], filter: 'brightness(1.04)' },
+    '&:active': { background: OpenColor.blue[5], filter: 'brightness(0.94)' },
   }
 });
 
@@ -80,6 +85,7 @@ const Button = ({
     styles.Button,
     hover && styles.hover,
     !primary && !solid && styles.default,
+    primary && !solid && styles.primary,
     className,
   );
 

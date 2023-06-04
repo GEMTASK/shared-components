@@ -48,7 +48,8 @@ function App() {
         <Text>3</Text>
       </Stack>
       <Divider />
-      <Stack spacing="small" alignHorizontal="center" paddingVertical="small">
+      <Stack alignHorizontal="center" paddingVertical="small">
+        <View /*fillColor="gray-2"*/ paddingVertical="small" style={{ alignSelf: 'stretch' }} />
         <Stack horizontal spacing="small">
           <Button hover title="Hover" />
           <Button title="Default" />
@@ -56,6 +57,7 @@ function App() {
           <Button primary title="Primary" />
           <Button primary solid title="Primary Solid" />
         </Stack>
+        <View /*fillColor="gray-4"*/ paddingVertical="small" style={{ alignSelf: 'stretch' }} />
         <Stack horizontal spacing="small">
           <Button solid title="Multiline\nPrimary" />
           <Button primary solid title="Multiline\nPrimary Solid" />
