@@ -13,15 +13,15 @@ const useStyles = createUseStyles({
     appearance: 'none',
     border: 'none',
     borderRadius: Size.xxsmall,
-    '&:hover': { filter: 'brightness(1.08)' },
+    '&:hover': { filter: 'brightness(1.04)' },
     '&:active': { filter: 'brightness(0.94)' },
   },
   default: {
-    '&:hover': { background: OpenColor.gray[3], filter: 'brightness(1.08)' },
+    '&:hover': { background: OpenColor.gray[3], filter: 'brightness(1.04)' },
     '&:active': { background: OpenColor.gray[3], filter: 'brightness(0.94)' },
   },
   hover: {
-    '&:hover': { background: `${OpenColor.gray[5]}30`, filter: 'brightness(1.08)' },
+    '&:hover': { background: `${OpenColor.gray[6]}30`, filter: 'brightness(1.04)' },
     '&:active': { background: `${OpenColor.gray[6]}30`, filter: 'brightness(0.0)' },
   },
   primary: {
