@@ -52,6 +52,11 @@ const useFontSizeStyles = createUseStyles({
     fontSize: 32,
     lineHeight: '40px',
     margin: '-8px 0 -7px 0'
+  },
+  xxlarge: {
+    fontSize: 40,
+    lineHeight: '50px',
+    margin: '-10px 0 -9px 0'
   }
 });
 
@@ -73,7 +78,7 @@ const useFontWeightStyles = createUseStyles({
 type Child<T> = string | number | React.ReactElement<T | HTMLBRElement>;
 
 type TextProps = {
-  fontSize?: 'xxsmall' | 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge',
+  fontSize?: 'xxsmall' | 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge',
   fontWeight?: 'normal' | 'medium' | 'semibold' | 'bold',
   textAlign?: 'left' | 'center' | 'right',
   textColor?: Color,

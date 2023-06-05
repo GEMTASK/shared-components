@@ -2,8 +2,12 @@ import React, { useContext, useMemo } from 'react';
 import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
 
-import useSpacingStyles from '../../styles/spacing.js';
+import Size from '../../types/Size.js';
+import Color from '../../types/Color.js';
+
 import View from '../view/index.js';
+import Spacer from '../spacer/index.js';
+import Divider from '../divider/index.js';
 
 const useStyles = createUseStyles({
   Stack: {
@@ -11,29 +15,41 @@ const useStyles = createUseStyles({
 });
 
 type StackProps = {
-  spacing?: 'line' | 'xxsmall' | 'xsmall' | 'small',
+  spacing?: keyof typeof Size,
+  spacingColor?: Color,
+  divider?: boolean,
   className?: string,
   children?: React.ComponentProps<typeof View>['children'],
 } & React.ComponentProps<typeof View>;
 
 const Stack = ({
   spacing,
+  spacingColor,
+  divider,
   className,
   children,
   ...props
 }: StackProps) => {
   const styles = useStyles();
-  const spacingStyles = useSpacingStyles();
 
   const stackClassName = clsx(
     styles.Stack,
-    spacing && spacingStyles[spacing],
     className,
   );
 
   return (
     <View className={stackClassName} {...props}>
-      {children}
+      {React.Children.map(children, (child, index) => (
+        React.isValidElement(child) && <>
+          {divider && index > 0 && (
+            <Divider spacing={spacing} spacingColor={spacingColor} />
+          )}
+          {spacing && !divider && index > 0 && (
+            <Spacer size={spacing} fillColor={spacingColor} />
+          )}
+          {child}
+        </>
+      ))}
     </View>
   );
 };
