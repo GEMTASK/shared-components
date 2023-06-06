@@ -5,111 +5,130 @@ import { View, Text, Button, Stack, Spacer, Divider } from 'bare';
 
 function App() {
   return (
-    <View className={styles.App} paddingVertical="large" paddingHorizontal="large">
-      <View horizontal>
-        <Stack alignHorizontal="center" spacing="small" spacingColor="gray-2">
-          <View />
-          <Text fontSize="xxlarge">XXLarge (40)</Text>
-          <Text fontSize="xlarge">XLarge (32)</Text>
-          <Text fontSize="large">Large (24)</Text>
-          <Text fontSize="medium">Medium (18)</Text>
-          <Text fontSize="small">Small (14)</Text>
-          <Text fontSize="xsmall">XSmall (12)</Text>
-          <Text fontSize="xsmall">XXSmall (11)</Text>
-          <View />
-        </Stack>
+    <View className={styles.App}>
+      <View flex className={styles.Container} paddingVertical="large" paddingHorizontal="large">
+        <View horizontal>
+          <Stack alignHorizontal="center" spacing="small" spacingColor="gray-2">
+            <View />
+            <Text fontSize="xxlarge">XXLarge (40)</Text>
+            <Text fontSize="xlarge">XLarge (32)</Text>
+            <Text fontSize="large">Large (24)</Text>
+            <Text fontSize="medium">Medium (18)</Text>
+            <Text fontSize="small">Small (14)</Text>
+            <Text fontSize="xsmall">XSmall (12)</Text>
+            <Text fontSize="xsmall">XXSmall (11)</Text>
+            <View />
+          </Stack>
+          <Divider spacing="large" />
+          <Stack flex alignHorizontal="center" align="middle center">
+            {/* <Spacer size="small" fillColor="gray-2" /> */}
+            <Stack horizontal spacing="small">
+              <Button hover title="Hover" />
+              <Button title="Default" />
+              <Button solid title="Solid" />
+              <Button primary title="Primary" />
+              <Button primary solid title="Primary Solid" />
+            </Stack>
+            {/* <Spacer size="small" fillColor="gray-4" /> */}
+            <Spacer size="small" />
+            <Stack horizontal spacing="small">
+              <Button hover icon="house" title="Hover" />
+              <Button icon="house" title="Default" />
+              <Button solid icon="house" title="Solid" />
+              <Button primary icon="house" title="Primary" />
+              <Button primary solid icon="house" title="Primary Solid" />
+            </Stack>
+            <Spacer size="small" />
+            <Stack horizontal spacing="small">
+              <Button hover title="Multiline\nHover" />
+              <Button title="Multiline\nDefault" />
+              <Button solid title="Multiline\nSolid" />
+              <Button primary title="Multiline\nPrimary" />
+              <Button primary solid title="Multiline\nPrimary Solid" />
+            </Stack>
+            <Spacer size="small" />
+            <Stack horizontal spacing="small">
+              <Button hover round title="Hover" />
+              <Button round title="Default" />
+              <Button round solid title="Solid" />
+              <Button round primary title="Primary" />
+              <Button round primary solid title="Primary Solid" />
+            </Stack>
+          </Stack>
+        </View>
         <Divider spacing="large" />
-        <Stack flex alignHorizontal="center" align="middle center">
-          {/* <Spacer size="small" fillColor="gray-2" /> */}
-          <Stack horizontal spacing="small">
-            <Button hover title="Hover" />
-            <Button title="Default" />
-            <Button solid title="Solid" />
-            <Button primary title="Primary" />
-            <Button primary solid title="Primary Solid" />
+        <Text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        </Text>
+        <Divider spacing="large" />
+        <Stack horizontal spacing="large">
+          <Text flex fontSize="xxlarge">
+            Lorem ipsum dolor sit amet...
+          </Text>
+          <Text flex fontSize="xlarge">
+            Lorem ipsum dolor sit amet, consectetur...
+          </Text>
+        </Stack>
+        <Spacer size="large" />
+        <Stack horizontal spacing="large">
+          <Text flex fontSize="large">
+            Lorem ipsum dolor sit amet, consectetur...
+          </Text>
+          <Text flex fontSize="medium">
+            Lorem ipsum dolor sit amet, consectetur adipiscing...
+          </Text>
+          <Text flex>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...
+          </Text>
+        </Stack>
+        <Spacer size="large" />
+        <Stack horizontal spacing="large">
+          <Text flex fontSize="xsmall">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
+          </Text>
+          <Text flex fontSize="xxsmall">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim...
+          </Text>
+        </Stack>
+        <Spacer size="large" />
+        <View fillColor="gray-0" paddingVertical="large" paddingHorizontal="large">
+          <input />
+          <Spacer size="large" />
+          <View horizontal align="middle left" style={{ maxWidth: 300 }}>
+            <View flex horizontal align="middle left">
+              <img src="https://mike-austin.com/new/images/Escher_Circle_Limit_III.jpg" style={{ height: 35, objectFit: 'contain' }} />
+              <Spacer size="small" />
+              <View flex>
+                <Text>Title</Text>
+                <Spacer size="small" />
+                <Text fontSize="xsmall" textColor="gray-6">Subtitle</Text>
+              </View>
+            </View>
+            <Button primary title="Press Me" />
+          </View>
+        </View>
+        <Spacer size="large" />
+        <Stack flex divider>
+          <Stack flex horizontal divider>
+            <Text flex align="top left" fillColor="white">Top Left</Text>
+            <Text flex align="top center" fillColor="white">Top Center</Text>
+            <Text flex align="top right" fillColor="white">Top Right</Text>
           </Stack>
-          {/* <Spacer size="small" fillColor="gray-4" /> */}
-          <Spacer size="small" />
-          <Stack horizontal spacing="small">
-            <Button hover icon="house" title="Hover" />
-            <Button icon="house" title="Default" />
-            <Button solid icon="house" title="Solid" />
-            <Button primary icon="house" title="Primary" />
-            <Button primary solid icon="house" title="Primary Solid" />
+          <Stack flex horizontal divider>
+            <Text flex align="middle left" fillColor="white">Middle Left</Text>
+            <Text flex align="middle center" fillColor="white" textAlign="center">
+              Middle Center<br />
+              Hello, <Text fontWeight="bold">World <Text textColor="red-9">!!!</Text></Text>
+            </Text>
+            <Text flex align="middle right" fillColor="white">Middle Right</Text>
           </Stack>
-          <Spacer size="small" />
-          <Stack horizontal spacing="small">
-            <Button hover title="Multiline\nHover" />
-            <Button title="Multiline\nDefault" />
-            <Button solid title="Multiline\nSolid" />
-            <Button primary title="Multiline\nPrimary" />
-            <Button primary solid title="Multiline\nPrimary Solid" />
-          </Stack>
-          <Spacer size="small" />
-          <Stack horizontal spacing="small">
-            <Button hover round title="Hover" />
-            <Button round title="Default" />
-            <Button round solid title="Solid" />
-            <Button round primary title="Primary" />
-            <Button round primary solid title="Primary Solid" />
+          <Stack flex horizontal divider>
+            <Text flex align="bottom left" fillColor="white">Bottom Left</Text>
+            <Text flex align="bottom center" fillColor="white">Bottom Center</Text>
+            <Text flex align="bottom right" fillColor="white">Bottom Right</Text>
           </Stack>
         </Stack>
       </View>
-      <Divider spacing="large" />
-      <Text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-      </Text>
-      <Divider spacing="large" />
-      <Stack horizontal spacing="large">
-        <Text flex fontSize="xxlarge">
-          Lorem ipsum dolor sit amet...
-        </Text>
-        <Text flex fontSize="xlarge">
-          Lorem ipsum dolor sit amet, consectetur...
-        </Text>
-      </Stack>
-      <Spacer size="large" />
-      <Stack horizontal spacing="large">
-        <Text flex fontSize="large">
-          Lorem ipsum dolor sit amet, consectetur...
-        </Text>
-        <Text flex fontSize="medium">
-          Lorem ipsum dolor sit amet, consectetur adipiscing...
-        </Text>
-        <Text flex>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...
-        </Text>
-      </Stack>
-      <Spacer size="large" />
-      <Stack horizontal spacing="large">
-        <Text flex fontSize="xsmall">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
-        </Text>
-        <Text flex fontSize="xxsmall">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim...
-        </Text>
-      </Stack>
-      <Divider spacing="large" />
-      <Stack flex divider>
-        <Stack flex horizontal divider>
-          <Text flex align="top left" fillColor="white">Top Left</Text>
-          <Text flex align="top center" fillColor="white">Top Center</Text>
-          <Text flex align="top right" fillColor="white">Top Right</Text>
-        </Stack>
-        <Stack flex horizontal divider>
-          <Text flex align="middle left" fillColor="white">Middle Left</Text>
-          <Text flex align="middle center" fillColor="white" textAlign="center">
-            Middle Center<br />
-            Hello, <Text fontWeight="bold">World <Text textColor="red-9">!!!</Text></Text>
-          </Text>
-          <Text flex align="middle right" fillColor="white">Middle Right</Text>
-        </Stack>
-        <Stack flex horizontal divider>
-          <Text flex align="bottom left" fillColor="white">Bottom Left</Text>
-          <Text flex align="bottom center" fillColor="white">Bottom Center</Text>
-          <Text flex align="bottom right" fillColor="white">Bottom Right</Text>
-        </Stack>
-      </Stack>
     </View>
   );
 }

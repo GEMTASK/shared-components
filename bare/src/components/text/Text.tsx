@@ -36,7 +36,7 @@ const useFontSizeStyles = createUseStyles({
   small: {
     fontSize: 14,
     lineHeight: '20px',
-    margin: '-6px 0 -5px 0'
+    margin: '-5px 0 -4px 0'
   },
   medium: {
     fontSize: 18,
