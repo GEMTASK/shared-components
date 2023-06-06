@@ -62,7 +62,7 @@ const useSpacingStyles = createUseStyles({
     justifySelf: 'stretch',
   },
   xxlargeHorizontal: {
-    width: Size.xlarge,
+    width: Size.xxlarge,
     justifySelf: 'stretch',
   },
 });

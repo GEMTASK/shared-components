@@ -8,6 +8,7 @@ function App() {
     <View className={styles.App} paddingVertical="large" paddingHorizontal="large">
       <View horizontal>
         <Stack alignHorizontal="center" spacing="small" spacingColor="gray-2">
+          <View />
           <Text fontSize="xxlarge">XXLarge (40)</Text>
           <Text fontSize="xlarge">XLarge (32)</Text>
           <Text fontSize="large">Large (24)</Text>
@@ -15,6 +16,7 @@ function App() {
           <Text fontSize="small">Small (14)</Text>
           <Text fontSize="xsmall">XSmall (12)</Text>
           <Text fontSize="xsmall">XXSmall (11)</Text>
+          <View />
         </Stack>
         <Divider spacing="large" />
         <Stack flex alignHorizontal="center" align="middle center">
@@ -55,7 +57,38 @@ function App() {
       </View>
       <Divider spacing="large" />
       <Text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.      </Text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      </Text>
+      <Divider spacing="large" />
+      <Stack horizontal spacing="large">
+        <Text flex fontSize="xxlarge">
+          Lorem ipsum dolor sit amet...
+        </Text>
+        <Text flex fontSize="xlarge">
+          Lorem ipsum dolor sit amet, consectetur...
+        </Text>
+      </Stack>
+      <Spacer size="large" />
+      <Stack horizontal spacing="large">
+        <Text flex fontSize="large">
+          Lorem ipsum dolor sit amet, consectetur...
+        </Text>
+        <Text flex fontSize="medium">
+          Lorem ipsum dolor sit amet, consectetur adipiscing...
+        </Text>
+        <Text flex>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...
+        </Text>
+      </Stack>
+      <Spacer size="large" />
+      <Stack horizontal spacing="large">
+        <Text flex fontSize="xsmall">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...
+        </Text>
+        <Text flex fontSize="xxsmall">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim...
+        </Text>
+      </Stack>
       <Divider spacing="large" />
       <Stack flex divider>
         <Stack flex horizontal divider>

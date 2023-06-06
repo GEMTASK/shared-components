@@ -50,13 +50,13 @@ const useFontSizeStyles = createUseStyles({
   },
   xlarge: {
     fontSize: 32,
-    lineHeight: '40px',
-    margin: '-8px 0 -7px 0'
+    lineHeight: '35px',
+    margin: '-6px 0 -5px 0'
   },
   xxlarge: {
     fontSize: 40,
-    lineHeight: '50px',
-    margin: '-10px 0 -9px 0'
+    lineHeight: '40px',
+    margin: '-6px 0 -4px 0'
   }
 });
 
