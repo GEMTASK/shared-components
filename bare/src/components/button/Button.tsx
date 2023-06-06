@@ -27,6 +27,9 @@ const useStyles = createUseStyles({
   primary: {
     '&:hover': { background: OpenColor.blue[0], filter: 'brightness(1.08)' },
     '&:active': { background: OpenColor.blue[5], filter: 'brightness(0.94)' },
+  },
+  round: {
+    borderRadius: 1000,
   }
 });
 
@@ -68,6 +71,7 @@ type ButtonProps = {
   hover?: boolean,
   primary?: boolean,
   solid?: boolean,
+  round?: boolean,
   className?: string,
 } & Omit<React.ComponentProps<typeof View>, 'children'>;
 
@@ -76,6 +80,7 @@ const Button = ({
   hover,
   primary,
   solid,
+  round,
   className,
   ...props
 }: ButtonProps) => {
@@ -86,6 +91,7 @@ const Button = ({
     hover && styles.hover,
     !primary && !solid && styles.default,
     primary && !solid && styles.primary,
+    round && styles.round,
     className,
   );
 

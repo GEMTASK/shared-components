@@ -5,8 +5,8 @@ import { View, Text, Button, Stack, Spacer, Divider } from 'bare';
 
 function App() {
   return (
-    <View className={styles.App}>
-      <View horizontal paddingVertical="large" paddingHorizontal="large">
+    <View className={styles.App} paddingVertical="large" paddingHorizontal="large">
+      <View horizontal>
         <Stack alignHorizontal="center" spacing="small" spacingColor="gray-2">
           <Text fontSize="xxlarge">XXLarge (40)</Text>
           <Text fontSize="xlarge">XLarge (32)</Text>
@@ -17,7 +17,7 @@ function App() {
           <Text fontSize="xsmall">XXSmall (11)</Text>
         </Stack>
         <Divider spacing="large" />
-        <Stack alignHorizontal="center" paddingVertical="small">
+        <Stack flex alignHorizontal="center" align="middle center">
           {/* <Spacer size="small" fillColor="gray-2" /> */}
           <Stack horizontal spacing="small">
             <Button hover title="Hover" />
@@ -33,9 +33,20 @@ function App() {
             <Button solid title="Multiline\nPrimary" />
             <Button primary solid title="Multiline\nPrimary Solid" />
           </Stack>
+          <Spacer size="small" />
+          <Stack horizontal spacing="small">
+            <Button hover round title="Hover" />
+            <Button round title="Default" />
+            <Button round solid title="Solid" />
+            <Button round primary title="Primary" />
+            <Button round primary solid title="Primary Solid" />
+          </Stack>
         </Stack>
       </View>
-      <Divider />
+      <Divider spacing="large" />
+      <Text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.      </Text>
+      <Divider spacing="large" />
       <Stack flex divider>
         <Stack flex horizontal divider>
           <Text flex align="top left" fillColor="white">Top Left</Text>
