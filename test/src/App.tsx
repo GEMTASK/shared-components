@@ -29,8 +29,10 @@ function App() {
           {/* <Spacer size="small" fillColor="gray-4" /> */}
           <Spacer size="small" />
           <Stack horizontal spacing="small">
-            <Button solid title="Multiline\nPrimary" />
-            <Button solid title="Multiline\nPrimary" />
+            <Button hover title="Multiline\nHover" />
+            <Button title="Multiline\nDefault" />
+            <Button solid title="Multiline\nSolid" />
+            <Button primary title="Multiline\nPrimary" />
             <Button primary solid title="Multiline\nPrimary Solid" />
           </Stack>
           <Spacer size="small" />
