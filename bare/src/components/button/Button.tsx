@@ -7,6 +7,8 @@ import Size from '../../types/Size.js';
 
 import View from '../view/index.js';
 import Text from '../text/index.js';
+import Icon from '../icon/index.js';
+import Spacer from '../spacer/Spacer.js';
 
 const useStyles = createUseStyles({
   Button: {
@@ -67,6 +69,7 @@ const getTextColor = ({ primary, solid }: ButtonProps) => {
 };
 
 type ButtonProps = {
+  icon?: React.ComponentProps<typeof Icon>['icon'],
   title?: string,
   hover?: boolean,
   primary?: boolean,
@@ -76,6 +79,7 @@ type ButtonProps = {
 } & Omit<React.ComponentProps<typeof View>, 'children'>;
 
 const Button = ({
+  icon,
   title,
   hover,
   primary,
@@ -99,17 +103,28 @@ const Button = ({
   const borderColor = getBorderColor({ primary, solid, hover });
   const textColor = getTextColor({ primary, solid });
 
+  const [color, level] = (textColor ?? '')?.split('-') as [keyof OpenColor, number | undefined];
+  const iconColor = level ? OpenColor[color][level] : OpenColor[color] as string;
+
   return (
     <View
+      horizontal
       as="button"
       fillColor={fillColor}
       border={borderColor !== undefined}
       borderColor={borderColor}
       paddingVertical="medium"
       paddingHorizontal="large"
+      align="middle center"
       className={buttonClassName}
       {...props}
     >
+      {!!icon && (
+        <Icon icon="house" color={iconColor} />
+      )}
+      {!!icon && !!title && (
+        <Spacer size="small" />
+      )}
       <Text fontWeight="semibold" textColor={textColor} style={{ pointerEvents: 'none' }}>
         {title}
       </Text>

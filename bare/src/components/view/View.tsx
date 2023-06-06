@@ -31,7 +31,7 @@ type ViewProps<T extends React.ElementType> = {
   borderColor?: Color,
   className?: string,
   style?: React.CSSProperties,
-  children?: React.ReactElement | React.ReactElement[],
+  children?: (React.ReactElement | false) | (React.ReactElement | false)[],
 } & React.ComponentPropsWithoutRef<T>;
 
 const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({

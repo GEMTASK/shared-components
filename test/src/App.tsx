@@ -29,6 +29,14 @@ function App() {
           {/* <Spacer size="small" fillColor="gray-4" /> */}
           <Spacer size="small" />
           <Stack horizontal spacing="small">
+            <Button hover icon="house" title="Hover" />
+            <Button icon="house" title="Default" />
+            <Button solid icon="house" title="Solid" />
+            <Button primary icon="house" title="Primary" />
+            <Button primary solid icon="house" title="Primary Solid" />
+          </Stack>
+          <Spacer size="small" />
+          <Stack horizontal spacing="small">
             <Button hover title="Multiline\nHover" />
             <Button title="Multiline\nDefault" />
             <Button solid title="Multiline\nSolid" />
