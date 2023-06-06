@@ -92,11 +92,14 @@ function App() {
         </Stack>
         <Spacer size="large" />
         <View fillColor="gray-0" paddingVertical="large" paddingHorizontal="large">
-          <input />
+          <Stack horizontal spacing="small">
+            <input />
+            <Button solid title="Search" />
+          </Stack>
           <Spacer size="large" />
-          <View horizontal align="middle left" style={{ maxWidth: 300 }}>
+          <View horizontal align="middle left" style={{ maxWidth: 200 }}>
             <View flex horizontal align="middle left">
-              <img src="https://mike-austin.com/new/images/Escher_Circle_Limit_III.jpg" style={{ height: 35, objectFit: 'contain' }} />
+              <img src="https://mike-austin.com/new/images/Escher_Circle_Limit_III.jpg" style={{ margin: '-5px 0', height: 40, objectFit: 'contain' }} />
               <Spacer size="small" />
               <View flex>
                 <Text>Title</Text>

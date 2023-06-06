@@ -30,13 +30,13 @@ const useFontSizeStyles = createUseStyles({
   },
   xsmall: {
     fontSize: 12,
-    lineHeight: '19px',
-    margin: '-5px 0 -4px 0'
+    lineHeight: '18px',
+    margin: '-3px 0 -4px 0'
   },
   small: {
     fontSize: 14,
     lineHeight: '20px',
-    margin: '-5px 0 -4px 0'
+    margin: '-4px 0 -4px 0'
   },
   medium: {
     fontSize: 18,

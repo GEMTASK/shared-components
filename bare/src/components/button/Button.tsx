@@ -32,6 +32,12 @@ const useStyles = createUseStyles({
   },
   round: {
     borderRadius: 1000,
+  },
+  xsmall: {
+    minHeight: 32,
+  },
+  small: {
+    minHeight: 32,
   }
 });
 
@@ -69,6 +75,7 @@ const getTextColor = ({ primary, solid }: ButtonProps) => {
 };
 
 type ButtonProps = {
+  size?: 'xsmall' | 'small',
   icon?: React.ComponentProps<typeof Icon>['icon'],
   title?: string,
   hover?: boolean,
@@ -79,6 +86,7 @@ type ButtonProps = {
 } & Omit<React.ComponentProps<typeof View>, 'children'>;
 
 const Button = ({
+  size = 'small',
   icon,
   title,
   hover,
@@ -92,6 +100,7 @@ const Button = ({
 
   const buttonClassName = clsx(
     styles.Button,
+    size && styles[size],
     hover && styles.hover,
     !primary && !solid && styles.default,
     primary && !solid && styles.primary,
@@ -106,6 +115,9 @@ const Button = ({
   const [color, level] = (textColor ?? '')?.split('-') as [keyof OpenColor, number | undefined];
   const iconColor = level ? OpenColor[color][level] : OpenColor[color] as string;
 
+  const paddingVertical = size === 'xsmall' ? 'xsmall' : 'small';
+  const paddingHorizontal = size === 'xsmall' ? 'medium' : 'large';
+
   return (
     <View
       horizontal
@@ -113,8 +125,8 @@ const Button = ({
       fillColor={fillColor}
       border={borderColor !== undefined}
       borderColor={borderColor}
-      paddingVertical="medium"
-      paddingHorizontal="large"
+      paddingVertical={paddingVertical}
+      paddingHorizontal={paddingHorizontal}
       align="middle center"
       className={buttonClassName}
       {...props}
