@@ -49,6 +49,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   className,
   style,
   children,
+  ...props
 }: ViewProps<T>) => {
   const Component = as ?? DEFAULT_ELEMENT;
 
@@ -79,7 +80,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
 
   return (
     <ViewContext.Provider value={{ isHorizontal: horizontal ?? false }}>
-      <Component className={viewClassName} style={viewStyle}>
+      <Component className={viewClassName} style={viewStyle} {...props}>
         {children}
       </Component>
     </ViewContext.Provider>

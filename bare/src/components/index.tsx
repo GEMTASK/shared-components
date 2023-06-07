@@ -6,3 +6,4 @@ export { default as Spacer } from './spacer/index.js';
 export { default as Divider } from './divider/index.js';
 export { default as Stack } from './stack/index.js';
 export { default as Input } from './input/index.js';
+export { default as Menu } from './menu/index.js';

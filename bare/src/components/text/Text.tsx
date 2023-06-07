@@ -54,12 +54,12 @@ const useFontSizeStyles = createUseStyles({
   xlarge: {
     fontSize: 32,
     lineHeight: '35px',
-    margin: '-6px 0 -5px 0'
+    margin: '-6px 0 -4px 0'
   },
   xxlarge: {
-    fontSize: 40,
+    fontSize: 42,
     lineHeight: '40px',
-    margin: '-6px 0 -4px 0'
+    margin: '-4px 0 -3px 0'
   }
 });
 

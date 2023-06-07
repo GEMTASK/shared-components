@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './App.module.css';
-import { View, Text, Button, Stack, Spacer, Divider, Input } from 'bare';
+import { View, Text, Button, Stack, Spacer, Divider, Input, Menu } from 'bare';
 
 const Header = () => {
   return (
@@ -22,12 +22,12 @@ const Header = () => {
 
 function App() {
   return (
-    <View className={styles.App}>
+    <View tabIndex={0} className={styles.App}>
       <View flex className={styles.Container} paddingVertical="large" paddingHorizontal="large">
         <View horizontal>
           <Stack alignHorizontal="center" spacing="small" spacingColor="gray-2">
             <View />
-            <Text fontSize="xxlarge">XXLarge (40)</Text>
+            <Text fontSize="xxlarge">XXLarge (42)</Text>
             <Text fontSize="xlarge">XLarge (32)</Text>
             <Text fontSize="large">Large (24)</Text>
             <Text fontSize="medium">Medium (18)</Text>
@@ -65,11 +65,9 @@ function App() {
             </Stack>
             <Spacer size="small" />
             <Stack horizontal spacing="small">
-              <Button hover round title="Hover" />
-              <Button round title="Default" />
-              <Button round solid title="Solid" />
-              <Button round primary title="Primary" />
-              <Button round primary solid title="Primary Solid" />
+              <Button round solid disabled title="Disabled" />
+              <Button round primary title="Round" />
+              <Button round primary solid selected title="Selected" />
             </Stack>
           </Stack>
         </View>
@@ -110,24 +108,38 @@ function App() {
 
         <Spacer size="large" />
 
-        <View fillColor="gray-0" paddingVertical="large" paddingHorizontal="large" style={{ maxWidth: 500 }}>
-          <Stack horizontal spacing="small">
-            <Input />
-            <Button solid title="Search" />
-          </Stack>
-          <Spacer size="large" />
-          <Stack spacing="large">
-            <Input label="Username" />
-            <Input label="Password" />
-          </Stack>
-        </View>
+        <Stack horizontal spacing="large">
+          <View flex fillColor="gray-0" paddingVertical="large" paddingHorizontal="large" style={{ maxWidth: 500 }}>
+            <Stack horizontal spacing="small">
+              <Input />
+              <Button solid title="Search" />
+            </Stack>
+            <Spacer size="large" />
+            <Stack spacing="large">
+              <Input label="Username" />
+              <Input label="Password" />
+            </Stack>
+            <Spacer size="large" />
+            <Stack horizontal>
+              <Menu />
+              <Menu />
+            </Stack>
+          </View>
 
-        <Spacer size="large" />
-
-        <Stack divider border style={{ maxWidth: 300 }}>
-          <Header />
-          <Header />
-          <Header />
+          <Stack flex divider border style={{ maxWidth: 500 }}>
+            <View horizontal paddingHorizontal="medium">
+              <Text flex fontSize="xxlarge">Heading</Text>
+              <Button primary title="Press Me" />
+            </View>
+            <View horizontal paddingHorizontal="medium">
+              <Text flex fontSize="xlarge">Heading</Text>
+              <Button primary size="xsmall" title="Press Me" />
+            </View>
+            <Spacer size="small" fillColor="gray-2" />
+            <Header />
+            <Header />
+            <Header />
+          </Stack>
         </Stack>
 
         <Spacer size="large" />
