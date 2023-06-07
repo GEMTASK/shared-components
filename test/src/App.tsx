@@ -38,7 +38,7 @@ function App() {
           </Stack>
           <Divider spacing="large" />
           <Stack flex alignHorizontal="center" align="middle center">
-            {/* <Spacer size="small" fillColor="gray-2" /> */}
+            {/* <Spacer size="small" fillColor="gray-1" /> */}
             <Stack horizontal spacing="small">
               <Button hover title="Hover" />
               <Button title="Default" />
