@@ -3,6 +3,23 @@ import React from 'react';
 import styles from './App.module.css';
 import { View, Text, Button, Stack, Spacer, Divider, Input } from 'bare';
 
+const Header = () => {
+  return (
+    <View horizontal align="middle left" paddingVertical="small" paddingHorizontal="medium">
+      <View flex horizontal align="middle left">
+        <img src="https://mike-austin.com/new/images/Escher_Circle_Limit_III.jpg" style={{ margin: '-5px 0', height: 40, objectFit: 'contain' }} />
+        <Spacer size="small" />
+        <View flex>
+          <Text>Title</Text>
+          <Spacer size="small" />
+          <Text fontSize="xsmall" textColor="gray-6">Subtitle</Text>
+        </View>
+      </View>
+      <Button primary title="Press Me" />
+    </View>
+  );
+};
+
 function App() {
   return (
     <View className={styles.App}>
@@ -33,10 +50,10 @@ function App() {
             <Spacer size="small" />
             <Stack horizontal spacing="small">
               <Button hover icon="house" title="Hover" />
-              <Button icon="house" title="Default" />
-              <Button solid icon="house" title="Solid" />
-              <Button primary icon="house" title="Primary" />
-              <Button primary solid icon="house" title="Primary Solid" />
+              <Button icon="magnifying-glass" title="Default" />
+              <Button solid icon="user" title="Solid" />
+              <Button primary icon="check" title="Primary" />
+              <Button primary solid icon="download" title="Primary Solid" />
             </Stack>
             <Spacer size="small" />
             <Stack horizontal spacing="small">
@@ -93,7 +110,7 @@ function App() {
 
         <Spacer size="large" />
 
-        <View fillColor="gray-0" paddingVertical="large" paddingHorizontal="large" style={{ maxWidth: 400 }}>
+        <View fillColor="gray-0" paddingVertical="large" paddingHorizontal="large" style={{ maxWidth: 500 }}>
           <Stack horizontal spacing="small">
             <Input />
             <Button solid title="Search" />
@@ -108,30 +125,9 @@ function App() {
         <Spacer size="large" />
 
         <Stack divider border style={{ maxWidth: 300 }}>
-          <View horizontal align="middle left" paddingVertical="small" paddingHorizontal="medium">
-            <View flex horizontal align="middle left">
-              <img src="https://mike-austin.com/new/images/Escher_Circle_Limit_III.jpg" style={{ margin: '-5px 0', height: 40, objectFit: 'contain' }} />
-              <Spacer size="small" />
-              <View flex>
-                <Text>Title</Text>
-                <Spacer size="small" />
-                <Text fontSize="xsmall" textColor="gray-6">Subtitle</Text>
-              </View>
-            </View>
-            <Button primary title="Press Me" />
-          </View>
-          <View horizontal align="middle left" paddingVertical="small" paddingHorizontal="medium">
-            <View flex horizontal align="middle left">
-              <img src="https://mike-austin.com/new/images/Escher_Circle_Limit_III.jpg" style={{ margin: '-5px 0', height: 40, objectFit: 'contain' }} />
-              <Spacer size="small" />
-              <View flex>
-                <Text>Title</Text>
-                <Spacer size="small" />
-                <Text fontSize="xsmall" textColor="gray-6">Subtitle</Text>
-              </View>
-            </View>
-            <Button primary title="Press Me" />
-          </View>
+          <Header />
+          <Header />
+          <Header />
         </Stack>
 
         <Spacer size="large" />

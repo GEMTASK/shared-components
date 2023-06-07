@@ -9,7 +9,7 @@ import Spacer from '../spacer/index.js';
 
 const Chip = () => {
   return (
-    <Text caps fontSize="xxsmall" fillColor="gray-3" align="middle left" paddingHorizontal="small" style={{ borderRadius: 1000, height: 24 }}>
+    <Text caps fontSize="small" fillColor="gray-3" align="middle left" paddingHorizontal="small" style={{ borderRadius: 1000, height: 24 }}>
       Chip
     </Text>
   );

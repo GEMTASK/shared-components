@@ -132,7 +132,7 @@ const Button = ({
       {...props}
     >
       {!!icon && (
-        <Icon icon="house" color={iconColor} />
+        <Icon icon={icon} color={iconColor} />
       )}
       {!!icon && !!title && (
         <Spacer size="small" />
