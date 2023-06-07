@@ -20,6 +20,9 @@ const useInnerStyles = createUseStyles({
       cursor: 'text'
     },
   },
+  caps: {
+    textTransform: 'uppercase',
+  }
 });
 
 const useFontSizeStyles = createUseStyles({
@@ -78,6 +81,7 @@ const useFontWeightStyles = createUseStyles({
 type Child<T> = string | number | React.ReactElement<T | HTMLBRElement>;
 
 type TextProps = {
+  caps?: boolean,
   fontSize?: 'xxsmall' | 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge',
   fontWeight?: 'normal' | 'medium' | 'semibold' | 'bold',
   textAlign?: 'left' | 'center' | 'right',
@@ -88,7 +92,8 @@ type TextProps = {
 } & Omit<React.ComponentProps<typeof View>, 'children'>;
 
 const Text = ({
-  fontSize,
+  caps,
+  fontSize = 'small',
   fontWeight,
   textAlign,
   textColor,
@@ -105,7 +110,8 @@ const Text = ({
 
   const textClassName = clsx(
     innerStyles.Text,
-    fontSizeStyles[fontSize || 'small'],
+    caps && innerStyles.caps,
+    fontSize && fontSizeStyles[fontSize],
     fontWeight && fontWeightStyles[fontWeight],
     textAlign && textAlignStyles[textAlign],
     textColor && textColorStyles[textColor],

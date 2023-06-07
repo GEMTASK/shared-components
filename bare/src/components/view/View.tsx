@@ -24,14 +24,14 @@ type ViewProps<T extends React.ElementType> = {
   align?: ShorthandAlign,
   alignVertical?: AlignVertical,
   alignHorizontal?: AlignHorizontal,
-  paddingVertical?: 'small' | 'medium' | 'large',
-  paddingHorizontal?: 'small' | 'medium' | 'large',
+  paddingVertical?: 'xsmall' | 'small' | 'medium' | 'large',
+  paddingHorizontal?: 'xsmall' | 'small' | 'medium' | 'large',
   fillColor?: Color,
   border?: boolean,
   borderColor?: Color,
   className?: string,
   style?: React.CSSProperties,
-  children?: (React.ReactElement | false) | (React.ReactElement | false)[],
+  children?: React.ReactElement | (React.ReactElement | false)[],
 } & React.ComponentPropsWithoutRef<T>;
 
 const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({

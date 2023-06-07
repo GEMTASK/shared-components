@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './App.module.css';
-import { View, Text, Button, Stack, Spacer, Divider } from 'bare';
+import { View, Text, Button, Stack, Spacer, Divider, Input } from 'bare';
 
 function App() {
   return (
@@ -90,14 +90,25 @@ function App() {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim...
           </Text>
         </Stack>
+
         <Spacer size="large" />
-        <View fillColor="gray-0" paddingVertical="large" paddingHorizontal="large">
+
+        <View fillColor="gray-0" paddingVertical="large" paddingHorizontal="large" style={{ maxWidth: 400 }}>
           <Stack horizontal spacing="small">
-            <input />
+            <Input />
             <Button solid title="Search" />
           </Stack>
           <Spacer size="large" />
-          <View horizontal align="middle left" style={{ maxWidth: 200 }}>
+          <Stack spacing="large">
+            <Input label="Username" />
+            <Input label="Password" />
+          </Stack>
+        </View>
+
+        <Spacer size="large" />
+
+        <Stack divider border style={{ maxWidth: 300 }}>
+          <View horizontal align="middle left" paddingVertical="small" paddingHorizontal="medium">
             <View flex horizontal align="middle left">
               <img src="https://mike-austin.com/new/images/Escher_Circle_Limit_III.jpg" style={{ margin: '-5px 0', height: 40, objectFit: 'contain' }} />
               <Spacer size="small" />
@@ -109,8 +120,22 @@ function App() {
             </View>
             <Button primary title="Press Me" />
           </View>
-        </View>
+          <View horizontal align="middle left" paddingVertical="small" paddingHorizontal="medium">
+            <View flex horizontal align="middle left">
+              <img src="https://mike-austin.com/new/images/Escher_Circle_Limit_III.jpg" style={{ margin: '-5px 0', height: 40, objectFit: 'contain' }} />
+              <Spacer size="small" />
+              <View flex>
+                <Text>Title</Text>
+                <Spacer size="small" />
+                <Text fontSize="xsmall" textColor="gray-6">Subtitle</Text>
+              </View>
+            </View>
+            <Button primary title="Press Me" />
+          </View>
+        </Stack>
+
         <Spacer size="large" />
+
         <Stack flex divider>
           <Stack flex horizontal divider>
             <Text flex align="top left" fillColor="white">Top Left</Text>
