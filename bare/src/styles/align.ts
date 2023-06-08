@@ -1,6 +1,6 @@
 import { ShorthandAlign, AlignVertical, AlignHorizontal } from '../types/Align';
 
-function shorthandAlignToStyle(align: ShorthandAlign | undefined): [AlignVertical | undefined, AlignHorizontal | undefined] {
+function shorthandAlignToStyle(align: ShorthandAlign): [AlignVertical, AlignHorizontal] {
   switch (align) {
     case 'top left':
       return ['top', 'left'];
@@ -25,8 +25,6 @@ function shorthandAlignToStyle(align: ShorthandAlign | undefined): [AlignVertica
       return ['bottom', 'center'];
     case 'bottom right':
       return ['bottom', 'right'];
-    default:
-      return [undefined, undefined];
   }
 }
 

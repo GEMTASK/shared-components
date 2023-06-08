@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import View from '../view/index.js';
 import Button from '../button/index.js';
@@ -32,6 +32,8 @@ const Item = ({
 
 const Menu = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const menuElementRef = useRef<HTMLDivElement>(null);
+  //const menuElementRef = useRef<React.ComponentProps<typeof View>['ref']>(null);
 
   const handleButtonClick = () => {
     setIsMenuVisible(isMenuVisible => !isMenuVisible);
@@ -42,9 +44,9 @@ const Menu = () => {
   };
 
   const handleBlur = (event: React.FocusEvent) => {
-    console.log(event.relatedTarget);
-
-    setIsMenuVisible(false);
+    if (!menuElementRef.current?.contains(event.relatedTarget)) {
+      setIsMenuVisible(false);
+    }
   };
 
   return (

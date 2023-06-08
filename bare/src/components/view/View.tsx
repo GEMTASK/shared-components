@@ -17,6 +17,17 @@ import ViewContext from './ViewContext.js';
 
 const DEFAULT_ELEMENT = 'div';
 
+// declare module "react" {
+//   function forwardRef<T, P = {}>(
+//     render: (props: P, ref: React.ForwardedRef<T>) => React.ReactElement | null
+//   ): (props: P & React.RefAttributes<T>) => React.ReactElement | null;
+// }
+
+type ViewComponent = <T extends React.ElementType = 'div'>(
+  props: ViewProps<T>,
+  ref?: React.Ref<T>,
+) => React.ReactElement | null;
+
 type ViewProps<T extends React.ElementType> = {
   as?: T,
   horizontal?: boolean,
@@ -39,8 +50,8 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   horizontal,
   flex,
   align,
-  alignVertical = shorthandAlignToStyle(align)[0],
-  alignHorizontal = shorthandAlignToStyle(align)[1],
+  alignVertical = align && shorthandAlignToStyle(align)[0],
+  alignHorizontal = align && shorthandAlignToStyle(align)[1],
   paddingVertical,
   paddingHorizontal,
   fillColor,
@@ -51,7 +62,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   children,
   ...props
 }: ViewProps<T>) => {
-  const Component = as ?? DEFAULT_ELEMENT;
+  const Component: React.ElementType = as ?? DEFAULT_ELEMENT;
 
   const styles = useStyles();
   const fillColorStyles = useFillColorStyles();
