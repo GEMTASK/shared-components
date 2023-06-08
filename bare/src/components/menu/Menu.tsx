@@ -53,7 +53,7 @@ const Menu = () => {
     <View tabIndex={0} style={{ position: 'relative' }} onBlur={handleBlur}>
       <Button hover title="Menu" onPointerDown={handleButtonClick} />
       {isMenuVisible && (
-        <View border fillColor="white" paddingVertical="small" style={{ position: 'absolute', top: '100%' }}>
+        <View ref={menuElementRef} border fillColor="white" paddingVertical="small" style={{ position: 'absolute', top: '100%' }}>
           {items.map((item, index) => (
             <Item key={index} title={item.title} onClick={item.action} onHideMenu={handleHideMenu} />
           ))}

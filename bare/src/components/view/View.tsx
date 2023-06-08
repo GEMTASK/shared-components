@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { ReactElement, useContext, useMemo } from 'react';
 import clsx from 'clsx';
 
 import Color from '../../types/Color';
@@ -23,10 +23,7 @@ const DEFAULT_ELEMENT = 'div';
 //   ): (props: P & React.RefAttributes<T>) => React.ReactElement | null;
 // }
 
-type ViewComponent = <T extends React.ElementType = 'div'>(
-  props: ViewProps<T>,
-  ref?: React.Ref<T>,
-) => React.ReactElement | null;
+type Children = false | ReactElement | Children[];
 
 type ViewProps<T extends React.ElementType> = {
   as?: T,
@@ -42,10 +39,15 @@ type ViewProps<T extends React.ElementType> = {
   borderColor?: Color,
   className?: string,
   style?: React.CSSProperties,
-  children?: React.ReactElement | (React.ReactElement | false)[],
+  children?: Children,
 } & React.ComponentPropsWithoutRef<T>;
 
-const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
+type ViewComponent = <T extends React.ElementType = 'div'>(
+  props: ViewProps<T>,
+  ref?: React.Ref<T>,
+) => React.ReactElement | null;
+
+const View: ViewComponent = React.forwardRef(<T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   as,
   horizontal,
   flex,
@@ -61,7 +63,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   style,
   children,
   ...props
-}: ViewProps<T>) => {
+}: ViewProps<T>, ref?: React.Ref<T>) => {
   const Component: React.ElementType = as ?? DEFAULT_ELEMENT;
 
   const styles = useStyles();
@@ -91,11 +93,11 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
 
   return (
     <ViewContext.Provider value={{ isHorizontal: horizontal ?? false }}>
-      <Component className={viewClassName} style={viewStyle} {...props}>
+      <Component ref={ref} className={viewClassName} style={viewStyle} {...props}>
         {children}
       </Component>
     </ViewContext.Provider>
   );
-};
+});
 
 export default View;
