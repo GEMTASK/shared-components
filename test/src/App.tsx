@@ -90,9 +90,20 @@ function App() {
           </Stack>
         </View>
         <Divider spacing="large" />
-        <Text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        </Text>
+        <View flex horizontal>
+          {Array.from({ length: 10 }).map((_, index) => (
+            <View flex fillColor={`${View.colors[0]}-${index}`} minHeight={32} title={`${View.colors[0]}-${index}`} />
+          ))}
+        </View>
+        <Stack horizontal style={{ flexWrap: 'wrap' }}>
+          {View.colors.slice(1).map((hue) => (
+            <View flex horizontal>
+              {Array.from({ length: 10 }).map((_, index) => (
+                <View flex fillColor={`${hue}-${index}`} minHeight={32} title={`${hue}-${index}`} />
+              ))}
+            </View>
+          ))}
+        </Stack>
         <Divider spacing="large" />
         <Stack horizontal spacing="large">
           <Text flex fontSize="xxlarge">
@@ -162,7 +173,7 @@ function App() {
 
         <Spacer size="large" />
 
-        <Stack flex divider>
+        <Stack flex divider minHeight={200}>
           <Stack flex horizontal divider>
             <Text flex align="top left" fillColor="white">Top Left</Text>
             <Text flex align="top center" fillColor="white">Top Center</Text>

@@ -27,3 +27,7 @@ const useFillColorStyles = createUseStyles({
 });
 
 export default useFillColorStyles;
+
+export {
+  hues,
+};

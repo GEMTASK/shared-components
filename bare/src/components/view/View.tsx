@@ -10,25 +10,25 @@ import useAlignHorizontalStyles from '../../styles/alignHorizontal.js';
 import useAlignVerticalStyles from '../../styles/alignVertical.js';
 import usePaddingVerticalStyles from '../../styles/paddingVertical.js';
 import usePaddingHorizontalStyles from '../../styles/paddingHorizontal.js';
-import useFillColorStyles from '../../styles/fillColor.js';
+import useFillColorStyles, { hues } from '../../styles/fillColor.js';
 import useBorderColorStyles from '../../styles/borderColor.js';
 
 import ViewContext from './ViewContext.js';
 
 const DEFAULT_ELEMENT = 'div';
 
-// declare module "react" {
-//   function forwardRef<T, P = {}>(
-//     render: (props: P, ref: React.ForwardedRef<T>) => React.ReactElement | null
-//   ): (props: P & React.RefAttributes<T>) => React.ReactElement | null;
-// }
-
 type Children = false | ReactElement | Children[];
+
+// type ViewComponentConstructor = {
+//   colors: typeof hues,
+// };
 
 type ViewProps<T extends React.ElementType> = {
   as?: T,
   horizontal?: boolean,
   flex?: boolean,
+  minWidth?: number,
+  minHeight?: number,
   align?: ShorthandAlign,
   alignVertical?: AlignVertical,
   alignHorizontal?: AlignHorizontal,
@@ -42,15 +42,17 @@ type ViewProps<T extends React.ElementType> = {
   children?: Children,
 } & React.ComponentPropsWithoutRef<T>;
 
-type ViewComponent = <T extends React.ElementType = 'div'>(
+type ViewComponent = (<T extends React.ElementType = 'div'>(
   props: ViewProps<T>,
   ref?: React.Ref<T>,
-) => React.ReactElement | null;
+) => React.ReactElement | null) & { colors: typeof hues; };
 
-const View: ViewComponent = React.forwardRef(<T extends React.ElementType = typeof DEFAULT_ELEMENT>({
+const View = React.forwardRef(<T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   as,
   horizontal,
   flex,
+  minWidth,
+  minHeight,
   align,
   alignVertical = align && shorthandAlignToStyle(align)[0],
   alignHorizontal = align && shorthandAlignToStyle(align)[1],
@@ -88,6 +90,8 @@ const View: ViewComponent = React.forwardRef(<T extends React.ElementType = type
   );
 
   const viewStyle = {
+    minWidth,
+    minHeight,
     ...style,
   };
 
@@ -100,4 +104,10 @@ const View: ViewComponent = React.forwardRef(<T extends React.ElementType = type
   );
 });
 
-export default View;
+// View.colors = hues;
+
+const View2 = Object.assign(View, {
+  colors: hues
+});
+
+export default View2;
