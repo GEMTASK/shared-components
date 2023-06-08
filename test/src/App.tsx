@@ -49,11 +49,11 @@ function App() {
             {/* <Spacer size="small" fillColor="gray-4" /> */}
             <Spacer size="small" />
             <Stack horizontal spacing="small">
-              <Button hover icon="house" title="Hover" />
-              <Button icon="magnifying-glass" title="Default" />
-              <Button solid icon="user" title="Solid" />
-              <Button primary icon="check" title="Primary" />
-              <Button primary solid icon="download" title="Primary Solid" />
+              {/* <Button hover icon="house" title="Hover" /> */}
+              <Button icon="house" title="Icon" />
+              <Button solid round icon="magnifying-glass" title="Icon Round" />
+              <Button primary icon="check" title="Icon" />
+              <Button primary solid round icon="download" title="Icon Round" />
             </Stack>
             <Spacer size="small" />
             <Stack horizontal spacing="small">
@@ -65,9 +65,19 @@ function App() {
             </Stack>
             <Spacer size="small" />
             <Stack horizontal spacing="small">
-              <Button round solid disabled title="Disabled" />
-              <Button round primary title="Round" />
-              <Button round primary solid selected title="Selected" />
+              <Button hover selected title="Hover" />
+              <Button selected title="Default" />
+              <Button solid selected title="Solid" />
+              <Button primary selected title="Primary" />
+              <Button primary solid selected title="Primary Solid" />
+            </Stack>
+            <Spacer size="small" />
+            <Stack horizontal spacing="small">
+              <Button hover disabled title="Hover" />
+              <Button disabled title="Default" />
+              <Button solid disabled title="Solid" />
+              <Button primary disabled title="Primary" />
+              <Button primary solid disabled title="Primary Solid" />
             </Stack>
           </Stack>
         </View>

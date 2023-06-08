@@ -15,20 +15,33 @@ const useStyles = createUseStyles({
     appearance: 'none',
     border: 'none',
     borderRadius: Size.xxsmall,
-    '&:hover': { filter: 'brightness(1.08)' },
-    '&:active': { filter: 'brightness(0.90)' },
+    '&:enabled:hover': {
+      filter: 'brightness(1.08)'
+    },
+    '&:enabled:active': {
+      filter: 'brightness(0.90)'
+    }
   },
   default: {
-    '&:hover': { background: OpenColor.gray[3], filter: 'brightness(1.08)' },
-    '&:active': { background: OpenColor.gray[3], filter: 'brightness(0.94)' },
+    '&:enabled:hover': { background: OpenColor.gray[3] },
+    '&:enabled:active': { background: OpenColor.gray[3] },
   },
   hover: {
-    '&:hover': { background: `${OpenColor.gray[5]}30`, filter: 'brightness(1.08)' },
-    '&:active': { background: `${OpenColor.gray[5]}30`, filter: 'brightness(0.0)' },
+    '&:enabled:hover': {
+      background: `${OpenColor.gray[5]}30`,
+    },
+    '&:enabled:active': {
+      background: `${OpenColor.gray[5]}30`,
+      filter: 'brightness(0.0)',
+    },
   },
   primary: {
-    '&:hover': { background: OpenColor.blue[0], filter: 'brightness(1.08)' },
-    '&:active': { background: OpenColor.blue[5], filter: 'brightness(0.94)' },
+    '&:enabled:hover': {
+      background: OpenColor.blue[1]
+    },
+    '&:enabled:active': {
+      background: OpenColor.blue[1]
+    },
   },
   round: {
     borderRadius: 1000,
@@ -41,13 +54,18 @@ const useStyles = createUseStyles({
   },
   small: {
     minHeight: 32,
+  },
+  disabled: {
+    opacity: 0.5,
   }
 });
 
 const getFillColor = ({ primary, solid, selected }: ButtonProps) => {
   switch (true) {
-    case primary && (solid || selected):
+    case primary && solid:
       return 'blue-5';
+    case primary && selected:
+      return 'blue-1';
     case solid || selected:
       return 'gray-3';
     default:
@@ -68,7 +86,7 @@ function getBorderColor({ primary, solid, hover }: ButtonProps) {
 
 const getTextColor = ({ primary, solid, selected }: ButtonProps) => {
   switch (true) {
-    case primary && (solid || selected):
+    case primary && solid:
       return 'white';
     case primary:
       return 'blue-5';
@@ -86,6 +104,7 @@ type ButtonProps = {
   solid?: boolean,
   round?: boolean,
   selected?: boolean,
+  disabled?: boolean,
   className?: string,
 } & Omit<React.ComponentProps<typeof View>, 'children'>;
 
@@ -98,6 +117,7 @@ const Button = ({
   solid,
   round,
   selected,
+  disabled,
   className,
   ...props
 }: ButtonProps) => {
@@ -110,6 +130,7 @@ const Button = ({
     !primary && !solid && styles.default,
     primary && !solid && styles.primary,
     selected && styles.selected,
+    disabled && styles.disabled,
     round && styles.round,
     className,
   );
@@ -128,6 +149,7 @@ const Button = ({
     <View
       horizontal
       as="button"
+      disabled={disabled}
       fillColor={fillColor}
       border={borderColor !== undefined}
       borderColor={borderColor}
