@@ -25,7 +25,7 @@ function App() {
     <View tabIndex={0} className={styles.App}>
       <View flex className={styles.Container} paddingVertical="large" paddingHorizontal="large">
         <View horizontal>
-          <Stack alignHorizontal="center" spacing="small" spacingColor="gray-2">
+          <Stack align="middle center" spacing="small" spacingColor="gray-2">
             <View />
             <Text fontSize="xxlarge">XXLarge (42)</Text>
             <Text fontSize="xlarge">XLarge (32)</Text>
@@ -78,6 +78,14 @@ function App() {
               <Button solid disabled title="Solid" />
               <Button primary disabled title="Primary" />
               <Button primary solid disabled title="Primary Solid" />
+            </Stack>
+            <Spacer size="small" />
+            <Stack horizontal spacing="small">
+              <Button hover size="xsmall" title="Hover" />
+              <Button size="xsmall" title="Default" />
+              <Button solid size="xsmall" title="Solid" />
+              <Button primary size="xsmall" title="Primary" />
+              <Button primary solid size="xsmall" title="Primary Solid" />
             </Stack>
           </Stack>
         </View>
