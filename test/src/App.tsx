@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './App.module.css';
-import { View, Text, Button, Stack, Spacer, Divider, Input, Menu } from 'bare';
+import { hues, View, Text, Button, Stack, Spacer, Divider, Input, Menu } from 'bare';
 
 const Header = () => {
   return (
@@ -92,14 +92,14 @@ function App() {
         <Divider spacing="large" />
         <View flex horizontal>
           {Array.from({ length: 10 }).map((_, index) => (
-            <View flex fillColor={`${View.colors[0]}-${index}`} minHeight={32} title={`${View.colors[0]}-${index}`} />
+            <View flex fillColor={`${hues[0]}-${index}` as any} minHeight={32} title={`${hues[0]}-${index}`} />
           ))}
         </View>
         <Stack horizontal style={{ flexWrap: 'wrap' }}>
-          {View.colors.slice(1).map((hue) => (
+          {hues.slice(1).map((hue) => (
             <View flex horizontal>
               {Array.from({ length: 10 }).map((_, index) => (
-                <View flex fillColor={`${hue}-${index}`} minHeight={32} title={`${hue}-${index}`} />
+                <View flex fillColor={`${hue}-${index}` as any} minHeight={32} title={`${hue}-${index}`} />
               ))}
             </View>
           ))}

@@ -1,1 +1,1 @@
-export { default } from './View.js';
+export { default, type ViewProps } from './View.js';

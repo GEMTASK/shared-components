@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import clsx from 'clsx';
 
 import Color from '../../types/Color';
@@ -17,13 +17,9 @@ import ViewContext from './ViewContext.js';
 
 const DEFAULT_ELEMENT = 'div';
 
-type Children = false | ReactElement | Children[];
+type Children = false | React.ReactElement | Children[];
 
-// type ViewComponentConstructor = {
-//   colors: typeof hues,
-// };
-
-type ViewProps<T extends React.ElementType> = {
+type ViewProps<T extends React.ElementType = 'div'> = {
   as?: T,
   horizontal?: boolean,
   flex?: boolean,
@@ -45,9 +41,9 @@ type ViewProps<T extends React.ElementType> = {
 type ViewComponent = (<T extends React.ElementType = 'div'>(
   props: ViewProps<T>,
   ref?: React.Ref<T>,
-) => React.ReactElement | null) & { colors: typeof hues; };
+) => React.ReactElement | null);
 
-const View = React.forwardRef(<T extends React.ElementType = typeof DEFAULT_ELEMENT>({
+const View: ViewComponent = React.forwardRef(<T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   as,
   horizontal,
   flex,
@@ -104,10 +100,8 @@ const View = React.forwardRef(<T extends React.ElementType = typeof DEFAULT_ELEM
   );
 });
 
-// View.colors = hues;
+export default View;
 
-const View2 = Object.assign(View, {
-  colors: hues
-});
-
-export default View2;
+export {
+  type ViewProps,
+};

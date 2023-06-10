@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import Size from '../../types/Size.js';
 
-import View from '../view/index.js';
+import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';
 import Icon from '../icon/index.js';
 import Spacer from '../spacer/Spacer.js';
@@ -106,7 +106,7 @@ type ButtonProps = {
   selected?: boolean,
   disabled?: boolean,
   className?: string,
-} & Omit<React.ComponentProps<typeof View>, 'children'>;
+} & Omit<ViewProps, 'children'>;
 
 const Button = ({
   size = 'small',
