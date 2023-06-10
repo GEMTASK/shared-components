@@ -90,7 +90,7 @@ function App() {
           </Stack>
         </View>
         <Divider spacing="large" />
-        <View flex horizontal>
+        <View horizontal>
           {Array.from({ length: 10 }).map((_, index) => (
             <View flex fillColor={`${hues[0]}-${index}` as any} minHeight={32} title={`${hues[0]}-${index}`} />
           ))}
