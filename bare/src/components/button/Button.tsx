@@ -16,7 +16,7 @@ const useStyles = createUseStyles({
     border: 'none',
     borderRadius: Size.xxsmall,
     '&:enabled:hover': {
-      filter: 'brightness(1.08)'
+      filter: 'brightness(1.04)'
     },
     '&:enabled:active': {
       filter: 'brightness(0.90)'
@@ -28,7 +28,7 @@ const useStyles = createUseStyles({
   },
   hover: {
     '&:enabled:hover': {
-      background: `${OpenColor.gray[5]}30`,
+      background: `${OpenColor.gray[6]}30`,
     },
     '&:enabled:active': {
       background: `${OpenColor.gray[5]}30`,
