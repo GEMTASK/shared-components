@@ -66,7 +66,7 @@ const Menu = () => {
     <View tabIndex={0} style={{ position: 'relative' }} onBlur={handleBlur}>
       <Button hover={!isMenuVisible} selected={isMenuVisible} title="Menu" onPointerDown={handleButtonClick} />
       {isMenuVisible && (
-        <View elementRef={menuElementRef} border fillColor="white" paddingVertical="small" paddingHorizontal="small" style={{ position: 'absolute', top: '100%', borderRadius: 2 }}>
+        <View ref={menuElementRef} border fillColor="white" paddingVertical="small" paddingHorizontal="small" style={{ position: 'absolute', top: '100%', borderRadius: 2 }}>
           {items.map((item, index) => (
             <Item key={index} title={item.title} onClick={item.action} onHideMenu={handleHideMenu} />
           ))}

@@ -95,6 +95,19 @@ const getTextColor = ({ primary, solid, selected }: ButtonProps) => {
   }
 };
 
+const getPaddingHorizontal = ({ size, icon }: ButtonProps) => {
+  switch (true) {
+    case icon && size === 'xsmall':
+      return 'small';
+    case icon && size === 'small':
+      return 'medium';
+    case size === 'xsmall':
+      return 'medium';
+    case size === 'small':
+      return 'large';
+  }
+};
+
 type ButtonProps = {
   size?: 'xsmall' | 'small',
   icon?: React.ComponentProps<typeof Icon>['icon'],
@@ -142,8 +155,10 @@ const Button = ({
   const [color, level] = (textColor ?? '')?.split('-') as [keyof OpenColor, number | undefined];
   const iconColor = level ? OpenColor[color][level] : OpenColor[color] as string;
 
-  const paddingVertical = size === 'xsmall' ? 'xsmall' : 'small';
-  const paddingHorizontal = size === 'xsmall' ? 'medium' : 'large';
+  const paddingVertical = size === 'xsmall'
+    ? 'xsmall'
+    : 'small';
+  const paddingHorizontal = getPaddingHorizontal({ size, icon });
 
   return (
     <View

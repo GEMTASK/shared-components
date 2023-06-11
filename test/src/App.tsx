@@ -50,8 +50,9 @@ function App() {
             <Spacer size="small" />
             <Stack horizontal spacing="small">
               {/* <Button hover icon="house" title="Hover" /> */}
+              <Button hover icon="house" title="Hover Icon" />
               <Button icon="house" title="Icon" />
-              <Button solid round icon="magnifying-glass" title="Icon Round" />
+              <Button solid round icon="magnifying-glass" />
               <Button primary icon="check" title="Icon" />
               <Button primary solid round icon="download" title="Icon Round" />
             </Stack>

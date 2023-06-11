@@ -27,7 +27,6 @@ type Children = false | React.ReactElement | Children[];
 
 type ViewProps<T extends React.ElementType = 'div'> = {
   as?: T,
-  elementRef?: React.Ref<HTMLElement>,
   horizontal?: boolean,
   flex?: boolean,
   minWidth?: number,
@@ -47,7 +46,6 @@ type ViewProps<T extends React.ElementType = 'div'> = {
 
 const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   as,
-  elementRef,
   horizontal,
   flex,
   minWidth,
@@ -64,7 +62,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   style,
   children,
   ...props
-}: ViewProps<T>) => {
+}: ViewProps<T>, ref: React.ForwardedRef<HTMLElement>) => {
   const Component: React.ElementType = as ?? DEFAULT_ELEMENT;
 
   const styles = useStyles();
@@ -96,14 +94,14 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
 
   return (
     <ViewContext.Provider value={{ isHorizontal: horizontal ?? false }}>
-      <Component ref={elementRef} className={viewClassName} style={viewStyle} {...props}>
+      <Component ref={ref} className={viewClassName} style={viewStyle} {...props}>
         {children}
       </Component>
     </ViewContext.Provider>
   );
 };
 
-export default View;
+export default React.forwardRef(View);
 
 export {
   type ViewProps,
