@@ -91,14 +91,14 @@ function App() {
         <Divider spacing="large" />
         <View horizontal>
           {Array.from({ length: 10 }).map((_, index) => (
-            <View flex fillColor={`${hues[0]}-${index}` as any} minHeight={32} title={`${hues[0]}-${index}`} />
+            <View key={index} flex fillColor={`${hues[0]}-${index}` as any} minHeight={32} title={`${hues[0]}-${index}`} />
           ))}
         </View>
         <Stack horizontal style={{ flexWrap: 'wrap' }}>
           {hues.slice(1).map((hue) => (
-            <View flex horizontal>
+            <View key={hue} flex horizontal>
               {Array.from({ length: 10 }).map((_, index) => (
-                <View flex fillColor={`${hue}-${index}` as any} minHeight={32} title={`${hue}-${index}`} />
+                <View key={index} flex fillColor={`${hue}-${index}` as any} minHeight={32} title={`${hue}-${index}`} />
               ))}
             </View>
           ))}

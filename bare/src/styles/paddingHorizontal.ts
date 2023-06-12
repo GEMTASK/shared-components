@@ -3,6 +3,10 @@ import { createUseStyles } from 'react-jss';
 import Size from '../types/Size.js';
 
 const usePaddingHorizontalStyles = createUseStyles({
+  xxsmall: {
+    paddingLeft: Size.xxsmall,
+    paddingRight: Size.xxsmall,
+  },
   xsmall: {
     paddingLeft: Size.xsmall,
     paddingRight: Size.xsmall,
@@ -22,6 +26,10 @@ const usePaddingHorizontalStyles = createUseStyles({
   xlarge: {
     paddingLeft: Size.xlarge,
     paddingRight: Size.xlarge,
+  },
+  xxlarge: {
+    paddingLeft: Size.xxlarge,
+    paddingRight: Size.xxlarge,
   },
 });
 

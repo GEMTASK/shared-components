@@ -2,6 +2,7 @@ import React, { useContext, useMemo } from 'react';
 import clsx from 'clsx';
 
 import Color from '../../types/Color';
+import Size from '../../types/Size';
 import { ShorthandAlign, AlignVertical, AlignHorizontal } from '../../types/Align';
 
 import useStyles from './ViewStyles.js';
@@ -34,8 +35,8 @@ type ViewProps<T extends React.ElementType = 'div'> = {
   align?: ShorthandAlign,
   alignVertical?: AlignVertical,
   alignHorizontal?: AlignHorizontal,
-  paddingVertical?: 'xsmall' | 'small' | 'medium' | 'large',
-  paddingHorizontal?: 'xsmall' | 'small' | 'medium' | 'large',
+  paddingVertical?: keyof typeof Size,
+  paddingHorizontal?: keyof typeof Size,
   fillColor?: Color,
   border?: boolean,
   borderColor?: Color,
