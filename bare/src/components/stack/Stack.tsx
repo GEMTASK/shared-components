@@ -10,14 +10,14 @@ import Spacer from '../spacer/index.js';
 import Divider from '../divider/index.js';
 
 const useStyles = createUseStyles({
-  Stack: {
-  },
+  Stack: {},
 });
 
 type StackProps = {
   spacing?: keyof typeof Size,
   spacingColor?: Color,
   divider?: boolean,
+  dividerInset?: number,
   className?: string,
   children?: React.ComponentProps<typeof View>['children'],
 } & React.ComponentProps<typeof View>;
@@ -26,6 +26,7 @@ const Stack = ({
   spacing,
   spacingColor,
   divider,
+  dividerInset,
   className,
   children,
   ...props
@@ -42,7 +43,7 @@ const Stack = ({
       {React.Children.map(children, (child, index) => (
         React.isValidElement(child) && <>
           {divider && index > 0 && (
-            <Divider spacing={spacing} spacingColor={spacingColor} />
+            <Divider spacing={spacing} spacingColor={spacingColor} style={{ marginLeft: dividerInset }} />
           )}
           {spacing && !divider && index > 0 && (
             <Spacer size={spacing} fillColor={spacingColor} />

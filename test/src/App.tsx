@@ -80,14 +80,12 @@ function App() {
               <Button primary disabled title="Primary" />
               <Button primary solid disabled title="Primary Solid" />
             </Stack>
-            <Spacer size="small" />
-            <Stack horizontal spacing="small">
-              <Button hover size="xsmall" title="Hover" />
-              <Button size="xsmall" title="Default" />
-              <Button solid size="xsmall" title="Solid" />
-              <Button primary size="xsmall" title="Primary" />
-              <Button primary solid size="xsmall" title="Primary Solid" />
-            </Stack>
+          </Stack>
+          <Divider spacing="large" />
+          <Stack spacing="small" alignVertical="middle">
+            <Button primary size="xsmall" title="XSmall" />
+            <Button primary size="small" title="Small" />
+            <Button primary size="medium" title="Medium" />
           </Stack>
         </View>
         <Divider spacing="large" />
@@ -141,34 +139,36 @@ function App() {
         <Stack horizontal spacing="large">
           <View flex fillColor="gray-0" paddingVertical="large" paddingHorizontal="large" style={{ maxWidth: 500 }}>
             <Stack horizontal spacing="small">
+              <Menu />
+              <Menu />
+            </Stack>
+            <Spacer size="large" />
+            <Stack horizontal spacing="small">
               <Input />
               <Button solid title="Search" />
             </Stack>
             <Spacer size="large" />
             <Stack spacing="large">
-              <Input label="Username" />
-              <Input label="Password" />
-            </Stack>
-            <Spacer size="large" />
-            <Stack horizontal>
-              <Menu />
-              <Menu />
+              <Input label="Username" chips={['One', 'Two', 'Three']} />
+              <Input type="date" label="Due Date" />
+              <Input type="color" label="Fill Color" />
             </Stack>
           </View>
-
-          <Stack flex divider border style={{ maxWidth: 500 }}>
+          <Stack flex border style={{ maxWidth: 500 }}>
             <View horizontal paddingHorizontal="medium">
               <Text flex fontSize="xxlarge">Heading</Text>
               <Button primary title="Press Me" />
             </View>
-            <View horizontal paddingHorizontal="medium">
-              <Text flex fontSize="xlarge">Heading</Text>
-              <Button primary size="xsmall" title="Press Me" />
-            </View>
-            <Spacer size="small" fillColor="gray-2" />
-            <Header />
-            <Header />
-            <Header />
+            <Stack flex divider dividerInset={60}>
+              <View horizontal paddingHorizontal="medium">
+                <Text flex fontSize="xlarge">Heading</Text>
+                <Button primary size="xsmall" title="Press Me" />
+              </View>
+              <Spacer size="small" fillColor="gray-2" />
+              <Header />
+              <Header />
+              <Header />
+            </Stack>
           </Stack>
         </Stack>
 

@@ -55,6 +55,9 @@ const useStyles = createUseStyles({
   small: {
     minHeight: 32,
   },
+  medium: {
+    minHeight: 40,
+  },
   disabled: {
     opacity: 0.5,
   }
@@ -105,11 +108,13 @@ const getPaddingHorizontal = ({ size, icon }: ButtonProps) => {
       return 'medium';
     case size === 'small':
       return 'large';
+    case size === 'medium':
+      return 'xlarge';
   }
 };
 
 type ButtonProps = {
-  size?: 'xsmall' | 'small',
+  size?: 'xsmall' | 'small' | 'medium',
   icon?: React.ComponentProps<typeof Icon>['icon'],
   title?: string,
   hover?: boolean,

@@ -23,7 +23,7 @@ declare module 'react' {
 
 const DEFAULT_ELEMENT = 'div';
 
-type Children = false | React.ReactElement | Children[];
+type Children = false | undefined | React.ReactElement | Children[];
 
 type ViewProps<T extends React.ElementType = 'div'> = {
   as?: T,

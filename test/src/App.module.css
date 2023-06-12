@@ -3,6 +3,6 @@
 }
 
 .Container {
-  width: 960px;
+  width: calc(1024px - 40px);
   margin: 0 auto !important;
 }

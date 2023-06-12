@@ -3,6 +3,7 @@ import { createUseStyles } from 'react-jss';
 
 import View from '../view/index.js';
 import Button from '../button/index.js';
+import Divider from '../divider/index.js';
 
 const useStyles = createUseStyles({
   Menu: {
@@ -19,6 +20,7 @@ const useStyles = createUseStyles({
 const items = [
   { title: 'Menu Item 1', action: () => console.log('1') },
   { title: 'Menu Item 2', action: () => console.log('2') },
+  null,
   { title: 'Menu Item 3', action: () => console.log('3') },
 ];
 
@@ -64,11 +66,15 @@ const Menu = () => {
 
   return (
     <View tabIndex={0} style={{ position: 'relative' }} onBlur={handleBlur}>
-      <Button hover={!isMenuVisible} selected={isMenuVisible} title="Menu" onPointerDown={handleButtonClick} />
+      <Button solid selected={isMenuVisible} title="Menu" onPointerDown={handleButtonClick} />
       {isMenuVisible && (
         <View ref={menuElementRef} border fillColor="white" paddingVertical="small" paddingHorizontal="small" style={{ position: 'absolute', top: '100%', borderRadius: 2 }}>
           {items.map((item, index) => (
-            <Item key={index} title={item.title} onClick={item.action} onHideMenu={handleHideMenu} />
+            item ? (
+              <Item key={index} title={item.title} onClick={item.action} onHideMenu={handleHideMenu} />
+            ) : (
+              <Divider spacing="small" />
+            )
           ))}
         </View>
       )}

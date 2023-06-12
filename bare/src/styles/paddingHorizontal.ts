@@ -19,6 +19,10 @@ const usePaddingHorizontalStyles = createUseStyles({
     paddingLeft: Size.large,
     paddingRight: Size.large,
   },
+  xlarge: {
+    paddingLeft: Size.xlarge,
+    paddingRight: Size.xlarge,
+  },
 });
 
 export default usePaddingHorizontalStyles;
