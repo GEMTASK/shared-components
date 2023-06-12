@@ -62,35 +62,47 @@ const Tab = ({
 
 //
 
-type ImageProps = {
+type TabsProps = {
   labels: string[],
+  actions?: React.ReactElement[],
+  onTabSelect?: (index: number) => void,
 } & ViewProps;
 
 const Tabs = ({
   labels,
+  actions,
   children,
+  onTabSelect,
   ...props
-}: ImageProps) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+}: TabsProps) => {
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+
+  const handleTabSelect = (index: number) => {
+    if (onTabSelect) {
+      onTabSelect(index);
+    }
+
+    setSelectedTabIndex(index);
+  };
 
   const childrenArray = React.Children.toArray(children);
 
-  const handleTabSelect = (index: number) => {
-    setCurrentIndex(index);
-  };
-
   return (
-    <View>
-      <View horizontal>
-        {labels.map((label, index) => (
-          <Tab key={index} index={index} label={label} selected={index === currentIndex} onTabSelect={handleTabSelect} />
+    <View {...props}>
+      <View horizontal align="middle left">
+        <View flex horizontal>
+          {labels.map((label, index) => (
+            <Tab key={index} index={index} label={label} selected={index === selectedTabIndex} onTabSelect={handleTabSelect} />
+          ))}
+        </View>
+        {React.Children.map(actions, child => (
+          React.isValidElement(child) && React.cloneElement(child)
         ))}
       </View>
-      {/* <Spacer size="small" /> */}
       <Divider />
       <Spacer size="large" />
       <View>
-        {childrenArray[currentIndex] as React.ReactElement}
+        {childrenArray[selectedTabIndex] as React.ReactElement}
       </View>
     </View>
   );

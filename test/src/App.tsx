@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import styles from './App.module.css';
-import { hues, View, Text, Image, Button, Stack, Spacer, Divider, Input, Menu, Tabs } from 'bare';
+import { hues, View, Text, Image, Button, Stack, Spacer, Divider, Input, Menu, Tabs, Modal } from 'bare';
 
 const Header = () => {
   return (
@@ -13,7 +13,7 @@ const Header = () => {
         />
         <Spacer size="small" />
         <View flex>
-          <Text>Title</Text>
+          <Text fontWeight="semibold">Title</Text>
           <Spacer size="small" />
           <Text fontSize="xsmall" textColor="gray-6">Subtitle</Text>
         </View>
@@ -24,13 +24,34 @@ const Header = () => {
 };
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <View tabIndex={0} className={styles.App}>
       <View flex className={styles.Container} paddingVertical="large" paddingHorizontal="large">
+
+        <View horizontal align="middle left">
+          <Text flex fontSize="xlarge" fontWeight="bold" textColor="gray-8">Page Header</Text>
+          <Button primary title="Action Button" />
+          <Spacer size="small" />
+          <Button solid primary title="Action Button" />
+        </View>
+        <Divider spacing="large" />
+
+        <View horizontal align="middle left">
+          <Text flex fontSize="large" fontWeight="thin">Section Header</Text>
+          <Button primary size="xsmall" title="Action Button" />
+          <Spacer size="small" />
+          <Button solid primary size="xsmall" title="Action Button" />
+        </View>
+        <Spacer size="small" />
+        <Divider />
+        <Spacer size="large" />
+
         <View horizontal>
           <Stack align="middle center" spacing="small" spacingColor="gray-2">
             <View />
-            <Text fontSize="xxlarge">XXLarge (42)</Text>
+            <Text fontSize="xxlarge">XXLarge (40)</Text>
             <Text fontSize="xlarge">XLarge (32)</Text>
             <Text fontSize="large">Large (24)</Text>
             <Text fontSize="medium">Medium (18)</Text>
@@ -158,13 +179,13 @@ function App() {
             </Stack>
           </View>
           <Stack flex border style={{ maxWidth: 500 }}>
-            <View horizontal paddingHorizontal="medium">
-              <Text flex fontSize="xxlarge">Heading</Text>
+            <View horizontal paddingHorizontal="medium" align="middle center">
+              <Text flex fontSize="xlarge">Heading</Text>
               <Button primary title="Press Me" />
             </View>
             <Stack flex divider dividerInset={60}>
-              <View horizontal paddingHorizontal="medium">
-                <Text flex fontSize="xlarge">Heading</Text>
+              <View horizontal paddingHorizontal="medium" align="middle center">
+                <Text flex fontSize="large">Heading</Text>
                 <Button primary size="xsmall" title="Press Me" />
               </View>
               <Spacer size="small" fillColor="gray-2" />
@@ -177,7 +198,12 @@ function App() {
 
         <Spacer size="large" />
 
-        <Tabs labels={['Tab 1', 'Tab 2', 'Tab 3']}>
+        <Tabs
+          labels={['Simple Tab 1', 'Simple Tab 2', 'Simple Tab 3']}
+          actions={[
+            <Button hover size="xsmall" icon="gear" title="Options" onClick={() => setIsModalOpen(true)} />,
+            // <Button hover icon="gear" />,
+          ]}>
           <Text>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
           </Text>
@@ -188,6 +214,10 @@ function App() {
             Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
           </Text>
         </Tabs>
+
+        <Divider spacing="large" />
+
+        <Tabs labels={['Conrolled Tab 1', 'Conrolled Tab 2']} onTabSelect={(index: number) => console.log(index)} />
 
         <Divider spacing="large" />
 
@@ -212,6 +242,11 @@ function App() {
           </Stack>
         </Stack>
       </View>
+      <Modal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)}>
+        <Text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        </Text>
+      </Modal>
     </View>
   );
 }
