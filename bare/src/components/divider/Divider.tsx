@@ -5,7 +5,7 @@ import { createUseStyles } from 'react-jss';
 import Size from '../../types/Size.js';
 import Color from '../../types/Color.js';
 
-import View from '../view/index.js';
+import View, { ViewProps } from '../view/index.js';
 import Spacer from '../spacer/index.js';
 
 import ViewContext from '../view/ViewContext.js';
@@ -28,7 +28,7 @@ type DividerProps = {
   fillColor?: Color,
   spacingColor?: Color,
   className?: string,
-} & React.ComponentProps<typeof View>;
+} & ViewProps;
 
 const Divider = ({
   spacing,

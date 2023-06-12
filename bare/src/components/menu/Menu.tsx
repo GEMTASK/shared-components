@@ -73,7 +73,7 @@ const Menu = () => {
             item ? (
               <Item key={index} title={item.title} onClick={item.action} onHideMenu={handleHideMenu} />
             ) : (
-              <Divider spacing="small" />
+              <Divider key={index} spacing="small" />
             )
           ))}
         </View>

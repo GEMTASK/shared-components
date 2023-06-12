@@ -1,13 +1,16 @@
 import React from 'react';
 
 import styles from './App.module.css';
-import { hues, View, Text, Button, Stack, Spacer, Divider, Input, Menu } from 'bare';
+import { hues, View, Text, Image, Button, Stack, Spacer, Divider, Input, Menu } from 'bare';
 
 const Header = () => {
   return (
-    <View horizontal align="middle left" paddingVertical="small" paddingHorizontal="medium">
+    <View horizontal align="middle left" paddingVertical="medium" paddingHorizontal="medium">
       <View flex horizontal align="middle left">
-        <img src="https://mike-austin.com/new/images/Escher_Circle_Limit_III.jpg" style={{ margin: '-5px 0', height: 40, objectFit: 'contain' }} />
+        <Image
+          src="https://mike-austin.com/new/images/Escher_Circle_Limit_III.jpg"
+          style={{ margin: '-5px 0', height: 40, objectFit: 'contain' }}
+        />
         <Spacer size="small" />
         <View flex>
           <Text>Title</Text>

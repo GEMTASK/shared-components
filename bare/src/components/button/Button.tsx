@@ -1,67 +1,13 @@
-import React, { useContext, useMemo } from 'react';
-import { createUseStyles } from 'react-jss';
+import React from 'react';
 import OpenColor from 'open-color';
 import clsx from 'clsx';
-
-import Size from '../../types/Size.js';
 
 import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';
 import Icon from '../icon/index.js';
 import Spacer from '../spacer/Spacer.js';
 
-const useStyles = createUseStyles({
-  Button: {
-    appearance: 'none',
-    border: 'none',
-    borderRadius: Size.xxsmall,
-    '&:enabled:hover': {
-      filter: 'brightness(1.04)'
-    },
-    '&:enabled:active': {
-      filter: 'brightness(0.90)'
-    }
-  },
-  default: {
-    '&:enabled:hover': { background: OpenColor.gray[3] },
-    '&:enabled:active': { background: OpenColor.gray[3] },
-  },
-  hover: {
-    '&:enabled:hover': {
-      background: `${OpenColor.gray[6]}30`,
-    },
-    '&:enabled:active': {
-      background: `${OpenColor.gray[5]}30`,
-      filter: 'brightness(0.0)',
-    },
-  },
-  primary: {
-    '&:enabled:hover': {
-      background: OpenColor.blue[1]
-    },
-    '&:enabled:active': {
-      background: OpenColor.blue[1]
-    },
-  },
-  round: {
-    borderRadius: 1000,
-  },
-  selected: {
-    filter: 'brightness(0.90)',
-  },
-  xsmall: {
-    minHeight: 24,
-  },
-  small: {
-    minHeight: 32,
-  },
-  medium: {
-    minHeight: 40,
-  },
-  disabled: {
-    opacity: 0.5,
-  }
-});
+import useStyles from './ButtonStyles.js';
 
 const getFillColor = ({ primary, solid, selected }: ButtonProps) => {
   switch (true) {

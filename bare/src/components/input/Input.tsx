@@ -3,7 +3,7 @@ import OpenColor from 'open-color';
 import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
 
-import View from '../view/index.js';
+import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';
 import Spacer from '../spacer/index.js';
 
@@ -38,7 +38,7 @@ type InputProps = {
   label?: string,
   type?: 'date' | 'color',
   chips?: string[],
-} & Omit<React.ComponentProps<typeof View>, 'children'>;
+} & Omit<ViewProps, 'children'>;
 
 const Input = ({
   label,

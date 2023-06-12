@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 import Size from '../../types/Size.js';
 
-import View from '../view/index.js';
+import View, { ViewProps } from '../view/index.js';
 
 import ViewContext from '../view/ViewContext.js';
 
@@ -70,7 +70,7 @@ const useSpacingStyles = createUseStyles({
 type SpacerProps = {
   size?: keyof typeof Size,
   className?: string,
-} & React.ComponentProps<typeof View>;
+} & ViewProps;
 
 const Spacer = ({
   size,
