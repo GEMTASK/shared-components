@@ -41,7 +41,7 @@ const Item = ({
   };
 
   return (
-    <Button hover icon="house" onClick={handleClick} {...props} />
+    <Button hover icon="house" titleFontWeight="normal" onClick={handleClick} {...props} />
   );
 };
 
@@ -66,7 +66,7 @@ const Menu = () => {
 
   return (
     <View tabIndex={0} style={{ position: 'relative' }} onBlur={handleBlur}>
-      <Button solid selected={isMenuVisible} title="Menu" onPointerDown={handleButtonClick} />
+      <Button solid title="Menu" selected={isMenuVisible} onPointerDown={handleButtonClick} rightIcon="chevron-down" />
       {isMenuVisible && (
         <View ref={menuElementRef} border fillColor="white" paddingVertical="small" paddingHorizontal="small" style={{ position: 'absolute', top: '100%', borderRadius: 2 }}>
           {items.map((item, index) => (

@@ -63,6 +63,7 @@ const getPaddingHorizontal = ({ size, icon }: ButtonProps) => {
 type ButtonProps = {
   size?: 'xsmall' | 'small' | 'medium',
   icon?: React.ComponentProps<typeof Icon>['icon'],
+  rightIcon?: React.ComponentProps<typeof Icon>['icon'],
   title?: string,
   titleFontWeight?: React.ComponentProps<typeof Text>['fontWeight'];
   titleTextColor?: Color,
@@ -78,7 +79,7 @@ type ButtonProps = {
 const Button = ({
   size = 'small',
   icon,
-  // rightIcon,
+  rightIcon,
   title,
   titleFontWeight = 'semibold',
   titleTextColor,
@@ -140,6 +141,12 @@ const Button = ({
       <Text fontWeight={titleFontWeight} textColor={textColor} style={{ pointerEvents: 'none', whiteSpace: 'nowrap' }}>
         {title}
       </Text>
+      {!!title && !!rightIcon && (
+        <Spacer size="small" />
+      )}
+      {!!rightIcon && (
+        <Icon icon={rightIcon} color={iconColor} />
+      )}
     </View>
   );
 };
