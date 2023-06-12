@@ -8,6 +8,7 @@ import Icon from '../icon/index.js';
 import Spacer from '../spacer/Spacer.js';
 
 import useStyles from './ButtonStyles.js';
+import Color from '../../types/Color.js';
 
 const getFillColor = ({ primary, solid, selected }: ButtonProps) => {
   switch (true) {
@@ -63,6 +64,8 @@ type ButtonProps = {
   size?: 'xsmall' | 'small' | 'medium',
   icon?: React.ComponentProps<typeof Icon>['icon'],
   title?: string,
+  titleFontWeight?: React.ComponentProps<typeof Text>['fontWeight'];
+  titleTextColor?: Color,
   hover?: boolean,
   primary?: boolean,
   solid?: boolean,
@@ -75,7 +78,10 @@ type ButtonProps = {
 const Button = ({
   size = 'small',
   icon,
+  // rightIcon,
   title,
+  titleFontWeight = 'semibold',
+  titleTextColor,
   hover,
   primary,
   solid,
@@ -101,7 +107,7 @@ const Button = ({
 
   const fillColor = getFillColor({ primary, solid, selected });
   const borderColor = getBorderColor({ primary, solid, hover });
-  const textColor = getTextColor({ primary, solid, selected });
+  const textColor = titleTextColor ?? getTextColor({ primary, solid, selected });
 
   const [color, level] = (textColor ?? '')?.split('-') as [keyof OpenColor, number | undefined];
   const iconColor = level ? OpenColor[color][level] : OpenColor[color] as string;
@@ -131,7 +137,7 @@ const Button = ({
       {!!icon && !!title && (
         <Spacer size="small" />
       )}
-      <Text fontWeight="semibold" textColor={textColor} style={{ pointerEvents: 'none', whiteSpace: 'nowrap' }}>
+      <Text fontWeight={titleFontWeight} textColor={textColor} style={{ pointerEvents: 'none', whiteSpace: 'nowrap' }}>
         {title}
       </Text>
     </View>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './App.module.css';
-import { hues, View, Text, Image, Button, Stack, Spacer, Divider, Input, Menu } from 'bare';
+import { hues, View, Text, Image, Button, Stack, Spacer, Divider, Input, Menu, Tabs } from 'bare';
 
 const Header = () => {
   return (
@@ -176,6 +176,20 @@ function App() {
         </Stack>
 
         <Spacer size="large" />
+
+        <Tabs labels={['Tab 1', 'Tab 2', 'Tab 3']}>
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </Text>
+          <Text>
+            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
+          </Text>
+          <Text>
+            Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
+          </Text>
+        </Tabs>
+
+        <Divider spacing="large" />
 
         <Stack flex divider minHeight={200}>
           <Stack flex horizontal divider>
