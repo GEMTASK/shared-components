@@ -12,11 +12,13 @@ const handleWheel = (e: WheelEvent) => e.preventDefault();
 
 type ModalProps = {
   isOpen?: boolean,
+  actions?: React.ReactElement[],
   onRequestClose?: () => void,
 } & ViewProps;
 
 const Modal = ({
   isOpen,
+  actions,
   children,
   onRequestClose,
   ...props
@@ -60,8 +62,7 @@ const Modal = ({
         </View>
         <Spacer size="small" />
         <Stack horizontal spacing="small" align="middle right" paddingVertical="large" paddingHorizontal="large">
-          <Button solid primary title="Save" />
-          <Button solid title="Cancel" />
+          {actions}
         </Stack>
       </View>
     </View>,
