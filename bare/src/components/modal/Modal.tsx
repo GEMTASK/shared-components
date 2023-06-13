@@ -61,7 +61,7 @@ const Modal = ({
         <Spacer size="small" />
         <Stack horizontal spacing="small" align="middle right" paddingVertical="large" paddingHorizontal="large">
           <Button solid primary title="Save" />
-          <Button primary title="Cancel" />
+          <Button solid title="Cancel" />
         </Stack>
       </View>
     </View>,
