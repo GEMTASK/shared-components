@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom";
+import { createUseStyles } from 'react-jss';
 
 import View, { ViewProps } from "../view/index.js";
 import Text from "../text/index.js";
@@ -9,6 +10,23 @@ import Stack from "../stack/index.js";
 import { useEffect } from "react";
 
 const handleWheel = (e: WheelEvent) => e.preventDefault();
+
+const useStyles = createUseStyles({
+  '@keyframes fadeIn': {
+    from: { opacity: 0.0 },
+    to: { opacity: 0.5 },
+  },
+  '@keyframes scaleIn': {
+    from: { opacity: 0.0, transform: 'translate(0, -32px)' },
+    to: { opacity: 1.0, transform: 'translate(0, 0)' },
+  },
+  Overlay: {
+    animation: '0.5s $fadeIn forwards',
+  },
+  Modal: {
+    animation: '0.5s $scaleIn forwards',
+  },
+});
 
 type ModalProps = {
   isOpen?: boolean,
@@ -23,6 +41,8 @@ const Modal = ({
   onRequestClose,
   ...props
 }: ModalProps) => {
+  const styles = useStyles();
+
   useEffect(() => {
     if (isOpen) {
       const container = document.querySelector('#container');
@@ -51,8 +71,8 @@ const Modal = ({
 
   return createPortal(
     <View align="middle center" style={{ position: 'fixed', inset: 0 }}>
-      <View fillColor="gray-9" style={{ position: 'absolute', inset: 0, opacity: 0.5, overscrollBehavior: 'contain' }} />
-      <View as="dialog" fillColor="white" minWidth={400} style={{ position: 'relative', maxWidth: 600, borderRadius: 4, border: 'none', boxShadow: '0 8px 32px hsla(0, 0%, 0%, 0.5)' }} {...props}>
+      <View fillColor="gray-9" className={styles.Overlay} style={{ position: 'absolute', inset: 0 }} onClick={onRequestClose} />
+      <View as="dialog" fillColor="white" minWidth={400} className={styles.Modal} style={{ position: 'relative', maxWidth: 600, borderRadius: 4, border: 'none', boxShadow: '0 8px 32px hsla(0, 0%, 0%, 0.5)' }} {...props}>
         <View horizontal paddingHorizontal="large" paddingVertical="large" align="middle left">
           <Text flex fontSize="large" >Header</Text>
           <Button round size="xsmall" icon="close" onClick={onRequestClose} />
