@@ -28,7 +28,7 @@ function App() {
 
   return (
     <View tabIndex={0} className={styles.App}>
-      <View flex className={styles.Container} paddingVertical="large" paddingHorizontal="large">
+      <View flex id="container" className={styles.Container} paddingVertical="large" paddingHorizontal="large">
 
         <View horizontal align="middle left">
           <Text flex fontSize="xlarge" fontWeight="bold" textColor="gray-8">Page Header</Text>
@@ -74,7 +74,7 @@ function App() {
             <Spacer size="small" />
             <Stack horizontal spacing="small">
               {/* <Button hover icon="house" title="Hover" /> */}
-              <Button hover icon="house" title="Hover Icon" />
+              <Button hover round icon="house" title="Hover Icon" />
               <Button icon="house" title="Icon" />
               <Button solid round icon="magnifying-glass" />
               <Button primary icon="check" title="Icon" />
