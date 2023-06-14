@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
 import styles from './App.module.css';
-import { hues, View, Text, Image, Button, Stack, Spacer, Divider, Input, Menu, Tabs, Modal } from 'bare';
+import { hues, View, Text, Image, Button, Stack, Spacer, Divider } from 'bare';
+import { Input, Menu, Tabs, Modal, Form } from 'bare';
 
 const Header = () => {
   return (
@@ -177,6 +178,16 @@ function App() {
               <Input type="date" label="Due Date" />
               <Input type="color" label="Fill Color" />
             </Stack>
+            <Spacer size="large" />
+
+            <Form
+              fields={[
+                { key: 'firstName', label: 'First Name', type: 'text' },
+                { key: 'lastName', label: 'Last Name', type: 'text' },
+              ]}
+            >
+            </Form>
+
           </View>
           <Stack flex border style={{ maxWidth: 500 }}>
             <View horizontal paddingHorizontal="medium" align="middle center">

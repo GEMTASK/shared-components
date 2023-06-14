@@ -10,5 +10,6 @@ export { default as Input } from './input/index.js';
 export { default as Menu } from './menu/index.js';
 export { default as Tabs } from './tabs/index.js';
 export { default as Modal } from './modal/index.js';
+export { default as Form } from './form/index.js';
 
 export { hues } from '../styles/fillColor.js';

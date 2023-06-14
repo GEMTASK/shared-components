@@ -35,25 +35,26 @@ const useInnerStyles = createUseStyles({
 });
 
 type InputProps = {
-  label?: string,
   type?: 'date' | 'color',
+  label?: string,
   chips?: string[],
 } & Omit<ViewProps, 'children'>;
 
 const Input = ({
-  label,
   type,
+  label,
   chips,
+  ...props
 }: InputProps) => {
   const innerStyles = useInnerStyles();
 
   const inputElement = (() => {
     switch (type) {
       case 'date': return (
-        <input type="date" style={{ background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, height: 24, lineHeight: 20, fontSize: 14, fontFamily: 'Open Sans' }} />
+        <input type="date" style={{ background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, height: 24, lineHeight: 20, fontSize: 14, fontFamily: 'Open Sans' }} {...props} />
       );
       default: return (
-        <input type={type} style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, height: 24, lineHeight: 20, fontSize: 14, fontFamily: 'Open Sans' }} />
+        <input type={type} style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, height: 24, lineHeight: 20, fontSize: 14, fontFamily: 'Open Sans' }} {...props} />
       );
     }
   })();
