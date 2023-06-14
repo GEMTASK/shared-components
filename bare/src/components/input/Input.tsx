@@ -35,7 +35,7 @@ const useInnerStyles = createUseStyles({
 });
 
 type InputProps = {
-  type?: 'date' | 'color',
+  type?: 'text' | 'date' | 'color',
   label?: string,
   chips?: string[],
 } & Omit<ViewProps, 'children'>;
@@ -51,10 +51,13 @@ const Input = ({
   const inputElement = (() => {
     switch (type) {
       case 'date': return (
-        <input type="date" style={{ background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, height: 24, lineHeight: 20, fontSize: 14, fontFamily: 'Open Sans' }} {...props} />
+        <input type="date" style={{ background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans' }} {...props} />
+      );
+      case 'color': return (
+        <input type="color" style={{ appearance: 'none', background: 'none', padding: 0, margin: 0, border: 'none', outline: 'none', width: '100%', minHeight: 32 }} {...props} />
       );
       default: return (
-        <input type={type} style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, height: 24, lineHeight: 20, fontSize: 14, fontFamily: 'Open Sans' }} {...props} />
+        <input type={type} style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans' }} {...props} />
       );
     }
   })();
@@ -67,10 +70,10 @@ const Input = ({
           <Spacer size="small" />
         </>
       )}
-      <View horizontal fillColor="white" paddingVertical="xsmall" paddingHorizontal="medium" className={innerStyles.Inner}>
-        {chips && chips.map((chip, index) => (
+      <View horizontal fillColor="white" /*paddingVertical="xsmall"*/ paddingHorizontal="medium" className={innerStyles.Inner}>
+        {/* {chips && chips.map((chip, index) => (
           <Chip key={index} label={chip} />
-        ))}
+        ))} */}
         {inputElement}
       </View>
     </View>

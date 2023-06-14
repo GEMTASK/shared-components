@@ -1,5 +1,7 @@
 import View, { ViewProps } from '../view/index.js';
 import Input from '../input/index.js';
+import Control from '../control/index.js';
+import { useStyles as useControlStyles } from '../control/Control.js';
 
 import FormContext from './FormContext.js';
 import { useContext, useState } from 'react';
@@ -10,7 +12,7 @@ const departments = { 1: 'Engineering', 2: 'Product', 3: 'Finance' };
 type FieldDefinition<T = unknown> = {
   key: string,
   label: string,
-  type?: string,
+  type?: 'text' | 'date' | 'color' | 'select' | 'checkbox' | 'radio',
   options?: { [value: string]: string; },
   render?: (item: T) => React.ReactNode,
 };
@@ -18,7 +20,7 @@ type FieldDefinition<T = unknown> = {
 type FieldProps<T = unknown> = {
   _key: string,
   label: string,
-  type?: string,
+  type?: 'text' | 'date' | 'color' | 'select' | 'checkbox' | 'radio',
   value?: string,
   options?: { [value: string]: string; },
   render?: (item: T) => React.ReactNode,
@@ -51,20 +53,33 @@ const fields: FieldDefinition[] = [
   },
 ];
 
-const Field = ({ _key, label, type, value }: FieldProps) => {
+const Field = ({ _key, label, type, options, value }: FieldProps) => {
   const { onFieldChange } = useContext(FormContext);
 
-  const handleChange = (event: React.FocusEvent<HTMLInputElement>) => {
+  const controlStyles = useControlStyles();
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onFieldChange(_key, event.target.value);
+  };
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     onFieldChange(_key, event.target.value);
   };
 
   switch (type) {
-    case 'text': return (
-      <Input label={label} onBlur={handleChange} />
+    case 'checkbox': return null;
+    case 'radio': return null;
+    case 'select': return (
+      <View as="select" className={controlStyles.Inner} onChange={handleSelectChange}>
+        <option hidden>Please select...</option>
+        {Object.entries(options ?? {}).map(([value, label]) => (
+          <option key={value} value={value}>{label}</option>
+        ))}
+      </View>
     );
   }
 
-  return <Input label={label} />;
+  return <Input label={label} type={type ?? 'text'} onChange={handleInputChange} />;
 };
 
 type FormProps = {

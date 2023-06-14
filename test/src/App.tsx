@@ -173,17 +173,19 @@ function App() {
               <Button solid title="Search" />
             </Stack>
             <Spacer size="large" />
-            <Stack spacing="large">
-              <Input label="Username" chips={['One', 'Two', 'Three']} />
-              <Input type="date" label="Due Date" />
-              <Input type="color" label="Fill Color" />
-            </Stack>
-            <Spacer size="large" />
 
             <Form
               fields={[
                 { key: 'firstName', label: 'First Name', type: 'text' },
-                { key: 'lastName', label: 'Last Name', type: 'text' },
+                { key: 'dueDate', label: 'Due Date', type: 'date' },
+                { key: 'fillColor', label: 'Fill Color', type: 'color' },
+                { key: 'married', label: 'Married', type: 'checkbox' },
+                {
+                  key: 'state', label: 'State', type: 'select', options: {
+                    'AL': 'Alabama',
+                    'AK': 'Alaska',
+                  }
+                },
               ]}
             >
             </Form>
