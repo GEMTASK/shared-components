@@ -38,7 +38,7 @@ type InputProps = {
   type?: 'text' | 'date' | 'color',
   label?: string,
   chips?: string[],
-} & Omit<ViewProps, 'children'>;
+} & Omit<ViewProps<'input'>, 'children'>;
 
 const Input = ({
   type,

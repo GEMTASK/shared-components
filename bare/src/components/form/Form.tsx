@@ -55,14 +55,16 @@ const fields: FieldDefinition[] = [
   },
 ];
 
-const Checkbox = ({ label, onChange, ...props }: any) => {
+const Checkbox = ({ label, value, onChange, ...props }: any) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.checked);
   };
 
+  console.log('checkbox', value);
+
   return (
     <View as="label" horizontal align="middle left" onChange={handleInputChange} {...props}>
-      <input type="checkbox" onChange={onChange} />
+      <input type="checkbox" value={value} checked={true} onChange={onChange} />
       <Spacer size="xsmall" />
       <Text>{label}</Text>
     </View>
@@ -88,11 +90,11 @@ const Field = ({ _key, label, type, options, value }: FieldProps) => {
 
   switch (type) {
     case 'checkbox': return (
-      <Checkbox key={_key} label={label} onChange={handleCheckboxChange} />
+      <Checkbox key={_key} label={label} value={value} onChange={handleCheckboxChange} />
     );
     case 'radio': return null;
     case 'select': return (
-      <View as="select" className={controlStyles.Inner} onChange={handleSelectChange}>
+      <View as="select" value={value} className={controlStyles.Inner} onChange={handleSelectChange}>
         <option hidden>Please select...</option>
         {Object.entries(options ?? {}).map(([value, label]) => (
           <option key={value} value={value}>{label}</option>
@@ -101,7 +103,7 @@ const Field = ({ _key, label, type, options, value }: FieldProps) => {
     );
   }
 
-  return <Input label={label} type={type ?? 'text'} onChange={handleInputChange} />;
+  return <Input label={label} type={type ?? 'text'} value={value} onChange={handleInputChange} />;
 };
 
 type FormProps = {
@@ -110,12 +112,15 @@ type FormProps = {
 } & ViewProps<'form'>;
 
 const Form = ({
-  fields,
-  initialValues,
+  fields = [],
+  initialValues = {},
   children,
   ...props
 }: FormProps) => {
-  const [values, setValues] = useState(initialValues ?? {});
+  const [values, setValues] = useState(fields.reduce((acc, { key }) => ({
+    ...acc,
+    [key]: acc[key] ?? ''
+  }), initialValues));
 
   const handleFieldChange = (key: string, value: string) => {
     console.log('handleFieldChange', key, value);
@@ -132,8 +137,8 @@ const Form = ({
   return (
     <FormContext.Provider value={{ onFieldChange: handleFieldChange }}>
       <Stack as="form" spacing="large" onSubmit={handleFormSubmit} {...props}>
-        {fields?.map(({ key, ...props }) => (
-          <Field key={key} _key={key} value={values[key]}  {...props} />
+        {fields.map(({ key, ...props }) => (
+          <Field key={key} _key={key} value={values[key]} {...props} />
         ))}
       </Stack>
     </FormContext.Provider>

@@ -188,6 +188,11 @@ function App() {
                   }
                 },
               ]}
+              initialValues={{
+                firstName: 'Joe Smith',
+                married: 'true',
+                state: 'AK',
+              }}
             >
             </Form>
             <Spacer size="large" />
