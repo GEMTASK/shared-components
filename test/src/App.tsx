@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import styles from './App.module.css';
 import { hues, View, Text, Image, Button, Stack, Spacer, Divider } from 'bare';
-import { Input, Menu, Tabs, Modal, Form } from 'bare';
+import { Input, Popup, Menu, Tabs, Modal, Form } from 'bare';
 
 const Header = () => {
   return (
@@ -49,6 +49,16 @@ function App() {
         <Divider />
         <Spacer size="large" />
 
+        <Stack horizontal spacing="large">
+          <Popup element={<Button solid title="Popup" />}>
+            <Button tabIndex={-1} title="One" />
+          </Popup>
+          <Popup element={<Input />}>
+            <Button tabIndex={-1} title="One" />
+          </Popup>
+        </Stack>
+
+        <Divider spacing="large" />
         <View horizontal>
           <Stack align="middle center" spacing="small" spacingColor="gray-2">
             <View />
