@@ -5,7 +5,7 @@ import Control from '../control/index.js';
 import { useStyles as useControlStyles } from '../control/Control.js';
 
 import FormContext from './FormContext.js';
-import { useContext, useState } from 'react';
+import { FormEvent, useContext, useState } from 'react';
 import Stack from '../stack/Stack.js';
 import Spacer from '../spacer/Spacer.js';
 
@@ -107,7 +107,7 @@ const Field = ({ _key, label, type, options, value }: FieldProps) => {
 type FormProps = {
   fields?: FieldDefinition[],
   initialValues?: { [key: string]: string; },
-} & ViewProps;
+} & ViewProps<'form'>;
 
 const Form = ({
   fields,
@@ -123,9 +123,15 @@ const Form = ({
     setValues({ ...values, [key]: value });
   };
 
+  const handleFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    console.log(values);
+  };
+
   return (
     <FormContext.Provider value={{ onFieldChange: handleFieldChange }}>
-      <Stack as="form" spacing="large" {...props}>
+      <Stack as="form" spacing="large" onSubmit={handleFormSubmit} {...props}>
         {fields?.map(({ key, ...props }) => (
           <Field key={key} _key={key} value={values[key]}  {...props} />
         ))}

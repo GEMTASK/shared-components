@@ -175,6 +175,7 @@ function App() {
             <Spacer size="large" />
 
             <Form
+              id="form"
               fields={[
                 { key: 'firstName', label: 'First Name', type: 'text' },
                 { key: 'dueDate', label: 'Due Date', type: 'date' },
@@ -189,6 +190,8 @@ function App() {
               ]}
             >
             </Form>
+            <Spacer size="large" />
+            <Button solid primary type="submit" form="form" title="save" />
 
           </View>
           <Stack flex border style={{ maxWidth: 500 }}>

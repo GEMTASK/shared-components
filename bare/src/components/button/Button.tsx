@@ -74,7 +74,7 @@ type ButtonProps = {
   selected?: boolean,
   disabled?: boolean,
   className?: string,
-} & Omit<ViewProps, 'children'>;
+} & Omit<ViewProps<'button'>, 'children'>;
 
 const Button = ({
   size = 'small',
