@@ -1,4 +1,5 @@
 import View, { ViewProps } from '../view/index.js';
+import Text from '../text/index.js';
 import Input from '../input/index.js';
 import Control from '../control/index.js';
 import { useStyles as useControlStyles } from '../control/Control.js';
@@ -6,6 +7,7 @@ import { useStyles as useControlStyles } from '../control/Control.js';
 import FormContext from './FormContext.js';
 import { useContext, useState } from 'react';
 import Stack from '../stack/Stack.js';
+import Spacer from '../spacer/Spacer.js';
 
 const departments = { 1: 'Engineering', 2: 'Product', 3: 'Finance' };
 
@@ -53,6 +55,20 @@ const fields: FieldDefinition[] = [
   },
 ];
 
+const Checkbox = ({ label, onChange, ...props }: any) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(event.target.checked);
+  };
+
+  return (
+    <View as="label" horizontal align="middle left" onChange={handleInputChange} {...props}>
+      <input type="checkbox" onChange={onChange} />
+      <Spacer size="xsmall" />
+      <Text>{label}</Text>
+    </View>
+  );
+};
+
 const Field = ({ _key, label, type, options, value }: FieldProps) => {
   const { onFieldChange } = useContext(FormContext);
 
@@ -66,8 +82,14 @@ const Field = ({ _key, label, type, options, value }: FieldProps) => {
     onFieldChange(_key, event.target.value);
   };
 
+  const handleCheckboxChange = (value: string) => {
+    onFieldChange(_key, value);
+  };
+
   switch (type) {
-    case 'checkbox': return null;
+    case 'checkbox': return (
+      <Checkbox key={_key} label={label} onChange={handleCheckboxChange} />
+    );
     case 'radio': return null;
     case 'select': return (
       <View as="select" className={controlStyles.Inner} onChange={handleSelectChange}>
