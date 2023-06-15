@@ -16,9 +16,9 @@ const useInnerStyles = createUseStyles({
     fontSize: 14,
     display: 'inline-block',
     cursor: 'default',
-    '&[contenteditable], &:active': {
-      cursor: 'text'
-    },
+    // '&[contenteditable], &:active': {
+    //   cursor: 'text'
+    // },
   },
   caps: {
     textTransform: 'uppercase',

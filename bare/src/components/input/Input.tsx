@@ -38,26 +38,49 @@ type InputProps = {
   type?: 'text' | 'date' | 'color',
   label?: string,
   chips?: string[],
-} & Omit<ViewProps<'input'>, 'children'>;
+  onChange?: (value: string) => void,
+} & Omit<ViewProps<'input'>, 'children' | 'onChange'>;
 
 const Input = ({
-  type,
+  type = 'text',
   label,
   chips,
+  onChange,
   ...props
 }: InputProps) => {
   const innerStyles = useInnerStyles();
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(event.target.value);
+    }
+  };
+
   const inputElement = (() => {
     switch (type) {
       case 'date': return (
-        <input type="date" style={{ background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans' }} {...props} />
+        <input
+          type="date"
+          style={{ background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans' }}
+          onChange={handleChange}
+          {...props}
+        />
       );
       case 'color': return (
-        <input type="color" style={{ appearance: 'none', background: 'none', padding: 0, margin: 0, border: 'none', outline: 'none', width: '100%', minHeight: 32 }} {...props} />
+        <input
+          type="color"
+          style={{ appearance: 'none', background: 'none', padding: 0, margin: 0, border: 'none', outline: 'none', width: '100%', minHeight: 32 }}
+          onChange={handleChange}
+          {...props}
+        />
       );
       default: return (
-        <input type={type} style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans' }} {...props} />
+        <input
+          type={type}
+          style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans' }}
+          onChange={handleChange}
+          {...props}
+        />
       );
     }
   })();

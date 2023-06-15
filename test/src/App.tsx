@@ -190,7 +190,9 @@ function App() {
               ]}
               initialValues={{
                 firstName: 'Joe Smith',
-                married: 'true',
+                dueDate: '2020-01-01',
+                fillColor: '#408040',
+                married: true,
                 state: 'AK',
               }}
             >
