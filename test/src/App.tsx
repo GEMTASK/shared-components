@@ -28,7 +28,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <View tabIndex={0} className={styles.App}>
+    <View className={styles.App}>
       <View flex id="container" className={styles.Container} paddingVertical="large" paddingHorizontal="large">
 
         <View horizontal align="middle left">
@@ -54,7 +54,8 @@ function App() {
             <Button tabIndex={-1} title="One" />
           </Popup>
           <Popup element={<Input />}>
-            <Button tabIndex={-1} title="One" />
+            <Button title="One" onClick={() => console.log('ff')} />
+            <Button title="Two" onClick={() => console.log('ff')} />
           </Popup>
         </Stack>
 

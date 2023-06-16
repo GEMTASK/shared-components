@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import View, { ViewProps } from '../view/index.js';
@@ -21,6 +21,10 @@ type PopupProps = {
   element: React.ReactElement,
 } & ViewProps;
 
+const preventDefault = (event: React.PointerEvent) => {
+  event.preventDefault();
+};
+
 const Popup = ({
   element,
   children,
@@ -28,7 +32,7 @@ const Popup = ({
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const menuElementRef = useRef<HTMLDivElement>(null);
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (event: React.PointerEvent) => {
     setIsMenuVisible(isMenuVisible => !isMenuVisible);
   };
 
@@ -36,31 +40,35 @@ const Popup = ({
     setIsMenuVisible(false);
   };
 
-  const handleBlur = (event: React.FocusEvent) => {
-    if (event.relatedTarget !== menuElementRef.current && !menuElementRef.current?.contains(event.relatedTarget)) {
+  const handleDocumentPointerDown = (event: PointerEvent) => {
+    if (event.relatedTarget !== menuElementRef.current && !menuElementRef.current?.contains(event.target as Node)) {
       setIsMenuVisible(false);
     }
   };
 
-  const id = `element-${Date.now()}`;
+  useEffect(() => {
+    document.addEventListener('pointerdown', handleDocumentPointerDown);
 
-  const handlePointerDown = (event: React.PointerEvent) => {
-    const element = document.getElementById(id) as HTMLElement;
-
-    setTimeout(() => {
-      // element.focus();
-    });
-  };
+    return () => {
+      document.removeEventListener('pointerdown', handleDocumentPointerDown);
+    };
+  }, []);
 
   return (
-    <View tabIndex={0} style={{ position: 'relative' }} onBlur={handleBlur} onPointerDown={handlePointerDown}>
+    <View ref={menuElementRef} style={{ position: 'relative' }}>
       {/* <Button solid title="Menu" selected={isMenuVisible} onPointerDown={handleButtonClick} rightIcon="chevron-down" /> */}
       {React.isValidElement(element) && React.cloneElement(element as any, {
-        id: id,
-        onPointerDown: handleButtonClick
+        onPointerDown: handleButtonClick,
       })}
       {isMenuVisible && (
-        <View ref={menuElementRef} border fillColor="white" paddingVertical="small" paddingHorizontal="small" style={{ position: 'absolute', top: '100%', borderRadius: 2 }}>
+        <View
+          border
+          fillColor="white"
+          paddingVertical="small"
+          paddingHorizontal="small"
+          style={{ position: 'absolute', top: '100%', borderRadius: 2 }}
+          onPointerDown={preventDefault}
+        >
           {children}
         </View>
       )}

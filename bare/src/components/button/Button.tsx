@@ -45,12 +45,12 @@ const getTextColor = ({ primary, solid, selected }: ButtonProps) => {
   }
 };
 
-const getPaddingHorizontal = ({ size, icon }: ButtonProps) => {
+const getPaddingHorizontal = ({ size, title }: ButtonProps) => {
   switch (true) {
-    case icon && size === 'xsmall':
+    case !title && size === 'xsmall':
+      return 'xsmall';
+    case !title && size === 'small':
       return 'small';
-    case icon && size === 'small':
-      return 'medium';
     case size === 'xsmall':
       return 'medium';
     case size === 'small':
@@ -116,7 +116,7 @@ const Button = ({
   const paddingVertical = size === 'xsmall'
     ? 'xsmall'
     : 'small';
-  const paddingHorizontal = getPaddingHorizontal({ size, icon });
+  const paddingHorizontal = getPaddingHorizontal({ size, title });
 
   return (
     <View

@@ -4,11 +4,13 @@ import clsx from 'clsx';
 import Color from '../../types/Color';
 import Size from '../../types/Size';
 import { ShorthandAlign, AlignVertical, AlignHorizontal } from '../../types/Align';
+import { ShorthandPadding } from '../../types/Padding';
 
 import useStyles from './ViewStyles.js';
 import { shorthandAlignToStyle } from '../../styles/align.js';
 import useAlignHorizontalStyles from '../../styles/alignHorizontal.js';
 import useAlignVerticalStyles from '../../styles/alignVertical.js';
+import { shorthandPaddingToStyle } from '../../styles/padding.js';
 import usePaddingVerticalStyles from '../../styles/paddingVertical.js';
 import usePaddingHorizontalStyles from '../../styles/paddingHorizontal.js';
 import useFillColorStyles, { hues } from '../../styles/fillColor.js';
@@ -35,6 +37,7 @@ type ViewProps<T extends React.ElementType = 'div'> = {
   align?: ShorthandAlign,
   alignVertical?: AlignVertical,
   alignHorizontal?: AlignHorizontal,
+  padding?: ShorthandPadding,
   paddingVertical?: keyof typeof Size,
   paddingHorizontal?: keyof typeof Size,
   fillColor?: Color,
@@ -54,8 +57,9 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   align,
   alignVertical = align && shorthandAlignToStyle(align)[0],
   alignHorizontal = align && shorthandAlignToStyle(align)[1],
-  paddingVertical,
-  paddingHorizontal,
+  padding,
+  paddingVertical = padding && shorthandPaddingToStyle(padding)[0],
+  paddingHorizontal = padding && shorthandPaddingToStyle(padding)[1],
   fillColor,
   border,
   borderColor,

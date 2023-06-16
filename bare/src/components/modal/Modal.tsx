@@ -21,9 +21,16 @@ const useStyles = createUseStyles({
     to: { opacity: 1.0, transform: 'translate(0, 0)' },
   },
   Overlay: {
+    position: 'absolute',
+    inset: 0,
     animation: '0.5s $fadeIn forwards',
   },
   Modal: {
+    position: 'relative',
+    maxWidth: 600,
+    borderRadius: 4,
+    border: 'none',
+    boxShadow: '0 8px 32px hsla(0, 0%, 0%, 0.5)',
     animation: '0.5s $scaleIn forwards',
   },
 });
@@ -71,8 +78,8 @@ const Modal = ({
 
   return createPortal(
     <View align="middle center" style={{ position: 'fixed', inset: 0 }}>
-      <View fillColor="gray-9" className={styles.Overlay} style={{ position: 'absolute', inset: 0 }} onClick={onRequestClose} />
-      <View as="dialog" fillColor="white" minWidth={400} className={styles.Modal} style={{ position: 'relative', maxWidth: 600, borderRadius: 4, border: 'none', boxShadow: '0 8px 32px hsla(0, 0%, 0%, 0.5)' }} {...props}>
+      <View fillColor="gray-9" className={styles.Overlay} onClick={onRequestClose} />
+      <View as="dialog" fillColor="white" minWidth={400} className={styles.Modal} {...props}>
         <View horizontal paddingHorizontal="large" paddingVertical="large" align="middle left">
           <Text flex fontSize="large" >Header</Text>
           <Button round size="xsmall" icon="close" onClick={onRequestClose} />
@@ -81,7 +88,7 @@ const Modal = ({
           {children}
         </View>
         <Spacer size="small" />
-        <Stack horizontal spacing="small" align="middle right" paddingVertical="large" paddingHorizontal="large">
+        <Stack horizontal spacing="small" align="middle right" padding="large">
           {actions}
         </Stack>
       </View>

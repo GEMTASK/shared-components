@@ -43,12 +43,15 @@ const useStyles = createUseStyles({
     filter: 'brightness(0.90)',
   },
   xsmall: {
+    minWidth: 24,
     minHeight: 24,
   },
   small: {
+    minWidth: 32,
     minHeight: 32,
   },
   medium: {
+    minWidth: 40,
     minHeight: 40,
   },
   disabled: {
