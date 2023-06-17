@@ -36,14 +36,12 @@ const useInnerStyles = createUseStyles({
 
 type InputProps = {
   type?: 'text' | 'date' | 'color',
-  label?: string,
   chips?: string[],
   onChange?: (value: string) => void,
 } & Omit<ViewProps<'input'>, 'children' | 'onChange'>;
 
 const Input = ({
   type = 'text',
-  label,
   chips,
   onChange,
   ...props
@@ -86,19 +84,11 @@ const Input = ({
   })();
 
   return (
-    <View>
-      {!!label && (
-        <>
-          <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6">{label}</Text>
-          <Spacer size="small" />
-        </>
-      )}
-      <View horizontal fillColor="white" /*paddingVertical="xsmall"*/ paddingHorizontal="medium" className={innerStyles.Inner}>
-        {/* {chips && chips.map((chip, index) => (
+    <View horizontal fillColor="white" /*paddingVertical="xsmall"*/ paddingHorizontal="medium" className={innerStyles.Inner}>
+      {/* {chips && chips.map((chip, index) => (
           <Chip key={index} label={chip} />
         ))} */}
-        {inputElement}
-      </View>
+      {inputElement}
     </View>
   );
 };
