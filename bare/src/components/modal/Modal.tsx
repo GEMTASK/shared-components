@@ -82,8 +82,8 @@ const Modal = ({
       <View fillColor="gray-9" className={styles.Overlay} onClick={onRequestClose} />
       <View as="dialog" fillColor="white" minWidth={400} className={styles.Modal} {...props}>
         <View horizontal padding="large" align="middle left">
-          <Text flex fontSize="large" >Header</Text>
-          <Button round size="xsmall" icon="close" onClick={onRequestClose} />
+          <Text flex fontSize="large" >Lorem ipsum dolor sit amet</Text>
+          <Button round icon="close" onClick={onRequestClose} />
         </View>
         <View paddingHorizontal="large">
           {children}
