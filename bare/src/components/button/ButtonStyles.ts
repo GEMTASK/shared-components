@@ -12,7 +12,7 @@ const useStyles = createUseStyles({
       filter: 'brightness(1.04)'
     },
     '&:enabled:active': {
-      filter: 'brightness(0.90)'
+      filter: 'brightness(0.96)'
     }
   },
   default: {
@@ -24,23 +24,24 @@ const useStyles = createUseStyles({
       background: `${OpenColor.gray[6]}30`,
     },
     '&:enabled:active': {
-      background: `${OpenColor.gray[5]}30`,
-      filter: 'brightness(0.0)',
+      background: `${OpenColor.gray[8]}30`,
     },
   },
   primary: {
     '&:enabled:hover': {
-      background: OpenColor.blue[1]
+      background: OpenColor.blue[0],
+      filter: 'none',
     },
     '&:enabled:active': {
-      background: OpenColor.blue[1]
+      background: OpenColor.blue[1],
+      filter: 'none',
     },
   },
   round: {
     borderRadius: 1000,
   },
   selected: {
-    filter: 'brightness(0.90)',
+    filter: 'brightness(0.94)',
   },
   xsmall: {
     minWidth: 24,
