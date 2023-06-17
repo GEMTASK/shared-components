@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import styles from './App.module.css';
-import { hues, View, Text, Image, Button, Stack, Spacer, Divider } from 'bare';
+import { hues, View, Text, Image, Button, Stack, Spacer, Divider, Card } from 'bare';
 import { Input, Popup, Menu, Tabs, Modal, Form } from 'bare';
 
 const Header = () => {
@@ -220,35 +220,26 @@ function App() {
             </Stack>
             <Divider />
             <View fillColor="gray-0" padding="large" style={{ mixBlendMode: 'multiply' }}>
-              <View border fillColor="white">
-                <Image src="./images/istockphoto-1396508734-612x612.jpg" style={{ mixBlendMode: 'multiply' }} />
-                <View padding="large">
-                  <View horizontal>
-                    <View flex>
-                      <Text fontSize="medium" fontWeight="semibold">
-                        Entire villa hosted by Johan
-                      </Text>
-                      <Spacer size="small" />
-                      <Text fontSize="xsmall" textColor="gray-6">
-                        5 Bedrooms &nbsp;&middot;&nbsp; 4 Bathrooms
-                      </Text>
-                    </View>
-                    <View>
-                      <Text fontSize="medium" fontWeight="medium" textAlign="right">
-                        $1,200
-                      </Text>
-                      <Spacer size="small" />
-                      <Text fontSize="xsmall" textAlign="right" textColor="gray-6">
-                        per night
-                      </Text>
-                    </View>
+              <Card
+                imageSrc="./images/istockphoto-1396508734-612x612.jpg"
+                title="Entire villa hosted by Johan"
+                subtitle="5 Bedrooms &nbsp;&middot;&nbsp; 4 Bathrooms"
+                extra={(
+                  <View>
+                    <Text fontSize="medium" fontWeight="medium" textAlign="right">
+                      $1,200
+                    </Text>
+                    <Spacer size="small" />
+                    <Text fontSize="xsmall" textAlign="right" textColor="gray-6">
+                      per night
+                    </Text>
                   </View>
-                  <Spacer size="large" />
-                  <Text>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                  </Text>
-                </View>
-              </View>
+                )}
+              >
+                <Text>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </Text>
+              </Card>
             </View>
           </Stack>
         </Stack>
