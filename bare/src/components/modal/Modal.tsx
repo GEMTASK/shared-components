@@ -1,3 +1,4 @@
+import React from "react";
 import { createPortal } from "react-dom";
 import { createUseStyles } from 'react-jss';
 
@@ -80,7 +81,7 @@ const Modal = ({
     <View align="middle center" style={{ position: 'fixed', inset: 0 }}>
       <View fillColor="gray-9" className={styles.Overlay} onClick={onRequestClose} />
       <View as="dialog" fillColor="white" minWidth={400} className={styles.Modal} {...props}>
-        <View horizontal paddingHorizontal="large" paddingVertical="large" align="middle left">
+        <View horizontal padding="large" align="middle left">
           <Text flex fontSize="large" >Header</Text>
           <Button round size="xsmall" icon="close" onClick={onRequestClose} />
         </View>
@@ -89,7 +90,9 @@ const Modal = ({
         </View>
         <Spacer size="small" />
         <Stack horizontal spacing="small" align="middle right" padding="large">
-          {actions}
+          {actions?.map((action, index) => (
+            React.cloneElement(action, { key: index })
+          ))}
         </Stack>
       </View>
     </View>,

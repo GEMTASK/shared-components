@@ -6,6 +6,7 @@ const x: X = 'xxsmall xxsmall';
 
 type ShorthandPadding =
   | 'large'
+  | 'large none'
   //
   | 'xxsmall xxsmall'
   | 'xxsmall xsmall'

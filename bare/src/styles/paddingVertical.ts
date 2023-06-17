@@ -3,6 +3,10 @@ import { createUseStyles } from 'react-jss';
 import Size from '../types/Size.js';
 
 const usePaddingVerticalStyles = createUseStyles({
+  none: {
+    paddingTop: Size.none,
+    paddingBottom: Size.none,
+  },
   xxsmall: {
     paddingTop: Size.xxsmall,
     paddingBottom: Size.xxsmall,

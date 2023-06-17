@@ -6,6 +6,9 @@ function shorthandPaddingToStyle(align: ShorthandPadding): [keyof typeof Size, k
     case 'large':
       return ['large', 'large'];
     //
+    case 'large none':
+      return ['large', 'none'];
+    //
     case 'xxsmall xxsmall':
       return ['xxsmall', 'xxsmall'];
     case 'xxsmall xsmall':
