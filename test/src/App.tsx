@@ -225,16 +225,22 @@ function App() {
                 <View padding="large">
                   <View horizontal>
                     <View flex>
-                      <Text fontSize="medium" fontWeight="semibold">Entire villa hosted by Johan</Text>
-                      <Spacer size="small" />
-                      <Text fontSize="xsmall" textColor="gray-6">5 Bedrooms &nbsp;&middot;&nbsp; 4 Bathrooms</Text>
-                    </View>
-                    <View>
-                      <Text fontSize="medium" fontWeight="thin" textAlign="right">
-                        <Text fontSize="medium" fontWeight="medium">$1,200</Text> / night
+                      <Text fontSize="medium" fontWeight="semibold">
+                        Entire villa hosted by Johan
                       </Text>
                       <Spacer size="small" />
-                      <Text fontSize="xsmall" textAlign="right" textColor="gray-6">Los Angeles, California</Text>
+                      <Text fontSize="xsmall" textColor="gray-6">
+                        5 Bedrooms &nbsp;&middot;&nbsp; 4 Bathrooms
+                      </Text>
+                    </View>
+                    <View>
+                      <Text fontSize="medium" fontWeight="medium" textAlign="right">
+                        $1,200
+                      </Text>
+                      <Spacer size="small" />
+                      <Text fontSize="xsmall" textAlign="right" textColor="gray-6">
+                        per night
+                      </Text>
                     </View>
                   </View>
                   <Spacer size="large" />
