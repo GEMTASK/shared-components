@@ -10,6 +10,8 @@ import Spacer from '../spacer/Spacer.js';
 import { useStyles as useControlStyles } from '../control/Control.js';
 
 import FormContext from '../form/FormContext.js';
+import Icon from '../icon/Icon.js';
+import OpenColor from 'open-color';
 
 type CheckboxProps = {
   label: string,
@@ -25,7 +27,8 @@ const Checkbox = ({ label, value, onChange, ...props }: CheckboxProps) => {
   return (
     <View as="label" horizontal align="middle left" {...props}>
       <input type="checkbox" checked={value} onChange={handleInputChange} />
-      <Spacer size="xsmall" />
+      <Icon size="xl" color={OpenColor.blue[5]} icon="check-square" />
+      <Spacer size="small" />
       <Text>{label}</Text>
     </View>
   );

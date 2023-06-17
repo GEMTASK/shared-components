@@ -9,6 +9,10 @@ import View, { ViewProps } from '../view/index.js';
 import ViewContext from '../view/ViewContext.js';
 
 const useSpacingStyles = createUseStyles({
+  noneVertical: {
+    height: Size.none,
+    alignSelf: 'stretch',
+  },
   xxsmallVertical: {
     height: Size.xxsmall,
     alignSelf: 'stretch',
@@ -36,6 +40,10 @@ const useSpacingStyles = createUseStyles({
   xxlargeVertical: {
     height: Size.xxlarge,
     alignSelf: 'stretch',
+  },
+  noneHorizontal: {
+    width: Size.none,
+    justifySelf: 'stretch',
   },
   xxsmallHorizontal: {
     width: Size.xxsmall,

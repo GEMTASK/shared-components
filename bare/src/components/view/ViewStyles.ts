@@ -15,6 +15,10 @@ const useStyles = createUseStyles({
   flex: {
     flex: 1,
   },
+  border: {
+    borderRadius: 2,
+    overflow: 'hidden',
+  }
 });
 
 export default useStyles;

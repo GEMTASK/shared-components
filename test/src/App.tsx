@@ -6,7 +6,7 @@ import { Input, Popup, Menu, Tabs, Modal, Form } from 'bare';
 
 const Header = () => {
   return (
-    <View horizontal align="middle left" paddingVertical="medium" paddingHorizontal="medium">
+    <View horizontal align="middle left" padding="medium large">
       <View flex horizontal align="middle left">
         <Image
           src="https://mike-austin.com/new/images/Escher_Circle_Limit_III.jpg"
@@ -29,7 +29,7 @@ function App() {
 
   return (
     <View className={styles.App}>
-      <View flex id="container" className={styles.Container} paddingVertical="large" paddingHorizontal="large">
+      <View flex id="container" className={styles.Container} padding="large">
 
         <View horizontal align="middle left">
           <Text flex fontSize="xlarge" fontWeight="bold" textColor="gray-8">Page Header</Text>
@@ -173,7 +173,7 @@ function App() {
         <Spacer size="large" />
 
         <Stack horizontal spacing="large">
-          <View flex fillColor="gray-0" paddingVertical="large" paddingHorizontal="large" style={{ maxWidth: 500 }}>
+          <View flex border fillColor="gray-0" paddingVertical="large" paddingHorizontal="large" style={{ maxWidth: 500 }}>
             <Stack horizontal spacing="small">
               <Menu />
               <Menu />
@@ -210,23 +210,40 @@ function App() {
             </Form>
             <Spacer size="large" />
             <Button solid primary type="submit" form="form" title="Save" />
-
           </View>
+
           <Stack flex border style={{ maxWidth: 500 }}>
-            <View horizontal paddingHorizontal="medium" align="middle center">
-              <Text flex fontSize="xlarge">Heading</Text>
-              <Button primary title="Press Me" />
-            </View>
-            <Stack flex divider dividerInset={60}>
-              <View horizontal paddingHorizontal="medium" align="middle center">
-                <Text flex fontSize="large">Heading</Text>
-                <Button primary size="xsmall" title="Press Me" />
-              </View>
-              <Spacer size="small" fillColor="gray-2" />
+            <Stack divider dividerInset={64}>
               <Header />
               <Header />
               <Header />
             </Stack>
+            <Divider />
+            <View fillColor="gray-0" padding="large" style={{ mixBlendMode: 'multiply' }}>
+              <View border fillColor="white">
+                <Image src="./images/istockphoto-1396508734-612x612.jpg" style={{ mixBlendMode: 'multiply' }} />
+                <View padding="large">
+                  <View horizontal>
+                    <View flex>
+                      <Text fontSize="medium" fontWeight="semibold">Entire villa hosted by Johan</Text>
+                      <Spacer size="small" />
+                      <Text fontSize="xsmall" textColor="gray-6">5 Bedrooms &nbsp;&middot;&nbsp; 4 Bathrooms</Text>
+                    </View>
+                    <View>
+                      <Text fontSize="medium" fontWeight="thin" textAlign="right">
+                        <Text fontSize="medium" fontWeight="medium">$1,200</Text> / night
+                      </Text>
+                      <Spacer size="small" />
+                      <Text fontSize="xsmall" textAlign="right" textColor="gray-6">Los Angeles, California</Text>
+                    </View>
+                  </View>
+                  <Spacer size="large" />
+                  <Text>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </Text>
+                </View>
+              </View>
+            </View>
           </Stack>
         </Stack>
 

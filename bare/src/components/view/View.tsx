@@ -87,6 +87,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
     paddingVertical && paddingVerticalStyles[paddingVertical],
     paddingHorizontal && paddingHorizontalStyles[paddingHorizontal],
     fillColor && fillColorStyles[fillColor],
+    border && styles.border,
     border && borderColorStyles[borderColor ?? 'gray-3'],
     className,
   );
