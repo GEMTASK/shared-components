@@ -31,7 +31,7 @@ const Checkbox = ({ label, value, onChange, ...props }: CheckboxProps) => {
         size="xl"
         color={value ? OpenColor.blue[5] : OpenColor.white}
         icon={value ? 'square-check' : 'square'}
-        style={{ boxShadow: 'inset 0 0 0 1px gray' }}
+      // style={{ boxShadow: 'inset 0 0 0 1px gray', margin: '-10px 0' }}
       />
       <Spacer size="small" />
       <Text>{label}</Text>

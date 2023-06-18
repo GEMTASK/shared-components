@@ -14,7 +14,7 @@ const useStyles = createUseStyles({
     padding: '0 12px',
     minHeight: 32,
     flexDirection: 'row',
-    boxShadow: `inset 0 0 0 1px ${OpenColor.gray[3]}`,
+    boxShadow: `inset 0 0 0 1px ${OpenColor.gray[4]}`,
     borderRadius: 2,
     '&:focus-within': {
       boxShadow: `inset 0 0 0 2px ${OpenColor.blue[5]}`,
