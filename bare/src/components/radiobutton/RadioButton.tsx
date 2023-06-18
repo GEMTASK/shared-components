@@ -13,13 +13,41 @@ import FormContext from '../form/FormContext.js';
 import Icon from '../icon/Icon.js';
 import OpenColor from 'open-color';
 
-type CheckboxProps = {
+type ListProps = {
+  value: string,
+  options: { [value: string]: string; },
+  onChange?: (value: string) => void,
+};
+
+const List = ({ value, options, onChange }: ListProps) => {
+  const handleChange = (value: string) => {
+    console.log(value);
+    if (onChange) {
+      onChange(value);
+    }
+  };
+
+  return (
+    <Stack horizontal spacing="large">
+      {Object.entries(options).map(([radiobuttonValue, label]) => (
+        <RadioButton
+          key={radiobuttonValue}
+          label={label}
+          value={radiobuttonValue === value}
+          onChange={() => handleChange(radiobuttonValue)}
+        />
+      ))}
+    </Stack>
+  );
+};
+
+type RadioButtonProps = {
   label: string,
   value: boolean,
   onChange?: (value: boolean) => void,
 };
 
-const Checkbox = ({ label, value, onChange, ...props }: CheckboxProps) => {
+const RadioButton = ({ label, value, onChange, ...props }: RadioButtonProps) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(event.target.checked);
@@ -28,7 +56,7 @@ const Checkbox = ({ label, value, onChange, ...props }: CheckboxProps) => {
 
   return (
     <View as="label" horizontal align="middle left" {...props}>
-      <input hidden type="radio" checked={value} onChange={handleInputChange} />
+      <input hidden type="checkbox" checked={value} onChange={handleInputChange} />
       <Icon
         size="xl"
         color={value ? OpenColor.blue[5] : OpenColor.gray[3]}
@@ -41,4 +69,6 @@ const Checkbox = ({ label, value, onChange, ...props }: CheckboxProps) => {
   );
 };
 
-export default Checkbox;
+RadioButton.List = List;
+
+export default RadioButton;

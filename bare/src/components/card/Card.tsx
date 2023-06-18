@@ -19,7 +19,7 @@ const Card = ({
   ...props
 }: CardProps) => {
   return (
-    <View border fillColor="white">
+    <View border fillColor="white" {...props}>
       <Image src={imageSrc} style={{ mixBlendMode: 'multiply' }} />
       <View padding="large">
         <View horizontal>

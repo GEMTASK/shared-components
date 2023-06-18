@@ -4,6 +4,7 @@ import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';
 import Input from '../input/index.js';
 import Checkbox from '../checkbox/index.js';
+import RadioButton from '../radiobutton/RadioButton.js';
 import Select from '../select/index.js';
 import Spacer from '../spacer/Spacer.js';
 
@@ -37,7 +38,9 @@ const Field = ({
 
   const element = (() => {
     switch (type) {
-      case 'radio': return null;
+      case 'radio': return typeof value === 'string' && (
+        <RadioButton.List key={_key} value={value} options={options} onChange={handleInputChange} />
+      );
       case 'checkbox': return typeof value === 'boolean' ? (
         <Checkbox key={_key} label={label} value={value} onChange={handleCheckboxChange} />
       ) : null;
