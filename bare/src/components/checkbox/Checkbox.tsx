@@ -27,7 +27,12 @@ const Checkbox = ({ label, value, onChange, ...props }: CheckboxProps) => {
   return (
     <View as="label" horizontal align="middle left" {...props}>
       <input type="checkbox" checked={value} onChange={handleInputChange} />
-      <Icon size="xl" color={OpenColor.blue[5]} icon="check-square" />
+      <Icon
+        size="xl"
+        color={value ? OpenColor.blue[5] : OpenColor.white}
+        icon={value ? 'square-check' : 'square'}
+        style={{ boxShadow: 'inset 0 0 0 1px gray' }}
+      />
       <Spacer size="small" />
       <Text>{label}</Text>
     </View>

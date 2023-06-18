@@ -3,9 +3,16 @@ import Size from '../types/Size';
 
 function shorthandPaddingToStyle(align: ShorthandPadding): [keyof typeof Size, keyof typeof Size] {
   switch (align) {
+    case 'small':
+      return ['small', 'small'];
+    case 'small none':
+      return ['small', 'none'];
+    case 'medium':
+      return ['medium', 'medium'];
+    case 'medium none':
+      return ['medium', 'none'];
     case 'large':
       return ['large', 'large'];
-    //
     case 'large none':
       return ['large', 'none'];
     //

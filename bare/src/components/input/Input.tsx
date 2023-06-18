@@ -84,7 +84,7 @@ const Input = ({
   })();
 
   return (
-    <View horizontal fillColor="white" /*paddingVertical="xsmall"*/ paddingHorizontal="medium" className={innerStyles.Inner}>
+    <View horizontal fillColor="white" paddingHorizontal="medium" className={innerStyles.Inner}>
       {/* {chips && chips.map((chip, index) => (
           <Chip key={index} label={chip} />
         ))} */}

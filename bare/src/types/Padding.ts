@@ -5,6 +5,10 @@ type X = typeof shorthandPadding[number];
 const x: X = 'xxsmall xxsmall';
 
 type ShorthandPadding =
+  | 'small'
+  | 'small none'
+  | 'medium'
+  | 'medium none'
   | 'large'
   | 'large none'
   //

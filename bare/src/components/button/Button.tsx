@@ -129,7 +129,7 @@ const Button = ({
       paddingVertical={paddingVertical}
       paddingHorizontal={paddingHorizontal}
       align="middle center"
-      minWidth={title ? 100 : undefined}
+      minWidth={title ? 80 : undefined}
       className={buttonClassName}
       {...props}
     >
