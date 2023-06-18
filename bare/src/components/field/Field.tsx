@@ -18,7 +18,13 @@ type FieldProps<T = unknown> = {
   render?: (item: T) => React.ReactNode,
 };
 
-const Field = ({ _key, label, type, options = {}, value }: FieldProps) => {
+const Field = ({
+  _key,
+  label,
+  type,
+  options = {},
+  value
+}: FieldProps) => {
   const { onFieldChange } = useContext(FormContext);
 
   const handleInputChange = (value: string) => {

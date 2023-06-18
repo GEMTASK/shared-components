@@ -3,7 +3,6 @@ import { useState } from 'react';
 import View, { ViewProps } from '../view/index.js';
 import Field from '../field/index.js';
 import Stack from '../stack/Stack.js';
-import Spacer from '../spacer/Spacer.js';
 
 import FormContext from './FormContext.js';
 

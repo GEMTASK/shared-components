@@ -120,8 +120,8 @@ const Button = ({
 
   return (
     <View
-      horizontal
       as="button"
+      horizontal
       disabled={disabled}
       fillColor={fillColor}
       border={borderColor !== undefined}
@@ -129,6 +129,7 @@ const Button = ({
       paddingVertical={paddingVertical}
       paddingHorizontal={paddingHorizontal}
       align="middle center"
+      minWidth={title ? 100 : undefined}
       className={buttonClassName}
       {...props}
     >

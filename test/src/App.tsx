@@ -209,7 +209,9 @@ function App() {
             >
             </Form>
             <Spacer size="large" />
-            <Button solid primary type="submit" form="form" title="Save" />
+            <View horizontal>
+              <Button solid primary type="submit" form="form" title="Save" />
+            </View>
           </View>
 
           <Stack flex border style={{ maxWidth: 500 }}>
