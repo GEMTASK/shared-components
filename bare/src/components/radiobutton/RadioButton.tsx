@@ -56,11 +56,11 @@ const RadioButton = ({ label, value, onChange, ...props }: RadioButtonProps) => 
 
   return (
     <View as="label" horizontal align="middle left" {...props}>
-      <input hidden type="checkbox" checked={value} onChange={handleInputChange} />
+      <input hidden type="radio" checked={value} onChange={handleInputChange} />
       <Icon
         size="xl"
         color={value ? OpenColor.blue[5] : OpenColor.gray[3]}
-        icon={value ? 'square-check' : 'square'}
+        icon={value ? 'circle-check' : 'circle'}
       // style={{ boxShadow: 'inset 0 0 0 1px gray', margin: '-10px 0' }}
       />
       <Spacer size="small" />
