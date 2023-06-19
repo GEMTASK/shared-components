@@ -65,7 +65,7 @@ const Field = ({
     <View>
       {!!label && (
         <>
-          <Text caps fontSize="xxsmall" fontWeight="medium" textColor="gray-6">{label}</Text>
+          <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6">{label}</Text>
           <Spacer size="small" />
         </>
       )}

@@ -206,11 +206,20 @@ function App() {
                   }
                 },
                 {
-                  key: 'suit', label: 'Card Suits', type: 'checkboxlist', options: {
-                    'D': 'Diamonds',
-                    'H': 'Hearts',
-                    'C': 'Clubs',
-                    'S': 'Spades',
+                  key: 'states', label: 'states', type: 'checkboxlist', options: {
+                    'AL': 'Alabama',
+                    'AK': 'Alaska',
+                    'AZ': 'Arizona',
+                    'AR': 'Arkansas',
+                    'CA': 'California',
+                    'CO': 'Colorado',
+                  }
+                },
+                {
+                  key: 'states', label: 'states', type: 'checkboxlist', options: {
+                    'AL': 'Alabama',
+                    'AK': 'Alaska',
+                    'AZ': 'Arizona',
                   }
                 },
               ]}
@@ -236,7 +245,7 @@ function App() {
               <Header />
             </Stack>
             <Divider />
-            <View fillColor="gray-0" padding="large" style={{ mixBlendMode: 'multiply' }}>
+            <View flex fillColor="gray-0" padding="large" style={{ mixBlendMode: 'multiply' }}>
               <Card
                 imageSrc="./images/istockphoto-1396508734-612x612.jpg"
                 title="Entire villa hosted by Johan"

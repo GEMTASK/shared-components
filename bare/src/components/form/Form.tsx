@@ -54,7 +54,7 @@ const Form = ({
 
   return (
     <FormContext.Provider value={{ onFieldChange: handleFieldChange }}>
-      <Stack as="form" spacing="large" onSubmit={handleFormSubmit} {...props}>
+      <Stack as="form" spacing="xlarge" onSubmit={handleFormSubmit} {...props}>
         {fields.map(({ key, ...props }, index) => (
           <Field key={index} _key={key} value={values[key]} {...props} />
         ))}

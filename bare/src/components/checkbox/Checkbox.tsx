@@ -28,9 +28,10 @@ const List = ({ value, options, onChange }: ListProps) => {
   };
 
   return (
-    <Stack horizontal spacing="large">
+    <Stack horizontal style={{ columnGap: 16, rowGap: 8, flexWrap: 'wrap' }}>
       {Object.entries(options).map(([checkboxValue, label]) => (
         <Checkbox
+          flex
           key={checkboxValue}
           label={label}
           value={value.includes(checkboxValue)}
@@ -39,6 +40,8 @@ const List = ({ value, options, onChange }: ListProps) => {
           )}
         />
       ))}
+      <View flex />
+      <View flex />
     </Stack>
   );
 };
@@ -47,7 +50,7 @@ type CheckboxProps = {
   label: string,
   value: boolean,
   onChange?: (value: boolean) => void,
-};
+} & ViewProps;
 
 const Checkbox = ({ label, value, onChange, ...props }: CheckboxProps) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
