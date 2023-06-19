@@ -4,6 +4,7 @@ import { useStyles as useControlStyles } from '../control/Control.js';
 
 import Text from "../text/Text.js";
 import Spacer from "../spacer/Spacer.js";
+import Icon from "../icon/Icon.js";
 
 type FieldProps<T extends React.ElementType> = {
   as: T,
@@ -50,15 +51,18 @@ const Select = ({
   };
 
   return (
-    <View as="select" value={value} className={controlStyles.Inner} onChange={handleSelectChange}>
-      <option hidden>
-        Please select...
-      </option>
-      {Object.entries(options).map(([value, label]) => (
-        <option key={value} value={value}>
-          {label}
+    <View style={{ position: 'relative' }}>
+      <View as="select" value={value} className={controlStyles.Inner} onChange={handleSelectChange}>
+        <option hidden>
+          Please select...
         </option>
-      ))}
+        {Object.entries(options).map(([value, label]) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
+      </View>
+      <Icon icon="chevron-down" style={{ position: 'absolute', right: 12, top: '50%', marginTop: -8, pointerEvents: 'none' }} />
     </View>
   );
 };
