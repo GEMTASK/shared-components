@@ -13,8 +13,8 @@ import FormContext from '../form/FormContext.js';
 type FieldProps<T = unknown> = {
   _key: string,
   label: string,
-  type?: 'text' | 'date' | 'color' | 'select' | 'checkbox' | 'radio',
-  value?: string | boolean,
+  type?: 'text' | 'date' | 'color' | 'select' | 'checkbox' | 'radio' | 'checkboxlist',
+  value?: string | boolean | string[],
   options?: { [value: string]: string; },
   render?: (item: T) => React.ReactNode,
 };
@@ -36,10 +36,17 @@ const Field = ({
     onFieldChange(_key, value);
   };
 
+  const handleCheckboxListChange = (value: string[]) => {
+    onFieldChange(_key, value);
+  };
+
   const element = (() => {
     switch (type) {
       case 'radio': return typeof value === 'string' && (
         <RadioButton.List key={_key} value={value} options={options} onChange={handleInputChange} />
+      );
+      case 'checkboxlist': return Array.isArray(value) && (
+        <Checkbox.List key={_key} value={value} options={options} onChange={handleCheckboxListChange} />
       );
       case 'checkbox': return typeof value === 'boolean' ? (
         <Checkbox key={_key} label={label} value={value} onChange={handleCheckboxChange} />

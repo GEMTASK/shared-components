@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface FormContext {
-  onFieldChange: (key: string, value: string | boolean) => void,
+  onFieldChange: (key: string, value: string | boolean | string[]) => void,
 }
 
 const FormContext = React.createContext<FormContext>({

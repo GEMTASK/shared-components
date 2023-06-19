@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { concat, without } from 'rambda';
 
 import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';
@@ -12,6 +13,35 @@ import { useStyles as useControlStyles } from '../control/Control.js';
 import FormContext from '../form/FormContext.js';
 import Icon from '../icon/Icon.js';
 import OpenColor from 'open-color';
+
+type ListProps = {
+  value: string[],
+  options: { [value: string]: string; },
+  onChange?: (value: string[]) => void,
+};
+
+const List = ({ value, options, onChange }: ListProps) => {
+  const handleChange = (value: string[]) => {
+    if (onChange) {
+      onChange(value);
+    }
+  };
+
+  return (
+    <Stack horizontal spacing="large">
+      {Object.entries(options).map(([checkboxValue, label]) => (
+        <Checkbox
+          key={checkboxValue}
+          label={label}
+          value={value.includes(checkboxValue)}
+          onChange={(checked: boolean) => handleChange(
+            checked ? concat([checkboxValue], value) : without([checkboxValue], value)
+          )}
+        />
+      ))}
+    </Stack>
+  );
+};
 
 type CheckboxProps = {
   label: string,
@@ -28,7 +58,7 @@ const Checkbox = ({ label, value, onChange, ...props }: CheckboxProps) => {
 
   return (
     <View as="label" horizontal align="middle left" {...props}>
-      <input hidden type="radio" checked={value} onChange={handleInputChange} />
+      <input hidden type="checkbox" checked={value} onChange={handleInputChange} />
       <Icon
         size="xl"
         color={value ? OpenColor.blue[5] : OpenColor.gray[3]}
@@ -40,5 +70,7 @@ const Checkbox = ({ label, value, onChange, ...props }: CheckboxProps) => {
     </View>
   );
 };
+
+Checkbox.List = List;
 
 export default Checkbox;

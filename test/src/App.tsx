@@ -191,7 +191,6 @@ function App() {
                 { key: 'firstName', label: 'First Name', type: 'text' },
                 { key: 'dueDate', label: 'Due Date', type: 'date' },
                 { key: 'fillColor', label: 'Fill Color', type: 'color' },
-                { key: 'married', label: 'Married', type: 'checkbox' },
                 {
                   key: 'state', label: 'State', type: 'select', options: {
                     'AL': 'Alabama',
@@ -204,6 +203,14 @@ function App() {
                     'AL': 'Alabama',
                     'AK': 'Alaska',
                     'AZ': 'Arizona',
+                  }
+                },
+                {
+                  key: 'suit', label: 'Card Suits', type: 'checkboxlist', options: {
+                    'D': 'Diamonds',
+                    'H': 'Hearts',
+                    'C': 'Clubs',
+                    'S': 'Spades',
                   }
                 },
               ]}

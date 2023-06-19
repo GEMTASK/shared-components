@@ -9,13 +9,14 @@ import FormContext from './FormContext.js';
 type FieldDefinition<T = unknown> = {
   key: string,
   label: string,
-  type?: 'text' | 'date' | 'color' | 'select' | 'checkbox' | 'radio',
+  type?: 'text' | 'date' | 'color' | 'select' | 'checkbox' | 'radio' | 'checkboxlist',
   options?: { [value: string]: string; },
   render?: (item: T) => React.ReactNode,
 };
 
 const getDefaultValueForType = (type: string = 'text') => {
   switch (type) {
+    case 'checkboxlist': return [];
     case 'checkbox': return false;
     case 'color': return '#FFFFFF';
   }
@@ -25,7 +26,7 @@ const getDefaultValueForType = (type: string = 'text') => {
 
 type FormProps = {
   fields?: FieldDefinition[],
-  initialValues?: { [key: string]: string | boolean; },
+  initialValues?: { [key: string]: string | boolean | string[]; },
 } & ViewProps<'form'>;
 
 const Form = ({
@@ -39,7 +40,7 @@ const Form = ({
     [key]: acc[key] ?? getDefaultValueForType(type)
   }), initialValues));
 
-  const handleFieldChange = (key: string, value: string | boolean) => {
+  const handleFieldChange = (key: string, value: string | boolean | string[]) => {
     console.log('handleFieldChange', key, value);
 
     setValues({ ...values, [key]: value });
