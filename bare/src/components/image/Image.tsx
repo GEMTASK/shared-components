@@ -16,7 +16,7 @@ const Image = ({
 }: ImageProps) => {
   return (
     // <View {...props} style={{ width, height, ...style }}>
-    <View as="img" src={src} style={{ objectFit: 'contain', width, height, ...style }} />
+    <View as="img" src={src} {...props} style={{ objectFit: 'contain', width, height, ...style }} />
     // </View>
   );
 };
