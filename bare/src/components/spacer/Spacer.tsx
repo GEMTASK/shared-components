@@ -41,6 +41,7 @@ const useSpacingStyles = createUseStyles({
     height: Size.xxlarge,
     alignSelf: 'stretch',
   },
+  //
   noneHorizontal: {
     width: Size.none,
     justifySelf: 'stretch',
@@ -75,22 +76,94 @@ const useSpacingStyles = createUseStyles({
   },
 });
 
+const useNegativeSpacingStyles = createUseStyles({
+  noneVertical: {
+    marginTop: Size.none,
+    alignSelf: 'stretch',
+  },
+  xxsmallVertical: {
+    marginTop: -Size.xxsmall,
+    alignSelf: 'stretch',
+  },
+  xsmallVertical: {
+    marginTop: -Size.xsmall,
+    alignSelf: 'stretch',
+  },
+  smallVertical: {
+    marginTop: -Size.small,
+    alignSelf: 'stretch',
+  },
+  mediumVertical: {
+    marginTop: -Size.medium,
+    alignSelf: 'stretch',
+  },
+  largeVertical: {
+    marginTop: -Size.large,
+    alignSelf: 'stretch',
+  },
+  xlargeVertical: {
+    marginTop: -Size.xlarge,
+    alignSelf: 'stretch',
+  },
+  xxlargeVertical: {
+    marginTop: -Size.xxlarge,
+    alignSelf: 'stretch',
+  },
+  //
+  noneHorizontal: {
+    marginLeft: Size.none,
+    justifySelf: 'stretch',
+  },
+  xxsmallHorizontal: {
+    marginLeft: -Size.xxsmall,
+    justifySelf: 'stretch',
+  },
+  xsmallHorizontal: {
+    marginLeft: -Size.xsmall,
+    justifySelf: 'stretch',
+  },
+  smallHorizontal: {
+    marginLeft: -Size.small,
+    justifySelf: 'stretch',
+  },
+  mediumHorizontal: {
+    marginLeft: -Size.medium,
+    justifySelf: 'stretch',
+  },
+  largeHorizontal: {
+    marginLeft: -Size.large,
+    justifySelf: 'stretch',
+  },
+  xlargeHorizontal: {
+    marginLeft: -Size.xlarge,
+    justifySelf: 'stretch',
+  },
+  xxlargeHorizontal: {
+    marginLeft: -Size.xxlarge,
+    justifySelf: 'stretch',
+  },
+});
+
 type SpacerProps = {
   size?: keyof typeof Size,
+  negativeSize?: keyof typeof Size,
   className?: string,
 } & ViewProps;
 
 const Spacer = ({
   size,
+  negativeSize,
   className,
   ...props
 }: SpacerProps) => {
   const { isHorizontal } = useContext(ViewContext);
 
   const spacingStyles = useSpacingStyles();
+  const negativeSpacingStyles = useNegativeSpacingStyles();
 
   const spacerClassName = clsx(
     size && spacingStyles[`${size}${isHorizontal ? 'Horizontal' : 'Vertical'}`],
+    negativeSize && negativeSpacingStyles[`${negativeSize}${isHorizontal ? 'Horizontal' : 'Vertical'}`],
     className,
   );
 

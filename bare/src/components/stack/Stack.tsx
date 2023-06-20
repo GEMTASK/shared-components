@@ -16,6 +16,7 @@ const useStyles = createUseStyles({
 type StackProps = {
   spacing?: keyof typeof Size,
   spacingColor?: Color,
+  negativeSpacing?: keyof typeof Size,
   divider?: boolean,
   dividerInset?: number,
   className?: string,
@@ -25,6 +26,7 @@ type StackProps = {
 const Stack = ({
   spacing,
   spacingColor,
+  negativeSpacing,
   divider,
   dividerInset,
   className,
@@ -45,8 +47,8 @@ const Stack = ({
           {divider && index > 0 && (
             <Divider spacing={spacing} spacingColor={spacingColor} style={{ marginLeft: dividerInset }} />
           )}
-          {spacing && !divider && index > 0 && (
-            <Spacer size={spacing} fillColor={spacingColor} />
+          {(spacing || negativeSpacing) && !divider && index > 0 && (
+            <Spacer size={spacing} negativeSize={negativeSpacing} fillColor={spacingColor} />
           )}
           {child}
         </>

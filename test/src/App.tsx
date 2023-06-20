@@ -270,13 +270,10 @@ function App() {
               </Card>
             </View>
             <Divider />
-            <Stack horizontal padding="large">
+            <Stack horizontal negativeSpacing="small" padding="large">
               <Image src="/images/leilani-angel-K84vnnzxmTQ-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
-              <Spacer size="none" style={{ marginRight: -8 }} />
               <Image src="/images/foto-sushi-6anudmpILw4-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
-              <Spacer size="none" style={{ marginRight: -8 }} />
               <Image src="/images/luis-villasmil-6qf1uljGpU4-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
-              <Spacer size="none" style={{ marginRight: -8 }} />
               <Image src="/images/christian-buehner-DItYlc26zVI-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
             </Stack>
           </Stack>
