@@ -13,6 +13,7 @@ import { useStyles as useControlStyles } from '../control/Control.js';
 import FormContext from '../form/FormContext.js';
 import Icon from '../icon/Icon.js';
 import OpenColor from 'open-color';
+import useStyles from '../view/ViewStyles.js';
 
 type ListProps = {
   value: string[],
@@ -50,9 +51,11 @@ type CheckboxProps = {
   label: string,
   value: boolean,
   onChange?: (value: boolean) => void,
-} & ViewProps;
+} & Omit<ViewProps, 'onChange'>;
 
 const Checkbox = ({ label, value, onChange, ...props }: CheckboxProps) => {
+  const styles = useControlStyles();
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(event.target.checked);
@@ -61,13 +64,15 @@ const Checkbox = ({ label, value, onChange, ...props }: CheckboxProps) => {
 
   return (
     <View as="label" horizontal align="middle left" {...props}>
-      <input hidden type="checkbox" checked={value} onChange={handleInputChange} />
-      <Icon
-        size="xl"
-        color={value ? OpenColor.blue[5] : OpenColor.gray[3]}
-        icon={value ? 'square-check' : 'square'}
-      // style={{ boxShadow: 'inset 0 0 0 1px gray', margin: '-10px 0' }}
-      />
+      <View border fillColor={value ? 'blue-5' : 'white'} align="center" minWidth={24} minHeight={24} style={{ overflow: 'hidden', boxShadow: value ? 'none' : undefined }}>
+        <input type="checkbox" checked={value} style={{ position: 'absolute', left: -1000 }} onChange={handleInputChange} />
+        <Icon
+          size="sm"
+          color={value ? OpenColor.white : OpenColor.gray[3]}
+          icon={value ? 'check' : undefined}
+        // style={{ boxShadow: 'inset 0 0 0 1px gray', margin: '-10px 0' }}
+        />
+      </View>
       <Spacer size="small" />
       <Text>{label}</Text>
     </View>
