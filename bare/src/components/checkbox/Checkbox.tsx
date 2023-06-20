@@ -66,12 +66,13 @@ const Checkbox = ({ label, value, onChange, ...props }: CheckboxProps) => {
     <View as="label" horizontal align="middle left" {...props}>
       <View border fillColor={value ? 'blue-5' : 'white'} align="center" minWidth={24} minHeight={24} style={{ overflow: 'hidden', boxShadow: value ? 'none' : undefined }}>
         <input type="checkbox" checked={value} style={{ position: 'absolute', left: -1000 }} onChange={handleInputChange} />
-        <Icon
-          size="sm"
-          color={value ? OpenColor.white : OpenColor.gray[3]}
-          icon={value ? 'check' : undefined}
-        // style={{ boxShadow: 'inset 0 0 0 1px gray', margin: '-10px 0' }}
-        />
+        {value && (
+          <Icon
+            size="sm"
+            color={value ? OpenColor.white : OpenColor.gray[3]}
+            icon={'check'}
+          />
+        )}
       </View>
       <Spacer size="small" />
       <Text>{label}</Text>

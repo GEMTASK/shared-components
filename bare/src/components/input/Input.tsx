@@ -27,7 +27,7 @@ const useInnerStyles = createUseStyles({
     flexWrap: 'wrap',
     minHeight: 32,
     boxShadow: `inset 0 0 0 1px ${OpenColor.gray[4]}`,
-    borderRadius: 2,
+    borderRadius: 2.5,
     '&:focus-within': {
       boxShadow: `inset 0 0 0 2px ${OpenColor.blue[5]}`,
     }
@@ -59,7 +59,7 @@ const Input = ({
       case 'date': return (
         <input
           type="date"
-          style={{ background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans' }}
+          style={{ background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2.5, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans' }}
           onChange={handleChange}
           {...props}
         />
@@ -75,7 +75,7 @@ const Input = ({
       default: return (
         <input
           type={type}
-          style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans' }}
+          style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2.5, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans' }}
           onChange={handleChange}
           {...props}
         />

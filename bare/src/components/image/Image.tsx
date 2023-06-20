@@ -2,8 +2,8 @@ import View, { ViewProps } from "../view/index.js";
 
 type ImageProps = {
   src?: string,
-  width: number,
-  height: number,
+  width?: number,
+  height?: number,
   style?: React.CSSProperties,
 } & Omit<ViewProps, 'children'>;
 

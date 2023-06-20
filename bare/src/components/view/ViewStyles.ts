@@ -16,7 +16,7 @@ const useStyles = createUseStyles({
     flex: 1,
   },
   border: {
-    borderRadius: 2,
+    borderRadius: 2.5,
     overflow: 'hidden',
   }
 });

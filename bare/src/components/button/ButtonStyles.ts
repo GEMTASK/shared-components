@@ -7,7 +7,7 @@ const useStyles = createUseStyles({
   Button: {
     appearance: 'none',
     border: 'none',
-    borderRadius: Size.xxsmall,
+    borderRadius: 2.5,
     '&:enabled:hover': {
       filter: 'brightness(1.04)'
     },

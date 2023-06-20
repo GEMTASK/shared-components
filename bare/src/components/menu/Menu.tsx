@@ -68,7 +68,7 @@ const Menu = () => {
     <View tabIndex={0} style={{ position: 'relative' }} onBlur={handleBlur}>
       <Button solid title="Menu" selected={isMenuVisible} onPointerDown={handleButtonClick} rightIcon="chevron-down" />
       {isMenuVisible && (
-        <View ref={menuElementRef} border fillColor="white" padding="small none" style={{ position: 'absolute', top: '100%', borderRadius: 2 }}>
+        <View ref={menuElementRef} border fillColor="white" padding="small none" style={{ position: 'absolute', top: '100%', borderRadius: 2.5 }}>
           {items.map((item, index) => (
             item ? (
               <Item key={index} title={item.title} onClick={item.action} onHideMenu={handleHideMenu} />

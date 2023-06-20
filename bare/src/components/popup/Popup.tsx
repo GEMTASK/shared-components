@@ -65,7 +65,7 @@ const Popup = ({
           border
           fillColor="white"
           padding="small"
-          style={{ position: 'absolute', top: '100%', borderRadius: 2 }}
+          style={{ position: 'absolute', top: '100%', borderRadius: 2.5 }}
           onPointerDown={preventDefault}
         >
           {children}
