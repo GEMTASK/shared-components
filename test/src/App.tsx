@@ -10,7 +10,9 @@ const Header = () => {
       <View flex horizontal align="middle left">
         <Image
           src="https://mike-austin.com/new/images/Escher_Circle_Limit_III.jpg"
-          style={{ margin: '-5px 0', height: 40, objectFit: 'contain' }}
+          width={40}
+          height={40}
+          style={{ margin: '-5px 0' }}
         />
         <Spacer size="small" />
         <View flex>
@@ -267,6 +269,16 @@ function App() {
                 </Text>
               </Card>
             </View>
+            <Divider />
+            <Stack horizontal padding="large">
+              <Image src="/images/leilani-angel-K84vnnzxmTQ-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
+              <Spacer size="none" style={{ marginRight: -8 }} />
+              <Image src="/images/foto-sushi-6anudmpILw4-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
+              <Spacer size="none" style={{ marginRight: -8 }} />
+              <Image src="/images/luis-villasmil-6qf1uljGpU4-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
+              <Spacer size="none" style={{ marginRight: -8 }} />
+              <Image src="/images/christian-buehner-DItYlc26zVI-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
+            </Stack>
           </Stack>
         </Stack>
 

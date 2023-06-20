@@ -2,14 +2,22 @@ import View, { ViewProps } from "../view/index.js";
 
 type ImageProps = {
   src?: string,
+  width: number,
+  height: number,
+  style?: React.CSSProperties,
 } & Omit<ViewProps, 'children'>;
 
 const Image = ({
   src,
+  width,
+  height,
+  style,
   ...props
 }: ImageProps) => {
   return (
-    <View as="img" src={src} {...props} />
+    // <View {...props} style={{ width, height, ...style }}>
+    <View as="img" src={src} style={{ objectFit: 'contain', width, height, ...style }} />
+    // </View>
   );
 };
 
