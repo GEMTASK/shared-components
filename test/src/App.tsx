@@ -1,10 +1,25 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 import styles from './App.module.css';
 
 import { hues, View, Text, Image, Button, Stack, Spacer, Divider, Card } from 'bare';
 import { Input, Popup, Menu, Tabs, Modal, Form } from 'bare';
+
+import { TextProps } from 'bare/dist/components/text/Text';
+
+type LinkProps = {
+
+} & TextProps<'a'> & React.ComponentProps<typeof RouterLink>;
+
+const Link = ({
+  children,
+  ...props
+}: LinkProps) => {
+  return (
+    <Text as={RouterLink} textColor="blue-5" {...props}>{children}</Text>
+  );
+};
 
 const Header = () => {
   return (
@@ -36,9 +51,10 @@ function App() {
       <View flex id="container" className={styles.Container} padding="large">
 
         <Stack horizontal spacing="large">
-          <Text as={Link} to="grid" textColor="blue-5">Grid</Text>
+          <Text as={RouterLink} to="grid" textColor="blue-5">Grid</Text>
+          <Link to="grid">Grid</Link>
           <Text>
-            Go to <Text as={Link} to="grid" textColor="blue-5">Grid</Text> to learn more.
+            Go to <Text as={RouterLink} to="grid" textColor="blue-5">Grid</Text> to learn more.
           </Text>
         </Stack>
 

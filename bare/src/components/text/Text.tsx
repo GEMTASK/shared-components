@@ -78,3 +78,7 @@ const Text = <T extends React.ElementType = 'span'>({
 };
 
 export default Text;
+
+export type {
+  TextProps,
+};
