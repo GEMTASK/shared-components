@@ -28,6 +28,7 @@ const preventDefault = (event: React.PointerEvent) => {
 const Popup = ({
   element,
   children,
+  ...props
 }: PopupProps) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const menuElementRef = useRef<HTMLDivElement>(null);
@@ -67,6 +68,7 @@ const Popup = ({
           padding="small"
           style={{ position: 'absolute', top: '100%', borderRadius: 2.5 }}
           onPointerDown={preventDefault}
+          {...props}
         >
           {children}
         </View>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import styles from './App.module.css';
+
 import { hues, View, Text, Image, Button, Stack, Spacer, Divider, Card } from 'bare';
 import { Input, Popup, Menu, Tabs, Modal, Form } from 'bare';
 
@@ -33,6 +35,14 @@ function App() {
     <View className={styles.App}>
       <View flex id="container" className={styles.Container} padding="large">
 
+        <Stack horizontal spacing="large">
+          <Text as={Link} to="grid" textColor="blue-5">Grid</Text>
+          <Text>
+            Go to <Text as={Link} to="grid" textColor="blue-5">Grid</Text> to learn more.
+          </Text>
+        </Stack>
+
+        <Divider spacing="large" />
         <View horizontal align="middle left">
           <Text flex fontSize="xlarge" fontWeight="bold" textColor="gray-8">Page Header</Text>
           <Button primary title="Action Button" />
@@ -47,7 +57,7 @@ function App() {
           <Spacer size="small" />
           <Button solid primary size="xsmall" title="Action Button" />
         </View>
-        <Spacer size="small" />
+        <Spacer size="large" />
         <Divider />
         <Spacer size="large" />
 

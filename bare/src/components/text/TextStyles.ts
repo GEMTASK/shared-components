@@ -1,15 +1,5 @@
 import React, { useContext } from 'react';
 import { createUseStyles } from 'react-jss';
-import clsx from 'clsx';
-
-import Color from '../../types/Color';
-
-import useTextAlignStyles from '../../styles/textAlign.js';
-import useTextColorStyles from '../../styles/textColor.js';
-
-import View from '../view/index.js';
-
-import TextContext from './TextContext.js';
 
 const useInnerStyles = createUseStyles({
   Text: {
@@ -17,7 +7,9 @@ const useInnerStyles = createUseStyles({
     lineHeight: '20px',
     margin: '-4px 0 -3px 0',
     display: 'inline-block',
-    cursor: 'default',
+    '&:not(a)': {
+      cursor: 'default',
+    }
     // '&[contenteditable], &:active': {
     //   cursor: 'text'
     // },

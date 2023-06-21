@@ -20,7 +20,6 @@ type StackProps = {
   divider?: boolean,
   dividerInset?: number,
   className?: string,
-  children?: React.ComponentProps<typeof View>['children'],
 } & React.ComponentProps<typeof View>;
 
 const Stack = ({

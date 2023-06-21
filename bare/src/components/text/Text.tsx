@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
 
 import Color from '../../types/Color';
+import Size from '../../types/Size';
 
 import { useInnerStyles, useFontSizeStyles, useFontWeightStyles } from './TextStyles.js';
 import useTextAlignStyles from '../../styles/textAlign.js';
@@ -12,9 +12,10 @@ import View from '../view/index.js';
 
 import TextContext from './TextContext.js';
 
-type Child<T> = string | number | React.ReactElement<T | HTMLBRElement>;
+type Children<T> = string | number | React.ReactElement<T | HTMLBRElement> | Children<T>[];
 
-type TextProps = {
+type TextProps<T extends React.ElementType = 'span'> = {
+  as?: T,
   caps?: boolean,
   fontSize?: 'xxsmall' | 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge',
   fontWeight?: 'thin' | 'normal' | 'medium' | 'semibold' | 'bold',
@@ -22,10 +23,11 @@ type TextProps = {
   textColor?: Color,
   className?: string,
   style?: React.CSSProperties,
-  children?: Child<TextProps> | Child<TextProps>[],
+  children?: Children<TextProps>,
 } & Omit<React.ComponentProps<typeof View>, 'children'>;
 
-const Text = ({
+const Text = <T extends React.ElementType = 'span'>({
+  as,
   caps,
   fontSize,
   fontWeight,
@@ -33,7 +35,7 @@ const Text = ({
   textColor,
   children,
   ...props
-}: TextProps) => {
+}: TextProps<T>) => {
   const isTextParent = useContext(TextContext);
 
   const innerStyles = useInnerStyles();
@@ -43,7 +45,6 @@ const Text = ({
   const textColorStyles = useTextColorStyles();
 
   const textClassName = clsx(
-    innerStyles.Text,
     caps && innerStyles.caps,
     fontSize && fontSizeStyles[fontSize],
     fontWeight && fontWeightStyles[fontWeight],
@@ -52,23 +53,25 @@ const Text = ({
   );
 
   const childrenElement = typeof children === 'string'
-    ? children.split(/\n|\\n/).reduce<Child<TextProps>[]>((string, word, index) => (
+    ? children.split(/\n|\\n/).reduce<Children<TextProps>[]>((string, word, index) => (
       index > 0 ? [...string, <br key={index} />, word] : [...string, word]
     ), [])
     : children;
 
+  const Component = as ?? 'span';
+
   if (isTextParent) {
     return (
-      <span className={textClassName}>{childrenElement}</span>
+      <Component className={textClassName}>{childrenElement}</Component>
     );
   };
 
   return (
     <TextContext.Provider value={true}>
       <View {...props}>
-        <span className={textClassName}>
+        <Component className={clsx(innerStyles.Text, textClassName)}>
           {childrenElement}
-        </span>
+        </Component>
       </View>
     </TextContext.Provider>
   );
