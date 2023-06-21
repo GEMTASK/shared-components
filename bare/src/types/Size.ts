@@ -9,4 +9,15 @@ const enum Size {
   xxlarge = 24,
 }
 
+const enum Size2 {
+  none = 0,
+  xxsmall = 8,
+  xsmall = 12,
+  small = 16,
+  medium = 20,
+  large = 24,
+  xlarge = 28,
+  xxlarge = 32,
+}
+
 export default Size;

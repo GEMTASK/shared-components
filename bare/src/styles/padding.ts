@@ -94,6 +94,36 @@ function shorthandPaddingToStyle(align: ShorthandPadding): [keyof typeof Size, k
       return ['large', 'xlarge'];
     case 'large xxlarge':
       return ['large', 'xxlarge'];
+    //
+    case 'xlarge xxsmall':
+      return ['xlarge', 'xxsmall'];
+    case 'xlarge xsmall':
+      return ['xlarge', 'xsmall'];
+    case 'xlarge small':
+      return ['xlarge', 'small'];
+    case 'xlarge medium':
+      return ['xlarge', 'medium'];
+    case 'xlarge large':
+      return ['xlarge', 'large'];
+    case 'xlarge xlarge':
+      return ['xlarge', 'xlarge'];
+    case 'xlarge xxlarge':
+      return ['xlarge', 'xxlarge'];
+    //
+    case 'xxlarge xxsmall':
+      return ['xxlarge', 'xxsmall'];
+    case 'xxlarge xsmall':
+      return ['xxlarge', 'xsmall'];
+    case 'xxlarge small':
+      return ['xxlarge', 'small'];
+    case 'xxlarge medium':
+      return ['xxlarge', 'medium'];
+    case 'xxlarge large':
+      return ['xxlarge', 'large'];
+    case 'xxlarge xlarge':
+      return ['xxlarge', 'xlarge'];
+    case 'xxlarge xxlarge':
+      return ['xxlarge', 'xxlarge'];
   }
 
   return ['small', 'small'];

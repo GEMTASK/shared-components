@@ -32,8 +32,10 @@ type ViewProps<T extends React.ElementType = 'div'> = {
   as?: T,
   horizontal?: boolean,
   flex?: boolean,
-  minWidth?: number,
-  minHeight?: number,
+  minWidth?: number | string,
+  minHeight?: number | string,
+  maxWidth?: number | string,
+  maxHeight?: number | string,
   align?: ShorthandAlign,
   alignVertical?: AlignVertical,
   alignHorizontal?: AlignHorizontal,
@@ -54,6 +56,8 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   flex,
   minWidth,
   minHeight,
+  maxWidth,
+  maxHeight,
   align,
   alignVertical = align && shorthandAlignToStyle(align)[0],
   alignHorizontal = align && shorthandAlignToStyle(align)[1],
@@ -95,6 +99,8 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   const viewStyle = {
     minWidth,
     minHeight,
+    maxWidth,
+    maxHeight,
     ...style,
   };
 

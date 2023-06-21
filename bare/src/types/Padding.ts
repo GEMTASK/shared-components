@@ -53,6 +53,22 @@ type ShorthandPadding =
   | 'large large'
   | 'large xlarge'
   | 'large xxlarge'
+  //
+  | 'xlarge xxsmall'
+  | 'xlarge xsmall'
+  | 'xlarge small'
+  | 'xlarge medium'
+  | 'xlarge large'
+  | 'xlarge xlarge'
+  | 'xlarge xxlarge'
+  //
+  | 'xxlarge xxsmall'
+  | 'xxlarge xsmall'
+  | 'xxlarge small'
+  | 'xxlarge medium'
+  | 'xxlarge large'
+  | 'xxlarge xlarge'
+  | 'xxlarge xxlarge'
   ;
 
 export type {
