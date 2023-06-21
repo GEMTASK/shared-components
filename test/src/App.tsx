@@ -14,10 +14,11 @@ type LinkProps = {
 
 const Link = ({
   children,
+  to,
   ...props
 }: LinkProps) => {
   return (
-    <Text as={RouterLink} textColor="blue-5" {...props}>{children}</Text>
+    <Text inner={RouterLink} innerProps={{ to }} textColor="blue-5" {...props}>{children}</Text>
   );
 };
 
@@ -50,11 +51,10 @@ function App() {
     <View className={styles.App}>
       <View flex id="container" className={styles.Container} padding="large">
 
-        <Stack horizontal spacing="large">
-          <Text as={RouterLink} to="grid" textColor="blue-5">Grid</Text>
-          <Link to="grid">Grid</Link>
+        <Stack horizontal spacing="large" align="center">
+          <Link to="grid" fillColor="gray-3" padding="small">Grid</Link>
           <Text>
-            Go to <Text as={RouterLink} to="grid" textColor="blue-5">Grid</Text> to learn more.
+            Go to <Link to="grid">Grid</Link> to learn more.
           </Text>
         </Stack>
 
@@ -323,10 +323,6 @@ function App() {
             Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
           </Text>
         </Tabs>
-
-        <Divider spacing="large" />
-
-        <Tabs labels={['Conrolled Tab 1', 'Conrolled Tab 2']} onTabSelect={(index: number) => console.log(index)} />
 
         <Divider spacing="large" />
 

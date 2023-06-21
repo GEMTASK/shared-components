@@ -15,7 +15,8 @@ import TextContext from './TextContext.js';
 type Children<T> = string | number | React.ReactElement<T | HTMLBRElement> | Children<T>[];
 
 type TextProps<T extends React.ElementType = 'span'> = {
-  as?: T,
+  inner?: T,
+  innerProps?: any,
   caps?: boolean,
   fontSize?: 'xxsmall' | 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge',
   fontWeight?: 'thin' | 'normal' | 'medium' | 'semibold' | 'bold',
@@ -27,7 +28,8 @@ type TextProps<T extends React.ElementType = 'span'> = {
 } & Omit<React.ComponentProps<typeof View>, 'children'>;
 
 const Text = <T extends React.ElementType = 'span'>({
-  as,
+  inner,
+  innerProps,
   caps,
   fontSize,
   fontWeight,
@@ -58,18 +60,20 @@ const Text = <T extends React.ElementType = 'span'>({
     ), [])
     : children;
 
-  const Component = as ?? 'span';
+  const Component = inner ?? 'span';
 
   if (isTextParent) {
     return (
-      <Component className={textClassName}>{childrenElement}</Component>
+      <Component {...innerProps} className={textClassName}>
+        {childrenElement}
+      </Component>
     );
   };
 
   return (
     <TextContext.Provider value={true}>
       <View {...props}>
-        <Component className={clsx(innerStyles.Text, textClassName)}>
+        <Component {...innerProps} className={clsx(innerStyles.Text, textClassName)}>
           {childrenElement}
         </Component>
       </View>
