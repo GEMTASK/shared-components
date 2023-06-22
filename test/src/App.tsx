@@ -297,10 +297,10 @@ function App() {
             </View>
             <Divider />
             <Stack horizontal negativeSpacing="small" padding="large">
-              <Image src="/images/leilani-angel-K84vnnzxmTQ-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
-              <Image src="/images/foto-sushi-6anudmpILw4-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
-              <Image src="/images/luis-villasmil-6qf1uljGpU4-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
-              <Image src="/images/christian-buehner-DItYlc26zVI-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
+              <Image round src="/images/leilani-angel-K84vnnzxmTQ-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
+              <Image round src="/images/foto-sushi-6anudmpILw4-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
+              <Image round src="/images/luis-villasmil-6qf1uljGpU4-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
+              <Image round src="/images/christian-buehner-DItYlc26zVI-unsplash.jpg" width={40} height={40} style={{ borderRadius: 1000, boxShadow: '0 0 0 1px white' }} />
             </Stack>
           </Stack>
         </Stack>

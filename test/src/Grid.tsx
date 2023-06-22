@@ -32,7 +32,7 @@ const Grid = () => {
       <View fillColor="white" padding="large large" style={{ position: 'sticky', top: 0, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.05)', zIndex: 1 }}>
         <Text>Header</Text>
       </View>
-      <View flex padding="xxlarge xxlarge" maxWidth={'100vw'} fillColor="gray-0" style={{ width: 1000, margin: '0 auto', overflow: 'hidden', boxShadow: '0 0 32px hsla(0, 0%, 0%, 0.15)' }}>
+      <View flex padding="xxlarge xxlarge" maxWidth={'100vw'} fillColor="gray-0" style={{ width: 1400, margin: '0 auto', overflow: 'hidden', boxShadow: '0 0 32px hsla(0, 0%, 0%, 0.15)' }}>
         <Text fontSize="large" fontWeight="bold" textColor="gray-9">
           Beautiful locations near the beach
         </Text>

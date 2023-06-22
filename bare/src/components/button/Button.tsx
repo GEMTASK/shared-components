@@ -139,7 +139,7 @@ const Button = ({
       {!!icon && !!title && (
         <Spacer size="small" />
       )}
-      <Text fontWeight={titleFontWeight} textColor={textColor} style={{ pointerEvents: 'none', whiteSpace: 'nowrap' }}>
+      <Text fontSize={size === 'xsmall' ? 'xsmall' : undefined} fontWeight={titleFontWeight} textColor={textColor} style={{ pointerEvents: 'none', whiteSpace: 'nowrap' }}>
         {title}
       </Text>
       {!!title && !!rightIcon && (
