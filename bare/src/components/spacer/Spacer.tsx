@@ -10,68 +10,68 @@ import ViewContext from '../view/ViewContext.js';
 
 const useSpacingStyles = createUseStyles({
   noneVertical: {
-    height: Size.none,
+    minHeight: Size.none,
     alignSelf: 'stretch',
   },
   xxsmallVertical: {
-    height: Size.xxsmall,
+    minHeight: Size.xxsmall,
     alignSelf: 'stretch',
   },
   xsmallVertical: {
-    height: Size.xsmall,
+    minHeight: Size.xsmall,
     alignSelf: 'stretch',
   },
   smallVertical: {
-    height: Size.small,
+    minHeight: Size.small,
     alignSelf: 'stretch',
   },
   mediumVertical: {
-    height: Size.medium,
+    minHeight: Size.medium,
     alignSelf: 'stretch',
   },
   largeVertical: {
-    height: Size.large,
+    minHeight: Size.large,
     alignSelf: 'stretch',
   },
   xlargeVertical: {
-    height: Size.xlarge,
+    minHeight: Size.xlarge,
     alignSelf: 'stretch',
   },
   xxlargeVertical: {
-    height: Size.xxlarge,
+    minHeight: Size.xxlarge,
     alignSelf: 'stretch',
   },
   //
   noneHorizontal: {
-    width: Size.none,
+    minWidth: Size.none,
     justifySelf: 'stretch',
   },
   xxsmallHorizontal: {
-    width: Size.xxsmall,
+    minWidth: Size.xxsmall,
     justifySelf: 'stretch',
   },
   xsmallHorizontal: {
-    width: Size.xsmall,
+    minWidth: Size.xsmall,
     justifySelf: 'stretch',
   },
   smallHorizontal: {
-    width: Size.small,
+    minWidth: Size.small,
     justifySelf: 'stretch',
   },
   mediumHorizontal: {
-    width: Size.medium,
+    minWidth: Size.medium,
     justifySelf: 'stretch',
   },
   largeHorizontal: {
-    width: Size.large,
+    minWidth: Size.large,
     justifySelf: 'stretch',
   },
   xlargeHorizontal: {
-    width: Size.xlarge,
+    minWidth: Size.xlarge,
     justifySelf: 'stretch',
   },
   xxlargeHorizontal: {
-    width: Size.xxlarge,
+    minWidth: Size.xxlarge,
     justifySelf: 'stretch',
   },
 });

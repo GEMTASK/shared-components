@@ -45,6 +45,7 @@ type ViewProps<T extends React.ElementType = 'div'> = {
   fillColor?: Color,
   border?: boolean,
   borderColor?: Color,
+  shadow?: boolean,
   className?: string,
   style?: React.CSSProperties,
   children?: Children,
@@ -67,6 +68,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   fillColor,
   border,
   borderColor,
+  shadow,
   className,
   style,
   children,
@@ -91,8 +93,10 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
     paddingVertical && paddingVerticalStyles[paddingVertical],
     paddingHorizontal && paddingHorizontalStyles[paddingHorizontal],
     fillColor && fillColorStyles[fillColor],
-    border && styles.border,
+    border && !shadow && styles.border,
     // border && borderColorStyles[borderColor ?? 'gray-4'],
+    shadow && !border && styles.shadow,
+    shadow && border && styles.borderShadow,
     className,
   );
 
@@ -104,10 +108,24 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
     ...style,
   };
 
+  const childCount = React.Children.count(children);
+
   return (
     <ViewContext.Provider value={{ isHorizontal: horizontal ?? false }}>
       <Component ref={ref} className={viewClassName} style={viewStyle} {...props}>
-        {children}
+        {border || shadow ? (
+          React.Children.map(children, (child, index) => React.isValidElement(child) && React.cloneElement(child as React.ReactElement, {
+            style: {
+              ...(child.props as any).style,
+              borderTopLeftRadius: index === 0 ? 2.5 : undefined,
+              borderTopRightRadius: index === 0 ? 2.5 : undefined,
+              ...(index === childCount - 1 && { borderBottomLeftRadius: 2.5 }),
+              borderBottomRightRadius: index === childCount - 1 ? 2.5 : undefined,
+            }
+          }))
+        ) : (
+          children
+        )}
       </Component>
     </ViewContext.Provider>
   );

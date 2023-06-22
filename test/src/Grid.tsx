@@ -1,4 +1,4 @@
-import { View, Text, Card, Spacer, Image } from 'bare';
+import { View, Text, Card, Spacer, Image, Popup, Button, Stack } from 'bare';
 
 const Location = ({ children }: any) => {
   return (
@@ -6,6 +6,8 @@ const Location = ({ children }: any) => {
       imageSrc="./images/istockphoto-1396508734-612x612.jpg"
       title="Entire villa hosted by Johan"
       subtitle="5 Bedrooms &nbsp;&middot;&nbsp; 4 Bathrooms"
+      border
+      shadow
       extra={(
         <View>
           <Text fontSize="medium" fontWeight="medium" textAlign="right">
@@ -21,8 +23,15 @@ const Location = ({ children }: any) => {
       <Text>
         {children}
       </Text>
+      <Spacer flex size="large" />
+      <Stack horizontal>
+        <Popup element={<Button icon="gear" title="Actions" />} >
+          <Text padding="medium large">
+            Hello
+          </Text>
+        </Popup>
+      </Stack>
     </Card>
-
   );
 };
 

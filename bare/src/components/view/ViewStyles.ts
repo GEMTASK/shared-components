@@ -18,7 +18,6 @@ const useStyles = createUseStyles({
   border: {
     position: 'relative',
     borderRadius: 2.5,
-    overflow: 'hidden',
     '&:before': {
       content: '""',
       position: 'absolute',
@@ -27,7 +26,31 @@ const useStyles = createUseStyles({
       borderRadius: 2.5,
       pointerEvents: 'none',
     }
-  }
+  },
+  shadow: {
+    position: 'relative',
+    borderRadius: 2.5,
+    '&:before': {
+      content: '""',
+      position: 'absolute',
+      inset: 0,
+      boxShadow: '0 2px 4px hsla(0, 0%, 0%, 0.1)',
+      borderRadius: 2.5,
+      pointerEvents: 'none',
+    }
+  },
+  borderShadow: {
+    position: 'relative',
+    borderRadius: 2.5,
+    '&:before': {
+      content: '""',
+      position: 'absolute',
+      inset: 0,
+      boxShadow: '0 2px 4px hsla(0, 0%, 0%, 0.1), inset 0 0 0 1px hsla(0, 0%, 0%, 0.15)',
+      borderRadius: 2.5,
+      pointerEvents: 'none',
+    }
+  },
 });
 
 export default useStyles;
