@@ -29,7 +29,7 @@ const Location = ({ children }: any) => {
 const Grid = () => {
   return (
     <View fillColor="gray-2" minHeight="100vh">
-      <View fillColor="white" padding="large large" style={{ position: 'sticky', top: 0, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.05)' }}>
+      <View fillColor="white" padding="large large" style={{ position: 'sticky', top: 0, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.05)', zIndex: 1 }}>
         <Text>Header</Text>
       </View>
       <View flex padding="xxlarge xxlarge" maxWidth={'100vw'} fillColor="gray-0" style={{ width: 1000, margin: '0 auto', overflow: 'hidden', boxShadow: '0 0 32px hsla(0, 0%, 0%, 0.15)' }}>
@@ -58,16 +58,16 @@ const Grid = () => {
           </Location>
         </View>
         <Spacer size="large" />
-        <View horizontal style={{ gap: 8, overflowX: 'auto', scrollSnapType: 'x', paddingLeft: 24, scrollPaddingLeft: 24, margin: '0 -24px' }}>
-          <Image src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ scrollSnapAlign: 'start', borderRadius: 2.5 }} />
+        <View horizontal style={{ gap: 8, overflowX: 'auto', scrollSnapType: 'x', paddingLeft: 24, scrollPaddingLeft: 24, paddingRight: 24, scrollPaddingRight: 24, margin: '0 -24px' }}>
+          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
+          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
+          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
+          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
+          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
+          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
+          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
+          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
+          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
         </View>
       </View>
       <View fillColor="gray-7" padding="large large" style={{ position: 'sticky', bottom: 0 }}>
