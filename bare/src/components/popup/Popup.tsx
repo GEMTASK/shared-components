@@ -65,8 +65,7 @@ const Popup = ({
         <View
           border
           fillColor="white"
-          // padding="small"
-          style={{ position: 'absolute', top: '100%', borderRadius: 2.5 }}
+          style={{ position: 'absolute', zIndex: 1, top: '100%', borderRadius: 2.5 }}
           onPointerDown={preventDefault}
           {...props}
         >

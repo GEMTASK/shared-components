@@ -1,3 +1,4 @@
+import OpenColor from 'open-color';
 import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles({
@@ -15,30 +16,28 @@ const useStyles = createUseStyles({
   flex: {
     flex: 1,
   },
-  borderOrShadow: {
+  border: {
     position: 'relative',
     borderRadius: 2.5,
     '&:before': {
       content: '""',
       position: 'absolute',
       inset: 0,
+      boxShadow: `inset 0 0 0 1px hsla(0, 0%, 0%, 0.15)`,
       borderRadius: 2.5,
       pointerEvents: 'none',
     }
   },
-  border: {
-    '&:before': {
-      boxShadow: 'inset 0 0 0 1px hsla(0, 0%, 0%, 0.15)',
-    }
-  },
   shadow: {
-    '&:before': {
+    position: 'relative',
+    borderRadius: 2.5,
+    '&:after': {
+      content: '""',
+      position: 'absolute',
+      inset: 0,
       boxShadow: '0 2px 4px hsla(0, 0%, 0%, 0.1)',
-    }
-  },
-  borderAndShadow: {
-    '&:before': {
-      boxShadow: '0 2px 4px hsla(0, 0%, 0%, 0.1), inset 0 0 0 1px hsla(0, 0%, 0%, 0.15)',
+      borderRadius: 2.5,
+      pointerEvents: 'none',
     }
   },
 });

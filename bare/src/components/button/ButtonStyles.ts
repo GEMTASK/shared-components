@@ -16,7 +16,7 @@ const useStyles = createUseStyles({
     }
   },
   default: {
-    '&:enabled:hover': { background: OpenColor.gray[3], '&:before': { boxShadow: 'none' } },
+    '&:enabled:hover': { background: OpenColor.gray[3] },
     '&:enabled:active': { background: OpenColor.gray[3] },
   },
   hover: {
@@ -28,9 +28,6 @@ const useStyles = createUseStyles({
     },
   },
   primary: {
-    // '&:before': {
-    //   boxShadow: 'none'
-    // },
     '&:enabled:hover': {
       background: OpenColor.blue[0],
       filter: 'none',

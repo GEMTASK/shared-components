@@ -9,21 +9,29 @@ const hues = [
 const colors = Object.assign({}, ...hues.map(hue => OpenColor[hue].reduce((colors, color, index) => ({
   ...colors,
   [`${hue}-${index}`]: {
-    boxShadow: `inset 0 0 0 1px ${color}`
+    '&:before': {
+      boxShadow: `inset 0 0 0 1px ${color}`
+    }
   }
 }), {}))) as { [key in Hue]: string; };
 
 const useBorderColorStyles = createUseStyles({
   'transparent': {
-    boxShadow: `inset 0 0 0 1px transparent`
+    '&:before': {
+      boxShadow: `inset 0 0 0 1px transparent`
+    }
   },
   'black': {
-    boxShadow: `inset 0 0 0 1px ${OpenColor.black}`
+    '&:before': {
+      boxShadow: `inset 0 0 0 1px ${OpenColor.black}`
+    }
   },
   'white': {
-    boxShadow: `inset 0 0 0 1px ${OpenColor.white}`
+    '&:before': {
+      boxShadow: `inset 0 0 0 1px ${OpenColor.white}`
+    }
   },
-  ...colors,
+  ...colors
 });
 
 export default useBorderColorStyles;

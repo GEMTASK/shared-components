@@ -6,7 +6,6 @@ const Location = ({ children }: any) => {
       imageSrc="./images/istockphoto-1396508734-612x612.jpg"
       title="Entire villa hosted by Johan"
       subtitle="5 Bedrooms &nbsp;&middot;&nbsp; 4 Bathrooms"
-      border
       shadow
       extra={(
         <View>
@@ -41,7 +40,7 @@ const Grid = () => {
       <View fillColor="white" padding="large large" style={{ position: 'sticky', top: 0, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)', zIndex: 1 }}>
         <Text>Header</Text>
       </View>
-      <View flex padding="xxlarge xxlarge" maxWidth={'100vw'} fillColor="gray-1" style={{ width: 1400, margin: '0 auto', overflow: 'hidden', boxShadow: '0 0 32px hsla(0, 0%, 0%, 0.15)' }}>
+      <View flex padding="xxlarge xxlarge" maxWidth={'100vw'} fillColor="gray-0" style={{ width: 1400, margin: '0 auto', overflow: 'hidden', boxShadow: '0 0 32px hsla(0, 0%, 0%, 0.15)' }}>
         <Text fontSize="large" fontWeight="bold" textColor="gray-9">
           Beautiful locations near the beach
         </Text>
