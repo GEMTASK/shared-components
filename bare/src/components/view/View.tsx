@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
 import Color from '../../types/Color';
@@ -30,8 +30,8 @@ type Children = false | null | undefined | React.ReactElement | Children[];
 
 type ViewProps<T extends React.ElementType = 'div'> = {
   as?: T,
-  horizontal?: boolean,
   flex?: boolean,
+  horizontal?: boolean,
   minWidth?: number | string,
   minHeight?: number | string,
   maxWidth?: number | string,
@@ -54,8 +54,8 @@ type ViewProps<T extends React.ElementType = 'div'> = {
 
 const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   as,
-  horizontal,
   flex,
+  horizontal,
   minWidth,
   minHeight,
   maxWidth,
@@ -88,8 +88,8 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
 
   const viewClassName = clsx(
     styles.View,
-    horizontal && styles.horizontal,
     flex && styles.flex,
+    horizontal && styles.horizontal,
     alignVertical && alignVerticalStyles[`${alignVertical}${horizontal ? 'Horizontal' : 'Vertical'}`],
     alignHorizontal && alignHorizontalStyles[`${alignHorizontal}${horizontal ? 'Horizontal' : 'Vertical'}`],
     paddingVertical && paddingVerticalStyles[paddingVertical],

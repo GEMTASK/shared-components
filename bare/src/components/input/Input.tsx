@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import OpenColor from 'open-color';
 import { createUseStyles } from 'react-jss';
-import clsx from 'clsx';
 
 import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';

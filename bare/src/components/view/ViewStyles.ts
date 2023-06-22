@@ -1,4 +1,3 @@
-import OpenColor from 'open-color';
 import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles({

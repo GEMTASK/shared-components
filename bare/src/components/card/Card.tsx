@@ -1,7 +1,7 @@
-import View, { ViewProps } from "../view/index.js";
-import Image from "../image/Image.js";
-import Text from "../text/Text.js";
-import Spacer from "../spacer/Spacer.js";
+import View, { ViewProps } from '../view/index.js';
+import Image from '../image/index.js';
+import Text from '../text/index.js';
+import Spacer from '../spacer/index.js';
 
 type CardProps = {
   imageSrc?: string,

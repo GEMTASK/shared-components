@@ -4,9 +4,9 @@ import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';
 import Input from '../input/index.js';
 import Checkbox from '../checkbox/index.js';
-import RadioButton from '../radiobutton/RadioButton.js';
+import RadioButton from '../radiobutton/index.js';
 import Select from '../select/index.js';
-import Spacer from '../spacer/Spacer.js';
+import Spacer from '../spacer/index.js';
 
 import FormContext from '../form/FormContext.js';
 

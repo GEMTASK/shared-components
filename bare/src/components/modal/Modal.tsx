@@ -1,14 +1,13 @@
-import React from "react";
-import { createPortal } from "react-dom";
+import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { createUseStyles } from 'react-jss';
 
-import View, { ViewProps } from "../view/index.js";
-import Text from "../text/index.js";
-import Divider from "../divider/index.js";
-import Spacer from "../spacer/index.js";
-import Button from "../button/index.js";
-import Stack from "../stack/index.js";
-import { useEffect } from "react";
+import View, { ViewProps } from '../view/index.js';
+import Text from '../text/index.js';
+import Divider from '../divider/index.js';
+import Spacer from '../spacer/index.js';
+import Button from '../button/index.js';
+import Stack from '../stack/index.js';
 
 const handleWheel = (e: WheelEvent) => e.preventDefault();
 

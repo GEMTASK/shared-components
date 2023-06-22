@@ -1,19 +1,14 @@
 import { useContext } from 'react';
 import { concat, without } from 'rambda';
+import OpenColor from 'open-color';
 
 import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';
-import Input from '../input/index.js';
-import Select from '../select/index.js';
-import Stack from '../stack/Stack.js';
-import Spacer from '../spacer/Spacer.js';
+import Icon from '../icon/index.js';
+import Spacer from '../spacer/index.js';
+import Stack from '../stack/index.js';
 
 import { useStyles as useControlStyles } from '../control/Control.js';
-
-import FormContext from '../form/FormContext.js';
-import Icon from '../icon/Icon.js';
-import OpenColor from 'open-color';
-import useStyles from '../view/ViewStyles.js';
 
 type ListProps = {
   value: string[],

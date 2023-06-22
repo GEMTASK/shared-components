@@ -1,4 +1,4 @@
-import View, { ViewProps } from "../view/index.js";
+import View, { ViewProps } from '../view/index.js';
 
 type ImageProps = {
   src?: string,

@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import View, { ViewProps } from '../view/index.js';
-import Text from '../text/index.js';
-import Button from '../button/index.js';
 
 const useStyles = createUseStyles({
   Menu: {

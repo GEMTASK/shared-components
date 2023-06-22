@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';
 import Icon from '../icon/index.js';
-import Spacer from '../spacer/Spacer.js';
+import Spacer from '../spacer/index.js';
 
 import useStyles from './ButtonStyles.js';
 import Color from '../../types/Color.js';

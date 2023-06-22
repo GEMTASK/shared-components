@@ -1,10 +1,9 @@
-import View, { ViewProps } from "../view/index.js";
-
 import { useStyles as useControlStyles } from '../control/Control.js';
 
-import Text from "../text/Text.js";
-import Spacer from "../spacer/Spacer.js";
-import Icon from "../icon/Icon.js";
+import View, { ViewProps } from '../view/index.js';
+import Text from '../text/index.js';
+import Spacer from '../spacer/index.js';
+import Icon from '../icon/index.js';
 
 type FieldProps<T extends React.ElementType> = {
   as: T,
