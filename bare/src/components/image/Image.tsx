@@ -24,7 +24,7 @@ const Image = ({
   } as const;
 
   return (
-    <View {...props} style={{ ...style }}>
+    <View {...props} style={{ overflow: 'hidden', ...style }}>
       <View as="img" src={src} style={imageStyle} />
     </View>
   );

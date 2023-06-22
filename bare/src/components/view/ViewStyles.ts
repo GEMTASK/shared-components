@@ -15,40 +15,30 @@ const useStyles = createUseStyles({
   flex: {
     flex: 1,
   },
-  border: {
+  borderOrShadow: {
     position: 'relative',
     borderRadius: 2.5,
     '&:before': {
       content: '""',
       position: 'absolute',
       inset: 0,
-      boxShadow: 'inset 0 0 0 1px hsla(0, 0%, 0%, 0.15)',
       borderRadius: 2.5,
       pointerEvents: 'none',
+    }
+  },
+  border: {
+    '&:before': {
+      boxShadow: 'inset 0 0 0 1px hsla(0, 0%, 0%, 0.15)',
     }
   },
   shadow: {
-    position: 'relative',
-    borderRadius: 2.5,
     '&:before': {
-      content: '""',
-      position: 'absolute',
-      inset: 0,
       boxShadow: '0 2px 4px hsla(0, 0%, 0%, 0.1)',
-      borderRadius: 2.5,
-      pointerEvents: 'none',
     }
   },
-  borderShadow: {
-    position: 'relative',
-    borderRadius: 2.5,
+  borderAndShadow: {
     '&:before': {
-      content: '""',
-      position: 'absolute',
-      inset: 0,
       boxShadow: '0 2px 4px hsla(0, 0%, 0%, 0.1), inset 0 0 0 1px hsla(0, 0%, 0%, 0.15)',
-      borderRadius: 2.5,
-      pointerEvents: 'none',
     }
   },
 });
