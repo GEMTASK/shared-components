@@ -54,7 +54,7 @@ function App() {
         <Stack horizontal spacing="large" align="center">
           <Link to="grid" fillColor="gray-3" padding="small">Grid</Link>
           <Text>
-            Go to <Link to="grid">Grid</Link> to learn more.
+            Go to <Link to="live">Live</Link> to learn more.
           </Text>
         </Stack>
 
