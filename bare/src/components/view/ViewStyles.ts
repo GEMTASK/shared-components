@@ -16,8 +16,16 @@ const useStyles = createUseStyles({
     flex: 1,
   },
   border: {
+    position: 'relative',
     borderRadius: 2.5,
     overflow: 'hidden',
+    '&:before': {
+      content: '""',
+      position: 'absolute',
+      inset: 0,
+      boxShadow: 'inset 0 0 0 1px hsla(0, 0%, 0%, 0.15)',
+      borderRadius: 2.5,
+    }
   }
 });
 
