@@ -49,7 +49,7 @@ const Form = ({
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log(values);
+    console.log('handleFormSubmit', values);
   };
 
   return (

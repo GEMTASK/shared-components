@@ -65,7 +65,7 @@ const Menu = () => {
   };
 
   return (
-    <View tabIndex={0} style={{ position: 'relative' }} onBlur={handleBlur}>
+    <View tabIndex={0} style={{ position: 'relative', zIndex: 1 }} onBlur={handleBlur}>
       <Button solid title="Menu" selected={isMenuVisible} onPointerDown={handleButtonClick} rightIcon="chevron-down" />
       {isMenuVisible && (
         <View ref={menuElementRef} border fillColor="white" padding="small none" style={{ position: 'absolute', top: '100%', borderRadius: 2.5 }}>

@@ -16,6 +16,7 @@ const useStyles = createUseStyles({
 });
 
 type PopupProps = {
+  isOpen?: boolean,
   element: React.ReactElement,
 } & ViewProps;
 
@@ -24,6 +25,7 @@ const preventDefault = (event: React.PointerEvent) => {
 };
 
 const Popup = ({
+  isOpen,
   element,
   children,
   ...props
@@ -31,16 +33,23 @@ const Popup = ({
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const menuElementRef = useRef<HTMLDivElement>(null);
 
-  const handleButtonClick = (event: React.PointerEvent) => {
+  const handleButtonPointerDown = (event: React.PointerEvent) => {
     setIsMenuVisible(isMenuVisible => !isMenuVisible);
   };
 
-  const handleHideMenu = () => {
+  const handleButtonFocus = (event: React.FocusEvent) => {
+    setIsMenuVisible(true);
+  };
+
+  const handleButtonBlur = (event: React.FocusEvent) => {
     setIsMenuVisible(false);
   };
 
   const handleDocumentPointerDown = (event: PointerEvent) => {
-    if (event.relatedTarget !== menuElementRef.current && !menuElementRef.current?.contains(event.target as Node)) {
+    if (
+      event.relatedTarget !== menuElementRef.current
+      && !menuElementRef.current?.contains(event.target as Node)
+    ) {
       setIsMenuVisible(false);
     }
   };
@@ -55,13 +64,16 @@ const Popup = ({
 
   return (
     <View ref={menuElementRef} style={{ position: 'relative' }}>
-      {/* <Button solid title="Menu" selected={isMenuVisible} onPointerDown={handleButtonClick} rightIcon="chevron-down" /> */}
+      {/* <Button solid title="Menu" selected={isMenuVisible} onPointerDown={handleButtonFocus} rightIcon="chevron-down" /> */}
       {React.isValidElement(element) && React.cloneElement(element as any, {
-        onPointerDown: handleButtonClick,
+        onFocus: handleButtonFocus,
+        onBlur: handleButtonBlur,
+        onPointerDown: handleButtonPointerDown,
       })}
       {isMenuVisible && (
         <View
           border
+          shadow
           fillColor="white"
           style={{ position: 'absolute', zIndex: 1, top: '100%', borderRadius: 2.5 }}
           onPointerDown={preventDefault}

@@ -1,23 +1,19 @@
-import { View, Text, Card, Spacer, Image, Popup, Button, Stack } from 'bare';
+import { View, Text, Card, Spacer, Image, Popup, Button, Stack, Icon } from 'bare';
 
 const Location = ({ children }: any) => {
   return (
     <Card
-      imageSrc="./images/istockphoto-1396508734-612x612.jpg"
-      title="Entire villa hosted by Johan"
-      subtitle="5 Bedrooms &nbsp;&middot;&nbsp; 4 Bathrooms"
       shadow
-      extra={(
-        <View>
-          <Text fontSize="medium" fontWeight="medium" textAlign="right">
-            $1,200
-          </Text>
-          <Spacer size="small" />
-          <Text fontSize="xsmall" textAlign="right" textColor="gray-6">
-            per night
-          </Text>
-        </View>
-      )}
+      imageSrc="./images/istockphoto-1396508734-612x612.jpg"
+      headingTitle="Entire villa hosted by Johan"
+      headingTitleRight="$1,200"
+      headingSubtitle="5 Bedrooms &nbsp;&middot;&nbsp; 4 Bathrooms"
+      headingSubtitleRight={
+        <Text fontSize="xsmall" textColor="gray-6" textAlign="right" style={{ fontStyle: 'italic' }}>
+          per night
+        </Text>
+      }
+      extra={<Icon size="sm" icon="star" />}
     >
       <Text>
         {children}

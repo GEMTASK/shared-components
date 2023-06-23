@@ -1,3 +1,5 @@
+import React from 'react';
+
 import View, { ViewProps } from '../view/index.js';
 import Image from '../image/index.js';
 import Text from '../text/index.js';
@@ -5,19 +7,29 @@ import Spacer from '../spacer/index.js';
 
 type CardProps = {
   imageSrc?: string,
-  title?: string,
-  subtitle?: string,
+  headingTitle?: string,
+  headingTitleRight?: string,
+  headingSubtitle?: string,
+  headingSubtitleRight?: string | ViewProps['children'],
   extra?: ViewProps['children'],
 } & ViewProps;
 
 const Card = ({
   imageSrc,
-  title,
-  subtitle,
+  headingTitle,
+  headingTitleRight,
+  headingSubtitle,
+  headingSubtitleRight,
   extra,
   children,
   ...props
 }: CardProps) => {
+  const subtitleRightElement = headingSubtitleRight !== undefined && typeof headingSubtitleRight === 'string' ? (
+    <Text fontSize="xsmall" textColor="gray-6">
+      {headingSubtitleRight}
+    </Text>
+  ) : headingSubtitleRight;
+
   return (
     <View border shadow fillColor="white" {...props}>
       <Image src={imageSrc} /*style={{ mixBlendMode: 'multiply' }}*/ />
@@ -25,16 +37,26 @@ const Card = ({
         <View horizontal>
           <View flex>
             <Text fontSize="medium" fontWeight="semibold">
-              {title}
+              {headingTitle}
             </Text>
             <Spacer size="small" />
             <Text fontSize="xsmall" textColor="gray-6">
-              {subtitle}
+              {headingSubtitle}
             </Text>
           </View>
           <View>
             {extra}
           </View>
+          <Spacer size="small" />
+          {!!headingTitleRight && (
+            <View>
+              <Text fontSize="medium">
+                {headingTitleRight}
+              </Text>
+              <Spacer size="small" />
+              {subtitleRightElement}
+            </View>
+          )}
         </View>
         <Spacer size="large" />
         {children}

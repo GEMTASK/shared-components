@@ -57,7 +57,7 @@ const Field = ({
     }
 
     return typeof value === 'string' ? (
-      <Input type={type} value={value} onChange={handleInputChange} />
+      <Input type={type} value={value} options={options} onChange={handleInputChange} />
     ) : null;
   })();
 

@@ -121,6 +121,7 @@ const Button = ({
   return (
     <View
       as="button"
+      type="button"
       horizontal
       disabled={disabled}
       fillColor={fillColor}

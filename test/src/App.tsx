@@ -73,19 +73,6 @@ function App() {
           <Spacer size="small" />
           <Button solid primary size="xsmall" title="Action Button" />
         </View>
-        <Spacer size="large" />
-        <Divider />
-        <Spacer size="large" />
-
-        <Stack horizontal spacing="large">
-          <Popup element={<Button solid title="Popup" />}>
-            <Button tabIndex={-1} title="One" />
-          </Popup>
-          <Popup element={<Input />}>
-            <Button title="One" onClick={() => console.log('ff')} />
-            <Button title="Two" onClick={() => console.log('ff')} />
-          </Popup>
-        </Stack>
 
         <Divider spacing="large" />
         <View horizontal>
@@ -216,7 +203,12 @@ function App() {
             <Form
               id="form"
               fields={[
-                { key: 'firstName', label: 'First Name', type: 'text' },
+                {
+                  key: 'firstName', label: 'First Name', type: 'text', options: {
+                    'Lorem ipsum dolor sit amet': 'Lorem ipsum dolor sit amet',
+                    'Ut enim ad minim veniam': 'Ut enim ad minim veniam',
+                  }
+                },
                 { key: 'dueDate', label: 'Due Date', type: 'date' },
                 { key: 'fillColor', label: 'Fill Color', type: 'color' },
                 {
@@ -276,8 +268,8 @@ function App() {
             <View flex fillColor="gray-0" padding="large" style={{ mixBlendMode: 'multiply' }}>
               <Card
                 imageSrc="./images/istockphoto-1396508734-612x612.jpg"
-                title="Entire villa hosted by Johan"
-                subtitle="5 Bedrooms &nbsp;&middot;&nbsp; 4 Bathrooms"
+                headingTitle="Entire villa hosted by Johan"
+                headingSubtitle="5 Bedrooms &nbsp;&middot;&nbsp; 4 Bathrooms"
                 extra={(
                   <View>
                     <Text fontSize="medium" fontWeight="medium" textAlign="right">
