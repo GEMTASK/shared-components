@@ -3,8 +3,8 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import styles from './App.module.css';
 
-import { hues, View, Text, Image, Button, Stack, Spacer, Divider, Card } from 'bare';
-import { Input, Popup, Menu, Tabs, Modal, Form } from 'bare';
+import { hues, View, Text, Image, Button, Stack, Spacer, Divider } from 'bare';
+import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table } from 'bare';
 
 import { TextProps } from 'bare/dist/components/text/Text';
 
@@ -338,7 +338,19 @@ function App() {
             <Text flex align="bottom right" fillColor="white">Bottom Right</Text>
           </Stack>
         </Stack>
+
+        <Divider spacing="large" />
+
+        <Table />
+
+        <Divider spacing="large" />
+
+        <View horizontal>
+          <Table borderless />
+        </View>
+
       </View>
+
       <Modal
         isOpen={isModalOpen}
         actions={[

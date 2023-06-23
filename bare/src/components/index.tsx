@@ -13,5 +13,6 @@ export { default as Tabs } from './tabs/index.js';
 export { default as Modal } from './modal/index.js';
 export { default as Form } from './form/index.js';
 export { default as Card } from './card/index.js';
+export { default as Table } from './table/index.js';
 
 export { hues } from '../styles/fillColor.js';
