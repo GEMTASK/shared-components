@@ -37,9 +37,13 @@ const Table = ({
           {columns.map((column, index) => (
             <th key={column.key} style={{ padding: 0 }}>
               <Text
+                caps
+                fontSize="xxsmall"
+                fontWeight="semibold"
+                textColor="gray-6"
+                textAlign="left"
                 padding={borderless ? 'medium none' : 'medium large'}
                 fillColor={!borderless ? "gray-2" : undefined}
-                textAlign="left"
               >
                 {column.label}
               </Text>
@@ -51,7 +55,7 @@ const Table = ({
         {rows.map((row, index) => (
           <tr>
             {columns.map((column) => (
-              <td style={{ borderBottom: index !== rows.length - 1 ? '1px solid lightgray' : undefined }}>
+              <td style={{ borderBottom: borderless || index !== rows.length - 1 ? '1px solid lightgray' : undefined }}>
                 <Text padding={borderless ? 'medium none' : 'medium large'}>{row[column.key]}</Text>
               </td>
             ))}
