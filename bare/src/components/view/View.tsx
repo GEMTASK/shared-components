@@ -47,6 +47,7 @@ type ViewProps<T extends React.ElementType = 'div'> = {
   borderColor?: Color,
   borderOpacity?: 1,
   shadow?: boolean,
+  scrollbar?: boolean,
   className?: string,
   style?: React.CSSProperties,
   children?: Children,
@@ -71,6 +72,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   borderColor,
   borderOpacity,
   shadow,
+  scrollbar = true,
   className,
   style,
   children,
@@ -98,6 +100,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
     border && styles.border,
     borderColor && borderColorStyles[borderColor],
     shadow && styles.shadow,
+    !scrollbar && styles.noScrollbar,
     className,
   );
 
@@ -119,8 +122,9 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
             style: {
               ...(child.props as any).style,
               borderTopLeftRadius: index === 0 ? 2.5 : undefined,
-              borderTopRightRadius: index === 0 ? 2.5 : undefined,
-              ...(index === childCount - 1 && { borderBottomLeftRadius: 2.5 }),
+              borderTopRightRadius: !horizontal && index === 0 ? 2.5 : undefined,
+              // ...((horizontal || index === childCount - 1) && { borderBottomLeftRadius: 2.5 }),
+              borderBottomLeftRadius: horizontal || index === childCount - 1 ? 2.5 : undefined,
               borderBottomRightRadius: index === childCount - 1 ? 2.5 : undefined,
             }
           }))

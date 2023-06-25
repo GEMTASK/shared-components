@@ -7,6 +7,7 @@ import Spacer from '../spacer/index.js';
 
 type CardProps = {
   imageSrc?: string,
+  imageWidth?: number,
   headingTitle?: string,
   headingTitleRight?: string,
   headingSubtitle?: string,
@@ -16,6 +17,7 @@ type CardProps = {
 
 const Card = ({
   imageSrc,
+  imageWidth,
   headingTitle,
   headingTitleRight,
   headingSubtitle,
@@ -32,7 +34,7 @@ const Card = ({
 
   return (
     <View border shadow fillColor="white" {...props}>
-      <Image src={imageSrc} /*style={{ mixBlendMode: 'multiply' }}*/ />
+      <Image src={imageSrc} width={imageWidth} height="100%" style={{ objectFit: 'cover', objectPosition: 'left  center' }} />
       <View flex padding="large">
         <View horizontal>
           <View flex>

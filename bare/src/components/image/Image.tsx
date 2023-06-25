@@ -1,9 +1,10 @@
+import React from 'react';
 import View, { ViewProps } from '../view/index.js';
 
 type ImageProps = {
   src?: string,
-  width?: number,
-  height?: number,
+  width?: number | string,
+  height?: number | string,
   round?: boolean,
   style?: React.CSSProperties,
 } & Omit<ViewProps, 'children'>;
@@ -16,13 +17,20 @@ const Image = ({
   style,
   ...props
 }: ImageProps) => {
+  const {
+    objectFit,
+    objectPosition,
+  } = style ?? {};
+
   const imageStyle = {
-    objectFit: 'contain',
+    objectFit: objectFit ?? 'contain',
+    objectPosition,
     width,
     height,
     ...(round && { borderRadius: 1000 })
   } as const;
 
+  console.log(imageStyle);
   return (
     <View {...props} style={{ overflow: 'hidden', ...style }}>
       <View as="img" src={src} style={imageStyle} />

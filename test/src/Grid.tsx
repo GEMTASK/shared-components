@@ -30,6 +30,32 @@ const Location = ({ children }: any) => {
   );
 };
 
+const Location2 = ({ children }: any) => {
+  return (
+    <Card
+      horizontal
+      shadow
+      imageSrc="./images/istockphoto-1396508734-612x612.jpg"
+      imageWidth={150}
+      headingTitle="Entire villa hosted by Johan"
+      headingTitleRight="$1,200"
+      headingSubtitle="5 Bedrooms &nbsp;&middot;&nbsp; 4 Bathrooms"
+    >
+      <Text>
+        {children}
+      </Text>
+      <Spacer flex size="large" />
+      <Stack horizontal>
+        <Popup element={<Button icon="gear" title="Actions" />} >
+          <Text padding="medium large">
+            Hello
+          </Text>
+        </Popup>
+      </Stack>
+    </Card>
+  );
+};
+
 const Grid = () => {
   return (
     <View fillColor="gray-2" minHeight="100vh">
@@ -62,7 +88,31 @@ const Grid = () => {
           </Location>
         </View>
         <Spacer size="large" />
-        <View horizontal style={{ gap: 8, overflowX: 'auto', scrollSnapType: 'x', paddingLeft: 24, scrollPaddingLeft: 24, paddingRight: 24, scrollPaddingRight: 24, margin: '0 -24px' }}>
+
+        <View
+          style={{
+            display: 'grid',
+            gap: 16,
+            gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))'
+          }}
+        >
+          <Location2>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </Location2>
+          <Location2>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+          </Location2>
+          <Location2>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </Location2>
+          <Location2>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </Location2>
+        </View>
+
+
+        <Spacer size="large" />
+        <View horizontal scrollbar={false} style={{ gap: 8, overflowX: 'auto', scrollSnapType: 'x', paddingLeft: 24, scrollPaddingLeft: 24, paddingRight: 24, scrollPaddingRight: 24, margin: '0 -24px' }}>
           <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
           <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
           <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />

@@ -39,6 +39,13 @@ const useStyles = createUseStyles({
       pointerEvents: 'none',
     }
   },
+  noScrollbar: {
+    '&::-webkit-scrollbar': {
+      display: 'none',
+    },
+    '-ms-overflow-style': 'none',
+    'scrollbar-width': 'none',
+  }
 });
 
 export default useStyles;
