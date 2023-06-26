@@ -3,17 +3,18 @@ import { useContext } from 'react';
 import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';
 import Input from '../input/index.js';
+import Spacer from '../spacer/index.js';
 import Checkbox from '../checkbox/index.js';
 import RadioButton from '../radiobutton/index.js';
 import Select from '../select/index.js';
-import Spacer from '../spacer/index.js';
+import Slider from '../slider/index.js';
 
 import FormContext from '../form/FormContext.js';
 
 type FieldProps<T = unknown> = {
   _key: string,
   label: string,
-  type?: 'text' | 'date' | 'color' | 'select' | 'checkbox' | 'radio' | 'checkboxlist',
+  type?: 'text' | 'date' | 'color' | 'select' | 'checkbox' | 'radio' | 'checkboxlist' | 'range',
   value?: string | boolean | string[],
   options?: { [value: string]: string; },
   render?: (item: T) => React.ReactNode,
@@ -53,6 +54,9 @@ const Field = ({
       ) : null;
       case 'select': return typeof value === 'string' ? (
         <Select value={value} options={options} onChange={handleInputChange} />
+      ) : null;
+      case 'range': return typeof value === 'number' ? (
+        <Slider />
       ) : null;
     }
 

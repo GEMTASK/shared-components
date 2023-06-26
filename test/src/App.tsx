@@ -244,6 +244,9 @@ function App() {
                     'AZ': 'Arizona',
                   }
                 },
+                {
+                  key: 'angle', label: 'Angle', type: 'range',
+                }
               ]}
               initialValues={{
                 firstName: 'Joe Smith',

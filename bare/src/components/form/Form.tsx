@@ -9,7 +9,7 @@ import FormContext from './FormContext.js';
 type FieldDefinition<T = unknown> = {
   key: string,
   label: string,
-  type?: 'text' | 'date' | 'color' | 'select' | 'checkbox' | 'radio' | 'checkboxlist',
+  type?: 'text' | 'date' | 'color' | 'select' | 'checkbox' | 'radio' | 'checkboxlist' | 'range',
   options?: { [value: string]: string; },
   render?: (item: T) => React.ReactNode,
 };
@@ -19,6 +19,7 @@ const getDefaultValueForType = (type: string = 'text') => {
     case 'checkboxlist': return [];
     case 'checkbox': return false;
     case 'color': return '#FFFFFF';
+    case 'range': return 0;
   }
 
   return '';
