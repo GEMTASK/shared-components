@@ -40,7 +40,7 @@ const useStyles = createUseStyles({
   Cell: {
   },
   Header: {
-    padding: '20px 0 8px 16px',
+    padding: '22px 0 8px 16px',
   },
   Text: {
     padding: '12px 0 12px 16px',

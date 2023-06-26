@@ -135,7 +135,7 @@ const Button = ({
       {...props}
     >
       {!!icon && (
-        <Icon icon={icon} color={iconColor} />
+        <Icon icon={icon} color={iconColor} size={size === 'xsmall' ? 'sm' : undefined} />
       )}
       {!!icon && !!title && (
         <Spacer size="small" />

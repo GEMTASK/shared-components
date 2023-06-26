@@ -134,9 +134,11 @@ function App() {
           </Stack>
           <Divider spacing="large" />
           <Stack spacing="small" alignVertical="middle">
-            <Button primary size="xsmall" title="XSmall" />
-            <Button primary size="small" title="Small" />
-            <Button primary size="medium" title="Medium" />
+            <Button primary size="xsmall" icon="house" title="XSmall" />
+            <Button primary size="small" icon="house" title="Small" />
+            <Button primary size="medium" icon="house" title="Medium" />
+            <Button primary size="small" icon="house" title="Small" />
+            <Button primary size="xsmall" icon="house" title="XSmall" />
           </Stack>
         </View>
         <Divider spacing="large" />
