@@ -1,82 +1,141 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
+import OpenColor from 'open-color';
 
-import View from '../view/index.js';
+import View, { ViewProps } from '../view/index.js';
 import Button from '../button/index.js';
 import Divider from '../divider/index.js';
+import Text from '../text/index.js';
+
+const preventDefault = (event: React.PointerEvent) => {
+  event.preventDefault();
+};
 
 const useStyles = createUseStyles({
-  Menu: {
-    '&:focus': {
-      background: 'red',
+  Item: {
+    margin: '0 1px',
+    '&:hover': {
+      background: OpenColor.gray[2],
     },
-    '&:focus $Button': {
-      background: 'red',
+    '&:active': {
+      background: OpenColor.gray[3],
     },
-  },
-  Button: {}
+  }
 });
 
-const items = [
-  { title: 'Menu Item 1', action: () => console.log('1') },
-  { title: 'Menu Item 2', action: () => console.log('2') },
+type ItemDefinition = {
+  title: string,
+  action?: () => void,
+} | string | null;
+
+const items: ItemDefinition[] = [
+  'Section 1',
+  { title: 'Lorem ipsum dolor sit amet', action: () => console.log('1') },
+  { title: 'Ut enim ad minim veniam', action: () => console.log('2') },
   null,
-  { title: 'Menu Item 3', action: () => console.log('3') },
+  'Section 2',
+  { title: 'Duis aute irure dolor', action: () => console.log('3') },
 ];
 
-type ItemProps = {
-  onClick: React.EventHandler<React.MouseEvent>,
-  onHideMenu: () => void,
-} & React.ComponentProps<typeof Button>;
+type ListProps = {
+  items: ItemDefinition[],
+  onItemSelect?: (itemIndex: number) => void,
+} & ViewProps;
 
-const Item = ({
-  onClick,
-  onHideMenu,
+const List = ({
+  items,
+  onItemSelect,
   ...props
-}: ItemProps) => {
-  const handleClick = (event: React.MouseEvent) => {
-    onClick(event);
-
-    onHideMenu();
+}: ListProps) => {
+  const handleItemClick = (itemIndex: number) => {
+    onItemSelect?.(itemIndex);
   };
 
   return (
-    <Button hover icon="house" titleFontWeight="normal" onClick={handleClick} {...props} />
+    <View {...props}>
+      {items.map((item, index) => (
+        item === null ? (
+          <Divider key={index} spacing="small" />
+        ) : typeof item === 'string' ? (
+          <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6" padding="small large">{item}</Text>
+        ) : (
+          <Item key={index} index={index} title={item.title} onItemSelect={handleItemClick} />
+        )
+      ))}
+    </View>
   );
+};
+
+type ItemProps = {
+  index: number,
+  title: string,
+  onItemSelect?: (itemIndex: number) => void,
+} & ViewProps;
+
+const Item = ({
+  index,
+  title,
+  onItemSelect,
+  ...props
+}: ItemProps) => {
+  const styles = useStyles();
+
+  const handleClick = (event: React.MouseEvent) => {
+    onItemSelect?.(index);
+  };
+
+  return (
+    <View horizontal padding="small large" className={styles.Item} onClick={handleClick} {...props}>
+      <Text style={{ whiteSpace: 'nowrap' }}>{title}</Text>
+    </View>
+  );
+
+  // return (
+  //   <Button hover icon="house" titleFontWeight="normal" align="left" onClick={handleClick} {...props} />
+  // );
 };
 
 const Menu = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const menuElementRef = useRef<HTMLDivElement>(null);
+
   const styles = useStyles();
 
-  const handleButtonClick = () => {
-    setIsMenuVisible(isMenuVisible => !isMenuVisible);
-  };
-
-  const handleHideMenu = () => {
-    setIsMenuVisible(false);
+  const handleButtonClick = (event: React.MouseEvent) => {
+    setIsMenuVisible(true);
   };
 
   const handleBlur = (event: React.FocusEvent) => {
-    if (!menuElementRef.current?.contains(event.relatedTarget)) {
-      setIsMenuVisible(false);
-    }
+    setIsMenuVisible(false);
+  };
+
+  const handleListItemSelect = (itemIndex: number) => {
+    items[itemIndex]?.action?.();
+
+    setIsMenuVisible(false);
   };
 
   return (
-    <View tabIndex={0} style={{ position: 'relative', zIndex: 1 }} onBlur={handleBlur}>
-      <Button solid title="Menu" selected={isMenuVisible} onPointerDown={handleButtonClick} rightIcon="chevron-down" />
+    <View style={{ position: 'relative', zIndex: 1 }}>
+      <Button
+        solid
+        title="Menu"
+        rightIcon="chevron-down"
+        selected={isMenuVisible}
+        onPointerDown={handleButtonClick}
+        onClick={handleButtonClick}
+        onBlur={handleBlur}
+      />
       {isMenuVisible && (
-        <View ref={menuElementRef} border fillColor="white" padding="small none" style={{ position: 'absolute', top: '100%', borderRadius: 2.5 }}>
-          {items.map((item, index) => (
-            item ? (
-              <Item key={index} title={item.title} onClick={item.action} onHideMenu={handleHideMenu} />
-            ) : (
-              <Divider key={index} spacing="small" />
-            )
-          ))}
-        </View>
+        <List
+          border
+          shadow
+          items={items}
+          fillColor="white"
+          padding="small none"
+          style={{ position: 'absolute', top: '100%', borderRadius: 2.5 }}
+          onPointerDown={preventDefault}
+          onItemSelect={handleListItemSelect}
+        />
       )}
     </View>
   );
