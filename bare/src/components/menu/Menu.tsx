@@ -57,7 +57,7 @@ const List = ({
         item === null ? (
           <Divider key={index} spacing="small" />
         ) : typeof item === 'string' ? (
-          <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6" padding="small large">{item}</Text>
+          <Text key={index} caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6" padding="small large">{item}</Text>
         ) : (
           <Item key={index} index={index} title={item.title} onItemSelect={handleItemClick} />
         )

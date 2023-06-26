@@ -17,7 +17,6 @@ type ListProps = {
 
 const List = ({ value, options, onChange }: ListProps) => {
   const handleChange = (value: string) => {
-    console.log(value);
     if (onChange) {
       onChange(value);
     }

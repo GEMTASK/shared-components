@@ -30,7 +30,6 @@ const Image = ({
     ...(round && { borderRadius: 1000 })
   } as const;
 
-  console.log(imageStyle);
   return (
     <View {...props} style={{ overflow: 'hidden', ...style }}>
       <View as="img" src={src} style={imageStyle} />

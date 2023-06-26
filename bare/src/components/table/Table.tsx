@@ -93,9 +93,9 @@ const Table = ({
       </thead>
       <tbody>
         {rows.map((row, index) => (
-          <tr>
+          <tr key={index}>
             {columns.map((column) => (
-              <td className={styles.Cell} style={{ borderBottom: borderless || index !== rows.length - 1 ? '1px solid hsla(0, 0%, 0%, 0.15)' : undefined }}>
+              <td key={column.key} className={styles.Cell} style={{ borderBottom: borderless || index !== rows.length - 1 ? '1px solid hsla(0, 0%, 0%, 0.15)' : undefined }}>
                 <Text className={styles.Text}>{row[column.key]}</Text>
               </td>
             ))}
