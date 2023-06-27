@@ -258,6 +258,10 @@ function App() {
             >
             </Form>
             <Spacer size="large" />
+
+            <Table />
+
+            <Spacer size="large" />
             <View horizontal>
               <Button solid primary type="submit" form="form" title="Save" />
             </View>

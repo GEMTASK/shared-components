@@ -123,7 +123,6 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
               ...(child.props as any).style,
               borderTopLeftRadius: index === 0 ? 2.5 : undefined,
               borderTopRightRadius: !horizontal && index === 0 ? 2.5 : undefined,
-              // ...((horizontal || index === childCount - 1) && { borderBottomLeftRadius: 2.5 }),
               borderBottomLeftRadius: horizontal || index === childCount - 1 ? 2.5 : undefined,
               borderBottomRightRadius: index === childCount - 1 ? 2.5 : undefined,
             }

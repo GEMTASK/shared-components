@@ -21,7 +21,7 @@ const columns: FieldDefinition<Record>[] = [
   { key: 'name', label: 'Animal' },
   { key: 'scienceName', label: 'Scientific Name' },
   { key: 'kingdom', label: 'Kingdom' },
-  { key: 'order', label: 'Order' }
+  // { key: 'order', label: 'Order' }
 ];
 
 const rows: Record[] = [
@@ -33,11 +33,14 @@ const rows: Record[] = [
 
 const useStyles = createUseStyles({
   Table: {
-
+    display: 'table',
+    borderCollapse: 'collapse',
+    borderSpacing: 0,
   },
   Row: {
   },
   Cell: {
+    padding: 0,
   },
   Header: {
     padding: '22px 0 8px 16px',
@@ -61,6 +64,7 @@ type TableProps = {
 
 const Table = ({
   borderless,
+  style,
   ...props
 }: TableProps) => {
   const styles = useStyles();
@@ -71,7 +75,7 @@ const Table = ({
   );
 
   return (
-    <View as="table" border={!borderless} className={tableClassName} style={{ display: 'table', borderCollapse: 'collapse', borderSpacing: 0 }} {...props}>
+    <View as="table" border={!borderless} className={tableClassName} {...props}>
       <thead>
         <tr>
           {columns.map((column, index) => (
@@ -82,7 +86,7 @@ const Table = ({
                 fontWeight="semibold"
                 textColor="gray-6"
                 textAlign="left"
-                fillColor={!borderless ? "gray-1" : undefined}
+                fillColor={!borderless ? "gray-0" : undefined}
                 className={styles.Header}
               >
                 {column.label}
@@ -96,7 +100,12 @@ const Table = ({
           <tr key={index}>
             {columns.map((column) => (
               <td key={column.key} className={styles.Cell} style={{ borderBottom: borderless || index !== rows.length - 1 ? '1px solid hsla(0, 0%, 0%, 0.15)' : undefined }}>
-                <Text className={styles.Text}>{row[column.key]}</Text>
+                <Text
+                  fillColor={!borderless ? 'white' : undefined}
+                  className={styles.Text}
+                >
+                  {row[column.key]}
+                </Text>
               </td>
             ))}
           </tr>
