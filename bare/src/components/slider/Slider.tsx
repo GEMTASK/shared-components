@@ -2,10 +2,13 @@ import OpenColor from 'open-color';
 import { createUseStyles } from 'react-jss';
 
 import View from '../view/index.js';
+import Input from '../input/index.js';
+import Spacer from '../spacer/Spacer.js';
 
 const useStyles = createUseStyles({
   Inner: {
     appearance: 'none',
+    flex: 1,
     background: OpenColor.gray[3],
     // boxShadow: 'inset 0 0 0 1px hsla(0, 0%, 0%, 0.15)',
     borderRadius: 1000,
@@ -30,12 +33,26 @@ const useStyles = createUseStyles({
   }
 });
 
-const Slider = ({ value }: any) => {
+type SliderProps = {
+  value: number,
+  onChange?: (value: number) => void,
+};
+
+const Slider = ({
+  value,
+  onChange,
+}: SliderProps) => {
   const styles = useStyles();
 
+  const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onChange?.(Number(event.target.value));
+  };
+
   return (
-    <View>
-      <input type="range" className={styles.Inner} />
+    <View flex horizontal align="left">
+      <Input type="number" value={`${value}`} style={{ width: 60 }} />
+      <Spacer size="small" />
+      <input type="range" value={value} className={styles.Inner} onChange={handleRangeChange} />
     </View>
   );
 };

@@ -42,7 +42,7 @@ const Form = ({
   }), initialValues));
 
   const handleFieldChange = (key: string, value: string | boolean | string[]) => {
-    console.log('handleFieldChange', key, value);
+    // console.log('handleFieldChange', key, value);
 
     setValues({ ...values, [key]: value });
   };

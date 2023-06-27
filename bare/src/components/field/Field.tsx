@@ -33,6 +33,10 @@ const Field = ({
     onFieldChange(_key, value);
   };
 
+  const handleSliderChange = (value: number) => {
+    onFieldChange(_key, value);
+  };
+
   const handleCheckboxChange = (value: boolean) => {
     onFieldChange(_key, value);
   };
@@ -56,7 +60,7 @@ const Field = ({
         <Select value={value} options={options} onChange={handleInputChange} />
       ) : null;
       case 'range': return typeof value === 'number' ? (
-        <Slider />
+        <Slider value={value} onChange={handleSliderChange} />
       ) : null;
     }
 

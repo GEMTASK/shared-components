@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import OpenColor from 'open-color';
 import { createUseStyles } from 'react-jss';
+import { pick, omit } from 'rambda';
 
 import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';
@@ -46,7 +47,7 @@ const useInnerStyles = createUseStyles({
 });
 
 type InputProps = {
-  type?: 'text' | 'date' | 'color',
+  type?: 'text' | 'number' | 'date' | 'color',
   chips?: string[],
   value?: string,
   options?: { [value: string]: string; },
@@ -79,13 +80,20 @@ const Input = ({
 
   const inputElement = (() => {
     switch (type) {
+      case 'number': return (
+        <input
+          type="text"
+          value={value}
+          style={{ background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2.5, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans', textAlign: 'right', width: '100%' }}
+          onChange={handleChange}
+        />
+      );
       case 'date': return (
         <input
           type="date"
           value={value}
           style={{ background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2.5, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans' }}
           onChange={handleChange}
-          {...props}
         />
       );
       case 'color': return (
@@ -94,16 +102,14 @@ const Input = ({
           value={value}
           style={{ appearance: 'none', background: 'none', padding: 0, margin: 0, border: 'none', outline: 'none', width: '100%', minHeight: 32 }}
           onChange={handleChange}
-          {...props}
         />
       );
       default: return (
         <input
           type={type}
           value={value}
-          style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2.5, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans' }}
+          style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2.5, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans', width: '100%' }}
           onChange={handleChange}
-          {...props}
         />
       );
     }
@@ -112,7 +118,7 @@ const Input = ({
   return (
     <Popup
       element={
-        <View horizontal fillColor="white" paddingHorizontal="medium" className={innerStyles.Inner}>
+        <View horizontal fillColor="white" paddingHorizontal="medium" className={innerStyles.Inner} {...props}>
           {/* {chips && chips.map((chip, index) => (
             <Chip key={index} label={chip} />
           ))} */}
