@@ -7,12 +7,13 @@ const useStyles = createUseStyles({
   Inner: {
     appearance: 'none',
     background: OpenColor.gray[3],
+    // boxShadow: 'inset 0 0 0 1px hsla(0, 0%, 0%, 0.15)',
     borderRadius: 1000,
     padding: 0,
     margin: 0,
     marginTop: 8,
     marginBottom: 8,
-    height: 8,
+    height: 4,
     // '&::-webkit-slider-runnable-track': {
     //   background: OpenColor.gray[3],
     //   borderRadius: 1000,
