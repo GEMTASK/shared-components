@@ -109,7 +109,11 @@ const Menu = () => {
   };
 
   const handleListItemSelect = (itemIndex: number) => {
-    items[itemIndex]?.action?.();
+    const item = items[itemIndex];
+
+    if (item && typeof item === 'object') {
+      item.action?.();
+    }
 
     setIsMenuVisible(false);
   };

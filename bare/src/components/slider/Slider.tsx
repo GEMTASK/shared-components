@@ -10,6 +10,8 @@ const useStyles = createUseStyles({
     borderRadius: 1000,
     padding: 0,
     margin: 0,
+    marginTop: 8,
+    marginBottom: 8,
     height: 8,
     // '&::-webkit-slider-runnable-track': {
     //   background: OpenColor.gray[3],
