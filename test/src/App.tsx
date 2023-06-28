@@ -56,6 +56,7 @@ function App() {
           <Text>
             Go to <Link to="live">Live</Link> to learn more.
           </Text>
+          <Link to="email">Email</Link>
         </Stack>
 
         <Divider spacing="large" />
