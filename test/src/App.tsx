@@ -143,6 +143,72 @@ function App() {
         </View>
         <Divider spacing="large" />
         <View horizontal>
+          <View flex fillColor="gray-0" padding="medium medium">
+            <Button solid size="xsmall" title="Gray 0" />
+          </View>
+          <View flex fillColor="gray-1" padding="medium medium">
+            <Button solid size="xsmall" title="Gray 1" />
+          </View>
+          <View flex fillColor="gray-2" padding="medium medium">
+            <Button solid size="xsmall" title="Gray 3" />
+          </View>
+          <View flex fillColor="gray-3" padding="medium medium">
+            <Button solid size="xsmall" title="Gray 3" />
+          </View>
+          <View flex fillColor="gray-4" padding="medium medium">
+            <Button solid size="xsmall" title="Gray 4" />
+          </View>
+          <View flex fillColor="gray-5" padding="medium medium">
+            <Button solid size="xsmall" title="Gray 5" />
+          </View>
+          <View flex fillColor="gray-6" padding="medium medium">
+            <Button solid size="xsmall" title="Gray 6" />
+          </View>
+          <View flex fillColor="gray-7" padding="medium medium">
+            <Button solid size="xsmall" title="Gray 7" />
+          </View>
+          <View flex fillColor="gray-8" padding="medium medium">
+            <Button solid size="xsmall" title="Gray 8" />
+          </View>
+          <View flex fillColor="gray-9" padding="medium medium">
+            <Button solid size="xsmall" title="Gray 9" />
+          </View>
+        </View>
+        <Divider />
+        <View horizontal>
+          <View flex fillColor="gray-0" padding="medium medium">
+            <Button solid primary size="xsmall" title="Gray 0" />
+          </View>
+          <View flex fillColor="gray-1" padding="medium medium">
+            <Button solid primary size="xsmall" title="Gray 1" />
+          </View>
+          <View flex fillColor="gray-2" padding="medium medium">
+            <Button solid primary size="xsmall" title="Gray 3" />
+          </View>
+          <View flex fillColor="gray-3" padding="medium medium">
+            <Button solid primary size="xsmall" title="Gray 3" />
+          </View>
+          <View flex fillColor="gray-4" padding="medium medium">
+            <Button solid primary size="xsmall" title="Gray 4" />
+          </View>
+          <View flex fillColor="gray-5" padding="medium medium">
+            <Button solid primary size="xsmall" title="Gray 5" />
+          </View>
+          <View flex fillColor="gray-6" padding="medium medium">
+            <Button solid primary size="xsmall" title="Gray 6" />
+          </View>
+          <View flex fillColor="gray-7" padding="medium medium">
+            <Button solid primary size="xsmall" title="Gray 7" />
+          </View>
+          <View flex fillColor="gray-8" padding="medium medium">
+            <Button solid primary size="xsmall" title="Gray 8" />
+          </View>
+          <View flex fillColor="gray-9" padding="medium medium">
+            <Button solid primary size="xsmall" title="Gray 9" />
+          </View>
+        </View>
+        <Divider spacing="large" />
+        <View horizontal>
           {Array.from({ length: 10 }).map((_, index) => (
             <View key={index} flex fillColor={`${hues[0]}-${index}` as any} minHeight={32} title={`${hues[0]}-${index}`} />
           ))}
