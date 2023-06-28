@@ -31,7 +31,10 @@ const useBorderColorStyles = createUseStyles({
       boxShadow: `inset 0 0 0 1px ${OpenColor.white}`
     }
   },
-  ...colors
+  ...colors,
+  'alpha-1': {
+    boxShadow: `inset 0 0 0 1px hsla(0, 0%, 0%, 0.1)`
+  }
 });
 
 export default useBorderColorStyles;

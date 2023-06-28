@@ -4,6 +4,7 @@ type White = 'white';
 type Black = 'black';
 
 type Hue =
+  | 'alpha-1'
   | 'gray-0' | 'gray-1' | 'gray-2' | 'gray-3' | 'gray-4' | 'gray-5' | 'gray-6' | 'gray-7' | 'gray-8' | 'gray-9'
   | 'red-0' | 'red-1' | 'red-2' | 'red-3' | 'red-4' | 'red-5' | 'red-6' | 'red-7' | 'red-8' | 'red-9'
   | 'pink-0' | 'pink-1' | 'pink-2' | 'pink-3' | 'pink-4' | 'pink-5' | 'pink-6' | 'pink-7' | 'pink-8' | 'pink-9'

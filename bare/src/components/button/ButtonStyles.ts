@@ -21,20 +21,20 @@ const useStyles = createUseStyles({
   },
   hover: {
     '&:enabled:hover': {
-      background: `${OpenColor.gray[6]}30`,
+      background: `${OpenColor.gray[3]}`,
+      // background: `${OpenColor.gray[6]}30`,
     },
     '&:enabled:active': {
-      background: `${OpenColor.gray[8]}30`,
+      background: `${OpenColor.gray[3]}`,
+      // background: `${OpenColor.gray[8]}30`,
     },
   },
   primary: {
     '&:enabled:hover': {
       background: OpenColor.blue[0],
-      filter: 'none',
     },
     '&:enabled:active': {
       background: OpenColor.blue[1],
-      filter: 'none',
     },
   },
   round: {

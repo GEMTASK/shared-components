@@ -24,6 +24,9 @@ const useTextColorStyles = createUseStyles({
     color: OpenColor.white
   },
   ...colors,
+  'alpha-1': {
+    color: 'hsla(0, 0%, 0%, 0.1)'
+  }
 });
 
 export default useTextColorStyles;

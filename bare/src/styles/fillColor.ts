@@ -24,6 +24,9 @@ const useFillColorStyles = createUseStyles({
     background: OpenColor.white
   },
   ...colors,
+  'alpha-1': {
+    background: 'hsla(0, 0%, 0%, 0.1)'
+  }
 });
 
 export default useFillColorStyles;
