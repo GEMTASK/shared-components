@@ -20,7 +20,7 @@ const Email = () => {
         <View minWidth={360} fillColor="gray-1">
           <View padding="large">
             <View horizontal>
-              <Button solid title="Compose" />
+              <Button solid icon="file-alt" title="Compose" />
             </View>
             <Spacer size="large" />
             <Input placeholder="Search..." />
@@ -29,28 +29,27 @@ const Email = () => {
           <Divider />
 
           <View>
-            <View>
-              <Spacer size="small" />
-              <Text caps fontSize="xxsmall" padding="small large">
+            <View padding="large">
+              <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6">
                 Today
               </Text>
+              <Spacer size="small" />
+              <Stack divider border style={{ overflow: 'hidden' }}>
+                <View padding="small large" fillColor="white" style={{ position: 'relative' }}>
+                  <View style={{ position: 'absolute', top: 0, left: 0, borderTop: '20px solid lightblue', borderRight: '20px solid transparent' }} />
+                  <Text fontWeight="semibold">testuser@example.com</Text>
+                  <Spacer size="small" />
+                  <Text fontSize="xsmall" textColor="gray-6">Marketing Budget Q4: Please review till August, 31</Text>
+                  <Spacer size="large" />
+                  <Text fontSize="xsmall">Preview</Text>
+                </View>
+                <View padding="small large" fillColor="white">
+                  <Text fontWeight="semibold">From</Text>
+                  <Spacer size="small" />
+                  <Text fontSize="xsmall" textColor="gray-6">Marketing Budget Q4: Please review till August, 31</Text>
+                </View>
+              </Stack>
             </View>
-            <Divider />
-            <Stack divider>
-              <View padding="small large" fillColor="white" style={{ position: 'relative' }}>
-                <View style={{ position: 'absolute', top: 0, left: 0, borderTop: '20px solid lightblue', borderRight: '20px solid transparent' }} />
-                <Text fontWeight="semibold">testuser@example.com</Text>
-                <Spacer size="small" />
-                <Text fontSize="xsmall" textColor="gray-6">Marketing Budget Q4: Please review till August, 31</Text>
-                <Spacer size="large" />
-                <Text fontSize="xsmall">Preview</Text>
-              </View>
-              <View padding="small large" fillColor="white">
-                <Text fontWeight="semibold">From</Text>
-                <Spacer size="small" />
-                <Text fontSize="xsmall" textColor="gray-6">Marketing Budget Q4: Please review till August, 31</Text>
-              </View>
-            </Stack>
             <Divider />
           </View>
         </View>
