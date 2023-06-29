@@ -95,7 +95,7 @@ const Item = ({
   // );
 };
 
-const Menu = () => {
+const Menu = ({ title, size, ...props }: any) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const styles = useStyles();
@@ -119,12 +119,14 @@ const Menu = () => {
   };
 
   return (
-    <View style={{ position: 'relative', zIndex: 1 }}>
+    <View style={{ position: 'relative', zIndex: 3 }}>
       <Button
-        solid
-        title="Menu"
+        // solid
+        size={size ?? 'small'}
+        title={title ?? 'Menu'}
         rightIcon="chevron-down"
         selected={isMenuVisible}
+        {...props}
         onPointerDown={handleButtonClick}
         onClick={handleButtonClick}
         onBlur={handleBlur}

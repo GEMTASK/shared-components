@@ -8,6 +8,7 @@ import Text from '../text/index.js';
 import Spacer from '../spacer/index.js';
 import Popup from '../popup/index.js';
 import Button from '../button/index.js';
+import Icon from '../icon/Icon.js';
 
 type ChipProps = {
   label: string,
@@ -48,17 +49,21 @@ const useInnerStyles = createUseStyles({
 
 type InputProps = {
   type?: 'text' | 'number' | 'date' | 'color',
+  icon?: React.ComponentProps<typeof Icon>['icon'],
   chips?: string[],
   value?: string,
   options?: { [value: string]: string; },
+  placeholder?: string,
   onChange?: (value: string) => void,
 } & Omit<ViewProps<'input'>, 'children' | 'onChange'>;
 
 const Input = ({
   type = 'text',
+  icon,
   chips,
   value,
   options,
+  placeholder,
   onChange,
   ...props
 }: InputProps) => {
@@ -108,6 +113,7 @@ const Input = ({
         <input
           type={type}
           value={value}
+          placeholder={placeholder}
           style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2.5, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans', width: '100%' }}
           onChange={handleChange}
         />
@@ -118,7 +124,10 @@ const Input = ({
   return (
     <Popup
       element={
-        <View horizontal fillColor="white" paddingHorizontal="medium" className={innerStyles.Inner} {...props}>
+        <View horizontal align="left" fillColor="white" paddingHorizontal="medium" className={innerStyles.Inner} {...props}>
+          {icon && (
+            <Icon icon={icon} />
+          )}
           {/* {chips && chips.map((chip, index) => (
             <Chip key={index} label={chip} />
           ))} */}

@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.2.4",
     "bare": "file:../bare",
     "cra": "file:../cra",
+    "lorem-ipsum": "^2.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-live": "^4.1.3",
