@@ -14,11 +14,11 @@ const useStyles = createUseStyles({
   Divider: {
   },
   horizontal: {
-    width: 1,
+    minWidth: 1,
     justifySelf: 'stretch',
   },
   vertical: {
-    height: 1,
+    minHeight: 1,
     alignSelf: 'stretch',
   }
 });

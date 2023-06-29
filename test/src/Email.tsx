@@ -14,8 +14,8 @@ Joe
 
 const Email = () => {
   return (
-    <View minHeight="100vh">
-      <Stack flex horizontal divider fillColor="gray-1">
+    <View style={{ height: '100vh' }}>
+      <Stack flex horizontal divider fillColor="gray-1" style={{ minHeight: 0 }}>
 
         <View style={{ width: 360 }}>
           <View padding="large">
@@ -24,12 +24,9 @@ const Email = () => {
             </View>
             <Spacer size="large" />
             <Input placeholder="Search..." />
-          </View>
 
-          <Divider />
-
-          <View>
-            <View padding="large">
+            <View>
+              <Spacer size="large" />
               <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6">
                 Today
               </Text>
@@ -40,7 +37,7 @@ const Email = () => {
                     testuser@example.com
                   </Text>
                   <Spacer size="small" />
-                  <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>
+                  <Text fontSize="xxsmall" textColor="gray-6" lineClamp={1}>
                     Marketing Budget Q4: Please review till August, 31 (Make this a longer subject)
                   </Text>
                   <Spacer size="large" />
@@ -54,7 +51,7 @@ const Email = () => {
                     testuser@example.com
                   </Text>
                   <Spacer size="small" />
-                  <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>
+                  <Text fontSize="xxsmall" textColor="gray-6" lineClamp={1}>
                     Marketing Budget Q4: Please review till August, 31 (Make this a longer subject)
                   </Text>
                   <Spacer size="large" />
@@ -82,12 +79,12 @@ const Email = () => {
               Marketing Budget Q4: Please review till August, 31
             </Text>
           </View>
-          <Divider />
-          <View flex fillColor="white">
-            <Text padding="large">
-              {emailBody}
-            </Text>
+          <View paddingHorizontal="large">
+            <Divider />
           </View>
+          <Text flex fillColor="white" style={{ overflow: 'auto' }} padding="large">
+            {emailBody}
+          </Text>
         </View>
 
       </Stack>

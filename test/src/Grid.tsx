@@ -56,6 +56,18 @@ const Location2 = ({ children }: any) => {
   );
 };
 
+const Location3 = ({ children }: any) => {
+  return (
+    <View>
+      <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
+      <Spacer size="small" />
+      <Text fontWeight="semibold">Title title title</Text>
+      <Spacer size="xsmall" />
+      <Text fontSize="xsmall" style={{ opacity: 0.6 }}>Subtitle subtitle</Text>
+    </View>
+  );
+};
+
 const Grid = () => {
   return (
     <View fillColor="gray-2" minHeight="100vh">
@@ -71,7 +83,7 @@ const Grid = () => {
           style={{
             display: 'grid',
             gap: 16,
-            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(440px, 1fr))'
           }}
         >
           <Location>
@@ -87,7 +99,8 @@ const Grid = () => {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </Location>
         </View>
-        <Spacer size="large" />
+
+        <Spacer size="xxlarge" />
 
         <View
           style={{
@@ -110,18 +123,19 @@ const Grid = () => {
           </Location2>
         </View>
 
+        <Spacer size="xxlarge" />
 
-        <Spacer size="large" />
-        <View horizontal scrollbar={false} style={{ gap: 8, overflowX: 'auto', scrollSnapType: 'x', paddingLeft: 24, scrollPaddingLeft: 24, paddingRight: 24, scrollPaddingRight: 24, margin: '0 -24px' }}>
-          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
-          <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
+        <View horizontal scrollbar={false} style={{ gap: 8, overflowX: 'auto', overflowY: 'hidden', scrollSnapType: 'x', paddingLeft: 24, scrollPaddingLeft: 24, paddingRight: 24, scrollPaddingRight: 24, margin: '0 -24px' }}>
+          <Location3 />
+          <Location3 />
+          <Location3 />
+          <Location3 />
+          <Location3 />
+          <Location3 />
+          <Location3 />
+          <Location3 />
+          <Location3 />
+          <Location3 />
         </View>
       </View>
       <View fillColor="gray-7" padding="large large" style={{ position: 'sticky', bottom: 0, zIndex: 2 }}>
