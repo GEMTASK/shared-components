@@ -17,7 +17,7 @@ const Email = () => {
     <View minHeight="100vh">
       <Stack flex horizontal divider fillColor="gray-1">
 
-        <View minWidth={360}>
+        <View style={{ width: 360 }}>
           <View padding="large">
             <View horizontal>
               <Button solid icon="file-alt" title="Compose" />
@@ -36,17 +36,31 @@ const Email = () => {
               <Spacer size="small" />
               <Stack divider border style={{ overflow: 'hidden' }}>
                 <View padding="small large" fillColor="white" style={{ position: 'relative' }}>
-                  <View style={{ position: 'absolute', top: 0, left: 0, borderTop: '20px solid lightblue', borderRight: '20px solid transparent' }} />
-                  <Text fontWeight="semibold">testuser@example.com</Text>
+                  <Text fontWeight="semibold" lineClamp={1}>
+                    testuser@example.com
+                  </Text>
                   <Spacer size="small" />
-                  <Text fontSize="xsmall" textColor="gray-6">Marketing Budget Q4: Please review till August, 31</Text>
+                  <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>
+                    Marketing Budget Q4: Please review till August, 31 (Make this a longer subject)
+                  </Text>
                   <Spacer size="large" />
-                  <Text fontSize="xsmall">Preview</Text>
+                  <Text fontSize="xsmall" lineClamp={2}>
+                    Preview asdfadsfsf asdfasdf asdfasdf adfadsf adfadsf adsfa asdfadsf asdfadsf asdfadsf adsfasdf adsfasdfa dsfasdfasd fasdf asdfadsf
+                  </Text>
                 </View>
-                <View padding="small large" fillColor="white">
-                  <Text fontWeight="semibold">From</Text>
+                <View padding="small large" fillColor="white" style={{ position: 'relative' }}>
+                  <View style={{ position: 'absolute', top: 0, left: 0, borderTop: '20px solid lightblue', borderRight: '20px solid transparent' }} />
+                  <Text fontWeight="semibold" lineClamp={1}>
+                    testuser@example.com
+                  </Text>
                   <Spacer size="small" />
-                  <Text fontSize="xsmall" textColor="gray-6">Marketing Budget Q4: Please review till August, 31</Text>
+                  <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>
+                    Marketing Budget Q4: Please review till August, 31 (Make this a longer subject)
+                  </Text>
+                  <Spacer size="large" />
+                  <Text fontSize="xsmall" lineClamp={2}>
+                    Preview asdfadsfsf asdfasdf asdfasdf adfadsf adfadsf adsfa asdfadsf asdfadsf asdfadsf adsfasdf adsfasdfa dsfasdfasd fasdf asdfadsf
+                  </Text>
                 </View>
               </Stack>
             </View>
@@ -60,9 +74,13 @@ const Email = () => {
               <Button icon="reply-all" title="Reply All" />
             </Stack>
             <Spacer size="large" />
-            <Text fontWeight="semibold">testuser@example.com</Text>
+            <Text fontWeight="semibold" lineClamp={1}>
+              testuser@example.com
+            </Text>
             <Spacer size="small" />
-            <Text fontSize="xsmall" textColor="gray-6">Marketing Budget Q4: Please review till August, 31</Text>
+            <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>
+              Marketing Budget Q4: Please review till August, 31
+            </Text>
           </View>
           <Divider />
           <View flex fillColor="white">

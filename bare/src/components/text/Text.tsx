@@ -22,6 +22,7 @@ type TextProps<T extends React.ElementType = 'span'> = {
   fontWeight?: 'thin' | 'normal' | 'medium' | 'semibold' | 'bold',
   textAlign?: 'left' | 'center' | 'right',
   textColor?: Color,
+  lineClamp?: number,
   className?: string,
   style?: React.CSSProperties,
   children?: Children<TextProps>,
@@ -35,6 +36,7 @@ const Text = <T extends React.ElementType = 'span'>({
   fontWeight,
   textAlign,
   textColor,
+  lineClamp,
   children,
   ...props
 }: TextProps<T>) => {
@@ -46,13 +48,22 @@ const Text = <T extends React.ElementType = 'span'>({
   const textAlignStyles = useTextAlignStyles();
   const textColorStyles = useTextColorStyles();
 
-  const textClassName = clsx(
+  const innerClassName = clsx(
     caps && innerStyles.caps,
     fontSize && fontSizeStyles[fontSize],
     fontWeight && fontWeightStyles[fontWeight],
     textAlign && textAlignStyles[textAlign],
     textColor && textColorStyles[textColor],
   );
+
+  const innerStyle = {
+    ...(lineClamp && {
+      display: '-webkit-box',
+      overflow: 'hidden',
+      WebkitLineClamp: lineClamp,
+      WebkitBoxOrient: 'vertical',
+    })
+  };
 
   const childrenElement = typeof children === 'string'
     ? children.split(/\n|\\n/).reduce<Children<TextProps>[]>((string, word, index) => (
@@ -64,7 +75,7 @@ const Text = <T extends React.ElementType = 'span'>({
 
   if (isTextParent) {
     return (
-      <Component {...innerProps} className={textClassName}>
+      <Component {...innerProps} className={innerClassName}>
         {childrenElement}
       </Component>
     );
@@ -73,7 +84,7 @@ const Text = <T extends React.ElementType = 'span'>({
   return (
     <TextContext.Provider value={true}>
       <View {...props}>
-        <Component {...innerProps} className={clsx(innerStyles.Text, textClassName)}>
+        <Component {...innerProps} className={clsx(innerStyles.Text, innerClassName)} style={innerStyle}>
           {childrenElement}
         </Component>
       </View>

@@ -10,14 +10,15 @@ const useInnerStyles = createUseStyles({
     // color: 'hsla(0, 0%, 0%, 0.8)',
     '&:not(a)': {
       cursor: 'default',
-    }
+    },
     // '&[contenteditable], &:active': {
     //   cursor: 'text'
     // },
+
   },
   caps: {
     textTransform: 'uppercase',
-  }
+  },
 });
 
 const useFontSizeStyles = createUseStyles({
