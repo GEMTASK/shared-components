@@ -7,6 +7,7 @@ const useInnerStyles = createUseStyles({
     lineHeight: '20px',
     margin: '-4px 0 -3px 0',
     display: 'inline-block',
+    // color: 'hsla(0, 0%, 0%, 0.8)',
     '&:not(a)': {
       cursor: 'default',
     }

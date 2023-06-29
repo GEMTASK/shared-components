@@ -38,7 +38,7 @@ const useInnerStyles = createUseStyles({
     gap: 4,
     flexWrap: 'wrap',
     minHeight: 32,
-    boxShadow: `inset 0 0 0 1px ${OpenColor.gray[4]}`,
+    boxShadow: `inset 0 0 0 1px ${OpenColor.gray[3]}`,
     borderRadius: 2.5,
     '&:focus-within': {
       boxShadow: `inset 0 0 0 2px ${OpenColor.blue[5]}`,

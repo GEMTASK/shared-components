@@ -22,7 +22,7 @@ const useStyles = createUseStyles({
       content: '""',
       position: 'absolute',
       inset: 0,
-      boxShadow: `inset 0 0 0 1px hsla(0, 0%, 0%, 0.15)`,
+      boxShadow: `inset 0 0 0 1px hsla(0, 0%, 0%, 0.1)`,
       borderRadius: 2.5,
       pointerEvents: 'none',
       zIndex: 1,

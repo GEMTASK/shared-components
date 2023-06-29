@@ -79,7 +79,7 @@ const Table = ({
       <thead>
         <tr>
           {columns.map((column, index) => (
-            <th key={column.key} className={styles.Cell} style={{ padding: 0, borderBottom: '1px solid hsla(0, 0%, 0%, 0.15)' }}>
+            <th key={column.key} className={styles.Cell} style={{ padding: 0, borderBottom: '1px solid hsla(0, 0%, 0%, 0.1)' }}>
               <Text
                 caps
                 fontSize="xxsmall"
@@ -99,7 +99,7 @@ const Table = ({
         {rows.map((row, index) => (
           <tr key={index}>
             {columns.map((column) => (
-              <td key={column.key} className={styles.Cell} style={{ borderBottom: borderless || index !== rows.length - 1 ? '1px solid hsla(0, 0%, 0%, 0.15)' : undefined }}>
+              <td key={column.key} className={styles.Cell} style={{ borderBottom: borderless || index !== rows.length - 1 ? '1px solid hsla(0, 0%, 0%, 0.1)' : undefined }}>
                 <Text
                   fillColor={!borderless ? 'white' : undefined}
                   className={styles.Text}

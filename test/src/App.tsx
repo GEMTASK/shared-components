@@ -39,7 +39,7 @@ const Header = () => {
           <Text fontSize="xsmall" textColor="gray-6">Subtitle</Text>
         </View>
       </View>
-      <Button primary title="Press Me" />
+      <Button title="Press Me" />
     </View>
   );
 };

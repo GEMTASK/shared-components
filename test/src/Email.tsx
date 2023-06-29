@@ -15,9 +15,9 @@ Joe
 const Email = () => {
   return (
     <View minHeight="100vh">
-      <Stack flex horizontal divider>
+      <Stack flex horizontal divider fillColor="gray-1">
 
-        <View minWidth={360} fillColor="gray-1">
+        <View minWidth={360}>
           <View padding="large">
             <View horizontal>
               <Button solid icon="file-alt" title="Compose" />
@@ -50,7 +50,6 @@ const Email = () => {
                 </View>
               </Stack>
             </View>
-            <Divider />
           </View>
         </View>
 

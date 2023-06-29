@@ -59,10 +59,10 @@ const Location2 = ({ children }: any) => {
 const Grid = () => {
   return (
     <View fillColor="gray-2" minHeight="100vh">
-      <View fillColor="white" padding="large large" style={{ position: 'sticky', top: 0, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)', zIndex: 1 }}>
+      <View fillColor="white" padding="large large" style={{ position: 'sticky', top: 0, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)', zIndex: 2 }}>
         <Text>Header</Text>
       </View>
-      <View flex padding="xxlarge xxlarge" maxWidth={'100vw'} fillColor="gray-0" style={{ width: 1400, margin: '0 auto', overflow: 'hidden', boxShadow: '0 0 32px hsla(0, 0%, 0%, 0.15)' }}>
+      <View flex padding="xxlarge xxlarge" maxWidth={'100vw'} fillColor="gray-0" style={{ width: 1400, margin: '0 auto', overflow: 'hidden', boxShadow: '0 0 32px hsla(0, 0%, 0%, 0.1)' }}>
         <Text fontSize="large" fontWeight="bold" textColor="gray-9">
           Beautiful locations near the beach
         </Text>
@@ -124,7 +124,7 @@ const Grid = () => {
           <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
         </View>
       </View>
-      <View fillColor="gray-7" padding="large large" style={{ position: 'sticky', bottom: 0 }}>
+      <View fillColor="gray-7" padding="large large" style={{ position: 'sticky', bottom: 0, zIndex: 2 }}>
         <Text textColor="white">Footer</Text>
       </View>
     </View>
