@@ -1,6 +1,7 @@
 import React from 'react';
 import OpenColor from 'open-color';
 import clsx from 'clsx';
+import { useMediaQuery } from 'react-responsive';
 
 import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';
@@ -74,6 +75,7 @@ type ButtonProps = {
   round?: boolean,
   selected?: boolean,
   disabled?: boolean,
+  tabletTitleHidden?: boolean,
   className?: string,
 } & Omit<ViewProps<'button'>, 'children'>;
 
@@ -90,9 +92,11 @@ const Button = ({
   round,
   selected,
   disabled,
+  tabletTitleHidden,
   className,
   ...props
 }: ButtonProps) => {
+  const isTablet = useMediaQuery({ query: '(max-width: 1279px)' });
   const styles = useStyles();
 
   const buttonClassName = clsx(
@@ -131,19 +135,26 @@ const Button = ({
       paddingVertical={paddingVertical}
       paddingHorizontal={paddingHorizontal}
       align="middle center"
-      minWidth={title ? size === 'xsmall' ? 60 : 80 : undefined}
+      minWidth={title && !isTablet ? size === 'xsmall' ? 60 : 80 : undefined}
       className={buttonClassName}
       {...props}
     >
       {!!icon && (
         <Icon icon={icon} color={iconColor} size={size === 'xsmall' ? 'sm' : undefined} />
       )}
-      {!!icon && !!title && (
+      {!!icon && !!title && !(tabletTitleHidden && isTablet) && (
         <Spacer size="small" />
       )}
-      <Text fontSize={size === 'xsmall' ? 'xsmall' : undefined} fontWeight={titleFontWeight} textColor={textColor} style={{ pointerEvents: 'none', whiteSpace: 'nowrap' }}>
-        {title}
-      </Text>
+      {!(tabletTitleHidden && isTablet) && (
+        <Text
+          fontSize={size === 'xsmall' ? 'xsmall' : undefined}
+          fontWeight={titleFontWeight}
+          textColor={textColor}
+          style={{ pointerEvents: 'none', whiteSpace: 'nowrap' }}
+        >
+          {title}
+        </Text>
+      )}
       {!!title && !!rightIcon && (
         <Spacer size="small" />
       )}

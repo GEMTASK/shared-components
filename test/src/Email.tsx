@@ -116,19 +116,19 @@ const Email = () => {
           <View padding="large">
             <Stack horizontal>
               <Stack horizontal spacing="small">
-                <Button primary icon="reply" title="Reply" />
-                <Button primary icon="reply-all" title="Reply All" />
-                <Button primary icon="share" title="Forward" />
+                <Button primary icon="reply" title="Reply" tabletTitleHidden />
+                <Button primary icon="reply-all" title="Reply All" tabletTitleHidden />
+                <Button primary icon="share" title="Forward" tabletTitleHidden />
               </Stack>
               <Spacer flex size="large" />
               <Stack horizontal spacing="small">
-                <Menu title="Move to Folder" />
-                <Button icon="trash" title="Mark as Junk" />
+                <Menu icon="folder-open" title="Move to Folder" tabletTitleHidden />
+                <Button icon="envelopes-bulk" title="Mark as Junk" tabletTitleHidden />
               </Stack>
               <Spacer flex size="large" />
               <Stack horizontal>
                 {/* <Button titleTextColor="red-8" borderColor="red-8" icon="trash" title="Delete" /> */}
-                <Button titleTextColor="red-6" icon="trash" title="Delete" />
+                <Button titleTextColor="red-6" icon="trash-can" title="Delete" tabletTitleHidden />
               </Stack>
             </Stack>
             <Spacer size="large" />
