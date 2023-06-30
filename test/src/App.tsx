@@ -429,6 +429,7 @@ function App() {
 
       <Modal
         isOpen={isModalOpen}
+        title="Lorem ipsum dolor sit amet"
         actions={[
           <Button solid primary title="Save" onClick={() => setIsModalOpen(false)} />,
           <Button solid title="Cancel" onClick={() => setIsModalOpen(false)} />,

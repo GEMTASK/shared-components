@@ -37,12 +37,14 @@ const useStyles = createUseStyles({
 
 type ModalProps = {
   isOpen?: boolean,
+  title?: string,
   actions?: React.ReactElement[],
   onRequestClose?: () => void,
 } & ViewProps;
 
 const Modal = ({
   isOpen,
+  title,
   actions,
   children,
   onRequestClose,
@@ -77,22 +79,26 @@ const Modal = ({
   }
 
   return createPortal(
-    <View align="middle center" style={{ position: 'fixed', inset: 0 }}>
+    <View align="middle center" style={{ position: 'fixed', inset: 0, zIndex: 3 }}>
       <View fillColor="gray-9" className={styles.Overlay} onClick={onRequestClose} />
       <View as="dialog" fillColor="white" minWidth={400} className={styles.Modal} {...props}>
         <View horizontal padding="large" align="middle left">
-          <Text flex fontSize="large" >Lorem ipsum dolor sit amet</Text>
+          <Text flex fontSize="large" >{title}</Text>
           <Button round icon="close" onClick={onRequestClose} />
         </View>
         <View paddingHorizontal="large">
           {children}
         </View>
-        <Spacer size="small" />
-        <Stack horizontal spacing="small" align="middle right" padding="large">
-          {actions?.map((action, index) => (
-            React.cloneElement(action, { key: index })
-          ))}
-        </Stack>
+        {actions && (
+          <>
+            <Spacer size="small" />
+            <Stack horizontal spacing="small" align="middle right" padding="large">
+              {actions?.map((action, index) => (
+                React.cloneElement(action, { key: index })
+              ))}
+            </Stack>
+          </>
+        )}
       </View>
     </View>,
     document.querySelector('#modals') as Element

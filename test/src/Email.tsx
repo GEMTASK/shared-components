@@ -1,4 +1,4 @@
-import { View, Text, Card, Spacer, Image, Popup, Button, Stack, Icon, Divider, Input, Menu } from 'bare';
+import { View, Text, Card, Spacer, Image, Popup, Button, Stack, Icon, Divider, Input, Menu, Modal, Form } from 'bare';
 import { LoremIpsum } from 'lorem-ipsum';
 
 const xemailBody = `Hi there,
@@ -146,6 +146,17 @@ const Email = () => {
         </View>
 
       </Stack>
+
+      <Modal isOpen={true} title="New Message" minWidth={600} actions={[
+        <Button solid title="Discard" />,
+        <Button solid primary title="Send Message" />,
+      ]}>
+        <Form fields={[
+          { key: 'recipient', label: 'To', type: 'text' },
+          { key: 'subject', label: 'Subject' },
+          { key: 'body', label: 'Message' },
+        ]} />
+      </Modal>
     </View>
   );
 };
