@@ -44,7 +44,13 @@ const Message = ({ unread }: any) => {
 const Email = () => {
   return (
     <View style={{ height: '100vh' }}>
-      <Stack flex horizontal divider fillColor="gray-1" style={{ minHeight: 0 }}>
+      <Stack flex horizontal fillColor="gray-1" style={{ minHeight: 0 }}>
+
+        <Stack padding="large small" fillColor="gray-4">
+          <Button hover icon="home" />
+          <Button hover icon="envelope" />
+          <Button hover icon="sliders" />
+        </Stack>
 
         <View style={{ width: 360, minHeight: 0 }}>
           <View paddingHorizontal="large">
@@ -52,21 +58,21 @@ const Email = () => {
             <View horizontal>
               <Button solid primary icon="file-alt" title="Compose" />
             </View>
-            <Spacer size="large" />
+            <Spacer size="small" />
             <View horizontal align="left">
               <Text flex fontSize="large" fontWeight="semibold">
                 Inbox
               </Text>
-              <Menu hover size="xsmall" title="Sort by" style={{ marginBottom: -7 }} />
+              <Menu hover title="Sort by" style={{ paddingTop: 14 }} />
             </View>
-            <Spacer size="small" />
+            {/* <Spacer size="small" /> */}
             <Input icon="search" placeholder="Search" style={{ borderRadius: 1000 }} />
           </View>
 
           <View paddingHorizontal="large" style={{ minHeight: 0, overflow: 'auto' }}>
             <View fillColor="gray-1" style={{ position: 'sticky', top: 0, zIndex: 2 }}>
               <Divider style={{ marginTop: -1 }} />
-              <Spacer size="xlarge" />
+              <Spacer size="large" />
               <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6">
                 Today
               </Text>
@@ -101,15 +107,15 @@ const Email = () => {
 
         </View>
 
+        <Divider />
+
         <View flex fillColor="white">
           <View padding="large">
             <Stack horizontal>
-              <Stack horizontal spacing="large">
-                <Stack horizontal spacing="small">
-                  <Button primary icon="reply" title="Reply" />
-                  <Button primary icon="reply-all" title="Reply All" />
-                </Stack>
-                <Button icon="share" title="Forward" />
+              <Stack horizontal spacing="small">
+                <Button primary icon="reply" title="Reply" />
+                <Button primary icon="reply-all" title="Reply All" />
+                <Button primary icon="share" title="Forward" />
               </Stack>
               <Spacer flex size="large" />
               <Stack horizontal spacing="small">
@@ -118,7 +124,8 @@ const Email = () => {
               </Stack>
               <Spacer flex size="large" />
               <Stack horizontal>
-                <Button icon="trash" title="Delete" />
+                {/* <Button titleTextColor="red-8" borderColor="red-8" icon="trash" title="Delete" /> */}
+                <Button titleTextColor="red-6" icon="trash" title="Delete" />
               </Stack>
             </Stack>
             <Spacer size="large" />
@@ -133,7 +140,7 @@ const Email = () => {
           <View paddingHorizontal="large">
             <Divider />
           </View>
-          <Text flex fillColor="white" style={{ overflow: 'auto' }} padding="large">
+          <Text flex fillColor="white" style={{ overflow: 'auto', padding: 32 }} padding="xxlarge">
             {emailBody}
           </Text>
         </View>

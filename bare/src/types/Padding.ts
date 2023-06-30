@@ -13,6 +13,8 @@ type ShorthandPadding =
   | 'large none'
   | 'xlarge'
   | 'xlarge none'
+  | 'xxlarge'
+  | 'xxlarge none'
   //
   | 'xxsmall xxsmall'
   | 'xxsmall xsmall'
