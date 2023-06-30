@@ -16,6 +16,7 @@ type FieldProps<T = unknown> = {
   label: string,
   type?: 'text' | 'date' | 'color' | 'select' | 'checkbox' | 'radio' | 'checkboxlist' | 'range',
   value?: string | boolean | string[],
+  lines?: number,
   options?: { [value: string]: string; },
   render?: (item: T) => React.ReactNode,
 };
@@ -24,6 +25,7 @@ const Field = ({
   _key,
   label,
   type,
+  lines,
   options = {},
   value
 }: FieldProps) => {
@@ -65,7 +67,7 @@ const Field = ({
     }
 
     return typeof value === 'string' ? (
-      <Input type={type} value={value} options={options} onChange={handleInputChange} />
+      <Input type={type} lines={lines} value={value} options={options} onChange={handleInputChange} />
     ) : null;
   })();
 

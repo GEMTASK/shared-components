@@ -1,5 +1,6 @@
 import { View, Text, Card, Spacer, Image, Popup, Button, Stack, Icon, Divider, Input, Menu, Modal, Form } from 'bare';
 import { LoremIpsum } from 'lorem-ipsum';
+import { useState } from 'react';
 
 const xemailBody = `Hi there,
 
@@ -42,6 +43,8 @@ const Message = ({ unread }: any) => {
 };
 
 const Email = () => {
+  const [isNewMessageModalOpen, setIsNewMessageModalOpen] = useState(false);
+
   return (
     <View style={{ height: '100vh' }}>
       <Stack flex horizontal fillColor="gray-1" style={{ minHeight: 0 }}>
@@ -56,7 +59,7 @@ const Email = () => {
           <View paddingHorizontal="large">
             <Spacer size="large" />
             <View horizontal>
-              <Button solid primary icon="file-alt" title="Compose" />
+              <Button solid primary icon="file-alt" title="Compose" onClick={() => setIsNewMessageModalOpen(true)} />
             </View>
             <Spacer size="small" />
             <View horizontal align="left">
@@ -147,14 +150,20 @@ const Email = () => {
 
       </Stack>
 
-      <Modal isOpen={true} title="New Message" minWidth={600} actions={[
-        <Button solid title="Discard" />,
-        <Button solid primary title="Send Message" />,
-      ]}>
+      <Modal
+        isOpen={isNewMessageModalOpen}
+        title="New Message"
+        minWidth={800}
+        actions={[
+          <Button solid title="Discard" onClick={() => setIsNewMessageModalOpen(false)} />,
+          <Button solid primary title="Send Message" onClick={() => setIsNewMessageModalOpen(false)} />,
+        ]}
+        onRequestClose={() => setIsNewMessageModalOpen(false)}
+      >
         <Form fields={[
           { key: 'recipient', label: 'To', type: 'text' },
           { key: 'subject', label: 'Subject' },
-          { key: 'body', label: 'Message' },
+          { key: 'body', label: 'Message', lines: 15 },
         ]} />
       </Modal>
     </View>

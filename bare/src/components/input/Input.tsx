@@ -52,6 +52,7 @@ type InputProps = {
   icon?: React.ComponentProps<typeof Icon>['icon'],
   chips?: string[],
   value?: string,
+  lines?: number,
   options?: { [value: string]: string; },
   placeholder?: string,
   onChange?: (value: string) => void,
@@ -62,6 +63,7 @@ const Input = ({
   icon,
   chips,
   value,
+  lines,
   options,
   placeholder,
   onChange,
@@ -109,7 +111,16 @@ const Input = ({
           onChange={handleChange}
         />
       );
-      default: return (
+      default: return lines && lines > 1 ? (
+        <textarea
+          type={type}
+          value={value}
+          rows={lines}
+          placeholder={placeholder}
+          style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2.5, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans', width: '100%' }}
+          onChange={handleChange}
+        />
+      ) : (
         <input
           type={type}
           value={value}

@@ -10,6 +10,7 @@ type FieldDefinition<T = unknown> = {
   key: string,
   label: string,
   type?: 'text' | 'date' | 'color' | 'select' | 'checkbox' | 'radio' | 'checkboxlist' | 'range',
+  lines?: number,
   options?: { [value: string]: string; },
   render?: (item: T) => React.ReactNode,
 };

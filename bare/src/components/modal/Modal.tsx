@@ -84,8 +84,9 @@ const Modal = ({
       <View as="dialog" fillColor="white" minWidth={400} className={styles.Modal} {...props}>
         <View horizontal padding="large" align="middle left">
           <Text flex fontSize="large" >{title}</Text>
-          <Button round icon="close" onClick={onRequestClose} />
+          <Button size="xsmall" icon="close" onClick={onRequestClose} />
         </View>
+        <Spacer size="small" />
         <View paddingHorizontal="large">
           {children}
         </View>
