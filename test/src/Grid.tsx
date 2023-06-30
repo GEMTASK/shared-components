@@ -3,6 +3,7 @@ import { View, Text, Card, Spacer, Image, Popup, Button, Stack, Icon } from 'bar
 const Location = ({ children }: any) => {
   return (
     <Card
+      border={false}
       shadow
       imageSrc="./images/istockphoto-1396508734-612x612.jpg"
       headingTitle="Entire villa hosted by Johan"
@@ -74,7 +75,7 @@ const Grid = () => {
       <View fillColor="white" padding="large large" style={{ position: 'sticky', top: 0, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)', zIndex: 2 }}>
         <Text>Header</Text>
       </View>
-      <View flex padding="xxlarge xxlarge" maxWidth={'100vw'} fillColor="gray-0" style={{ width: 1400, margin: '0 auto', overflow: 'hidden', boxShadow: '0 0 32px hsla(0, 0%, 0%, 0.1)' }}>
+      <View flex padding="xxlarge xxlarge" maxWidth={'100vw'} fillColor="gray-1" style={{ width: 1400, margin: '0 auto', overflow: 'hidden', boxShadow: '0 0 32px hsla(0, 0%, 0%, 0.15)' }}>
         <Text fontSize="large" fontWeight="bold" textColor="gray-9">
           Beautiful locations near the beach
         </Text>

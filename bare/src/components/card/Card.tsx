@@ -33,7 +33,7 @@ const Card = ({
   ) : headingSubtitleRight;
 
   return (
-    <View border shadow fillColor="white" {...props}>
+    <View border fillColor="white" {...props}>
       <Image src={imageSrc} width={imageWidth} height="100%" style={{ objectFit: 'cover', objectPosition: 'left  center' }} />
       <View flex padding="large">
         <View horizontal>
