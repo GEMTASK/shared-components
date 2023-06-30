@@ -43,10 +43,10 @@ const useStyles = createUseStyles({
     padding: 0,
   },
   Header: {
-    padding: '22px 0 8px 16px',
+    padding: '22px 16px 8px 16px',
   },
   Text: {
-    padding: '12px 0 12px 16px',
+    padding: '12px 16px 12px 16px',
   },
   borderless: {
     '& $Cell:first-child $Header, & $Cell:first-child $Text': {

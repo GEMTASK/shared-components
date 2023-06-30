@@ -1,4 +1,4 @@
-import { View, Text, Card, Spacer, Image, Popup, Button, Stack, Icon, Divider, Input, Menu, Modal, Form } from 'bare';
+import { View, Text, Card, Spacer, Image, Popup, Button, Stack, Icon, Divider, Input, Menu, Modal, Form, Splitter } from 'bare';
 import { LoremIpsum } from 'lorem-ipsum';
 import { useState } from 'react';
 
@@ -42,112 +42,117 @@ const Message = ({ unread }: any) => {
   );
 };
 
+const MessageList = ({ onComposeMessage }: any) => {
+  return (
+    <View style={{ width: 360, minHeight: 0 }}>
+      <View paddingHorizontal="large">
+        <Spacer size="large" />
+        <View horizontal>
+          <Button solid primary icon="file-alt" title="Compose" onClick={onComposeMessage} />
+        </View>
+        <Spacer size="small" />
+        <View horizontal align="left">
+          <Text flex fontSize="large" fontWeight="semibold">
+            Inbox
+          </Text>
+          <Menu hover title="Sort by" style={{ paddingTop: 14 }} />
+        </View>
+        {/* <Spacer size="small" /> */}
+        <Input icon="search" placeholder="Search" style={{ borderRadius: 1000 }} />
+      </View>
+      <View paddingHorizontal="large" style={{ minHeight: 0, overflow: 'auto' }}>
+        <View fillColor="gray-1" style={{ position: 'sticky', top: 0, zIndex: 2 }}>
+          <Divider style={{ marginTop: -1 }} />
+          <Spacer size="large" />
+          <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6">
+            Today
+          </Text>
+          <Spacer size="small" />
+          {/* <Divider /> */}
+          <View style={{ position: 'relative', zIndex: 3, marginBottom: -3, height: 3, borderTop: '1px solid hsla(0, 0%, 0%, 0.1)', borderTopLeftRadius: 2.5, borderTopRightRadius: 2.5 }} />
+        </View>
+        <Stack divider border style={{ marginTop: -1 }}>
+          <Message unread />
+          <Message unread />
+          <Message />
+        </Stack>
+        <View fillColor="gray-1" style={{ position: 'sticky', top: 0, zIndex: 2 }}>
+          <Divider style={{ marginTop: -1 }} />
+          <Spacer size="xlarge" />
+          <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6">
+            Yesterday
+          </Text>
+          <Spacer size="small" />
+          {/* <Divider /> */}
+          <View style={{ position: 'relative', zIndex: 3, marginBottom: -3, height: 3, borderTop: '1px solid hsla(0, 0%, 0%, 0.1)', borderTopLeftRadius: 2.5, borderTopRightRadius: 2.5 }} />
+        </View>
+        <Stack divider border style={{ marginTop: -1 }}>
+          <Message />
+          <Message />
+          <Message />
+          <Message />
+          <Message />
+        </Stack>
+        <Spacer size="large" />
+      </View>
+    </View>
+  );
+};
+
+const MessageDetails = () => {
+  return (
+    <View flex fillColor="white">
+      <View padding="large">
+        <Stack horizontal>
+          <Stack horizontal spacing="small">
+            <Button primary icon="reply" title="Reply" tabletTitleHidden />
+            <Button primary icon="reply-all" title="Reply All" tabletTitleHidden />
+            <Button primary icon="share" title="Forward" tabletTitleHidden />
+          </Stack>
+          <Spacer flex size="large" />
+          <Stack horizontal spacing="small">
+            <Menu icon="folder-open" title="Move to Folder" tabletTitleHidden />
+            <Button icon="envelopes-bulk" title="Mark as Junk" tabletTitleHidden />
+          </Stack>
+          <Spacer flex size="large" />
+          <Stack horizontal>
+            {/* <Button titleTextColor="red-8" borderColor="red-8" icon="trash" title="Delete" /> */}
+            <Button titleTextColor="red-6" icon="trash-can" title="Delete" tabletTitleHidden />
+          </Stack>
+        </Stack>
+        <Spacer size="large" />
+        <Text fontWeight="semibold" lineClamp={1}>
+          testuser@example.com
+        </Text>
+        <Spacer size="small" />
+        <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>
+          Marketing Budget Q4: Please review till August, 31
+        </Text>
+      </View>
+      <View paddingHorizontal="large">
+        <Divider />
+      </View>
+      <Text flex fillColor="white" style={{ overflow: 'auto', padding: 32 }} padding="xxlarge">
+        {emailBody}
+      </Text>
+    </View>
+  );
+};
+
 const Email = () => {
   const [isNewMessageModalOpen, setIsNewMessageModalOpen] = useState(false);
 
   return (
-    <View style={{ height: '100vh' }}>
-      <Stack flex horizontal fillColor="gray-1" style={{ minHeight: 0 }}>
-
+    <>
+      <Stack flex horizontal fillColor="gray-1" style={{ height: '100vh', minHeight: 0 }}>
         <Stack padding="large small" fillColor="gray-4">
           <Button hover icon="home" />
           <Button hover icon="envelope" />
           <Button hover icon="sliders" />
         </Stack>
-
-        <View style={{ width: 360, minHeight: 0 }}>
-          <View paddingHorizontal="large">
-            <Spacer size="large" />
-            <View horizontal>
-              <Button solid primary icon="file-alt" title="Compose" onClick={() => setIsNewMessageModalOpen(true)} />
-            </View>
-            <Spacer size="small" />
-            <View horizontal align="left">
-              <Text flex fontSize="large" fontWeight="semibold">
-                Inbox
-              </Text>
-              <Menu hover title="Sort by" style={{ paddingTop: 14 }} />
-            </View>
-            {/* <Spacer size="small" /> */}
-            <Input icon="search" placeholder="Search" style={{ borderRadius: 1000 }} />
-          </View>
-
-          <View paddingHorizontal="large" style={{ minHeight: 0, overflow: 'auto' }}>
-            <View fillColor="gray-1" style={{ position: 'sticky', top: 0, zIndex: 2 }}>
-              <Divider style={{ marginTop: -1 }} />
-              <Spacer size="large" />
-              <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6">
-                Today
-              </Text>
-              <Spacer size="small" />
-              {/* <Divider /> */}
-              <View style={{ position: 'relative', zIndex: 3, marginBottom: -3, height: 3, borderTop: '1px solid hsla(0, 0%, 0%, 0.1)', borderTopLeftRadius: 2.5, borderTopRightRadius: 2.5 }} />
-            </View>
-            <Stack divider border style={{ marginTop: -1 }}>
-              <Message unread />
-              <Message unread />
-              <Message />
-            </Stack>
-            <View fillColor="gray-1" style={{ position: 'sticky', top: 0, zIndex: 2 }}>
-              <Divider style={{ marginTop: -1 }} />
-              <Spacer size="xlarge" />
-              <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6">
-                Yesterday
-              </Text>
-              <Spacer size="small" />
-              {/* <Divider /> */}
-              <View style={{ position: 'relative', zIndex: 3, marginBottom: -3, height: 3, borderTop: '1px solid hsla(0, 0%, 0%, 0.1)', borderTopLeftRadius: 2.5, borderTopRightRadius: 2.5 }} />
-            </View>
-            <Stack divider border style={{ marginTop: -1 }}>
-              <Message />
-              <Message />
-              <Message />
-              <Message />
-              <Message />
-            </Stack>
-            <Spacer size="large" />
-          </View>
-
-        </View>
-
+        <MessageList onComposeMessage={() => setIsNewMessageModalOpen(true)} />
         <Divider />
-
-        <View flex fillColor="white">
-          <View padding="large">
-            <Stack horizontal>
-              <Stack horizontal spacing="small">
-                <Button primary icon="reply" title="Reply" tabletTitleHidden />
-                <Button primary icon="reply-all" title="Reply All" tabletTitleHidden />
-                <Button primary icon="share" title="Forward" tabletTitleHidden />
-              </Stack>
-              <Spacer flex size="large" />
-              <Stack horizontal spacing="small">
-                <Menu icon="folder-open" title="Move to Folder" tabletTitleHidden />
-                <Button icon="envelopes-bulk" title="Mark as Junk" tabletTitleHidden />
-              </Stack>
-              <Spacer flex size="large" />
-              <Stack horizontal>
-                {/* <Button titleTextColor="red-8" borderColor="red-8" icon="trash" title="Delete" /> */}
-                <Button titleTextColor="red-6" icon="trash-can" title="Delete" tabletTitleHidden />
-              </Stack>
-            </Stack>
-            <Spacer size="large" />
-            <Text fontWeight="semibold" lineClamp={1}>
-              testuser@example.com
-            </Text>
-            <Spacer size="small" />
-            <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>
-              Marketing Budget Q4: Please review till August, 31
-            </Text>
-          </View>
-          <View paddingHorizontal="large">
-            <Divider />
-          </View>
-          <Text flex fillColor="white" style={{ overflow: 'auto', padding: 32 }} padding="xxlarge">
-            {emailBody}
-          </Text>
-        </View>
-
+        <MessageDetails />
       </Stack>
 
       <Modal
@@ -160,13 +165,15 @@ const Email = () => {
         ]}
         onRequestClose={() => setIsNewMessageModalOpen(false)}
       >
-        <Form fields={[
-          { key: 'recipient', label: 'To', type: 'text' },
-          { key: 'subject', label: 'Subject' },
-          { key: 'body', label: 'Message', lines: 15 },
-        ]} />
+        <Form
+          fields={[
+            { key: 'recipient', label: 'To', type: 'text' },
+            { key: 'subject', label: 'Subject' },
+            { key: 'body', label: 'Message', lines: 15 },
+          ]}
+        />
       </Modal>
-    </View>
+    </>
   );
 };
 
