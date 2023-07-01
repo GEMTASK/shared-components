@@ -42,9 +42,9 @@ const Message = ({ unread }: any) => {
   );
 };
 
-const MessageList = ({ onComposeMessage }: any) => {
+const MessageList = ({ style, onComposeMessage, ...props }: any) => {
   return (
-    <View style={{ width: 360, minHeight: 0 }}>
+    <View style={{ width: 360, minHeight: 0, ...style }} {...props}>
       <View paddingHorizontal="large">
         <Spacer size="large" />
         <View horizontal>
@@ -150,9 +150,10 @@ const Email = () => {
           <Button hover icon="envelope" />
           <Button hover icon="sliders" />
         </Stack>
-        <MessageList onComposeMessage={() => setIsNewMessageModalOpen(true)} />
-        <Divider />
-        <MessageDetails />
+        <Splitter flex horizontal initialWidth={500}>
+          <MessageList onComposeMessage={() => setIsNewMessageModalOpen(true)} />
+          <MessageDetails />
+        </Splitter>
       </Stack>
 
       <Modal
