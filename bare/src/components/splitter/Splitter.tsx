@@ -11,7 +11,7 @@ const useStyles = createUseStyles({
   }
 });
 
-const Handle = ({ onDrag }: any) => {
+const Handle = ({ onDrag, onDragFinish }: any) => {
   const isDraggingRef = useRef(false);
   const firstX = useRef<number>(0);
 
@@ -33,6 +33,8 @@ const Handle = ({ onDrag }: any) => {
 
   const handlePointerUp = (event: React.PointerEvent) => {
     isDraggingRef.current = false;
+
+    onDragFinish(event.clientX - firstX.current);
   };
 
   return (
@@ -53,30 +55,31 @@ const Splitter = ({
   ...props
 }: any) => {
   const elementRef = useRef<HTMLElement>(null);
+  const widthRef = useRef(initialWidth);
 
   const handleDrag = (delta: number) => {
-    // console.log('here', delta);
-
     if (elementRef.current) {
-      elementRef.current.style.width = initialWidth + delta + 'px';
+      elementRef.current.style.width = widthRef.current + delta + 'px';
     }
   };
 
-  useEffect(() => {
-    console.log(elementRef.current);
-  }, []);
+  const handleDragFinish = (delta: number) => {
+    if (elementRef.current) {
+      widthRef.current = widthRef.current + delta;
+    }
+  };
 
   const childrenArray = React.Children.toArray(children);
-
-  console.log(childrenArray[0]);
 
   return (
     <View {...props}>
       {React.cloneElement(childrenArray[0] as React.ReactElement, {
         ref: elementRef,
-        style: { width: initialWidth + 'px' },
+        style: {
+          width: widthRef.current + 'px'
+        },
       })}
-      <Handle onDrag={handleDrag} />
+      <Handle onDrag={handleDrag} onDragFinish={handleDragFinish} />
       {childrenArray[1]}
     </View>
   );
