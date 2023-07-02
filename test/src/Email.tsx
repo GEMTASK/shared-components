@@ -1,6 +1,6 @@
 import { View, Text, Card, Spacer, Image, Popup, Button, Stack, Icon, Divider, Input, Menu, Modal, Form, Splitter } from 'bare';
 import { LoremIpsum } from 'lorem-ipsum';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 const xemailBody = `Hi there,
 
@@ -42,9 +42,13 @@ const Message = ({ unread }: any) => {
   );
 };
 
-const MessageList = ({ style, onComposeMessage, ...props }: any) => {
+const MessageList = React.forwardRef(({
+  style,
+  onComposeMessage,
+  ...props
+}: any, ref) => {
   return (
-    <View style={{ width: 360, minHeight: 0, ...style }} {...props}>
+    <View ref={ref} style={{ minHeight: 0, ...style }} {...props}>
       <View paddingHorizontal="large">
         <Spacer size="large" />
         <View horizontal>
@@ -97,7 +101,7 @@ const MessageList = ({ style, onComposeMessage, ...props }: any) => {
       </View>
     </View>
   );
-};
+});
 
 const MessageDetails = () => {
   return (
@@ -150,7 +154,7 @@ const Email = () => {
           <Button hover icon="envelope" />
           <Button hover icon="sliders" />
         </Stack>
-        <Splitter flex horizontal initialWidth={500}>
+        <Splitter flex horizontal initialWidth={360}>
           <MessageList onComposeMessage={() => setIsNewMessageModalOpen(true)} />
           <MessageDetails />
         </Splitter>

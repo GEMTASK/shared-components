@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import View from '../view/index.js';
 import Divider from '../divider/index.js';
@@ -11,20 +11,23 @@ const useStyles = createUseStyles({
   }
 });
 
-const Handle = () => {
+const Handle = ({ onDrag }: any) => {
   const isDraggingRef = useRef(false);
+  const firstX = useRef<number>(0);
 
   const handlePointerDown = (event: React.PointerEvent) => {
     event.preventDefault();
 
     event.currentTarget.setPointerCapture(event.pointerId);
 
+    firstX.current = event.clientX;
+
     isDraggingRef.current = true;
   };
 
   const handlePointerMove = (event: React.PointerEvent) => {
     if (isDraggingRef.current) {
-      console.log('here');
+      onDrag(event.clientX - firstX.current);
     }
   };
 
@@ -44,7 +47,25 @@ const Handle = () => {
   );
 };
 
-const Splitter = ({ initialWidth, children, ...props }: any) => {
+const Splitter = ({
+  initialWidth,
+  children,
+  ...props
+}: any) => {
+  const elementRef = useRef<HTMLElement>(null);
+
+  const handleDrag = (delta: number) => {
+    // console.log('here', delta);
+
+    if (elementRef.current) {
+      elementRef.current.style.width = initialWidth + delta + 'px';
+    }
+  };
+
+  useEffect(() => {
+    console.log(elementRef.current);
+  }, []);
+
   const childrenArray = React.Children.toArray(children);
 
   console.log(childrenArray[0]);
@@ -52,9 +73,10 @@ const Splitter = ({ initialWidth, children, ...props }: any) => {
   return (
     <View {...props}>
       {React.cloneElement(childrenArray[0] as React.ReactElement, {
-        style: { width: initialWidth }
+        ref: elementRef,
+        style: { width: initialWidth + 'px' },
       })}
-      <Handle />
+      <Handle onDrag={handleDrag} />
       {childrenArray[1]}
     </View>
   );
