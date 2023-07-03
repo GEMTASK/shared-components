@@ -1,6 +1,7 @@
 import { View, Text, Card, Spacer, Image, Popup, Button, Stack, Icon, Divider, Input, Menu, Modal, Form, Splitter } from 'bare';
+import { ViewProps } from 'bare/dist/components/view';
 import { LoremIpsum } from 'lorem-ipsum';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const xemailBody = `Hi there,
 
@@ -19,10 +20,18 @@ const lorem = new LoremIpsum({
 
 const emailBody = lorem.generateParagraphs(8).split('\n').join('\n\n');
 
+type MessageProps = {
+  subject: string,
+  unread?: boolean,
+} & ViewProps;
 
-const Message = ({ unread }: any) => {
+const Message = React.forwardRef(({
+  subject,
+  unread,
+  ...props
+}: MessageProps, ref) => {
   return (
-    <View padding="medium large" fillColor="white" style={{ position: 'relative' }}>
+    <View ref={ref as any} padding="medium large" fillColor="white" style={{ position: 'relative' }} {...props}>
       {unread && (
         <View style={{ position: 'absolute', top: 0, left: 0, borderTop: '20px solid lightblue', borderRight: '20px solid transparent' }} />
       )}
@@ -31,13 +40,51 @@ const Message = ({ unread }: any) => {
       </Text>
       <Spacer size="small" />
       <Text fontSize="xxsmall" textColor="gray-6" lineClamp={1}>
-        Marketing Budget Q4: Please review till August, 31 (Make this a longer subject)
+        {subject}
       </Text>
       <Spacer size="medium" />
       <Text fontSize="xsmall" lineClamp={2}>
-        {lorem.generateParagraphs(5)}
         Preview asdfadsfsf asdfasdf asdfasdf adfadsf adfadsf adsfa asdfadsf asdfadsf asdfadsf adsfasdf adsfasdfa dsfasdfasd fasdf asdfadsf
       </Text>
+    </View>
+  );
+});
+
+const List = ({
+  itemHeight,
+  items,
+  onItemAtIndex
+}: any) => {
+  const listElementRef = useRef<HTMLElement>(null);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  const handleScroll = () => {
+    if (listElementRef.current) {
+      setScrollTop(listElementRef.current.scrollTop);
+    }
+
+    // onItemAtIndex(0);
+  };
+
+  useEffect(() => {
+    if (listElementRef.current) {
+      setHeight(listElementRef.current.clientHeight);
+    }
+  }, [itemHeight]);
+
+  const offset = Math.floor(scrollTop / itemHeight);
+
+  return (
+    <View flex ref={listElementRef} /* padding="large" */ style={{ minHeight: 0, overflow: 'auto', position: 'relative' }} onScroll={handleScroll}>
+      <View style={{ position: 'absolute', inset: 0, height: items.length * itemHeight }} />
+      {Array.from({ length: height / itemHeight + 1 }, (_, index) => (
+        <Message
+          key={(offset + index) % (height / itemHeight)}
+          subject={items[offset + index].subject}
+          style={{ transform: `translate(0, ${itemHeight * offset}px)` }}
+        />
+      ))}
     </View>
   );
 };
@@ -47,6 +94,18 @@ const MessageList = React.forwardRef(({
   onComposeMessage,
   ...props
 }: any, ref) => {
+  const handleItemAtIndex = () => {
+    // return (
+    //   <Message />
+    // );
+  };
+
+  const messages = Array.from({ length: 100 }, (_, index) => ({
+    sender: 'someone@example.com',
+    subject: `Subject ${index + 1}`,
+    body: 'Body',
+  }));
+
   return (
     <View ref={ref} style={{ minHeight: 0, ...style }} {...props}>
       <View paddingHorizontal="large">
@@ -64,7 +123,10 @@ const MessageList = React.forwardRef(({
         {/* <Spacer size="small" /> */}
         <Input icon="search" placeholder="Search" style={{ borderRadius: 1000 }} />
       </View>
-      <View paddingHorizontal="large" style={{ minHeight: 0, overflow: 'auto' }}>
+
+      <List padding="large" items={messages} itemHeight={93} onItemAtIndex={handleItemAtIndex} />
+
+      {/* <View paddingHorizontal="large" style={{ minHeight: 0, overflow: 'auto' }}>
         <View fillColor="gray-1" style={{ position: 'sticky', top: 0, zIndex: 2 }}>
           <Divider style={{ marginTop: -1 }} />
           <Spacer size="large" />
@@ -72,7 +134,6 @@ const MessageList = React.forwardRef(({
             Today
           </Text>
           <Spacer size="small" />
-          {/* <Divider /> */}
           <View style={{ position: 'relative', zIndex: 3, marginBottom: -3, height: 3, borderTop: '1px solid hsla(0, 0%, 0%, 0.1)', borderTopLeftRadius: 2.5, borderTopRightRadius: 2.5 }} />
         </View>
         <Stack divider border style={{ marginTop: -1 }}>
@@ -87,7 +148,6 @@ const MessageList = React.forwardRef(({
             Yesterday
           </Text>
           <Spacer size="small" />
-          {/* <Divider /> */}
           <View style={{ position: 'relative', zIndex: 3, marginBottom: -3, height: 3, borderTop: '1px solid hsla(0, 0%, 0%, 0.1)', borderTopLeftRadius: 2.5, borderTopRightRadius: 2.5 }} />
         </View>
         <Stack divider border style={{ marginTop: -1 }}>
@@ -98,7 +158,8 @@ const MessageList = React.forwardRef(({
           <Message />
         </Stack>
         <Spacer size="large" />
-      </View>
+      </View> */}
+
     </View>
   );
 });
