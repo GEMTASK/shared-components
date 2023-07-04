@@ -53,7 +53,7 @@ const Message = React.forwardRef(({
 const List = ({
   itemHeight,
   items,
-  onItemAtIndex
+  onRender,
 }: any) => {
   const listElementRef = useRef<HTMLElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
@@ -74,15 +74,16 @@ const List = ({
   }, [itemHeight]);
 
   const offset = Math.floor(scrollTop / itemHeight);
+  const count = Math.floor(height / itemHeight) + 1;
 
   return (
     <View flex ref={listElementRef} /* padding="large" */ style={{ minHeight: 0, overflow: 'auto', position: 'relative' }} onScroll={handleScroll}>
       <View style={{ position: 'absolute', inset: 0, height: items.length * itemHeight }} />
-      {Array.from({ length: height / itemHeight + 1 }, (_, index) => (
+      <View style={{ flexShrink: 0, flexBasis: itemHeight * offset }} />
+      {Array.from({ length: count }, (_, index) => (
         <Message
-          key={(offset + index) % (height / itemHeight)}
+          key={(offset + index) % count}
           subject={items[offset + index].subject}
-          style={{ transform: `translate(0, ${itemHeight * offset}px)` }}
         />
       ))}
     </View>
@@ -100,7 +101,7 @@ const MessageList = React.forwardRef(({
     // );
   };
 
-  const messages = Array.from({ length: 100 }, (_, index) => ({
+  const messages = Array.from({ length: 50 }, (_, index) => ({
     sender: 'someone@example.com',
     subject: `Subject ${index + 1}`,
     body: 'Body',
