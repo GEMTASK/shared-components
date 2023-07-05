@@ -80,15 +80,22 @@ const List = ({
   items,
   onRender,
 }: any) => {
+  console.log('List()');
+
   const listElementRef = useRef<HTMLElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [height, setHeight] = useState(0);
+  const scrollTopRef = useRef(0);
 
   const handleScroll = useCallback((event: React.UIEvent) => {
-    setScrollTop(event.currentTarget.scrollTop);
+    if (Math.floor(scrollTopRef.current / itemHeight) !== Math.floor(event.currentTarget.scrollTop / itemHeight)) {
+      setScrollTop(event.currentTarget.scrollTop);
+    }
+
+    scrollTopRef.current = event.currentTarget.scrollTop;
 
     // onItemAtIndex(0);
-  }, []);
+  }, [itemHeight]);
 
   useEffect(() => {
     if (listElementRef.current) {
@@ -97,16 +104,13 @@ const List = ({
   }, [itemHeight]);
 
   const offset = Math.floor(scrollTop / itemHeight);
-  // const count1 = Math.floor(height / itemHeight) + 1;
-  const count = Math.floor(height / itemHeight) + 1;
-
-  console.log(offset, count);
+  const count = Math.ceil(height / itemHeight) + 1;
 
   return (
     <View flex ref={listElementRef} /* padding="large" */ style={{ minHeight: 0, overflow: 'auto', position: 'relative' }} onScroll={handleScroll}>
       <View style={{ position: 'absolute', inset: 0, height: items.length * itemHeight }} />
       <View style={{ flexShrink: 0, flexBasis: itemHeight * offset }} />
-      {Array.from({ length: count }, (_, index) => (
+      {Array.from({ length: count + (offset === 7 ? -1 : 0) }, (_, index) => (
         <Message
           key={(offset + index) % count}
           subject={items[offset + index].subject}
