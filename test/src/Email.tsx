@@ -1,7 +1,7 @@
 import { View, Text, Card, Spacer, Image, Popup, Button, Stack, Icon, Divider, Input, Menu, Modal, Form, Splitter } from 'bare';
 import { ViewProps } from 'bare/dist/components/view';
 import { LoremIpsum } from 'lorem-ipsum';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 const xemailBody = `Hi there,
 
@@ -25,13 +25,15 @@ type MessageProps = {
   unread?: boolean,
 } & ViewProps;
 
-const Message = React.forwardRef(({
+const Message = React.memo(({
   subject,
   unread,
   ...props
-}: MessageProps, ref) => {
+}: MessageProps) => {
+  console.log('Message');
+
   return (
-    <View ref={ref as any} padding="medium large" fillColor="white" style={{ position: 'relative' }} {...props}>
+    <View padding="medium large" fillColor="white" style={{ position: 'relative' }} {...props}>
       {unread && (
         <View style={{ position: 'absolute', top: 0, left: 0, borderTop: '20px solid lightblue', borderRight: '20px solid transparent' }} />
       )}
@@ -50,6 +52,29 @@ const Message = React.forwardRef(({
   );
 });
 
+// const Inner = ({ height, itemHeight, items }: any) => {
+//   const [scrollTop, setScrollTop] = useState(0);
+
+//   const handleScroll = useCallback(() => {
+//     if (listElementRef.current) {
+//       setScrollTop(listElementRef.current.scrollTop);
+//     }
+
+//     // onItemAtIndex(0);
+//   }, []);
+
+//   const offset = Math.floor(scrollTop / itemHeight);
+//   const count = Math.floor(height / itemHeight) + 1;
+
+//   return Array.from({ length: count }, (_, index) => (
+//     <Message
+//       key={(offset + index) % count}
+//       subject={items[offset + index].subject}
+//     />
+//   ));
+
+// };
+
 const List = ({
   itemHeight,
   items,
@@ -59,13 +84,11 @@ const List = ({
   const [scrollTop, setScrollTop] = useState(0);
   const [height, setHeight] = useState(0);
 
-  const handleScroll = () => {
-    if (listElementRef.current) {
-      setScrollTop(listElementRef.current.scrollTop);
-    }
+  const handleScroll = useCallback((event: React.UIEvent) => {
+    setScrollTop(event.currentTarget.scrollTop);
 
     // onItemAtIndex(0);
-  };
+  }, []);
 
   useEffect(() => {
     if (listElementRef.current) {
@@ -74,7 +97,10 @@ const List = ({
   }, [itemHeight]);
 
   const offset = Math.floor(scrollTop / itemHeight);
+  // const count1 = Math.floor(height / itemHeight) + 1;
   const count = Math.floor(height / itemHeight) + 1;
+
+  console.log(offset, count);
 
   return (
     <View flex ref={listElementRef} /* padding="large" */ style={{ minHeight: 0, overflow: 'auto', position: 'relative' }} onScroll={handleScroll}>
@@ -101,7 +127,7 @@ const MessageList = React.forwardRef(({
     // );
   };
 
-  const messages = Array.from({ length: 50 }, (_, index) => ({
+  const messages = Array.from({ length: 10 }, (_, index) => ({
     sender: 'someone@example.com',
     subject: `Subject ${index + 1}`,
     body: 'Body',
