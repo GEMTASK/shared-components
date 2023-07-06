@@ -48,13 +48,13 @@ const useStyles = createUseStyles({
     'scrollbar-width': 'none',
   },
   hoverTarget: {
-    '&:hover $hoverParent': {
-      opacity: 1.0,
-    }
   },
   hoverParent: {
     opacity: 0.0,
     transition: 'opacity 0.1s',
+    '$hoverTarget:hover &': {
+      opacity: 1.0,
+    }
   }
 });
 

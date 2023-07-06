@@ -1,4 +1,5 @@
 import React from 'react';
+import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
 
 import Color from '../../types/Color';
@@ -27,6 +28,17 @@ declare module 'react' {
 const DEFAULT_ELEMENT = 'div';
 
 type Children = false | null | undefined | React.ReactElement | Children[];
+
+const useHoverStyles = createUseStyles({
+  [`${'a'}-parent`]: {},
+  [`${'a'}-child`]: {
+    opacity: 0.0,
+    transition: 'opacity 0.1s',
+    [`\$${'a'}-parent:hover &`]: {
+      opacity: 1.0,
+    }
+  }
+});
 
 type ViewProps<T extends React.ElementType = 'div'> = {
   as?: T,
@@ -85,6 +97,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   const Component: React.ElementType = as ?? DEFAULT_ELEMENT;
 
   const styles = useStyles();
+  const hoverStyles = useHoverStyles();
   const fillColorStyles = useFillColorStyles();
   const borderColorStyles = useBorderColorStyles();
   const alignVerticalStyles = useAlignVerticalStyles();
@@ -105,10 +118,12 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
     borderColor && borderColorStyles[borderColor],
     shadow && styles.shadow,
     !scrollbar && styles.noScrollbar,
-    hoverTarget && styles.hoverTarget,
-    hoverParent && styles.hoverParent,
+    hoverTarget && hoverStyles[`${hoverTarget}-parent`],
+    hoverParent && hoverStyles[`${hoverParent}-child`],
     className,
   );
+
+  console.log(hoverStyles[`${hoverTarget}-parent`]);
 
   const viewStyle = {
     minWidth,

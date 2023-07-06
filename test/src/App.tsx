@@ -18,7 +18,9 @@ const Link = ({
   ...props
 }: LinkProps) => {
   return (
-    <Text inner={RouterLink} innerProps={{ to }} textColor="blue-5" {...props}>{children}</Text>
+    <Text inner={RouterLink} innerProps={{ to }} textColor="blue-5" {...props}>
+      {children}
+    </Text>
   );
 };
 
