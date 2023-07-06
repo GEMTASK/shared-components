@@ -110,8 +110,7 @@ const List = ({
     resizeObserver = new ResizeObserver((entries: any) => {
       if (listElementRef.current) {
         setHeight(listElementRef.current.clientHeight);
-
-        // listElementRef.current.scrollTop = 0;
+        setScrollTop(listElementRef.current.scrollTop);
       }
     });
 
@@ -124,12 +123,8 @@ const List = ({
     };
   }, []);
 
-  // console.log(height / itemHeight, items.length);
-
   const offset = Math.floor(scrollTop / itemHeight);
   const count = Math.min(items.length, Math.ceil(height / itemHeight) + 1);
-
-  console.log(count);
 
   return (
     <View flex ref={listElementRef} /* padding="large" */ style={{ minHeight: 0, overflow: 'auto', position: 'relative' }} onScroll={handleScroll}>
