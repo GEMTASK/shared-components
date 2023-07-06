@@ -46,6 +46,14 @@ const useStyles = createUseStyles({
     },
     '-ms-overflow-style': 'none',
     'scrollbar-width': 'none',
+  },
+  hoverSource: {
+    '&:hover $hoverTarget': {
+      visibility: 'visible'
+    }
+  },
+  hoverTarget: {
+    visibility: 'hidden',
   }
 });
 

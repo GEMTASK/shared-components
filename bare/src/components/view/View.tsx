@@ -48,6 +48,8 @@ type ViewProps<T extends React.ElementType = 'div'> = {
   borderOpacity?: 1,
   shadow?: boolean,
   scrollbar?: boolean,
+  hoverSource?: string,
+  hoverTarget?: string,
   className?: string,
   style?: React.CSSProperties,
   children?: Children,
@@ -73,6 +75,8 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   borderOpacity,
   shadow,
   scrollbar = true,
+  hoverSource,
+  hoverTarget,
   className,
   style,
   children,
@@ -101,6 +105,8 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
     borderColor && borderColorStyles[borderColor],
     shadow && styles.shadow,
     !scrollbar && styles.noScrollbar,
+    hoverSource && styles.hoverSource,
+    hoverTarget && styles.hoverTarget,
     className,
   );
 
