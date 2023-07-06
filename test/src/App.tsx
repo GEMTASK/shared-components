@@ -24,7 +24,7 @@ const Link = ({
 
 const Header = () => {
   return (
-    <View horizontal align="middle left" padding="medium large" hoverSource="a">
+    <View horizontal align="middle left" padding="medium large" hoverTarget="a">
       <View flex horizontal align="middle left">
         <Image
           src="https://mike-austin.com/new/images/Escher_Circle_Limit_III.jpg"
@@ -39,7 +39,7 @@ const Header = () => {
           <Text fontSize="xsmall" textColor="gray-6">Subtitle</Text>
         </View>
       </View>
-      <Button title="Press Me" hoverTarget="a" />
+      <Button title="Press Me" hoverParent="a" />
     </View>
   );
 };
