@@ -130,7 +130,7 @@ const List = ({
     <View flex ref={listElementRef} /* padding="large" */ style={{ minHeight: 0, overflow: 'auto', position: 'relative' }} onScroll={handleScroll}>
       <View style={{ position: 'absolute', inset: 0, height: items.length * itemHeight }} />
       <View style={{ flexShrink: 0, flexBasis: itemHeight * offset }} />
-      {Array.from({ length: count + (offset + count - 1 === items.length ? -1 : 0) }, (_, index) => (
+      {Array.from({ length: count + (offset + count > items.length ? -1 : 0) }, (_, index) => (
         <Message
           key={(offset + index) % count}
           subject={items[offset + index].subject}
@@ -145,6 +145,8 @@ const MessageList = React.forwardRef(({
   onComposeMessage,
   ...props
 }: any, ref) => {
+  console.log('MessageList()');
+
   const handleItemAtIndex = () => {
     // return (
     //   <Message />
