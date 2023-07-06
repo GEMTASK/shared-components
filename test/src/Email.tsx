@@ -1,7 +1,8 @@
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { LoremIpsum } from 'lorem-ipsum';
+
 import { View, Text, Card, Spacer, Image, Popup, Button, Stack, Icon, Divider, Input, Menu, Modal, Form, Splitter } from 'bare';
 import { ViewProps } from 'bare/dist/components/view';
-import { LoremIpsum } from 'lorem-ipsum';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 const xemailBody = `Hi there,
 
@@ -33,7 +34,7 @@ const Message = React.memo(({
   console.log('Message');
 
   return (
-    <View padding="medium large" fillColor="white" style={{ position: 'relative' }} {...props}>
+    <View padding="medium large" fillColor="white" style={{ position: 'relative', borderBottom: `1px solid hsla(0, 0%, 0%, 0.1)` }} {...props}>
       {unread && (
         <View style={{ position: 'absolute', top: 0, left: 0, borderTop: '20px solid lightblue', borderRight: '20px solid transparent' }} />
       )}
@@ -103,14 +104,38 @@ const List = ({
     }
   }, [itemHeight]);
 
+  useEffect(() => {
+    let resizeObserver: ResizeObserver;
+
+    resizeObserver = new ResizeObserver((entries: any) => {
+      if (listElementRef.current) {
+        setHeight(listElementRef.current.clientHeight);
+
+        // listElementRef.current.scrollTop = 0;
+      }
+    });
+
+    if (listElementRef.current) {
+      resizeObserver.observe(listElementRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
+  // console.log(height / itemHeight, items.length);
+
   const offset = Math.floor(scrollTop / itemHeight);
-  const count = Math.ceil(height / itemHeight) + 1;
+  const count = Math.min(items.length, Math.ceil(height / itemHeight) + 1);
+
+  console.log(count);
 
   return (
     <View flex ref={listElementRef} /* padding="large" */ style={{ minHeight: 0, overflow: 'auto', position: 'relative' }} onScroll={handleScroll}>
       <View style={{ position: 'absolute', inset: 0, height: items.length * itemHeight }} />
       <View style={{ flexShrink: 0, flexBasis: itemHeight * offset }} />
-      {Array.from({ length: count + (offset === 7 ? -1 : 0) }, (_, index) => (
+      {Array.from({ length: count + (offset + count - 1 === items.length ? -1 : 0) }, (_, index) => (
         <Message
           key={(offset + index) % count}
           subject={items[offset + index].subject}
@@ -155,7 +180,7 @@ const MessageList = React.forwardRef(({
         <Input icon="search" placeholder="Search" style={{ borderRadius: 1000 }} />
       </View>
 
-      <List padding="large" items={messages} itemHeight={93} onItemAtIndex={handleItemAtIndex} />
+      <List padding="large" items={messages} itemHeight={94} onItemAtIndex={handleItemAtIndex} />
 
       {/* <View paddingHorizontal="large" style={{ minHeight: 0, overflow: 'auto' }}>
         <View fillColor="gray-1" style={{ position: 'sticky', top: 0, zIndex: 2 }}>
