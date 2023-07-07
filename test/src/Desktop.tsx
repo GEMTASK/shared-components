@@ -1,79 +1,111 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { hues, View, Text, Image, Button, Stack, Spacer, Divider } from 'bare';
 import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table } from 'bare';
+import { Desktop } from 'bare';
 
 import { ViewProps } from 'bare/dist/components/view';
 
-type Pointer = Pick<React.PointerEvent, 'clientX' | 'clientY'>;
+const calculateHands = (date: Date) => {
+  const hourAngle = ((date.getHours() + date.getMinutes() / 60) * 30 + 180) * (Math.PI / 180);
+  const minuteAngle = ((date.getMinutes() + date.getSeconds() / 60) * 6 + 180) * (Math.PI / 180);
+  const secondAngle = (date.getSeconds() * 6 + 180) * (Math.PI / 180);
 
-type WindowProps = {
-  title: string,
-} & ViewProps;
+  return ({
+    hour: {
+      x: Math.cos(hourAngle) * 0 - Math.sin(hourAngle) * 85,
+      y: Math.cos(hourAngle) * 85 + Math.sin(hourAngle) * 0,
+    },
+    minute: {
+      x: Math.cos(minuteAngle) * 0 - Math.sin(minuteAngle) * 85,
+      y: Math.cos(minuteAngle) * 85 + Math.sin(minuteAngle) * 0,
 
-const Window = ({
-  title,
-  children,
-  ...props
-}: WindowProps) => {
-  const windowElementRef = useRef<HTMLElement>(null);
-  const windowRectRef = useRef<DOMRect>(new DOMRect());
-  const pointerRef = useRef<Pointer | null>(null);
+    },
+    second: {
+      x: Math.cos(secondAngle) * 0 - Math.sin(secondAngle) * 85,
+      y: Math.cos(secondAngle) * 85 + Math.sin(secondAngle) * 0,
+    },
+  });
+};
 
-  const handlePointerDown = (event: React.PointerEvent) => {
-    event.currentTarget.setPointerCapture(event.pointerId);
-    event.preventDefault();
+const Clock = () => {
+  const [date, setDate] = useState(new Date());
+  const timerRef = useRef<number>();
 
-    if (windowElementRef.current) {
-      pointerRef.current = {
-        clientX: event.nativeEvent.clientX,
-        clientY: event.nativeEvent.clientY,
-      };
+  const hands = calculateHands(date);
 
-      windowRectRef.current = new DOMRect(
-        windowElementRef.current.offsetLeft,
-        windowElementRef.current.offsetTop,
-      );
-    }
-  };
+  const updateDate = useCallback(() => {
+    const now = new Date();
 
-  const handlePointerMove = (event: React.PointerEvent) => {
-    if (pointerRef.current && windowElementRef.current) {
-      const windowRect = windowRectRef.current;
-      const pointer = pointerRef.current;
+    setDate(now);
 
-      windowElementRef.current.style.left = `${windowRect.left + (event.clientX - pointer.clientX)}px`;
-      windowElementRef.current.style.top = `${windowRect.top + (event.clientY - pointer.clientY)}px`;
-    }
-  };
+    timerRef.current = window.setTimeout(() => {
+      updateDate();
+    }, 1000 - now.getMilliseconds());
+  }, []);
 
-  const handlePointerUp = (event: React.PointerEvent) => {
-    pointerRef.current = null;
-  };
+  useEffect(() => {
+    updateDate();
+
+    return () => {
+      clearTimeout(timerRef.current);
+    };
+  }, [updateDate]);
 
   return (
-    <View ref={windowElementRef} fillColor="gray-3" style={{ position: 'absolute' }} {...props}>
-      <View
-        fillColor="gray-3"
-        padding="small large"
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-      >
-        <Text fontWeight="bold" textAlign="center" style={{ marginBottom: -1 }}>{title}</Text>
+    <>
+      <View as="svg" flex viewBox="0 0 200 200" style={{ width: 300 }}>
+        {Array.from({ length: 12 }, (_, index, angle = (index * 30 + 180) * (Math.PI / 180)) => (
+          <circle
+            key={index}
+            cx={Math.cos(angle) * 0 - Math.sin(angle) * 85 + 100}
+            cy={Math.cos(angle) * 85 + Math.sin(angle) * 0 + 100}
+            r={index % 3 === 0 ? 3 : 1}
+            fill="#343a40"
+          />
+        ))}
+        <line
+          x1={-(hands.hour.x / 5) + 100}
+          y1={-(hands.hour.y / 5) + 100}
+          x2={(hands.hour.x / 1.5) + 100}
+          y2={(hands.hour.y / 1.5) + 100}
+          stroke="#343a40"
+          strokeWidth={7}
+          style={{ filter: 'drop-shadow(0 0 1px hsla(0, 0%, 0%, 0.25))' }}
+        />
+        <line
+          x1={-(hands.minute.x / 5) + 100}
+          y1={-(hands.minute.y / 5) + 100}
+          x2={hands.minute.x + 100}
+          y2={hands.minute.y + 100}
+          stroke="#343a40"
+          strokeWidth={5}
+          style={{ filter: 'drop-shadow(0 0 2px hsla(0, 0%, 0%, 0.25))' }}
+        />
+        <line
+          x1={-(hands.second.x / 5) + 100}
+          y1={-(hands.second.y / 5) + 100}
+          x2={hands.second.x + 100}
+          y2={hands.second.y + 100}
+          stroke="#adb5bd"
+          strokeWidth={1}
+          style={{ filter: 'drop-shadow(0 0 3px hsla(0, 0%, 0%, 0.25))' }}
+        />
+        <circle cx="100" cy="100" r="2" fill="white" />
       </View>
-      <Divider />
-      <View fillColor="white">
-        {children}
-      </View>
-    </View>
+    </>
   );
 };
 
-const Desktop = () => {
+//
+//
+//
+
+const App = () => {
   const [windows, setWindows] = useState([
-    { title: 'Clock', client: <Text padding="large">Hello, world.</Text> },
-    { title: 'Calc', client: <Text padding="large">Hello, world.</Text> },
+    { title: 'Calculator', element: <Text padding="large">Hello, world.</Text> },
+    { title: 'Clock', element: <Clock /> },
+    { title: 'Clock', element: <Clock /> },
   ]);
 
   return (
@@ -82,16 +114,12 @@ const Desktop = () => {
         <Menu hover />
         <Menu hover />
       </Stack>
-      <View flex fillColor="gray-1" style={{ position: 'relative' }}>
-        {windows.map(({ title, client }, index) => (
-          <Window key={index} title={title}>
-            {client}
-          </Window>
-        ))}
-
-      </View>
+      <Desktop
+        wallpaper="images/d1e91a4058a8a1082da711095b4e0163.jpg"
+        windows={windows}
+      />
     </View>
   );
 };
 
-export default Desktop;
+export default App;

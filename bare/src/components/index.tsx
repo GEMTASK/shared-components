@@ -15,5 +15,6 @@ export { default as Form } from './form/index.js';
 export { default as Card } from './card/index.js';
 export { default as Table } from './table/index.js';
 export { default as Splitter } from './splitter/index.js';
+export { default as Desktop } from './desktop/index.js';
 
 export { hues } from '../styles/fillColor.js';
