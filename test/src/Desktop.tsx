@@ -30,7 +30,10 @@ const Window = ({
         clientY: event.nativeEvent.clientY,
       };
 
-      windowRectRef.current = windowElementRef.current.getBoundingClientRect();
+      windowRectRef.current = new DOMRect(
+        windowElementRef.current.offsetLeft,
+        windowElementRef.current.offsetTop,
+      );
     }
   };
 
@@ -74,12 +77,19 @@ const Desktop = () => {
   ]);
 
   return (
-    <View fillColor="gray-1" style={{ position: 'relative', minHeight: '100vh' }}>
-      {windows.map(({ title, client }, index) => (
-        <Window key={index} title={title}>
-          {client}
-        </Window>
-      ))}
+    <View style={{ minHeight: '100vh' }}>
+      <Stack horizontal>
+        <Menu hover />
+        <Menu hover />
+      </Stack>
+      <View flex fillColor="gray-1" style={{ position: 'relative' }}>
+        {windows.map(({ title, client }, index) => (
+          <Window key={index} title={title}>
+            {client}
+          </Window>
+        ))}
+
+      </View>
     </View>
   );
 };
