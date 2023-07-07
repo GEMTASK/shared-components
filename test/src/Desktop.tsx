@@ -60,7 +60,7 @@ const Window = ({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
       >
-        <Text fontWeight="bold" textAlign="center">{title}</Text>
+        <Text fontWeight="bold" textAlign="center" style={{ marginBottom: -1 }}>{title}</Text>
       </View>
       <Divider />
       <View fillColor="white">
@@ -78,7 +78,7 @@ const Desktop = () => {
 
   return (
     <View style={{ minHeight: '100vh' }}>
-      <Stack horizontal>
+      <Stack horizontal paddingHorizontal="large">
         <Menu hover />
         <Menu hover />
       </Stack>
