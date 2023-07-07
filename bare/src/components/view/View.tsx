@@ -123,8 +123,6 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
     className,
   );
 
-  console.log(hoverStyles[`${hoverTarget}-parent`]);
-
   const viewStyle = {
     minWidth,
     minHeight,

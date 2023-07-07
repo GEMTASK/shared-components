@@ -7,6 +7,7 @@ import App from './App';
 import Grid from './Grid';
 import Email from './Email';
 import Live from './Live';
+import Desktop from './Desktop';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/live",
     element: <Live />,
+  },
+  {
+    path: "/desktop",
+    element: <Desktop />,
   },
 ]);
 
