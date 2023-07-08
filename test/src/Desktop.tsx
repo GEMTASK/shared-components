@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { hues, View, Text, Image, Button, Stack, Spacer, Divider } from 'bare';
 import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table } from 'bare';
@@ -54,7 +55,7 @@ const Clock = () => {
 
   return (
     <>
-      <View as="svg" flex viewBox="0 0 200 200" style={{ width: 300 }}>
+      <View as="svg" flex viewBox="0 0 200 200">
         {Array.from({ length: 12 }, (_, index, angle = (index * 30 + 180) * (Math.PI / 180)) => (
           <circle
             key={index}
@@ -102,23 +103,26 @@ const Clock = () => {
 //
 
 const App = () => {
+  console.log('App()');
+
   const [windows, setWindows] = useState([
     {
-      title: 'Calculator', element: <Text padding="large">Hello, world.</Text>, rect: {
-        x: 100, y: 100,
+      id: uuidv4(), title: 'Clock', element: <Clock />, rect: {
+        x: 50, y: 50, width: 200,
       }
     },
-    { title: 'Clock', element: <Clock /> },
     {
-      title: 'Clock', element: <Clock />, rect: {
-        x: 100, y: 100,
+      id: uuidv4(), title: 'Clock', element: <Clock />, rect: {
+        x: 100, y: 100, width: 300,
       }
     },
   ]);
-  //
-  const handleWindowChange = (rect: DOMRect) => {
-    console.log('here', rect);
-  };
+
+  const handleWindowChange = useCallback((id: string, rect: DOMRect) => {
+    setWindows(windows => windows.map(window => window.id === id
+      ? { ...window, rect }
+      : window));
+  }, []);
 
   return (
     <View style={{ minHeight: '100vh' }}>
