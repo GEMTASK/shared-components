@@ -32,8 +32,7 @@ type DividerProps = {
 
 const Divider = ({
   spacing,
-  // fillColor = 'gray-4',
-  fillColor = 'alpha-1',
+  fillColor = 'gray-3',
   spacingColor,
   className,
   ...props

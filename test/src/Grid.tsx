@@ -36,6 +36,7 @@ const Location2 = ({ children }: any) => {
     <Card
       horizontal
       shadow
+      borderColor="alpha-1"
       imageSrc="./images/istockphoto-1396508734-612x612.jpg"
       imageWidth={150}
       headingTitle="Entire villa hosted by Johan"
@@ -60,7 +61,7 @@ const Location2 = ({ children }: any) => {
 const Location3 = ({ children }: any) => {
   return (
     <View>
-      <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
+      <Image border borderColor="alpha-1" src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
       <Spacer size="small" />
       <Text fontWeight="semibold">Title title title</Text>
       <Spacer size="xsmall" />

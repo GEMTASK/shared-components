@@ -115,7 +115,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
     paddingHorizontal && paddingHorizontalStyles[paddingHorizontal],
     fillColor && fillColorStyles[fillColor],
     border && styles.border,
-    borderColor && borderColorStyles[borderColor],
+    borderColorStyles[borderColor ?? 'gray-2'],
     shadow && styles.shadow,
     !scrollbar && styles.noScrollbar,
     hoverTarget && hoverStyles[`${hoverTarget}-parent`],

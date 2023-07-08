@@ -33,7 +33,9 @@ const useBorderColorStyles = createUseStyles({
   },
   ...colors,
   'alpha-1': {
-    boxShadow: `inset 0 0 0 1px hsla(0, 0%, 0%, 0.1)`
+    '&:before': {
+      boxShadow: `inset 0 0 0 1px hsla(0, 0%, 0%, 0.1)`
+    }
   }
 });
 

@@ -18,7 +18,6 @@ const getFillColor = ({ primary, solid, selected }: ButtonProps) => {
     case primary && selected:
       return 'blue-1';
     case solid || selected:
-      // return 'alpha-1';
       return 'gray-3';
     default:
       return 'transparent';
