@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useLayoutEffect, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import View, { ViewProps } from '../view/index.js';
@@ -23,7 +23,7 @@ type WindowProps = {
   onWindowChange?: (id: string, rect: DOMRect) => void,
 } & ViewProps;
 
-const Window = ({
+const Window = React.memo(({
   id,
   title,
   rect,
@@ -106,7 +106,7 @@ const Window = ({
       </View>
     </View>
   );
-};
+});
 
 //
 //
@@ -132,7 +132,7 @@ const Desktop = ({
 
   return (
     <View flex style={{ position: 'relative', background: `url(${wallpaper}) center center / cover` }}>
-      {windows.map(({ id, title, element, rect }, index) => (
+      {windows.map(({ id, title, element, rect }) => (
         <Window key={id} id={id} title={title} rect={rect} onWindowChange={onWindowChange}>
           {element}
         </Window>
