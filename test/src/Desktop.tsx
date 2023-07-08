@@ -103,10 +103,22 @@ const Clock = () => {
 
 const App = () => {
   const [windows, setWindows] = useState([
-    { title: 'Calculator', element: <Text padding="large">Hello, world.</Text> },
+    {
+      title: 'Calculator', element: <Text padding="large">Hello, world.</Text>, rect: {
+        x: 100, y: 100,
+      }
+    },
     { title: 'Clock', element: <Clock /> },
-    { title: 'Clock', element: <Clock /> },
+    {
+      title: 'Clock', element: <Clock />, rect: {
+        x: 100, y: 100,
+      }
+    },
   ]);
+  //
+  const handleWindowChange = (rect: DOMRect) => {
+    console.log('here', rect);
+  };
 
   return (
     <View style={{ minHeight: '100vh' }}>
@@ -117,6 +129,7 @@ const App = () => {
       <Desktop
         wallpaper="images/d1e91a4058a8a1082da711095b4e0163.jpg"
         windows={windows}
+        onWindowChange={handleWindowChange}
       />
     </View>
   );

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import View, { ViewProps } from '../view/index.js';
@@ -8,6 +8,7 @@ import Stack from '../stack/index.js';
 import Menu from '../menu/index.js';
 
 type Pointer = Pick<React.PointerEvent, 'clientX' | 'clientY'>;
+type Rect = Partial<Pick<DOMRect, 'x' | 'y' | 'width' | 'height'>>;
 
 const useStyles = createUseStyles({
   Window: {
@@ -19,11 +20,15 @@ const useStyles = createUseStyles({
 
 type WindowProps = {
   title: string,
+  rect?: Rect,
+  onWindowChange?: (rect: DOMRect) => void,
 } & ViewProps;
 
 const Window = ({
   title,
+  rect,
   children,
+  onWindowChange,
   ...props
 }: WindowProps) => {
   const windowElementRef = useRef<HTMLElement>(null);
@@ -31,6 +36,13 @@ const Window = ({
   const pointerRef = useRef<Pointer | null>(null);
 
   const styles = useStyles();
+
+  useEffect(() => {
+    if (rect && windowElementRef.current) {
+      if (rect.x) windowElementRef.current.style.left = `${rect.x}px`;
+      if (rect.y) windowElementRef.current.style.top = `${rect.y}px`;
+    }
+  }, [rect]);
 
   const handlePointerDown = (event: React.PointerEvent) => {
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -61,6 +73,15 @@ const Window = ({
 
   const handlePointerUp = (event: React.PointerEvent) => {
     pointerRef.current = null;
+
+    if (onWindowChange && windowElementRef.current) {
+      onWindowChange(new DOMRect(
+        windowElementRef.current.offsetLeft,
+        windowElementRef.current.offsetTop,
+        windowElementRef.current.offsetWidth,
+        windowElementRef.current.offsetHeight
+      ));
+    }
   };
 
   return (
@@ -92,18 +113,21 @@ type DesktopProps = {
   windows: {
     title: string,
     element: React.ReactElement;
+    rect?: Rect,
   }[],
   wallpaper: string,
+  onWindowChange?: (rect: DOMRect) => void,
 };
 
 const Desktop = ({
   windows,
   wallpaper,
+  onWindowChange,
 }: DesktopProps) => {
   return (
     <View flex style={{ position: 'relative', background: `url(${wallpaper}) center center / cover` }}>
-      {windows.map(({ title, element }, index) => (
-        <Window key={index} title={title}>
+      {windows.map(({ title, element, rect }, index) => (
+        <Window key={index} title={title} rect={rect} onWindowChange={onWindowChange}>
           {element}
         </Window>
       ))}
