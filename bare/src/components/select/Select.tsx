@@ -50,7 +50,7 @@ const Select = ({
   };
 
   return (
-    <View style={{ position: 'relative' }}>
+    <View>
       <View as="select" value={value} className={controlStyles.Inner} onChange={handleSelectChange}>
         <option hidden>
           Please select...

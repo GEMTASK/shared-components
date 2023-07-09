@@ -3,6 +3,7 @@ import { createUseStyles } from 'react-jss';
 const useStyles = createUseStyles({
   View: {
     display: 'flex',
+    position: 'relative',
     appearance: 'none',
     flexDirection: 'column',
     boxSizing: 'border-box',
@@ -16,7 +17,6 @@ const useStyles = createUseStyles({
     flex: 1,
   },
   border: {
-    position: 'relative',
     borderRadius: 2.5,
     '&:before': {
       content: '""',
@@ -28,7 +28,6 @@ const useStyles = createUseStyles({
     }
   },
   shadow: {
-    position: 'relative',
     borderRadius: 2.5,
     '&:after': {
       content: '""',

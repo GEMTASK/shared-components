@@ -134,7 +134,7 @@ const Desktop = ({
   console.log('Desktop()');
 
   return (
-    <View flex style={{ position: 'relative', background: `url(${wallpaper}) center center / cover` }}>
+    <View flex style={{ background: `url(${wallpaper}) center center / cover` }}>
       {windows.map(({ id, title, element, rect }) => (
         <Window key={id} id={id} title={title} rect={rect} onWindowChange={onWindowChange}>
           {element}

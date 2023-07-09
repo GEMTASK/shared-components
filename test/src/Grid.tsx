@@ -73,7 +73,7 @@ const Location3 = ({ children }: any) => {
 const Grid = () => {
   return (
     <View fillColor="gray-2" minHeight="100vh">
-      <View fillColor="white" padding="large large" style={{ position: 'sticky', top: 0, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)', zIndex: 2 }}>
+      <View fillColor="white" padding="large large" style={{ position: 'sticky', top: 0, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)', zIndex: 1 }}>
         <Text>Header</Text>
       </View>
       <View flex padding="xxlarge xxlarge" maxWidth={'100vw'} fillColor="gray-1" style={{ width: 1400, margin: '0 auto', overflow: 'hidden', boxShadow: '0 0 32px hsla(0, 0%, 0%, 0.15)' }}>
@@ -140,7 +140,7 @@ const Grid = () => {
           <Location3 />
         </View>
       </View>
-      <View fillColor="gray-7" padding="large large" style={{ position: 'sticky', bottom: 0, zIndex: 2 }}>
+      <View fillColor="gray-7" padding="large large" style={{ position: 'sticky', bottom: 0, zIndex: 1 }}>
         <Text textColor="white">Footer</Text>
       </View>
     </View>

@@ -63,7 +63,7 @@ const Popup = ({
   }, []);
 
   return (
-    <View ref={menuElementRef} style={{ position: 'relative' }}>
+    <View ref={menuElementRef}>
       {/* <Button solid title="Menu" selected={isMenuVisible} onPointerDown={handleButtonFocus} rightIcon="chevron-down" /> */}
       {React.isValidElement(element) && React.cloneElement(element as any, {
         onFocus: handleButtonFocus,
@@ -75,7 +75,7 @@ const Popup = ({
           border
           shadow
           fillColor="white"
-          style={{ position: 'absolute', zIndex: 2, top: '100%', borderRadius: 2.5 }}
+          style={{ position: 'absolute', zIndex: 1, top: '100%', borderRadius: 2.5 }}
           onPointerDown={preventDefault}
           {...props}
         >
