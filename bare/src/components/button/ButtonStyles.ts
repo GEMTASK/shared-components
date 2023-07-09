@@ -37,6 +37,14 @@ const useStyles = createUseStyles({
       background: OpenColor.blue[1],
     },
   },
+  primarySolid: {
+    '&:enabled:hover': {
+      filter: 'brightness(1.08)'
+    },
+    '&:enabled:active': {
+      filter: 'brightness(0.96)'
+    }
+  },
   round: {
     borderRadius: 1000,
   },

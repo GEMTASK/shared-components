@@ -104,6 +104,7 @@ const Button = ({
     hover && styles.hover,
     !primary && !solid && styles.default,
     primary && !solid && styles.primary,
+    primary && solid && styles.primarySolid,
     selected && styles.selected,
     disabled && styles.disabled,
     round && styles.round,
