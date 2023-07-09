@@ -37,12 +37,12 @@ const Divider = ({
   className,
   ...props
 }: DividerProps) => {
-  const { isHorizontal } = useContext(ViewContext);
+  const { parentHorizontal } = useContext(ViewContext);
 
   const styles = useStyles();
 
   const dividerClassName = clsx(
-    styles[isHorizontal ? 'horizontal' : 'vertical'],
+    styles[parentHorizontal ? 'horizontal' : 'vertical'],
     className,
   );
 

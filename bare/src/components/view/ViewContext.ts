@@ -1,11 +1,14 @@
 import React from 'react';
 
+import Color from '../../types/Color';
+
 interface ViewContext {
-  isHorizontal: boolean,
+  parentHorizontal: boolean,
+  parentFillColor?: Color,
 }
 
 const ViewContext = React.createContext<ViewContext>({
-  isHorizontal: false
+  parentHorizontal: false,
 });
 
 export default ViewContext;

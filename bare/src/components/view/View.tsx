@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
 
@@ -96,6 +96,8 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
 }: ViewProps<T>, ref: React.ForwardedRef<HTMLElement>) => {
   const Component: React.ElementType = as ?? DEFAULT_ELEMENT;
 
+  const context = useContext(ViewContext);
+
   const styles = useStyles();
   const hoverStyles = useHoverStyles();
   const fillColorStyles = useFillColorStyles();
@@ -134,7 +136,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   const childCount = React.Children.count(children);
 
   return (
-    <ViewContext.Provider value={{ isHorizontal: horizontal ?? false }}>
+    <ViewContext.Provider value={{ parentHorizontal: horizontal ?? false, parentFillColor: fillColor ?? context.parentFillColor }}>
       <Component ref={ref} className={viewClassName} style={viewStyle} {...props}>
         {border || shadow ? (
           React.Children.map(children, (child, index) => React.isValidElement(child) && React.cloneElement(child as React.ReactElement, {
