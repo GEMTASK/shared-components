@@ -44,17 +44,18 @@ const Window = React.memo(({
       if (rect.x) windowElementRef.current.style.left = `${rect.x}px`;
       if (rect.y) windowElementRef.current.style.top = `${rect.y}px`;
       if (rect.width) windowElementRef.current.style.width = `${rect.width}px`;
+      if (rect.height) windowElementRef.current.style.height = `${rect.height}px`;
     }
   }, [rect]);
 
   const handlePointerDown = useCallback((event: React.PointerEvent) => {
-    event.currentTarget.setPointerCapture(event.pointerId);
     event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
 
     if (windowElementRef.current) {
       pointerRef.current = {
-        clientX: event.nativeEvent.clientX,
-        clientY: event.nativeEvent.clientY,
+        clientX: event.clientX,
+        clientY: event.clientY,
       };
 
       windowRectRef.current = new DOMRect(
