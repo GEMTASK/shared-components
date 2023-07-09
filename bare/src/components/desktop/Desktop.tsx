@@ -16,6 +16,15 @@ const useStyles = createUseStyles({
   },
 });
 
+function getOffsetsRect(windowElement: HTMLElement) {
+  return new DOMRect(
+    windowElement.offsetLeft,
+    windowElement.offsetTop,
+    windowElement.offsetWidth,
+    windowElement.offsetHeight,
+  );
+}
+
 type WindowProps = {
   id: string,
   title: string,
@@ -35,7 +44,7 @@ const Window = React.memo(({
 
   const windowElementRef = useRef<HTMLElement>(null);
   const windowRectRef = useRef<DOMRect>(new DOMRect());
-  const pointerRef = useRef<Pointer | null>(null);
+  const firstEventRef = useRef<React.PointerEvent | null>(null);
 
   const styles = useStyles();
 
@@ -52,41 +61,36 @@ const Window = React.memo(({
     event.preventDefault();
     event.currentTarget.setPointerCapture(event.pointerId);
 
-    if (windowElementRef.current) {
-      pointerRef.current = {
-        clientX: event.clientX,
-        clientY: event.clientY,
-      };
+    firstEventRef.current = event;
 
-      windowRectRef.current = new DOMRect(
-        windowElementRef.current.offsetLeft,
-        windowElementRef.current.offsetTop,
-      );
+    if (windowElementRef.current) {
+      windowRectRef.current = getOffsetsRect(windowElementRef.current);
     }
   }, []);
 
   const handlePointerMove = useCallback((event: React.PointerEvent) => {
-    if (pointerRef.current && windowElementRef.current) {
+    if (firstEventRef.current && windowElementRef.current) {
       const windowRect = windowRectRef.current;
-      const pointer = pointerRef.current;
+      const firstEvent = firstEventRef.current;
 
-      windowElementRef.current.style.left = `${windowRect.left + (event.clientX - pointer.clientX)}px`;
-      windowElementRef.current.style.top = `${windowRect.top + (event.clientY - pointer.clientY)}px`;
+      windowElementRef.current.style.left = `${windowRect.left + (event.clientX - firstEvent.clientX)}px`;
+      windowElementRef.current.style.top = `${windowRect.top + (event.clientY - firstEvent.clientY)}px`;
     }
   }, []);
 
   const handlePointerUp = useCallback((event: React.PointerEvent) => {
-    pointerRef.current = null;
+    firstEventRef.current = null;
 
     if (onWindowChange && windowElementRef.current) {
-      onWindowChange(id, new DOMRect(
-        windowElementRef.current.offsetLeft,
-        windowElementRef.current.offsetTop,
-        windowElementRef.current.offsetWidth,
-        windowElementRef.current.offsetHeight
-      ));
+      onWindowChange(id, getOffsetsRect(windowElementRef.current));
     }
   }, []);
+
+  const events = {
+    onPointerDown: handlePointerDown,
+    onPointerMove: handlePointerMove,
+    onPointerUp: handlePointerUp,
+  };
 
   return (
     <View ref={windowElementRef} className={styles.Window} {...props}>
@@ -95,9 +99,7 @@ const Window = React.memo(({
         padding="small"
         alignVertical="middle"
         style={{ borderTopLeftRadius: 4, borderTopRightRadius: 4, height: 32 }}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
+        {...events}
       >
         <Text fontWeight="bold" textColor="gray-7" textAlign="center" style={{ marginBottom: -2 }}>{title}</Text>
       </View>
