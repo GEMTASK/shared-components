@@ -26,7 +26,6 @@ const useStyles = createUseStyles({
     animation: '0.5s $fadeIn forwards',
   },
   Modal: {
-    position: 'relative',
     maxWidth: 600,
     borderRadius: 4,
     border: 'none',
@@ -79,7 +78,7 @@ const Modal = ({
   }
 
   return createPortal(
-    <View align="middle center" style={{ position: 'fixed', inset: 0, zIndex: 3 }}>
+    <View align="middle center" style={{ position: 'fixed', inset: 0, zIndex: 1 }}>
       <View fillColor="gray-9" className={styles.Overlay} onClick={onRequestClose} />
       <View as="dialog" fillColor="white" minWidth={400} className={styles.Modal} {...props}>
         <View horizontal padding="large" align="middle left">

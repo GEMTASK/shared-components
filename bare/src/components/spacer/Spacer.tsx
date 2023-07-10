@@ -156,14 +156,14 @@ const Spacer = ({
   className,
   ...props
 }: SpacerProps) => {
-  const { isHorizontal } = useContext(ViewContext);
+  const { parentHorizontal } = useContext(ViewContext);
 
   const spacingStyles = useSpacingStyles();
   const negativeSpacingStyles = useNegativeSpacingStyles();
 
   const spacerClassName = clsx(
-    size && spacingStyles[`${size}${isHorizontal ? 'Horizontal' : 'Vertical'}`],
-    negativeSize && negativeSpacingStyles[`${negativeSize}${isHorizontal ? 'Horizontal' : 'Vertical'}`],
+    size && spacingStyles[`${size}${parentHorizontal ? 'Horizontal' : 'Vertical'}`],
+    negativeSize && negativeSpacingStyles[`${negativeSize}${parentHorizontal ? 'Horizontal' : 'Vertical'}`],
     className,
   );
 

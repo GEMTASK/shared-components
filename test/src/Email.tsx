@@ -34,7 +34,7 @@ const Message = React.memo(({
   console.log('Message');
 
   return (
-    <View padding="medium large" fillColor="white" style={{ position: 'relative', borderBottom: `1px solid hsla(0, 0%, 0%, 0.1)` }} {...props}>
+    <View padding="medium large" fillColor="white" style={{ borderBottom: `1px solid hsla(0, 0%, 0%, 0.1)` }} {...props}>
       {unread && (
         <View style={{ position: 'absolute', top: 0, left: 0, borderTop: '20px solid lightblue', borderRight: '20px solid transparent' }} />
       )}
@@ -127,7 +127,7 @@ const List = ({
   const count = Math.min(items.length, Math.ceil(height / itemHeight) + 1);
 
   return (
-    <View flex ref={listElementRef} /* padding="large" */ style={{ minHeight: 0, overflow: 'auto', position: 'relative' }} onScroll={handleScroll}>
+    <View flex ref={listElementRef} /* padding="large" */ style={{ minHeight: 0, overflow: 'auto' }} onScroll={handleScroll}>
       <View style={{ position: 'absolute', inset: 0, height: items.length * itemHeight }} />
       <View style={{ flexShrink: 0, flexBasis: itemHeight * offset }} />
       {Array.from({ length: count + (offset + count > items.length ? -1 : 0) }, (_, index) => (
@@ -166,14 +166,14 @@ const MessageList = React.forwardRef(({
         <View horizontal>
           <Button solid primary icon="file-alt" title="Compose" onClick={onComposeMessage} />
         </View>
-        <Spacer size="small" />
-        <View horizontal align="left">
+        <Spacer size="large" />
+        <View horizontal align="bottom left">
           <Text flex fontSize="large" fontWeight="semibold">
             Inbox
           </Text>
-          <Menu hover title="Sort by" style={{ paddingTop: 14 }} />
+          <Menu text title="Sort by" />
         </View>
-        {/* <Spacer size="small" /> */}
+        <Spacer size="small" />
         <Input icon="search" placeholder="Search" style={{ borderRadius: 1000 }} />
       </View>
 
@@ -187,7 +187,7 @@ const MessageList = React.forwardRef(({
             Today
           </Text>
           <Spacer size="small" />
-          <View style={{ position: 'relative', zIndex: 3, marginBottom: -3, height: 3, borderTop: '1px solid hsla(0, 0%, 0%, 0.1)', borderTopLeftRadius: 2.5, borderTopRightRadius: 2.5 }} />
+          <View style={{ zIndex: 3, marginBottom: -3, height: 3, borderTop: '1px solid hsla(0, 0%, 0%, 0.1)', borderTopLeftRadius: 2.5, borderTopRightRadius: 2.5 }} />
         </View>
         <Stack divider border style={{ marginTop: -1 }}>
           <Message unread />
@@ -201,7 +201,7 @@ const MessageList = React.forwardRef(({
             Yesterday
           </Text>
           <Spacer size="small" />
-          <View style={{ position: 'relative', zIndex: 3, marginBottom: -3, height: 3, borderTop: '1px solid hsla(0, 0%, 0%, 0.1)', borderTopLeftRadius: 2.5, borderTopRightRadius: 2.5 }} />
+          <View style={{ zIndex: 3, marginBottom: -3, height: 3, borderTop: '1px solid hsla(0, 0%, 0%, 0.1)', borderTopLeftRadius: 2.5, borderTopRightRadius: 2.5 }} />
         </View>
         <Stack divider border style={{ marginTop: -1 }}>
           <Message />

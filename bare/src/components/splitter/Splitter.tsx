@@ -38,7 +38,7 @@ const Handle = ({ onDrag, onDragFinish }: any) => {
   };
 
   return (
-    <Divider style={{ position: 'relative' }}>
+    <Divider style={{ zIndex: 1 }}>
       <View
         style={{ position: 'absolute', inset: '0 -8px', cursor: 'ew-resize' }}
         onPointerDown={handlePointerDown}

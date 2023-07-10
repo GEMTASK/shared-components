@@ -3,6 +3,7 @@ import { createUseStyles } from 'react-jss';
 const useStyles = createUseStyles({
   View: {
     display: 'flex',
+    position: 'relative',
     appearance: 'none',
     flexDirection: 'column',
     boxSizing: 'border-box',
@@ -16,29 +17,19 @@ const useStyles = createUseStyles({
     flex: 1,
   },
   border: {
-    position: 'relative',
     borderRadius: 2.5,
     '&:before': {
       content: '""',
       position: 'absolute',
       inset: 0,
-      boxShadow: `inset 0 0 0 1px hsla(0, 0%, 0%, 0.1)`,
       borderRadius: 2.5,
       pointerEvents: 'none',
       zIndex: 1,
     }
   },
   shadow: {
-    position: 'relative',
     borderRadius: 2.5,
-    '&:after': {
-      content: '""',
-      position: 'absolute',
-      inset: 0,
-      boxShadow: '0 2px 2px hsla(0, 0%, 0%, 0.1)',
-      borderRadius: 2.5,
-      pointerEvents: 'none',
-    }
+    boxShadow: '0 2px 4px hsla(0, 0%, 0%, 0.1)',
   },
   noScrollbar: {
     '&::-webkit-scrollbar': {

@@ -28,7 +28,7 @@ const getDefaultValueForType = (type: string = 'text') => {
 
 type FormProps = {
   fields?: FieldDefinition[],
-  initialValues?: { [key: string]: string | boolean | string[]; },
+  initialValues?: { [key: string]: string | number | boolean | string[]; },
 } & ViewProps<'form'>;
 
 const Form = ({
@@ -42,7 +42,7 @@ const Form = ({
     [key]: acc[key] ?? getDefaultValueForType(type)
   }), initialValues));
 
-  const handleFieldChange = (key: string, value: string | boolean | string[]) => {
+  const handleFieldChange = (key: string, value: string | number | boolean | string[]) => {
     // console.log('handleFieldChange', key, value);
 
     setValues({ ...values, [key]: value });

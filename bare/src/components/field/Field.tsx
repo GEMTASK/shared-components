@@ -15,7 +15,7 @@ type FieldProps<T = unknown> = {
   _key: string,
   label: string,
   type?: 'text' | 'date' | 'color' | 'select' | 'checkbox' | 'radio' | 'checkboxlist' | 'range',
-  value?: string | boolean | string[],
+  value?: string | number | boolean | string[],
   lines?: number,
   options?: { [value: string]: string; },
   render?: (item: T) => React.ReactNode,

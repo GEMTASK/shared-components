@@ -14,7 +14,6 @@ const useTabStyles = createUseStyles({
     borderBottomRightRadius: 0,
     borderBottom: '1px solid transparent',
     marginBottom: -1,
-    position: 'relative',
   },
   selected: {
     background: 'none',

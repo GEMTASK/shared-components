@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { hues, View, Text, Image, Button, Stack, Spacer, Divider } from 'bare';
 import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table } from 'bare';
@@ -54,11 +55,7 @@ const Clock = () => {
 
   return (
     <>
-      <View padding="large" fillColor="gray-1" minHeight={50}>
-        <Button solid title="Press Me" />
-      </View>
-      <Divider fillColor="gray-3" />
-      <View as="svg" flex viewBox="0 0 200 200" style={{ width: 300 }}>
+      <View as="svg" flex viewBox="0 0 200 200">
         {Array.from({ length: 12 }, (_, index, angle = (index * 30 + 180) * (Math.PI / 180)) => (
           <circle
             key={index}
@@ -101,16 +98,87 @@ const Clock = () => {
   );
 };
 
+const Label = ({ children, ...props }: any) => {
+  return (
+    <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6" {...props}>
+      {children}
+    </Text>
+  );
+};
+
+const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+const Calendar = () => {
+  const today = new Date();
+  const firstDayInMonth = new Date(today.getFullYear(), today.getMonth());
+  const lastDayInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+
+  return (
+    <>
+      <View fillColor="gray-1">
+        <View horizontal align="left" padding="large">
+          <Text flex fontSize="large">September</Text>
+          <Stack horizontal spacing="small">
+            <Button solid size="xsmall" icon="arrow-left" />
+            <Button solid size="xsmall" icon="arrow-right" />
+          </Stack>
+        </View>
+        <View horizontal paddingHorizontal="small">
+          {days.map(day => (
+            <Label flex align="right" paddingHorizontal="small">
+              {day}
+            </Label>
+          ))}
+        </View>
+        <Spacer size="xsmall" />
+      </View>
+      <Divider />
+      <View flex padding="small" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
+        {Array.from({ length: firstDayInMonth.getDay() }, (_, day) => (
+          <Text></Text>
+        ))}
+        {Array.from({ length: lastDayInMonth }).map((_, day) => (
+          <Text
+            align="top right"
+            padding="small"
+            fillColor={day + 1 === today.getDate() ? 'blue-5' : undefined}
+            textColor={day + 1 === today.getDate() ? 'white' : undefined}
+            fontWeight={day + 1 === today.getDate() ? 'bold' : undefined}
+            style={{ borderRadius: 2.5 }}
+          >
+            {day + 1}
+          </Text>
+        ))}
+      </View>
+    </>
+  );
+};
+
 //
 //
 //
 
 const App = () => {
+  console.log('App()');
+
   const [windows, setWindows] = useState([
-    { title: 'Calculator', element: <Text padding="large">Hello, world.</Text> },
-    { title: 'Clock', element: <Clock /> },
-    { title: 'Clock', element: <Clock /> },
+    {
+      id: uuidv4(), title: 'Calendar', element: <Calendar />, rect: {
+        x: 900, y: 50, width: 375, height: 332,
+      }
+    },
+    {
+      id: uuidv4(), title: 'Clock', element: <Clock />, rect: {
+        x: 100, y: 100, width: 300, height: 332,
+      }
+    },
   ]);
+
+  const handleWindowChange = useCallback((id: string, rect: DOMRect) => {
+    setWindows(windows => windows.map(window => window.id === id
+      ? { ...window, rect }
+      : window));
+  }, []);
 
   return (
     <View style={{ minHeight: '100vh' }}>
@@ -121,6 +189,7 @@ const App = () => {
       <Desktop
         wallpaper="images/d1e91a4058a8a1082da711095b4e0163.jpg"
         windows={windows}
+        onWindowChange={handleWindowChange}
       />
     </View>
   );

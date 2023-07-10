@@ -36,6 +36,7 @@ const Location2 = ({ children }: any) => {
     <Card
       horizontal
       shadow
+      borderColor="alpha-1"
       imageSrc="./images/istockphoto-1396508734-612x612.jpg"
       imageWidth={150}
       headingTitle="Entire villa hosted by Johan"
@@ -60,7 +61,7 @@ const Location2 = ({ children }: any) => {
 const Location3 = ({ children }: any) => {
   return (
     <View>
-      <Image border src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
+      <Image border borderColor="alpha-1" src="./images/istockphoto-1396508734-612x612.jpg" width={200} style={{ flexShrink: 0, scrollSnapAlign: 'start', borderRadius: 2.5 }} />
       <Spacer size="small" />
       <Text fontWeight="semibold">Title title title</Text>
       <Spacer size="xsmall" />
@@ -72,7 +73,7 @@ const Location3 = ({ children }: any) => {
 const Grid = () => {
   return (
     <View fillColor="gray-2" minHeight="100vh">
-      <View fillColor="white" padding="large large" style={{ position: 'sticky', top: 0, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)', zIndex: 2 }}>
+      <View fillColor="white" padding="large large" style={{ position: 'sticky', top: 0, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)', zIndex: 1 }}>
         <Text>Header</Text>
       </View>
       <View flex padding="xxlarge xxlarge" maxWidth={'100vw'} fillColor="gray-1" style={{ width: 1400, margin: '0 auto', overflow: 'hidden', boxShadow: '0 0 32px hsla(0, 0%, 0%, 0.15)' }}>
@@ -139,7 +140,7 @@ const Grid = () => {
           <Location3 />
         </View>
       </View>
-      <View fillColor="gray-7" padding="large large" style={{ position: 'sticky', bottom: 0, zIndex: 2 }}>
+      <View fillColor="gray-7" padding="large large" style={{ position: 'sticky', bottom: 0, zIndex: 1 }}>
         <Text textColor="white">Footer</Text>
       </View>
     </View>
