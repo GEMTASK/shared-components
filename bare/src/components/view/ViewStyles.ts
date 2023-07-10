@@ -29,14 +29,7 @@ const useStyles = createUseStyles({
   },
   shadow: {
     borderRadius: 2.5,
-    '&:after': {
-      content: '""',
-      position: 'absolute',
-      inset: 0,
-      boxShadow: '0 2px 4px hsla(0, 0%, 0%, 0.1)',
-      borderRadius: 2.5,
-      pointerEvents: 'none',
-    }
+    boxShadow: '0 2px 4px hsla(0, 0%, 0%, 0.1)',
   },
   noScrollbar: {
     '&::-webkit-scrollbar': {
