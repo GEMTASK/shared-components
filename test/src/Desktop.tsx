@@ -54,6 +54,10 @@ const Clock = () => {
 
   return (
     <>
+      <View padding="large" fillColor="gray-1" minHeight={50}>
+        <Button solid title="Press Me" />
+      </View>
+      <Divider fillColor="gray-3" />
       <View as="svg" flex viewBox="0 0 200 200" style={{ width: 300 }}>
         {Array.from({ length: 12 }, (_, index, angle = (index * 30 + 180) * (Math.PI / 180)) => (
           <circle
