@@ -106,6 +106,7 @@ const Label = ({ children, ...props }: any) => {
   );
 };
 
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const Calendar = () => {
@@ -117,7 +118,10 @@ const Calendar = () => {
     <>
       <View fillColor="gray-1">
         <View horizontal align="left" padding="large">
-          <Text flex fontSize="large">September</Text>
+          <Text flex fontSize="large">
+            <Text fontWeight="bold">{months[today.getMonth()]}{' '}</Text>
+            {today.getFullYear()}
+          </Text>
           <Stack horizontal spacing="small">
             <Button solid size="xsmall" icon="arrow-left" />
             <Button solid size="xsmall" icon="arrow-right" />
@@ -125,7 +129,7 @@ const Calendar = () => {
         </View>
         <View horizontal paddingHorizontal="small">
           {days.map(day => (
-            <Label flex align="right" paddingHorizontal="small">
+            <Label key={day} flex align="right" paddingHorizontal="small">
               {day}
             </Label>
           ))}
@@ -135,10 +139,11 @@ const Calendar = () => {
       <Divider />
       <View flex padding="small" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
         {Array.from({ length: firstDayInMonth.getDay() }, (_, day) => (
-          <Text></Text>
+          <Text key={day}></Text>
         ))}
-        {Array.from({ length: lastDayInMonth }).map((_, day) => (
+        {Array.from({ length: lastDayInMonth }, (_, day) => (
           <Text
+            key={day}
             align="top right"
             padding="small"
             fillColor={day + 1 === today.getDate() ? 'blue-5' : undefined}
