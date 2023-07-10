@@ -166,14 +166,14 @@ const MessageList = React.forwardRef(({
         <View horizontal>
           <Button solid primary icon="file-alt" title="Compose" onClick={onComposeMessage} />
         </View>
-        <Spacer size="small" />
-        <View horizontal align="left">
+        <Spacer size="large" />
+        <View horizontal align="bottom left">
           <Text flex fontSize="large" fontWeight="semibold">
             Inbox
           </Text>
-          <Menu hover title="Sort by" style={{ paddingTop: 14 }} />
+          <Menu text title="Sort by" />
         </View>
-        {/* <Spacer size="small" /> */}
+        <Spacer size="small" />
         <Input icon="search" placeholder="Search" style={{ borderRadius: 1000 }} />
       </View>
 

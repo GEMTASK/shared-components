@@ -16,7 +16,7 @@ const useStyles = createUseStyles({
     }
   },
   default: {
-    '&:enabled:hover': { background: OpenColor.gray[3] },
+    '&:not($text):enabled:hover': { background: OpenColor.gray[3] },
     '&:enabled:active': { background: OpenColor.gray[3] },
   },
   hover: {
@@ -62,6 +62,12 @@ const useStyles = createUseStyles({
   medium: {
     minWidth: 40,
     minHeight: 40,
+  },
+  text: {
+    minWidth: 0,
+    minHeight: 0,
+    '&:enabled:hover': { filter: 'brightness(1.08)' },
+    '&:enabled:active': { background: OpenColor.gray[3] },
   },
   disabled: {
     opacity: 0.5,
