@@ -58,7 +58,7 @@ const reducer = (state: State, action: Action): State => {
         op: action.payload,
         replace: true,
         value: value,
-        display: value.toString(10),
+        display: value.toString().slice(0, 12),
       };
     }
     case 'EQUALS': {
@@ -70,7 +70,7 @@ const reducer = (state: State, action: Action): State => {
         op: 'ADD',
         replace: true,
         value: value,
-        display: value.toString(),
+        display: value.toString().slice(0, 12),
       };
     }
   }
