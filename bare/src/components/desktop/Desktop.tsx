@@ -12,7 +12,10 @@ const useStyles = createUseStyles({
   Window: {
     position: 'absolute',
     borderRadius: 4,
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.25), 0 0 0 1px hsla(0, 0%, 50%, 0.25)'
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.25), 0 0 0 1px hsla(0, 0%, 50%, 0.25)',
+    '&:focus, &:focus-within': {
+      boxShadow: '0 16px 32px rgba(0, 0, 0, 0.25), 0 0 0 1px hsla(0, 0%, 50%, 0.25)',
+    }
   },
 });
 
@@ -93,7 +96,7 @@ const Window = React.memo(({
   };
 
   return (
-    <View ref={windowElementRef} className={styles.Window} {...props}>
+    <View ref={windowElementRef} tabIndex={0} className={styles.Window} {...props}>
       <View
         fillColor="gray-3"
         padding="small"
