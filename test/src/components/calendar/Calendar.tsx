@@ -15,21 +15,32 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const Calendar = () => {
+  const [monthAndYear, setMonthAndYear] = useState(new Date());
+
+  const firstDayInMonth = new Date(monthAndYear.getFullYear(), monthAndYear.getMonth());
+  const lastDayInMonth = new Date(monthAndYear.getFullYear(), monthAndYear.getMonth() + 1, 0).getDate();
+
+  const handlePrevMonthClick = () => {
+    setMonthAndYear(new Date(monthAndYear.getFullYear(), monthAndYear.getMonth() - 1));
+  };
+
+  const handleNextMonthClick = () => {
+    setMonthAndYear(new Date(monthAndYear.getFullYear(), monthAndYear.getMonth() + 1));
+  };
+
   const today = new Date();
-  const firstDayInMonth = new Date(today.getFullYear(), today.getMonth());
-  const lastDayInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
 
   return (
     <>
       <View fillColor="gray-1">
         <View horizontal align="left" padding="large">
           <Text flex fontSize="large">
-            <Text fontWeight="bold">{months[today.getMonth()]}{' '}</Text>
-            {today.getFullYear()}
+            <Text fontWeight="bold">{months[monthAndYear.getMonth()]}{' '}</Text>
+            {monthAndYear.getFullYear()}
           </Text>
           <Stack horizontal spacing="small">
-            <Button solid size="xsmall" icon="arrow-left" />
-            <Button solid size="xsmall" icon="arrow-right" />
+            <Button solid size="xsmall" icon="arrow-left" onClick={handlePrevMonthClick} />
+            <Button solid size="xsmall" icon="arrow-right" onClick={handleNextMonthClick} />
           </Stack>
         </View>
         <View horizontal paddingHorizontal="small">
@@ -51,9 +62,9 @@ const Calendar = () => {
             key={day}
             align="top right"
             padding="small"
-            fillColor={day + 1 === today.getDate() ? 'blue-5' : undefined}
-            textColor={day + 1 === today.getDate() ? 'white' : undefined}
-            fontWeight={day + 1 === today.getDate() ? 'bold' : undefined}
+            fillColor={monthAndYear.getFullYear() === today.getFullYear() && monthAndYear.getMonth() === today.getMonth() && today.getDate() === day + 1 ? 'blue-5' : undefined}
+            textColor={monthAndYear.getFullYear() === today.getFullYear() && monthAndYear.getMonth() === today.getMonth() && today.getDate() === day + 1 ? 'white' : undefined}
+            fontWeight={monthAndYear.getFullYear() === today.getFullYear() && monthAndYear.getMonth() === today.getMonth() && today.getDate() === day + 1 ? 'bold' : undefined}
             style={{ borderRadius: 2.5 }}
           >
             {day + 1}
