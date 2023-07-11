@@ -17,11 +17,13 @@ const useStyles = createUseStyles({
 });
 
 type GridProps = {
+  gap?: number,
   columns?: number,
   className?: string,
 } & ViewProps;
 
 const Grid = ({
+  gap,
   columns,
   className,
   style,
@@ -38,6 +40,7 @@ const Grid = ({
   // gridTemplateColumns: 'repeat(auto-fit, minmax(440px, 1fr))'
 
   const gridStyle = {
+    ...(gap && { gap }),
     ...(columns && { gridTemplateColumns: `repeat(${columns ?? ''}, 1fr)` }),
     ...style,
   };
