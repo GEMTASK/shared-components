@@ -127,7 +127,7 @@ const Button = ({
     primary && !solid && styles.primary,
     primary && solid && styles.primarySolid,
     text && styles.text,
-    selected && styles.selected,
+    // selected && styles.selected,
     disabled && styles.disabled,
     round && styles.round,
     className,

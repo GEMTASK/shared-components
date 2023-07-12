@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import View from '../view/index.js';
 import Divider from '../divider/index.js';
@@ -50,12 +50,11 @@ const Handle = ({ onDrag, onDragFinish }: any) => {
 };
 
 const Splitter = ({
-  initialWidth,
   children,
   ...props
 }: any) => {
   const elementRef = useRef<HTMLElement>(null);
-  const widthRef = useRef(initialWidth);
+  const widthRef = useRef(0);
 
   const handleDrag = (delta: number) => {
     if (elementRef.current) {
@@ -69,15 +68,19 @@ const Splitter = ({
     }
   };
 
+  useLayoutEffect(() => {
+    if (elementRef.current) {
+      widthRef.current = Number(elementRef.current.offsetWidth);
+      elementRef.current.style.width = `${widthRef.current}px`;
+    }
+  }, []);
+
   const childrenArray = React.Children.toArray(children);
 
   return (
     <View {...props}>
       {React.cloneElement(childrenArray[0] as React.ReactElement, {
         ref: elementRef,
-        style: {
-          width: widthRef.current + 'px'
-        },
       })}
       <Handle onDrag={handleDrag} onDragFinish={handleDragFinish} />
       {childrenArray[1]}

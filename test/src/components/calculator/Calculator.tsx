@@ -115,7 +115,7 @@ const Calculator = () => {
 
   return (
     <>
-      <Text fontSize="xlarge" textAlign="right" padding="large small" fillColor="white">
+      <Text fontSize="xlarge" textAlign="right" padding="large large" fillColor="white">
         {display}
       </Text>
       <Divider />

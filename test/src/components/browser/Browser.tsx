@@ -3,7 +3,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Input, Divider, Button, Stack, Splitter } from 'bare';
 
 const Browser = () => {
-  const [value, setValue] = useState('http://google.com');
+  // const [value, setValue] = useState('http://google.com');
+  const [value, setValue] = useState('');
   const [url, setUrl] = useState(value);
 
   const handleBlur = () => {
@@ -15,7 +16,7 @@ const Browser = () => {
     <>
       <Splitter flex horizontal>
         <View>
-          <View horizontal fillColor="gray-1" padding="small">
+          <View horizontal fillColor="gray-1" padding="small" style={{ gap: 1 }}>
             <Button hover icon="window-restore" title="Tabs" />
             <Button hover selected icon="bookmark" title="Bookmarks" />
             <Button hover icon="clock-rotate-left" title="History" />

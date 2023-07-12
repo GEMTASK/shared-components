@@ -80,7 +80,7 @@ const Modal = ({
   return createPortal(
     <View align="middle center" style={{ position: 'fixed', inset: 0, zIndex: 1 }}>
       <View fillColor="gray-9" className={styles.Overlay} onClick={onRequestClose} />
-      <View as="dialog" fillColor="white" minWidth={400} className={styles.Modal} {...props}>
+      <View as="dialog" fillColor="gray-1" minWidth={400} className={styles.Modal} {...props}>
         <View horizontal padding="large" align="middle left">
           <Text flex fontSize="large" >{title}</Text>
           <Button size="xsmall" icon="close" onClick={onRequestClose} />

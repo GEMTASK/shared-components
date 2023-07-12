@@ -12,7 +12,7 @@ const useStyles = createUseStyles({
     //   filter: 'brightness(1.04)'
     // },
     '&:enabled:active': {
-      filter: 'brightness(0.96)'
+      filter: 'brightness(0.94)'
     }
   },
   default: {
