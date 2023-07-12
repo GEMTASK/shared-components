@@ -13,9 +13,11 @@ const useStyles = createUseStyles({
     position: 'absolute',
     borderRadius: 4,
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.25), 0 0 0 1px hsla(0, 0%, 50%, 0.25)',
+    transition: 'box-shadow 0.1s',
     '&:focus, &:focus-within': {
       boxShadow: '0 16px 32px rgba(0, 0, 0, 0.25), 0 0 0 1px hsla(0, 0%, 50%, 0.25)',
-    }
+    },
+    willChange: 'left, top',
   },
 });
 

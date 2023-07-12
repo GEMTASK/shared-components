@@ -63,7 +63,7 @@ const Popup = ({
   }, []);
 
   return (
-    <View ref={menuElementRef}>
+    <View ref={menuElementRef} flex>
       {/* <Button solid title="Menu" selected={isMenuVisible} onPointerDown={handleButtonFocus} rightIcon="chevron-down" /> */}
       {React.isValidElement(element) && React.cloneElement(element as any, {
         onFocus: handleButtonFocus,

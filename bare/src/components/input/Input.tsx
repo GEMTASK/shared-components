@@ -67,6 +67,7 @@ const Input = ({
   options,
   placeholder,
   onChange,
+  onBlur,
   ...props
 }: InputProps) => {
   const innerStyles = useInnerStyles();
@@ -132,6 +133,7 @@ const Input = ({
           placeholder={placeholder}
           style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2.5, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans', width: '100%' }}
           onChange={handleInputChange}
+          onBlur={onBlur}
         />
       );
     }
@@ -139,6 +141,7 @@ const Input = ({
 
   return (
     <Popup
+      flex
       element={
         <View horizontal align="left" fillColor="white" paddingHorizontal="medium" className={innerStyles.Inner} {...props}>
           {icon && (

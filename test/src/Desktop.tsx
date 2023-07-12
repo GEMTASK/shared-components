@@ -7,11 +7,17 @@ import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table, Desktop } from 'bar
 import Calendar from './components/calendar';
 import Clock from './components/clock';
 import Calculator from './components/calculator';
+import Browser from './components/browser';
 
 const App = () => {
   console.log('App()');
 
   const [windows, setWindows] = useState([
+    {
+      id: uuidv4(), title: 'Browser', element: <Browser />, rect: {
+        x: 20, y: 20, width: 1280, height: 800,
+      }
+    },
     {
       id: uuidv4(), title: 'Calendar', element: <Calendar />, rect: {
         x: 50, y: 50, width: 360, height: 332,

@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.2.4",
     "@types/uuid": "^9.0.2",
     "bare": "file:../bare",
+    "cors-anywhere": "^0.4.4",
     "cra": "file:../cra",
     "lorem-ipsum": "^2.0.8",
     "react": "^18.2.0",
