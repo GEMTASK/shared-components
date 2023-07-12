@@ -8,9 +8,9 @@ const useStyles = createUseStyles({
     appearance: 'none',
     border: 'none',
     borderRadius: 2.5,
-    '&:enabled:hover': {
-      filter: 'brightness(1.04)'
-    },
+    // '&:enabled:hover': {
+    //   filter: 'brightness(1.04)'
+    // },
     '&:enabled:active': {
       filter: 'brightness(0.96)'
     }
@@ -30,27 +30,27 @@ const useStyles = createUseStyles({
     },
   },
   primary: {
-    '&:enabled:hover': {
-      background: OpenColor.blue[0],
-    },
+    // '&:enabled:hover': {
+    //   background: OpenColor.blue[0],
+    // },
     '&:enabled:active': {
       background: OpenColor.blue[1],
     },
   },
   primarySolid: {
-    '&:enabled:hover': {
-      filter: 'brightness(1.08)'
-    },
+    // '&:enabled:hover': {
+    //   filter: 'brightness(1.08)'
+    // },
     '&:enabled:active': {
-      filter: 'brightness(0.96)'
+      filter: 'brightness(0.90)'
     }
   },
   round: {
     borderRadius: 1000,
   },
-  selected: {
-    filter: 'brightness(0.94)',
-  },
+  // selected: {
+  //   filter: 'brightness(0.94)',
+  // },
   xsmall: {
     minWidth: 24,
     minHeight: 24,
