@@ -32,17 +32,17 @@ const App = () => {
     },
     {
       id: uuidv4(), title: 'Notes', element: <Notes />, rect: {
-        x: 980, y: 15, width: 360, height: 332,
+        x: 980, y: 15, width: 310, height: 332,
       }
     },
     {
       id: uuidv4(), title: 'Music', element: <Music />, rect: {
-        x: 1355, y: 15, width: 360, height: 332,
+        x: 1305, y: 15, width: 360, height: 332,
       }
     },
     {
       id: uuidv4(), title: 'Browser', element: <Browser />, rect: {
-        x: 15, y: 360, width: 1280, height: 800,
+        x: 15, y: 360, width: 1280, height: 540,
       }
     },
   ]);

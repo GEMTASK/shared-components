@@ -34,7 +34,7 @@ const Browser = () => {
             <Input flex value={value} onChange={setValue} onBlur={handleBlur} />
           </Stack>
           <Divider />
-          <View as="iframe" flex style={{ border: 'none' }} src={url} />
+          <View as="iframe" flex fillColor="white" style={{ border: 'none' }} src={url} />
         </View>
       </Splitter>
     </>
