@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -7,9 +7,10 @@ import App from './App';
 import Grid from './Grid';
 import Email from './Email';
 import Live from './Live';
-import Desktop from './Desktop';
 
 import reportWebVitals from './reportWebVitals';
+
+const Desktop = React.lazy(() => import('./Desktop'));
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/desktop",
-    element: <Desktop />,
+    element: (
+      <Suspense>
+        <Desktop />
+      </Suspense>
+    ),
   },
 ]);
 

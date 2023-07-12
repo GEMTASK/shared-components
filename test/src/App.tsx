@@ -381,7 +381,7 @@ function App() {
         <Tabs
           labels={['Simple Tab 1', 'Simple Tab 2', 'Simple Tab 3']}
           actions={[
-            <Button hover size="small" icon="gear" title="Options" onClick={() => setIsModalOpen(true)} />,
+            <Button text size="small" icon="gear" title="Options" onClick={() => setIsModalOpen(true)} />,
             // <Button hover icon="gear" />,
           ]}>
           <Text>

@@ -5,7 +5,6 @@ import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';
 import Divider from '../divider/index.js';
 
-type Pointer = Pick<React.PointerEvent, 'clientX' | 'clientY'>;
 type Rect = Partial<Pick<DOMRect, 'x' | 'y' | 'width' | 'height'>>;
 
 const useStyles = createUseStyles({
@@ -106,7 +105,9 @@ const Window = React.memo(({
         style={{ borderTopLeftRadius: 4, borderTopRightRadius: 4, height: 32 }}
         {...events}
       >
-        <Text fontWeight="bold" textColor="gray-7" textAlign="center" style={{ marginBottom: -2 }}>{title}</Text>
+        <Text fontWeight="bold" textColor="gray-7" textAlign="center" style={{ marginBottom: -2 }}>
+          {title}
+        </Text>
       </View>
       <Divider fillColor="gray-4" />
       <View flex fillColor="white" style={{ borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}>
