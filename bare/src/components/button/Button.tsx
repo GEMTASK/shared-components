@@ -163,7 +163,7 @@ const Button = ({
         <Icon icon={icon} color={iconColor} size={size === 'xsmall' ? 'sm' : undefined} />
       )}
       {!!icon && !!title && !(tabletTitleHidden && isTablet) && (
-        <Spacer size="small" />
+        <Spacer size="small" minWidth={size === 'xsmall' ? 6 : undefined} />
       )}
       {!(tabletTitleHidden && isTablet) && (
         <Text

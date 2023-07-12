@@ -14,23 +14,23 @@ const App = () => {
 
   const [windows, setWindows] = useState([
     {
-      id: uuidv4(), title: 'Browser', element: <Browser />, rect: {
-        x: 20, y: 20, width: 1280, height: 800,
-      }
-    },
-    {
       id: uuidv4(), title: 'Calendar', element: <Calendar />, rect: {
-        x: 50, y: 50, width: 360, height: 332,
+        x: 15, y: 15, width: 360, height: 332,
       }
     },
     {
       id: uuidv4(), title: 'Clock', element: <Clock />, rect: {
-        x: 425, y: 50, width: 300, height: 332,
+        x: 390, y: 15, width: 300, height: 332,
       }
     },
     {
       id: uuidv4(), title: 'Calculator', element: <Calculator />, rect: {
-        x: 740, y: 50, width: 260, height: 332,
+        x: 705, y: 15, width: 260, height: 332,
+      }
+    },
+    {
+      id: uuidv4(), title: 'Browser', element: <Browser />, rect: {
+        x: 15, y: 360, width: 1280, height: 800,
       }
     },
   ]);

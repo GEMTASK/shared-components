@@ -17,7 +17,7 @@ const Browser = () => {
         <View>
           <View horizontal fillColor="gray-1" padding="small">
             <Button hover icon="window-restore" title="Tabs" />
-            <Button hover selected icon="clock-rotate-left" title="Bookmarks" />
+            <Button hover selected icon="bookmark" title="Bookmarks" />
             <Button hover icon="clock-rotate-left" title="History" />
           </View>
           <Divider />
