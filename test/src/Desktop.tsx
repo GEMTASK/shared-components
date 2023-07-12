@@ -7,6 +7,7 @@ import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table, Desktop } from 'bar
 import Calendar from './components/calendar';
 import Clock from './components/clock';
 import Calculator from './components/calculator';
+import Notes from './components/notes';
 import Browser from './components/browser';
 
 const App = () => {
@@ -26,6 +27,11 @@ const App = () => {
     {
       id: uuidv4(), title: 'Calculator', element: <Calculator />, rect: {
         x: 705, y: 15, width: 260, height: 332,
+      }
+    },
+    {
+      id: uuidv4(), title: 'Notes', element: <Notes />, rect: {
+        x: 980, y: 15, width: 600, height: 332,
       }
     },
     {

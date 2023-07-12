@@ -7,6 +7,7 @@ const useInnerStyles = createUseStyles({
     lineHeight: '20px',
     margin: '-4px 0 -3px 0',
     display: 'inline-block',
+    height: '100%',
     // color: 'hsla(0, 0%, 0%, 0.8)',
     '&:not(a)': {
       cursor: 'default',
@@ -15,6 +16,14 @@ const useInnerStyles = createUseStyles({
     //   cursor: 'text'
     // },
 
+  },
+  Inner: {
+    '& p': {
+      marginTop: '0.5em',
+    },
+    '& p:first-child': {
+      margin: 0,
+    },
   },
   caps: {
     textTransform: 'uppercase',

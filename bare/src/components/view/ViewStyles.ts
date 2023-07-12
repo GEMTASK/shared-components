@@ -9,6 +9,7 @@ const useStyles = createUseStyles({
     boxSizing: 'border-box',
     margin: 0,
     padding: 0,
+    // outline: 'none',
   },
   horizontal: {
     flexDirection: 'row',

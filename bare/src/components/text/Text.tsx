@@ -49,6 +49,7 @@ const Text = <T extends React.ElementType = 'span'>({
   const textColorStyles = useTextColorStyles();
 
   const innerClassName = clsx(
+    innerStyles.Inner,
     caps && innerStyles.caps,
     fontSize && fontSizeStyles[fontSize],
     fontWeight && fontWeightStyles[fontWeight],
@@ -57,6 +58,7 @@ const Text = <T extends React.ElementType = 'span'>({
   );
 
   const innerStyle = {
+    outline: 'none',
     ...(lineClamp && {
       display: '-webkit-box',
       overflow: 'hidden',
