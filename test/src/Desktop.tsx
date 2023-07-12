@@ -9,6 +9,7 @@ import Clock from './components/clock';
 import Calculator from './components/calculator';
 import Notes from './components/notes';
 import Browser from './components/browser';
+import Music from './components/music';
 
 const App = () => {
   console.log('App()');
@@ -31,7 +32,12 @@ const App = () => {
     },
     {
       id: uuidv4(), title: 'Notes', element: <Notes />, rect: {
-        x: 980, y: 15, width: 600, height: 332,
+        x: 980, y: 15, width: 360, height: 332,
+      }
+    },
+    {
+      id: uuidv4(), title: 'Music', element: <Music />, rect: {
+        x: 1355, y: 15, width: 360, height: 332,
       }
     },
     {

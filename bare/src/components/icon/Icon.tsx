@@ -15,11 +15,14 @@ type IconProps = {
 
 const Icon = ({
   icon,
-  color,
+  color: _color,
   ...props
 }: IconProps) => {
+  const [color, level] = (_color ?? '')?.split('-') as [keyof OpenColor, number | undefined];
+  const iconColor = level ? OpenColor[color][level] : OpenColor[color] as string;
+
   return (
-    <FontAwesomeIcon icon={icon} color={color ?? OpenColor.gray[7]} {...props} />
+    <FontAwesomeIcon icon={icon} color={iconColor ?? OpenColor.gray[7]} {...props} />
   );
 };
 

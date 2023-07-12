@@ -12,7 +12,7 @@ const useStyles = createUseStyles({
     position: 'absolute',
     borderRadius: 4,
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.25), 0 0 0 1px hsla(0, 0%, 50%, 0.25)',
-    transition: 'box-shadow 0.1s',
+    transition: 'box-shadow 0.05s',
     '&:focus, &:focus-within': {
       boxShadow: '0 16px 32px rgba(0, 0, 0, 0.25), 0 0 0 1px hsla(0, 0%, 50%, 0.25)',
     },
@@ -110,7 +110,7 @@ const Window = React.memo(({
         </Text>
       </View>
       <Divider fillColor="gray-4" />
-      <View flex fillColor="white" style={{ borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}>
+      <View flex fillColor="white" style={{ minHeight: 0, borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}>
         {children}
       </View>
     </View>

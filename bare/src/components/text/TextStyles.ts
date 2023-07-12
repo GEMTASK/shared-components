@@ -9,7 +9,7 @@ const useInnerStyles = createUseStyles({
     display: 'inline-block',
     // height: '100%',
     // color: 'hsla(0, 0%, 0%, 0.8)',
-    '&:not(a)': {
+    '&:not(a):not([contenteditable])': {
       cursor: 'default',
     },
     // '&[contenteditable], &:active': {

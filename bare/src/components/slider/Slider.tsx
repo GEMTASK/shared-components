@@ -1,7 +1,7 @@
 import OpenColor from 'open-color';
 import { createUseStyles } from 'react-jss';
 
-import View from '../view/index.js';
+import View, { ViewProps } from '../view/index.js';
 import Input from '../input/index.js';
 import Spacer from '../spacer/Spacer.js';
 
@@ -9,14 +9,14 @@ const useStyles = createUseStyles({
   Inner: {
     appearance: 'none',
     flex: 1,
-    background: OpenColor.gray[3],
+    background: OpenColor.gray[4],
     // boxShadow: 'inset 0 0 0 1px hsla(0, 0%, 0%, 0.15)',
     borderRadius: 1000,
     padding: 0,
     margin: 0,
     marginTop: 8,
     marginBottom: 8,
-    height: 4,
+    height: 6,
     // '&::-webkit-slider-runnable-track': {
     //   background: OpenColor.gray[3],
     //   borderRadius: 1000,
@@ -36,11 +36,12 @@ const useStyles = createUseStyles({
 type SliderProps = {
   value: number,
   onChange?: (value: number) => void,
-};
+} & ViewProps;
 
 const Slider = ({
   value,
   onChange,
+  ...props
 }: SliderProps) => {
   const styles = useStyles();
 
@@ -49,9 +50,9 @@ const Slider = ({
   };
 
   return (
-    <View flex horizontal align="left">
-      <Input type="number" value={`${value}`} style={{ width: 60 }} />
-      <Spacer size="small" />
+    <View flex horizontal align="left" {...props}>
+      {/* <Input type="number" value={`${value}`} style={{ width: 60 }} />
+      <Spacer size="small" /> */}
       <input type="range" value={value} className={styles.Inner} onChange={handleRangeChange} />
     </View>
   );

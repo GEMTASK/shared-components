@@ -67,7 +67,7 @@ const useStyles = createUseStyles({
     minWidth: 0,
     minHeight: 0,
     // '&:enabled:hover': { filter: 'brightness(1.5)' },
-    '&:enabled:active': { background: 'none', filter: 'brightness(0.5)' },
+    '&:enabled:active': { background: 'none', filter: 'brightness(0.8)' },
   },
   disabled: {
     opacity: 0.5,
