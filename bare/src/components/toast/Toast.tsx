@@ -1,12 +1,26 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { createUseStyles } from 'react-jss';
 
 import View from '../view/index.js';
 import Text from '../text/index.js';
-import { createPortal } from 'react-dom';
 import Stack from '../stack/index.js';
 import Icon from '../icon/Icon.js';
 import Spacer from '../spacer/Spacer.js';
 import Button from '../button/Button.js';
+
+const useStyles = createUseStyles({
+  '@keyframes fadeIn': {
+    from: { marginBottom: 'var(--height)', opacity: 0.0, transform: 'scale(0.9, 0.9)' },
+    to: { marginBottom: '0', opacity: 1.0, transform: 'identity' },
+  },
+  Toast: {
+    animation: '$fadeIn 0.5s ',
+    boxShadow: '0 4px 8px hsla(0, 0%, 0%, 0.5)',
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+});
 
 type ToastProps = {
   message: string,
@@ -15,8 +29,20 @@ type ToastProps = {
 const Toast = ({
   message
 }: ToastProps) => {
+  const toastElementRef = useRef<HTMLElement>(null);
+
+  const styles = useStyles();
+
+  useLayoutEffect(() => {
+    if (toastElementRef.current) {
+      console.log('height', toastElementRef.current.offsetHeight);
+
+      toastElementRef.current.style.setProperty('--height', `${-toastElementRef.current.offsetHeight}px`);
+    }
+  }, []);
+
   return (
-    <View horizontal border shadow padding="small large" fillColor="white" minWidth={200} maxWidth={400} style={{ pointerEvents: 'auto' }} align="top left">
+    <View ref={toastElementRef} horizontal className={styles.Toast} padding="small large" fillColor="white" minWidth={200} maxWidth={400} style={{ pointerEvents: 'auto' }} align="top left">
       <View horizontal style={{ marginTop: 3 }}>
         <Icon size="lg" icon="info-circle" />
         <Spacer size="small" />
@@ -64,7 +90,7 @@ const List = () => {
   useEffect(() => {
     window.addEventListener('toast', handleToastMessage);
 
-    processToasts();
+    // processToasts();
 
     return () => {
       window.removeEventListener('toast', handleToastMessage);
