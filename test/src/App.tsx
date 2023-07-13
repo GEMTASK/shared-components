@@ -4,13 +4,11 @@ import { Link as RouterLink } from 'react-router-dom';
 import styles from './App.module.css';
 
 import { hues, View, Text, Image, Button, Stack, Spacer, Divider } from 'bare';
-import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table } from 'bare';
+import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table, Toast, toast } from 'bare';
 
 import { TextProps } from 'bare/dist/components/text/Text';
 
-type LinkProps = {
-
-} & TextProps<'a'> & React.ComponentProps<typeof RouterLink>;
+type LinkProps = TextProps<'a'> & React.ComponentProps<typeof RouterLink>;
 
 const Link = ({
   children,
@@ -51,6 +49,7 @@ function App() {
 
   return (
     <View className={styles.App}>
+      <Toast.List />
       <View flex id="container" className={styles.Container} padding="large">
 
         <Stack horizontal spacing="large" align="center">
@@ -60,6 +59,7 @@ function App() {
           </Text>
           <Link to="email">Email</Link>
           <Link to="desktop">Desktop</Link>
+          <Button title="Toast" onClick={() => toast('Hello! ' + Math.random())} />
         </Stack>
 
         <Divider spacing="large" />

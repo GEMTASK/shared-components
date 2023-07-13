@@ -1,4 +1,4 @@
-export { default as View } from './view/index.js';
+export { default as View, type ViewProps } from './view/index.js';
 export { default as Text } from './text/index.js';
 export { default as Image } from './image/index.js';
 export { default as Icon } from './icon/index.js';
@@ -18,5 +18,6 @@ export { default as Card } from './card/index.js';
 export { default as Table } from './table/index.js';
 export { default as Splitter } from './splitter/index.js';
 export { default as Desktop } from './desktop/index.js';
+export { default as Toast, toast } from './toast/index.js';
 
 export { hues } from '../styles/fillColor.js';

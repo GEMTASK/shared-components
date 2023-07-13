@@ -62,6 +62,8 @@ type ViewProps<T extends React.ElementType = 'div'> = {
   scrollbar?: boolean,
   hoverTarget?: string,
   hoverParent?: string,
+  absolute?: boolean,
+  fixed?: boolean,
   className?: string,
   style?: React.CSSProperties,
   children?: Children,
@@ -89,6 +91,8 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   scrollbar = true,
   hoverTarget,
   hoverParent,
+  absolute,
+  fixed,
   className,
   style,
   children,
@@ -122,6 +126,8 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
     !scrollbar && styles.noScrollbar,
     hoverTarget && hoverStyles[`${hoverTarget}-parent`],
     hoverParent && hoverStyles[`${hoverParent}-child`],
+    absolute && styles.absolute,
+    fixed && styles.fixed,
     className,
   );
 

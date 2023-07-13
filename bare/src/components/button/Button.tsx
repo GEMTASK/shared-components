@@ -139,9 +139,6 @@ const Button = ({
   const borderColor = getBorderColor({ primary, solid, text, hover });
   const textColor = titleTextColor ?? getTextColor({ primary, solid, selected });
 
-  const [color, level] = (textColor ?? '')?.split('-') as [keyof OpenColor, number | undefined];
-  const iconColor = level ? OpenColor[color][level] : OpenColor[color] as string;
-
   const paddingVertical = getPaddingVertical({ size, title, text });
   const paddingHorizontal = getPaddingHorizontal({ size, title, text });
 
@@ -162,7 +159,7 @@ const Button = ({
       {...props}
     >
       {!!icon && (
-        <Icon icon={icon} color={iconColor} size={iconSize ?? (size === 'xsmall' ? 'sm' : undefined)} />
+        <Icon icon={icon} color={textColor} size={iconSize ?? (size === 'xsmall' ? 'sm' : undefined)} />
       )}
       {!!icon && !!title && !(tabletTitleHidden && isTablet) && (
         <Spacer size="small" minWidth={size === 'xsmall' ? 6 : undefined} />
@@ -181,7 +178,7 @@ const Button = ({
         <Spacer size="small" />
       )}
       {!!rightIcon && (
-        <Icon icon={rightIcon} color={iconColor} />
+        <Icon icon={rightIcon} color={textColor} />
       )}
     </View>
   );

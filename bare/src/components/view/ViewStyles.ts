@@ -17,6 +17,12 @@ const useStyles = createUseStyles({
   flex: {
     flex: 1,
   },
+  absolute: {
+    position: 'absolute',
+  },
+  fixed: {
+    position: 'fixed',
+  },
   border: {
     borderRadius: 2.5,
     '&:before': {
