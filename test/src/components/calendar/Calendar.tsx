@@ -20,6 +20,10 @@ const Calendar = () => {
   const firstDayInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth());
   const lastDayInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
 
+  const handleTodayClick = () => {
+    setCurrentMonth(today);
+  };
+
   const handlePrevMonthClick = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
   };
@@ -39,6 +43,7 @@ const Calendar = () => {
             {currentMonth.getFullYear()}
           </Text>
           <Stack horizontal spacing="small">
+            <Button size="xsmall" title="Today" onClick={handleTodayClick} />
             <Button solid size="xsmall" icon="arrow-left" onClick={handlePrevMonthClick} />
             <Button solid size="xsmall" icon="arrow-right" onClick={handleNextMonthClick} />
           </Stack>
