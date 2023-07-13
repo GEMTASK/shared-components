@@ -100,7 +100,7 @@ const Window = React.memo(({
     <View ref={windowElementRef} tabIndex={0} className={styles.Window} {...props}>
       <View
         fillColor="gray-3"
-        padding="small"
+        padding="small large"
         alignVertical="middle"
         style={{ borderTopLeftRadius: 4, borderTopRightRadius: 4, height: 32 }}
         {...events}

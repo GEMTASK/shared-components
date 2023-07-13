@@ -11,10 +11,19 @@ import Notes from './components/notes';
 import Browser from './components/browser';
 import Music from './components/music';
 
+const About = () => {
+  return (
+    <Text flex textAlign="center" padding="large" align="center">
+      A React-based desktop environment and component library<br /><br />
+      2023 Mike Austin
+    </Text>
+  );
+};
+
 const App = () => {
   console.log('App()');
 
-  const [windows, setWindows] = useState([
+  const [windows, setWindows] = useState<React.ComponentProps<typeof Desktop>['windows']>([
     {
       id: uuidv4(), title: 'Calendar', element: <Calendar />, rect: {
         x: 15, y: 15, width: 360, height: 332,
@@ -48,7 +57,16 @@ const App = () => {
   ]);
 
   const desktopMenuItems = [
-    { title: 'About React-Desktop...', action: () => console.log('1') },
+    {
+      title: 'About React-Desktop...', action: () => setWindows(windows => [
+        ...windows,
+        {
+          id: uuidv4(), title: 'About React-Desktop', element: <About />, rect: {
+            x: 100, y: 100, width: 500, height: 200,
+          }
+        }
+      ])
+    },
   ];
 
   const applicationMenuItems = [
