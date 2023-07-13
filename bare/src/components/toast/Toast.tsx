@@ -41,7 +41,7 @@ const List = () => {
     const toast = event.detail;
 
     if (toast) {
-      setToasts(toasts => [...toasts, toast]);
+      setToasts(toasts => [toast, ...toasts]);
 
       processToasts();
     }
@@ -56,7 +56,7 @@ const List = () => {
           processToasts();
         }
 
-        return toasts.slice(1);
+        return toasts.slice(0, -1);
       });
     }, 3000);
   };

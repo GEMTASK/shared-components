@@ -55,13 +55,14 @@ function App() {
       <Toast.List />
       <View flex id="container" className={styles.Container} padding="large">
 
-        <Stack horizontal spacing="large" align="center">
+        <Stack horizontal spacing="large" align="left">
           <Link to="grid" fillColor="gray-3" padding="small">Grid</Link>
           <Text>
             Go to <Link to="live">Live</Link> to learn more.
           </Text>
           <Link to="email">Email</Link>
           <Link to="desktop">Desktop</Link>
+          <Spacer flex size="small" />
           <Button title="Toast" onClick={() => toast(lorem.generateSentences(1).slice(0, -1))} />
         </Stack>
 
