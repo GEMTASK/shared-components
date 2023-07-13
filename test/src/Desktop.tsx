@@ -62,7 +62,7 @@ const App = () => {
         ...windows,
         {
           id: uuidv4(), title: 'About React-Desktop', element: <About />, rect: {
-            x: 100, y: 100, width: 500, height: 200,
+            x: (window.innerWidth - 500) / 2, y: (window.innerHeight - 200) / 2, width: 500, height: 200,
           }
         }
       ])
@@ -87,6 +87,10 @@ const App = () => {
       : window));
   }, []);
 
+  const handleWindowClose = (id: string) => {
+    setWindows(windows => windows.filter(window => window.id !== id));
+  };
+
   return (
     <View style={{ minHeight: '100vh' }}>
       <Stack horizontal paddingHorizontal="large">
@@ -97,6 +101,7 @@ const App = () => {
         wallpaper="images/d1e91a4058a8a1082da711095b4e0163.jpg"
         windows={windows}
         onWindowChange={handleWindowChange}
+        onWindowClose={handleWindowClose}
       />
     </View>
   );

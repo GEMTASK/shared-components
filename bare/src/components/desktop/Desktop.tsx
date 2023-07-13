@@ -4,6 +4,8 @@ import { createUseStyles } from 'react-jss';
 import View, { ViewProps } from '../view/index.js';
 import Text from '../text/index.js';
 import Divider from '../divider/index.js';
+import Button from '../button/Button.js';
+import Spacer from '../spacer/Spacer.js';
 
 type Rect = Partial<Pick<DOMRect, 'x' | 'y' | 'width' | 'height'>>;
 
@@ -34,6 +36,7 @@ type WindowProps = {
   title: string,
   rect?: Rect,
   onWindowChange?: (id: string, rect: DOMRect) => void,
+  onWindowClose?: (id: string) => void,
 } & ViewProps;
 
 const Window = React.memo(({
@@ -42,6 +45,7 @@ const Window = React.memo(({
   rect,
   children,
   onWindowChange,
+  onWindowClose,
   ...props
 }: WindowProps) => {
   console.log('Window()');
@@ -90,6 +94,16 @@ const Window = React.memo(({
     }
   }, []);
 
+  const handleCloseButtonPointerDown = (event: React.PointerEvent) => {
+    event.stopPropagation();
+  };
+
+  const handleCloseButtonClick = () => {
+    if (onWindowClose) {
+      onWindowClose(id);
+    }
+  };
+
   const events = {
     onPointerDown: handlePointerDown,
     onPointerMove: handlePointerMove,
@@ -99,15 +113,19 @@ const Window = React.memo(({
   return (
     <View ref={windowElementRef} tabIndex={0} className={styles.Window} {...props}>
       <View
+        horizontal
         fillColor="gray-3"
-        padding="small large"
         alignVertical="middle"
-        style={{ borderTopLeftRadius: 4, borderTopRightRadius: 4, height: 32 }}
+        style={{ borderTopLeftRadius: 4, borderTopRightRadius: 4, height: 32, paddingLeft: 4, paddingRight: 4 }}
         {...events}
       >
-        <Text fontWeight="bold" textColor="gray-7" textAlign="center" style={{ marginBottom: -2 }}>
+        <Button hover size="xsmall" icon="close" style={{ marginBottom: -2 }} onPointerDown={handleCloseButtonPointerDown} onClick={handleCloseButtonClick} />
+        <Spacer flex size="small" />
+        <Text fontWeight="bold" textColor="gray-7" textAlign="center" padding="small large" style={{ marginBottom: -2 }}>
           {title}
         </Text>
+        <Spacer flex size="small" />
+        <Button hover size="xsmall" icon="close" style={{ marginBottom: -2, visibility: 'hidden' }} />
       </View>
       <Divider fillColor="gray-4" />
       <View flex fillColor="white" style={{ minHeight: 0, borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}>
@@ -130,19 +148,21 @@ type DesktopProps = {
   }[],
   wallpaper: string,
   onWindowChange?: (id: string, rect: DOMRect) => void,
+  onWindowClose?: (id: string) => void,
 };
 
 const Desktop = ({
   windows,
   wallpaper,
   onWindowChange,
+  onWindowClose,
 }: DesktopProps) => {
   console.log('Desktop()');
 
   return (
     <View flex style={{ background: `url(${wallpaper}) center center / cover` }}>
       {windows.map(({ id, title, element, rect }) => (
-        <Window key={id} id={id} title={title} rect={rect} onWindowChange={onWindowChange}>
+        <Window key={id} id={id} title={title} rect={rect} onWindowChange={onWindowChange} onWindowClose={onWindowClose}>
           {element}
         </Window>
       ))}
