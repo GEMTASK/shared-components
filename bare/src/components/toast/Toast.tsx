@@ -15,8 +15,8 @@ const useStyles = createUseStyles({
     to: { marginBottom: '0', opacity: 1.0, transform: 'identity' },
   },
   Toast: {
-    animation: '$fadeIn 0.5s ',
-    boxShadow: '0 4px 8px hsla(0, 0%, 0%, 0.1)',
+    animation: '$fadeIn 0.1s ',
+    boxShadow: '0 8px 16px hsla(0, 0%, 0%, 0.1), 0 0 0 1px hsla(0, 0%, 0%, 0.1)',
     borderRadius: 4,
     overflow: 'hidden',
   },
@@ -35,7 +35,7 @@ const Toast = ({
 
   useLayoutEffect(() => {
     if (toastElementRef.current) {
-      console.log('height', toastElementRef.current.offsetHeight);
+      // console.log('height', toastElementRef.current.offsetHeight);
 
       toastElementRef.current.style.setProperty('--height', `${-toastElementRef.current.offsetHeight}px`);
     }
@@ -82,6 +82,8 @@ const List = () => {
           processToasts();
         }
 
+        console.log('here');
+
         return toasts.slice(0, -1);
       });
     }, 3000);
@@ -89,8 +91,6 @@ const List = () => {
 
   useEffect(() => {
     window.addEventListener('toast', handleToastMessage);
-
-    // processToasts();
 
     return () => {
       window.removeEventListener('toast', handleToastMessage);
