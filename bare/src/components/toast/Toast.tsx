@@ -16,7 +16,7 @@ const useStyles = createUseStyles({
   },
   Toast: {
     animation: '$fadeIn 0.5s ',
-    boxShadow: '0 4px 8px hsla(0, 0%, 0%, 0.5)',
+    boxShadow: '0 4px 8px hsla(0, 0%, 0%, 0.1)',
     borderRadius: 4,
     overflow: 'hidden',
   },
