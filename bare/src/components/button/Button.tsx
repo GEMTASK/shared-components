@@ -185,3 +185,7 @@ const Button = ({
 };
 
 export default Button;
+
+export {
+  type ButtonProps,
+};

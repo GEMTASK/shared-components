@@ -266,8 +266,8 @@ function App() {
         <Stack horizontal spacing="large">
           <View flex border fillColor="gray-0" padding="large" style={{ maxWidth: 500 }}>
             <Stack horizontal spacing="small">
-              <Menu />
-              <Menu />
+              <Menu title="Menu" />
+              <Menu title="Menu" />
             </Stack>
             <Spacer size="large" />
             <Stack horizontal spacing="small">

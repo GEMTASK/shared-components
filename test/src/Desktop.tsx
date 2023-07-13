@@ -47,6 +47,22 @@ const App = () => {
     },
   ]);
 
+  const desktopMenuItems = [
+    { title: 'About React-Desktop...', action: () => console.log('1') },
+  ];
+
+  const applicationMenuItems = [
+    'Utilities',
+    { title: 'Calendar', action: () => console.log('1') },
+    { title: 'Clock', action: () => console.log('2') },
+    { title: 'Calculator', action: () => console.log('2') },
+    { title: 'Notes', action: () => console.log('2') },
+    { title: 'Music', action: () => console.log('2') },
+    null,
+    'Games',
+    { title: 'Duis aute irure dolor', action: () => console.log('3') },
+  ];
+
   const handleWindowChange = useCallback((id: string, rect: DOMRect) => {
     setWindows(windows => windows.map(window => window.id === id
       ? { ...window, rect }
@@ -56,8 +72,8 @@ const App = () => {
   return (
     <View style={{ minHeight: '100vh' }}>
       <Stack horizontal paddingHorizontal="large">
-        <Menu hover />
-        <Menu hover />
+        <Menu hover title="React-Desktop" rightIcon={undefined} items={desktopMenuItems} />
+        <Menu hover title="Applications" rightIcon={undefined} items={applicationMenuItems} />
       </Stack>
       <Desktop
         wallpaper="images/d1e91a4058a8a1082da711095b4e0163.jpg"

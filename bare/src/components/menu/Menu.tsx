@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss';
 import OpenColor from 'open-color';
 
 import View, { ViewProps } from '../view/index.js';
-import Button from '../button/index.js';
+import Button, { ButtonProps } from '../button/index.js';
 import Divider from '../divider/index.js';
 import Text from '../text/index.js';
 
@@ -28,7 +28,7 @@ type ItemDefinition = {
   action?: () => void,
 } | string | null;
 
-const items: ItemDefinition[] = [
+const defaultItems: ItemDefinition[] = [
   'Section 1',
   { title: 'Lorem ipsum dolor sit amet', action: () => console.log('1') },
   { title: 'Ut enim ad minim veniam', action: () => console.log('2') },
@@ -57,7 +57,9 @@ const List = ({
         item === null ? (
           <Divider key={index} spacing="small" />
         ) : typeof item === 'string' ? (
-          <Text key={index} caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6" padding="small large">{item}</Text>
+          <Text key={index} caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6" padding="small large">
+            {item}
+          </Text>
         ) : (
           <Item key={index} index={index} title={item.title} onItemSelect={handleItemClick} />
         )
@@ -86,16 +88,17 @@ const Item = ({
 
   return (
     <View horizontal padding="small large" className={styles.Item} onClick={handleClick} {...props}>
-      <Text style={{ whiteSpace: 'nowrap' }}>{title}</Text>
+      <Text fontWeight="semibold" style={{ whiteSpace: 'nowrap' }}>{title}</Text>
     </View>
   );
-
-  // return (
-  //   <Button hover icon="house" titleFontWeight="normal" align="left" onClick={handleClick} {...props} />
-  // );
 };
 
-const Menu = ({ title, size, ...props }: any) => {
+type MenuProps = {
+  title: string,
+  items?: ItemDefinition[],
+} & ButtonProps;
+
+const Menu = ({ title, items = defaultItems, ...props }: MenuProps) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const styles = useStyles();
@@ -122,7 +125,7 @@ const Menu = ({ title, size, ...props }: any) => {
     <View style={{ zIndex: 2 }}>
       <Button
         // solid
-        size={size ?? 'small'}
+        // size={size ?? 'small'}
         title={title ?? 'Menu'}
         rightIcon="chevron-down"
         selected={isMenuVisible}
