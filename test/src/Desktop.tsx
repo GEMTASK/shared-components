@@ -76,6 +76,7 @@ const App = () => {
     { title: 'Calculator', action: () => console.log('2') },
     { title: 'Notes', action: () => console.log('2') },
     { title: 'Music', action: () => console.log('2') },
+    { title: 'Browser', action: () => console.log('2') },
     null,
     'Games',
     { title: 'Duis aute irure dolor', action: () => console.log('3') },
