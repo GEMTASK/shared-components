@@ -20,9 +20,10 @@ const useInnerStyles = createUseStyles({
   Inner: {
     '& p': {
       marginTop: '0.5em',
+      marginBottom: 0,
     },
     '& p:first-child': {
-      margin: 0,
+      marginTop: 0,
     },
   },
   caps: {
