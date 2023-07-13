@@ -8,6 +8,7 @@ const useStyles = createUseStyles({
     appearance: 'none',
     border: 'none',
     borderRadius: 2.5,
+    flexShrink: 0,
     // '&:enabled:hover': {
     //   filter: 'brightness(1.04)'
     // },

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { LoremIpsum } from 'lorem-ipsum';
 
 import styles from './App.module.css';
 
@@ -9,6 +10,8 @@ import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table, Toast, toast } from
 import { TextProps } from 'bare/dist/components/text/Text';
 
 type LinkProps = TextProps<'a'> & React.ComponentProps<typeof RouterLink>;
+
+const lorem = new LoremIpsum({ wordsPerSentence: { min: 2, max: 8 } });
 
 const Link = ({
   children,
@@ -59,7 +62,7 @@ function App() {
           </Text>
           <Link to="email">Email</Link>
           <Link to="desktop">Desktop</Link>
-          <Button title="Toast" onClick={() => toast('Hello! ' + Math.random())} />
+          <Button title="Toast" onClick={() => toast(lorem.generateSentences(1).slice(0, -1))} />
         </Stack>
 
         <Divider spacing="large" />

@@ -16,8 +16,7 @@ Best,
 Joe
 `;
 
-const lorem = new LoremIpsum({
-});
+const lorem = new LoremIpsum();
 
 const emailBody = lorem.generateParagraphs(8).split('\n').join('\n\n');
 
