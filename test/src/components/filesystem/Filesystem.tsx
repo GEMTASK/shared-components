@@ -5,7 +5,7 @@ import { Button, Divider, Grid, Spacer, Splitter, Table, Text, View } from 'bare
 
 const lorem = new LoremIpsum();
 
-const files = Array.from({ length: 30 }, () => ({
+const files = Array.from({ length: 31 }, () => ({
   filename: lorem.generateWords(4).split(' ').map(([a, ...rest]) => a.toUpperCase() + rest.join('')).join(' ') + '.png',
   size: Math.random() * 100,
 })).sort((a, b) => a.filename < b.filename ? -1 : 1);
