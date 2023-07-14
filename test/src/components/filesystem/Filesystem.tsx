@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { LoremIpsum } from 'lorem-ipsum';
 
-import { Button, Divider, Grid, Spacer, Splitter, Table, Text, View, ViewProps } from 'bare';
+import { Button, Divider, Grid, Icon, Spacer, Splitter, Table, Text, View, ViewProps } from 'bare';
+import { ButtonProps } from 'bare/dist/components/button';
 
 const lorem = new LoremIpsum();
 
@@ -13,25 +14,25 @@ const files = Array.from({ length: 31 }, () => ({
   size: Math.random() * 100,
 })).sort((a, b) => a.filename < b.filename ? -1 : 1);
 
-// enum ViewType {
+// enum Display {
 //   Icon,
 //   List,
 //   Table,
 // }
 
-type GridViewItemProps = {
+type DisplayItemProps = {
   filename: string,
   selected: boolean,
   onFileSelect?: (filename: string) => void,
 } & ViewProps;
 
-const GridViewItem = ({
+const DisplayItem = ({
   filename,
   selected,
   children,
   onFileSelect,
   ...props
-}: GridViewItemProps) => {
+}: DisplayItemProps) => {
   return (
     <View
       padding="small"
@@ -46,40 +47,44 @@ const GridViewItem = ({
   );
 };
 
-type GridViewProps = {
+//
+//
+//
+
+type DisplayProps = {
   selectedFile: string | null;
   onFileSelect?: (filename: string) => void;
 } & ViewProps;
 
-const IconView = ({
+const IconDisplay = ({
   selectedFile,
   onFileSelect,
-}: GridViewProps) => {
+}: DisplayProps) => {
   const itemProps = { align: 'top', onFileSelect } as const;
 
   return (
-    <Grid align="top left" style={{ rowGap: 0, gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
+    <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
       {files.map(({ filename }) => (
-        <GridViewItem key={filename} filename={filename} selected={filename === selectedFile} {...itemProps}>
+        <DisplayItem key={filename} filename={filename} selected={filename === selectedFile} {...itemProps}>
           <View fillColor="gray-3" style={{ width: 48, height: 48, borderRadius: 2.5 }} />
           <Spacer size="small" />
           <Text lineClamp={2} textAlign="center">{filename}</Text>
-        </GridViewItem>
+        </DisplayItem>
       ))}
     </Grid>
   );
 };
 
-const DetailsView = ({
+const TileDisplay = ({
   selectedFile,
   onFileSelect,
-}: GridViewProps) => {
+}: DisplayProps) => {
   const itemProps = { horizontal: true, align: 'left', onFileSelect } as const;
 
   return (
     <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
       {files.map(({ filename, size }) => (
-        <GridViewItem key={filename} filename={filename} selected={filename === selectedFile} {...itemProps}>
+        <DisplayItem key={filename} filename={filename} selected={filename === selectedFile} {...itemProps}>
           <View fillColor="gray-3" style={{ width: 40, height: 40, borderRadius: 2.5, flexShrink: 0 }} />
           <Spacer size="small" />
           <View>
@@ -87,52 +92,52 @@ const DetailsView = ({
             <Spacer size="small" />
             <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>{size.toFixed(2)} KiB</Text>
           </View>
-        </GridViewItem>
+        </DisplayItem>
       ))}
     </Grid>
   );
 };
 
-const ListView = ({
+const ListDisplay = ({
   selectedFile,
   onFileSelect,
-}: GridViewProps) => {
+}: DisplayProps) => {
   const itemProps = { horizontal: true, align: 'left', onFileSelect } as const;
 
   return (
     <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
       {files.map(({ filename }) => (
-        <GridViewItem key={filename} filename={filename} selected={filename === selectedFile} {...itemProps}>
+        <DisplayItem key={filename} filename={filename} selected={filename === selectedFile} {...itemProps}>
           <View fillColor="gray-3" style={{ width: 24, height: 24, borderRadius: 2.5, flexShrink: 0 }} />
           <Spacer size="small" />
           <Text lineClamp={1}>{filename}</Text>
-        </GridViewItem>
+        </DisplayItem>
       ))}
     </Grid>
   );
 };
 
-const TableView = () => {
+const TableDisplay = () => {
   return (
     <Table />
   );
 };
 
-type ViewType = typeof IconView | typeof ListView | typeof DetailsView;
+type Display = React.ElementType<DisplayProps>;
 
 //
 //
 //
 
 const Filesystem = () => {
-  const [selectedView, setSelectedView] = useState<ViewType>(() => IconView);
+  const [selectedDisplay, setSelectedDisplay] = useState<Display>(() => IconDisplay);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
-  const ToolbarButton = ({ viewType, ...props }: any) => {
-    const handleClick = () => setSelectedView(() => viewType);
+  const DisplayButton = ({ display, ...props }: { display: Display; } & ButtonProps) => {
+    const handleClick = () => setSelectedDisplay(() => display);
 
     return (
-      <Button hover selected={selectedView === viewType} {...props} onClick={handleClick} />
+      <Button hover selected={selectedDisplay === display} {...props} onClick={handleClick} />
     );
   };
 
@@ -140,24 +145,35 @@ const Filesystem = () => {
     setSelectedFile(filename);
   };
 
-  const Component = selectedView;
+  const DisplayComponent = selectedDisplay;
 
   return (
     <>
       <Splitter flex horizontal style={{ minHeight: 0 }}>
-        <View padding="large" minWidth={112} style={{ width: 192 }}>
-          <Text>Tree</Text>
+        <View padding="small" minWidth={112} style={{ width: 192 }}>
+          <DisplayItem horizontal align="left" key={'Foo Bar'} filename={'Foo Bar'} selected={false}>
+            <Icon fixedWidth icon="chevron-right" style={{ width: 20 }} />
+            <Icon fixedWidth icon="folder" color="yellow-5" size="lg" style={{ width: 20 }} />
+            <Spacer size="xsmall" />
+            <Text lineClamp={1}>{'Foo Bar'}</Text>
+          </DisplayItem>
+          <DisplayItem horizontal align="left" key={'Foo Bar'} filename={'Foo Bar'} selected={true}>
+            <Icon fixedWidth icon="chevron-right" style={{ width: 20 }} />
+            <Icon fixedWidth icon="folder" color="yellow-5" size="lg" style={{ width: 20 }} />
+            <Spacer size="xsmall" />
+            <Text lineClamp={1}>{'Foo Bar'}</Text>
+          </DisplayItem>
         </View>
         <View flex>
           <View horizontal padding="small" fillColor="gray-1">
-            <ToolbarButton icon="square" viewType={IconView} />
-            <ToolbarButton icon="table-list" viewType={DetailsView} />
-            <ToolbarButton icon="list" viewType={ListView} />
-            <ToolbarButton icon="border-all" viewType={TableView} />
+            <DisplayButton icon="square" display={IconDisplay} />
+            <DisplayButton icon="table-list" display={TileDisplay} />
+            <DisplayButton icon="list" display={ListDisplay} />
+            <DisplayButton icon="border-all" display={TableDisplay} />
           </View>
           <Divider />
           <View padding="small" style={{ overflow: 'auto' }}>
-            <Component selectedFile={selectedFile} onFileSelect={handleFileSelect} />
+            <DisplayComponent selectedFile={selectedFile} onFileSelect={handleFileSelect} />
           </View>
         </View>
       </Splitter>
