@@ -16,11 +16,46 @@ const files = Array.from({ length: 31 }, () => ({
 //   Table,
 // }
 
-const IconView = () => {
+type ItemViewProps = {
+  selectedFile: string | null;
+  onFileSelect?: (filename: string) => void;
+};
+
+const ViewItem = ({ filename }: any) => {
   return (
-    <Grid align="top left" gap={20} style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
+    <View
+      key={filename}
+      align="top"
+      padding="small"
+      fillColor={filename === selectedFile ? 'blue-0' : undefined}
+      border={filename === selectedFile}
+      borderColor="alpha-1"
+      onPointerDown={() => onFileSelect?.(filename)}
+    >
+      <View fillColor="gray-3" style={{ width: 48, height: 48, borderRadius: 2.5 }} />
+      <Spacer size="small" />
+      <Text lineClamp={2} textAlign="center">{filename}</Text>
+    </View>
+
+  );
+};
+
+const IconView = ({
+  selectedFile,
+  onFileSelect,
+}: ItemViewProps) => {
+  return (
+    <Grid align="top left" style={{ rowGap: 0, gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
       {files.map(({ filename }) => (
-        <View align="top">
+        <View
+          key={filename}
+          align="top"
+          padding="small"
+          fillColor={filename === selectedFile ? 'blue-0' : undefined}
+          border={filename === selectedFile}
+          borderColor="alpha-1"
+          onPointerDown={() => onFileSelect?.(filename)}
+        >
           <View fillColor="gray-3" style={{ width: 48, height: 48, borderRadius: 2.5 }} />
           <Spacer size="small" />
           <Text lineClamp={2} textAlign="center">{filename}</Text>
@@ -30,25 +65,23 @@ const IconView = () => {
   );
 };
 
-const ListView = () => {
+const DetailsView = ({
+  selectedFile,
+  onFileSelect,
+}: ItemViewProps) => {
   return (
-    <Grid align="top left" gap={16} style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
-      {files.map(({ filename }) => (
-        <View horizontal align="left">
-          <View fillColor="gray-3" style={{ width: 24, height: 24, borderRadius: 2.5, flexShrink: 0 }} />
-          <Spacer size="small" />
-          <Text lineClamp={1}>{filename}</Text>
-        </View>
-      ))}
-    </Grid>
-  );
-};
-
-const DetailsView = () => {
-  return (
-    <Grid align="top left" gap={16} style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+    <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
       {files.map(({ filename, size }) => (
-        <View horizontal align="left">
+        <View
+          key={filename}
+          horizontal
+          align="left"
+          padding="small"
+          fillColor={filename === selectedFile ? 'blue-0' : undefined}
+          border={filename === selectedFile}
+          borderColor="alpha-1"
+          onPointerDown={() => onFileSelect?.(filename)}
+        >
           <View fillColor="gray-3" style={{ width: 40, height: 40, borderRadius: 2.5, flexShrink: 0 }} />
           <Spacer size="small" />
           <View>
@@ -56,6 +89,32 @@ const DetailsView = () => {
             <Spacer size="small" />
             <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>{size.toFixed(2)} KiB</Text>
           </View>
+        </View>
+      ))}
+    </Grid>
+  );
+};
+
+const ListView = ({
+  selectedFile,
+  onFileSelect,
+}: ItemViewProps) => {
+  return (
+    <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+      {files.map(({ filename }) => (
+        <View
+          key={filename}
+          horizontal
+          align="left"
+          padding="small"
+          fillColor={filename === selectedFile ? 'blue-0' : undefined}
+          border={filename === selectedFile}
+          borderColor="alpha-1"
+          onPointerDown={() => onFileSelect?.(filename)}
+        >
+          <View fillColor="gray-3" style={{ width: 24, height: 24, borderRadius: 2.5, flexShrink: 0 }} />
+          <Spacer size="small" />
+          <Text lineClamp={1}>{filename}</Text>
         </View>
       ))}
     </Grid>
@@ -70,16 +129,25 @@ const TableView = () => {
 
 type ViewType = typeof IconView | typeof ListView | typeof DetailsView;
 
+//
+//
+//
+
 const Filesystem = () => {
-  const [selectedView, setView] = useState<ViewType>(() => IconView);
+  const [selectedView, setSelectedView] = useState<ViewType>(() => IconView);
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
   const ToolbarButton = ({ viewType, ...props }: any) => {
-    const handleClick = () => setView(() => viewType);
+    const handleClick = () => setSelectedView(() => viewType);
 
     console.log(selectedView === viewType);
     return (
       <Button hover selected={selectedView === viewType} {...props} onClick={handleClick} />
     );
+  };
+
+  const handleFileSelect = (filename: string) => {
+    setSelectedFile(filename);
   };
 
   const Component = selectedView;
@@ -98,8 +166,8 @@ const Filesystem = () => {
             <ToolbarButton icon="border-all" viewType={TableView} />
           </View>
           <Divider />
-          <View padding="large" style={{ overflow: 'auto' }}>
-            <Component />
+          <View padding="small" style={{ overflow: 'auto' }}>
+            <Component selectedFile={selectedFile} onFileSelect={handleFileSelect} />
           </View>
         </View>
       </Splitter>
