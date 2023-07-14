@@ -66,7 +66,7 @@ const IconDisplay = ({
     <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
       {files.map(({ filename }) => (
         <DisplayItem key={filename} filename={filename} selected={filename === selectedFile} {...itemProps}>
-          <View fillColor="gray-3" style={{ width: 48, height: 48, borderRadius: 2.5 }} />
+          <View fillColor="gray-3" style={{ width: 64, height: 64, borderRadius: 2.5 }} />
           <Spacer size="small" />
           <Text lineClamp={2} textAlign="center">{filename}</Text>
         </DisplayItem>
