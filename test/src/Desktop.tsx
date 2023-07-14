@@ -56,7 +56,7 @@ const App = () => {
       }
     },
     {
-      id: uuidv4(), title: 'Filesystem', element: <Filesystem />, rect: {
+      id: uuidv4(), title: 'Files', element: <Filesystem />, rect: {
         x: 980, y: 360, width: 685, height: 540,
       }
     },
