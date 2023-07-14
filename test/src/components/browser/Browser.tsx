@@ -15,14 +15,14 @@ const Browser = () => {
   return (
     <>
       <Splitter flex horizontal>
-        <View>
-          <View horizontal fillColor="gray-1" padding="small" style={{ gap: 1 }}>
-            <Button hover icon="window-restore" title="Tabs" />
-            <Button hover selected icon="bookmark" title="Bookmarks" />
-            <Button hover icon="clock-rotate-left" title="History" />
+        <View minWidth={112}>
+          <View horizontal fillColor="gray-1" padding="small">
+            <Button hover icon="window-restore" /* title="Tabs" */ />
+            <Button hover selected icon="bookmark" /* title="Bookmarks" */ />
+            <Button hover icon="clock-rotate-left" /* title="History" */ />
           </View>
           <Divider />
-          <Stack flex padding="small" minWidth={300}>
+          <Stack flex padding="small" minWidth={192}>
             <Button hover size="xsmall" align="left" icon="star" title="Google" />
             <Button hover size="xsmall" align="left" icon="star" title="React" onClick={() => setUrl('http://react.dev')} />
             <Button hover size="xsmall" align="left" icon="star" title="Smashing Magazine" onClick={() => setUrl('https://www.smashingmagazine.com')} />

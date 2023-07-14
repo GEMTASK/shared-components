@@ -8,8 +8,9 @@ import Calendar from './components/calendar';
 import Clock from './components/clock';
 import Calculator from './components/calculator';
 import Notes from './components/notes';
-import Browser from './components/browser';
 import Music from './components/music';
+import Browser from './components/browser';
+import Filesystem from './components/filesystem';
 
 const About = () => {
   return (
@@ -51,7 +52,12 @@ const App = () => {
     },
     {
       id: uuidv4(), title: 'Browser', element: <Browser />, rect: {
-        x: 15, y: 360, width: 1280, height: 540,
+        x: 15, y: 360, width: 950, height: 540,
+      }
+    },
+    {
+      id: uuidv4(), title: 'Filesystem', element: <Filesystem />, rect: {
+        x: 980, y: 360, width: 685, height: 540,
       }
     },
   ]);
