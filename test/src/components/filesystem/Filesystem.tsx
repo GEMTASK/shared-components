@@ -21,14 +21,14 @@ type ItemViewProps = {
   onFileSelect?: (filename: string) => void;
 };
 
-const ViewItem = ({ filename }: any) => {
+const ViewItem = ({ filename, selected, onFileSelect }: any) => {
   return (
     <View
       key={filename}
       align="top"
       padding="small"
-      fillColor={filename === selectedFile ? 'blue-0' : undefined}
-      border={filename === selectedFile}
+      fillColor={selected ? 'blue-0' : undefined}
+      border={selected}
       borderColor="alpha-1"
       onPointerDown={() => onFileSelect?.(filename)}
     >
@@ -36,7 +36,6 @@ const ViewItem = ({ filename }: any) => {
       <Spacer size="small" />
       <Text lineClamp={2} textAlign="center">{filename}</Text>
     </View>
-
   );
 };
 
@@ -64,6 +63,8 @@ const IconView = ({
     </Grid>
   );
 };
+
+IconView.itemWidth = 150;
 
 const DetailsView = ({
   selectedFile,
@@ -95,6 +96,8 @@ const DetailsView = ({
   );
 };
 
+DetailsView.itemWidth = 200;
+
 const ListView = ({
   selectedFile,
   onFileSelect,
@@ -120,6 +123,8 @@ const ListView = ({
     </Grid>
   );
 };
+
+ListView.itemWidth = 200;
 
 const TableView = () => {
   return (
