@@ -122,7 +122,7 @@ const Menu = ({ title, items = defaultItems, ...props }: MenuProps) => {
   };
 
   return (
-    <View style={{ zIndex: 3 }}>
+    <View style={{ zIndex: 3000 }}>
       <Button
         // solid
         // size={size ?? 'small'}

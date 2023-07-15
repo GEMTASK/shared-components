@@ -34,7 +34,8 @@ const useStyles = createUseStyles({
   },
   Extender: {
     '$Titlebar:hover &': {
-      pointerEvents: 'none',
+      // pointerEvents: 'none',
+      // display: 'none',
     }
   }
 });
@@ -51,7 +52,9 @@ function getOffsetsRect(windowElement: HTMLElement) {
 type WindowProps = {
   id: string,
   title: string,
+  order: number,
   rect?: Rect,
+  onWindowFocus?: (id: string) => void,
   onWindowChange?: (id: string, rect: DOMRect) => void,
   onWindowClose?: (id: string) => void,
 } & ViewProps;
@@ -59,8 +62,10 @@ type WindowProps = {
 const Window = React.memo(({
   id,
   title,
+  order,
   rect,
   children,
+  onWindowFocus,
   onWindowChange,
   onWindowClose,
   ...props
@@ -84,7 +89,7 @@ const Window = React.memo(({
     }
   }, [rect]);
 
-  const handlePointerDown = useCallback((event: React.PointerEvent) => {
+  const handleTitlePointerDown = useCallback((event: React.PointerEvent) => {
     event.preventDefault();
     event.currentTarget.setPointerCapture(event.pointerId);
 
@@ -95,7 +100,7 @@ const Window = React.memo(({
     }
   }, []);
 
-  const handlePointerMove = useCallback((event: React.PointerEvent) => {
+  const handleTitlePointerMove = useCallback((event: React.PointerEvent) => {
     if (firstEventRef.current && windowElementRef.current) {
       const windowRect = windowRectRef.current;
       const firstEvent = firstEventRef.current;
@@ -105,7 +110,7 @@ const Window = React.memo(({
     }
   }, []);
 
-  const handlePointerUp = useCallback((event: React.PointerEvent) => {
+  const handleTitlePointerUp = useCallback((event: React.PointerEvent) => {
     firstEventRef.current = null;
 
     if (onWindowChange && windowElementRef.current) {
@@ -129,14 +134,25 @@ const Window = React.memo(({
     setIsMenuOpen(isMenuOpen => !isMenuOpen);
   };
 
+  const handleWindowPointerDown = () => {
+    onWindowFocus?.(id);
+  };
+
   const events = {
-    onPointerDown: handlePointerDown,
-    onPointerMove: handlePointerMove,
-    onPointerUp: handlePointerUp,
+    onPointerDown: handleTitlePointerDown,
+    onPointerMove: handleTitlePointerMove,
+    onPointerUp: handleTitlePointerUp,
   };
 
   return (
-    <View ref={windowElementRef} tabIndex={0} className={styles.Window} {...props}>
+    <View
+      ref={windowElementRef}
+      style={{ zIndex: order }}
+      tabIndex={0}
+      className={styles.Window}
+      {...props}
+      onPointerDown={handleWindowPointerDown}
+    >
       <View
         horizontal
         fillColor="gray-3"
@@ -184,14 +200,18 @@ type DesktopProps = {
     element: React.ReactElement;
     rect?: Rect,
   }[],
+  windowOrder: string[],
   wallpaper: string,
+  onWindowFocus?: (id: string) => void,
   onWindowChange?: (id: string, rect: DOMRect) => void,
   onWindowClose?: (id: string) => void,
 };
 
 const Desktop = ({
   windows,
+  windowOrder,
   wallpaper,
+  onWindowFocus,
   onWindowChange,
   onWindowClose,
 }: DesktopProps) => {
@@ -200,7 +220,16 @@ const Desktop = ({
   return (
     <View flex style={{ background: `url(${wallpaper}) center center / cover` }}>
       {windows.map(({ id, title, element, rect }) => (
-        <Window key={id} id={id} title={title} rect={rect} onWindowChange={onWindowChange} onWindowClose={onWindowClose}>
+        <Window
+          key={id}
+          id={id}
+          title={title}
+          rect={rect}
+          order={windowOrder.indexOf(id)}
+          onWindowFocus={onWindowFocus}
+          onWindowChange={onWindowChange}
+          onWindowClose={onWindowClose}
+        >
           {element}
         </Window>
       ))}

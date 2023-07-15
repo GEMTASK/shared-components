@@ -21,46 +21,51 @@ const About = () => {
   );
 };
 
+const initialState = [
+  {
+    id: uuidv4(), title: 'Calendar', element: <Calendar />, rect: {
+      x: 15, y: 15, width: 360, height: 332,
+    }
+  },
+  {
+    id: uuidv4(), title: 'Clock', element: <Clock />, rect: {
+      x: 390, y: 15, width: 300, height: 332,
+    }
+  },
+  {
+    id: uuidv4(), title: 'Calculator', element: <Calculator />, rect: {
+      x: 705, y: 15, width: 260, height: 332,
+    }
+  },
+  {
+    id: uuidv4(), title: 'Notes', element: <Notes />, rect: {
+      x: 980, y: 15, width: 310, height: 332,
+    }
+  },
+  {
+    id: uuidv4(), title: 'Music', element: <Music />, rect: {
+      x: 1305, y: 15, width: 360, height: 332,
+    }
+  },
+  {
+    id: uuidv4(), title: 'Browser', element: <Browser />, rect: {
+      x: 15, y: 360, width: 950, height: 540,
+    }
+  },
+  {
+    id: uuidv4(), title: 'Files', element: <Filesystem />, rect: {
+      x: 980, y: 360, width: 685, height: 540,
+    }
+  },
+];
+
+type WindowsProp = React.ComponentProps<typeof Desktop>['windows'];
+
 const App = () => {
   console.log('App()');
 
-  const [windows, setWindows] = useState<React.ComponentProps<typeof Desktop>['windows']>([
-    {
-      id: uuidv4(), title: 'Calendar', element: <Calendar />, rect: {
-        x: 15, y: 15, width: 360, height: 332,
-      }
-    },
-    {
-      id: uuidv4(), title: 'Clock', element: <Clock />, rect: {
-        x: 390, y: 15, width: 300, height: 332,
-      }
-    },
-    {
-      id: uuidv4(), title: 'Calculator', element: <Calculator />, rect: {
-        x: 705, y: 15, width: 260, height: 332,
-      }
-    },
-    {
-      id: uuidv4(), title: 'Notes', element: <Notes />, rect: {
-        x: 980, y: 15, width: 310, height: 332,
-      }
-    },
-    {
-      id: uuidv4(), title: 'Music', element: <Music />, rect: {
-        x: 1305, y: 15, width: 360, height: 332,
-      }
-    },
-    {
-      id: uuidv4(), title: 'Browser', element: <Browser />, rect: {
-        x: 15, y: 360, width: 950, height: 540,
-      }
-    },
-    {
-      id: uuidv4(), title: 'Files', element: <Filesystem />, rect: {
-        x: 980, y: 360, width: 685, height: 540,
-      }
-    },
-  ]);
+  const [windows, setWindows] = useState<WindowsProp>(initialState);
+  const [windowOrder, setWindowOrder] = useState<string[]>(windows.map(({ id }) => id));
 
   const desktopMenuItems = [
     {
@@ -88,6 +93,13 @@ const App = () => {
     { title: 'Duis aute irure dolor', action: () => console.log('3') },
   ];
 
+  const handleWindowFocus = (windowId: string) => {
+    setWindowOrder(windowOrder => [
+      ...windowOrder.filter((id) => id !== windowId),
+      windowId,
+    ]);
+  };
+
   const handleWindowChange = useCallback((id: string, rect: DOMRect) => {
     setWindows(windows => windows.map(window => window.id === id
       ? { ...window, rect }
@@ -107,6 +119,8 @@ const App = () => {
       <Desktop
         wallpaper="images/d1e91a4058a8a1082da711095b4e0163.jpg"
         windows={windows}
+        windowOrder={windowOrder}
+        onWindowFocus={handleWindowFocus}
         onWindowChange={handleWindowChange}
         onWindowClose={handleWindowClose}
       />
