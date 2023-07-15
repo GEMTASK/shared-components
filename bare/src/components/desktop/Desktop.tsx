@@ -131,7 +131,7 @@ const Window = React.memo(({
         className={styles.Titlebar}
         {...events}
       >
-        <View absolute style={{ inset: 0, height: 16, zIndex: 2 }} />
+        <View absolute style={{ inset: 0, height: 20, zIndex: 2 }} />
         <Button hover size="xsmall" icon="close" style={{ marginBottom: -2 }} onPointerDown={handleCloseButtonPointerDown} onClick={handleCloseButtonClick} />
         <Spacer flex size="small" />
         <Text fontWeight="bold" textColor="gray-7" textAlign="center" padding="small large" style={{ marginBottom: -2 }}>
