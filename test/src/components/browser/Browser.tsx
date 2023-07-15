@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { View, Input, Divider, Button, Stack, Splitter } from 'bare';
+import { View, Input, Divider, Button, Stack, Splitter, Desktop, Text } from 'bare';
 
-const Browser = () => {
+const Browser = ({ isMenuOpen, ...props }: any) => {
   // const [value, setValue] = useState('http://google.com');
   const [value, setValue] = useState('');
   const [url, setUrl] = useState(value);
@@ -13,7 +13,14 @@ const Browser = () => {
   };
 
   return (
-    <>
+    <View horizontal {...props}>
+      <View horizontal absolute fillColor="white" style={{ top: 0, bottom: 0, left: 0, zIndex: 1, transform: !isMenuOpen ? 'translate(-100%, 0)' : undefined, transition: 'transform 0.1s' }}>
+        <View padding="small">
+          <Button hover icon="bookmark" title="Bookmarks" align="left" />
+          <Button hover icon="sliders" title="Settings" align="left" />
+        </View>
+        <Divider />
+      </View>
       <Splitter flex horizontal>
         <View minWidth={112}>
           <View horizontal fillColor="gray-1" padding="small">
@@ -37,7 +44,7 @@ const Browser = () => {
           <View as="iframe" flex fillColor="white" style={{ border: 'none' }} src={url} />
         </View>
       </Splitter>
-    </>
+    </View>
   );
 };
 

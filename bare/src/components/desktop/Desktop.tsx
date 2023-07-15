@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import View, { ViewProps } from '../view/index.js';
@@ -26,10 +26,15 @@ const useStyles = createUseStyles({
     borderTopRightRadius: 4,
     paddingLeft: 4,
     paddingRight: 4,
-    transition: 'margin-bottom 0.1s 0.1s',
+    transition: 'margin-bottom 0.1s 0.01s',
     marginBottom: -24,
     '&:hover': {
       marginBottom: 0,
+    },
+  },
+  Extender: {
+    '$Titlebar:hover &': {
+      pointerEvents: 'none',
     }
   }
 });
@@ -61,6 +66,8 @@ const Window = React.memo(({
   ...props
 }: WindowProps) => {
   console.log('Window()');
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const windowElementRef = useRef<HTMLElement>(null);
   const windowRectRef = useRef<DOMRect>(new DOMRect());
@@ -110,10 +117,16 @@ const Window = React.memo(({
     event.stopPropagation();
   };
 
-  const handleCloseButtonClick = () => {
+  const handleCloseButtonClick = useCallback(() => {
     if (onWindowClose) {
       onWindowClose(id);
     }
+  }, []);
+
+  const handleMenuButtonClick = () => {
+    console.log('menu');
+
+    setIsMenuOpen(isMenuOpen => !isMenuOpen);
   };
 
   const events = {
@@ -131,8 +144,9 @@ const Window = React.memo(({
         className={styles.Titlebar}
         {...events}
       >
-        <View absolute style={{ inset: 0, height: 20, zIndex: 2 }} />
+        <View absolute className={styles.Extender} style={{ left: 0, right: 0, top: 8, height: 12, zIndex: 2 }} />
         <Button hover size="xsmall" icon="close" style={{ marginBottom: -2 }} onPointerDown={handleCloseButtonPointerDown} onClick={handleCloseButtonClick} />
+        <Button hover size="xsmall" icon="bars" style={{ marginBottom: -2 }} onPointerDown={handleCloseButtonPointerDown} onClick={handleMenuButtonClick} />
         <Spacer flex size="small" />
         <Text fontWeight="bold" textColor="gray-7" textAlign="center" padding="small large" style={{ marginBottom: -2 }}>
           {title}
@@ -141,9 +155,20 @@ const Window = React.memo(({
         <Button hover size="xsmall" icon="close" style={{ marginBottom: -2, visibility: 'hidden' }} />
       </View>
       <Divider fillColor="gray-4" />
-      <View flex fillColor="white" style={{ minHeight: 0, borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}>
+      {React.isValidElement(children) && (children.type as any).name === 'Browser' ? (
+        React.cloneElement(React.Children.only(children) as React.ReactElement, {
+          fillColor: 'white',
+          flex: true,
+          isMenuOpen,
+        })
+      ) : (
+        <View flex fillColor="white" style={{ minHeight: 0, borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}>
+          {children}
+        </View>
+      )}
+      {/* <View flex fillColor="white" style={{ minHeight: 0, borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}>
         {children}
-      </View>
+      </View> */}
     </View>
   );
 });

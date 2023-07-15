@@ -151,13 +151,13 @@ const Filesystem = () => {
     <>
       <Splitter flex horizontal style={{ minHeight: 0 }}>
         <View padding="small" minWidth={112} style={{ width: 192 }}>
-          <DisplayItem horizontal align="left" key={'Foo Bar'} filename={'Foo Bar'} selected={false}>
+          <DisplayItem horizontal align="left" key={0} filename={'Foo Bar'} selected={false}>
             <Icon fixedWidth icon="chevron-right" style={{ width: 20 }} />
             <Icon fixedWidth icon="folder" color="yellow-5" size="lg" style={{ width: 20 }} />
             <Spacer size="xsmall" />
             <Text lineClamp={1}>{'Foo Bar'}</Text>
           </DisplayItem>
-          <DisplayItem horizontal align="left" key={'Foo Bar'} filename={'Foo Bar'} selected={true}>
+          <DisplayItem horizontal align="left" key={1} filename={'Foo Bar'} selected={true}>
             <Icon fixedWidth icon="chevron-right" style={{ width: 20 }} />
             <Icon fixedWidth icon="folder" color="yellow-5" size="lg" style={{ width: 20 }} />
             <Spacer size="xsmall" />
