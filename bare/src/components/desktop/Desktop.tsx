@@ -20,6 +20,18 @@ const useStyles = createUseStyles({
     },
     willChange: 'left, top',
   },
+  Titlebar: {
+    height: 32,
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    paddingLeft: 4,
+    paddingRight: 4,
+    transition: 'margin-bottom 0.1s 0.1s',
+    marginBottom: -24,
+    '&:hover': {
+      marginBottom: 0,
+    }
+  }
 });
 
 function getOffsetsRect(windowElement: HTMLElement) {
@@ -116,9 +128,10 @@ const Window = React.memo(({
         horizontal
         fillColor="gray-3"
         alignVertical="middle"
-        style={{ borderTopLeftRadius: 4, borderTopRightRadius: 4, height: 32, paddingLeft: 4, paddingRight: 4 }}
+        className={styles.Titlebar}
         {...events}
       >
+        <View absolute style={{ inset: 0, height: 16, zIndex: 2 }} />
         <Button hover size="xsmall" icon="close" style={{ marginBottom: -2 }} onPointerDown={handleCloseButtonPointerDown} onClick={handleCloseButtonClick} />
         <Spacer flex size="small" />
         <Text fontWeight="bold" textColor="gray-7" textAlign="center" padding="small large" style={{ marginBottom: -2 }}>
