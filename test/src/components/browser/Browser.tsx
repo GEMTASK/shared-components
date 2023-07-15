@@ -14,7 +14,7 @@ const Browser = ({ isMenuOpen, ...props }: any) => {
 
   return (
     <View horizontal {...props}>
-      <View horizontal absolute fillColor="white" style={{ top: 0, bottom: 0, left: 0, zIndex: 1, transform: !isMenuOpen ? 'translate(-100%, 0)' : undefined, transition: 'transform 0.1s' }}>
+      <View horizontal absolute fillColor="gray-1" style={{ top: 0, bottom: 0, left: 0, zIndex: 1, transform: !isMenuOpen ? 'translate(-100%, 0)' : undefined, transition: 'transform 0.1s', boxShadow: isMenuOpen ? '2px 0 4px hsla(0, 0%, 0%, 0.1)' : undefined }}>
         <View padding="small">
           <Button hover icon="bookmark" title="Bookmarks" align="left" />
           <Button hover icon="sliders" title="Settings" align="left" />
