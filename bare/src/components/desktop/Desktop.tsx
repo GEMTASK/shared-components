@@ -115,7 +115,13 @@ const Window = React.memo(({
     firstEventRef.current = null;
 
     if (onWindowChange && windowElementRef.current) {
-      onWindowChange(id, getOffsetsRect(windowElementRef.current));
+      const rect = getOffsetsRect(windowElementRef.current);
+
+      onWindowChange(id, {
+        ...rect,
+        x: Math.round(rect.x / 15) * 15,
+        y: Math.round(rect.y / 15) * 15
+      });
     }
   }, []);
 
@@ -155,7 +161,7 @@ const Window = React.memo(({
       onPointerDown={handleWindowPointerDown}
     >
       <View
-        fillColor="gray-3"
+        fillColor="gray-4"
         className={styles.Titlebar}
         {...events}
       >
@@ -172,7 +178,7 @@ const Window = React.memo(({
           <Button hover size="xsmall" icon="arrows-up-down" style={{ marginBottom: -2 }} />
         </View>
       </View>
-      <Divider fillColor="gray-4" />
+      {/* <Divider fillColor="gray-4" /> */}
       {React.isValidElement(children) && (children.type as any).name === 'Browser' ? (
         React.cloneElement(React.Children.only(children) as React.ReactElement, {
           fillColor: 'white',
