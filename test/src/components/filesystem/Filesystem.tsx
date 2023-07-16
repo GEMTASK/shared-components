@@ -63,7 +63,7 @@ const IconDisplay = ({
   const itemProps = { align: 'top', onFileSelect } as const;
 
   return (
-    <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
+    <Grid align="top left" style={{ rowGap: 8, gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
       {files.map(({ filename }) => (
         <DisplayItem key={filename} filename={filename} selected={filename === selectedFile} {...itemProps}>
           <View fillColor="gray-3" style={{ width: 64, height: 64, borderRadius: 2.5 }} />

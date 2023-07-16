@@ -119,8 +119,8 @@ const Window = React.memo(({
 
       onWindowChange(id, {
         ...rect,
-        x: Math.round(rect.x / 15) * 15,
-        y: Math.round(rect.y / 15) * 15
+        x: Math.round(rect.x / 5) * 5,
+        y: Math.round(rect.y / 5) * 5
       });
     }
   }, []);
