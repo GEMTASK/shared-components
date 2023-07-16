@@ -76,7 +76,7 @@ const Window = React.memo(({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const windowElementRef = useRef<HTMLElement>(null);
-  const windowRectRef = useRef<DOMRect>(new DOMRect());
+  const leftWindowRectsRef = useRef<DOMRect>(new DOMRect());
   const firstEventRef = useRef<React.PointerEvent | null>(null);
 
   const styles = useStyles();
@@ -97,13 +97,13 @@ const Window = React.memo(({
     firstEventRef.current = event;
 
     if (windowElementRef.current) {
-      windowRectRef.current = getOffsetsRect(windowElementRef.current);
+      leftWindowRectsRef.current = getOffsetsRect(windowElementRef.current);
     }
   }, []);
 
   const handleTitlePointerMove = useCallback((event: React.PointerEvent) => {
     if (firstEventRef.current && windowElementRef.current) {
-      const windowRect = windowRectRef.current;
+      const windowRect = leftWindowRectsRef.current;
       const firstEvent = firstEventRef.current;
 
       windowElementRef.current.style.left = `${windowRect.left + (event.clientX - firstEvent.clientX)}px`;
@@ -225,8 +225,54 @@ const Desktop = ({
 }: DesktopProps) => {
   console.log('Desktop()');
 
+  const desktopElementRef = useRef<HTMLElement>(null);
+  const leftWindowRectsRef = useRef<DOMRect[]>([]);
+  const leftWindows = useRef<HTMLElement[]>([]);
+  const firstEventRef = useRef<React.PointerEvent | null>(null);
+
+  const handlePointerDown = useCallback((event: React.PointerEvent) => {
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+
+    firstEventRef.current = event;
+
+    if (desktopElementRef.current) {
+      const children = [...desktopElementRef.current.children] as HTMLElement[];
+
+      leftWindows.current = children.filter(
+        ({ offsetLeft }: HTMLElement) => offsetLeft - event.clientX >= 0 && offsetLeft - event.clientX <= 15
+      );
+
+      leftWindowRectsRef.current = leftWindows.current.map(window => getOffsetsRect(window));
+
+      console.log(leftWindowRectsRef.current);
+    }
+  }, []);
+
+  const handlePointerMove = useCallback((event: React.PointerEvent) => {
+    if (firstEventRef.current && leftWindows.current && leftWindowRectsRef.current) {
+      const firstEvent = firstEventRef.current;
+
+      leftWindows.current.forEach((window, index) => {
+        window.style.left = `${leftWindowRectsRef.current[index].x + (event.clientX - firstEvent.clientX)}px`;
+        window.style.width = `${leftWindowRectsRef.current[index].width - (event.clientX - firstEvent.clientX)}px`;
+      });
+    }
+  }, []);
+
+  const handlePointerUp = useCallback(() => {
+    firstEventRef.current = null;
+  }, []);
+
   return (
-    <View flex style={{ background: `url(${wallpaper}) center center / cover` }}>
+    <View
+      flex
+      ref={desktopElementRef}
+      style={{ background: `url(${wallpaper}) center center / cover` }}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+    >
       {windows.map(({ id, title, element, rect }) => (
         <Window
           key={id}
