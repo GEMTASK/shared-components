@@ -226,9 +226,11 @@ const Desktop = ({
   console.log('Desktop()');
 
   const desktopElementRef = useRef<HTMLElement>(null);
-  const leftWindowRectsRef = useRef<DOMRect[]>([]);
-  const leftWindows = useRef<HTMLElement[]>([]);
   const firstEventRef = useRef<React.PointerEvent | null>(null);
+  const leftWindowRectsRef = useRef<DOMRect[]>([]);
+  const leftWindowsRef = useRef<HTMLElement[]>([]);
+  const rightWindowRectsRef = useRef<DOMRect[]>([]);
+  const rightWindowsRef = useRef<HTMLElement[]>([]);
 
   const handlePointerDown = useCallback((event: React.PointerEvent) => {
     event.preventDefault();
@@ -239,23 +241,33 @@ const Desktop = ({
     if (desktopElementRef.current) {
       const children = [...desktopElementRef.current.children] as HTMLElement[];
 
-      leftWindows.current = children.filter(
-        ({ offsetLeft }: HTMLElement) => offsetLeft - event.clientX >= 0 && offsetLeft - event.clientX <= 15
+      leftWindowsRef.current = children.filter(
+        ({ offsetLeft }) => offsetLeft - event.clientX >= 0 && offsetLeft - event.clientX <= 15
       );
 
-      leftWindowRectsRef.current = leftWindows.current.map(window => getOffsetsRect(window));
+      rightWindowsRef.current = children.filter(
+        ({ offsetLeft, offsetWidth }) => event.clientX - (offsetLeft + offsetWidth) >= 0 && event.clientX - (offsetLeft + offsetWidth) <= 15
+      );
 
-      console.log(leftWindowRectsRef.current);
+      leftWindowRectsRef.current = leftWindowsRef.current.map(window => getOffsetsRect(window));
+      rightWindowRectsRef.current = rightWindowsRef.current.map(window => getOffsetsRect(window));
+
+      console.log(rightWindowsRef.current);
     }
   }, []);
 
   const handlePointerMove = useCallback((event: React.PointerEvent) => {
-    if (firstEventRef.current && leftWindows.current && leftWindowRectsRef.current) {
+    if (firstEventRef.current && leftWindowsRef.current && leftWindowRectsRef.current) {
       const firstEvent = firstEventRef.current;
 
-      leftWindows.current.forEach((window, index) => {
+      leftWindowsRef.current.forEach((window, index) => {
         window.style.left = `${leftWindowRectsRef.current[index].x + (event.clientX - firstEvent.clientX)}px`;
         window.style.width = `${leftWindowRectsRef.current[index].width - (event.clientX - firstEvent.clientX)}px`;
+      });
+
+      rightWindowsRef.current.forEach((window, index) => {
+        // window.style.left = `${leftWindowRectsRef.current[index].x + (event.clientX - firstEvent.clientX)}px`;
+        window.style.width = `${rightWindowRectsRef.current[index].width - (firstEvent.clientX - event.clientX)}px`;
       });
     }
   }, []);
