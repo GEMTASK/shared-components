@@ -21,22 +21,23 @@ const useStyles = createUseStyles({
     willChange: 'left, top',
   },
   Titlebar: {
-    height: 32,
+    // height: 32,
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     paddingLeft: 4,
     paddingRight: 4,
-    transition: 'margin-bottom 0.1s 0.01s',
-    marginBottom: -24,
+    transition: 'height 0.1s 0.1s',
+    height: 8,
     '&:hover': {
-      marginBottom: 0,
+      height: 32,
     },
   },
   Extender: {
-    '$Titlebar:hover &': {
-      // pointerEvents: 'none',
-      // display: 'none',
-    }
+    left: 0,
+    right: 0,
+    bottom: -8,
+    height: 8,
+    zIndex: 2,
   }
 });
 
@@ -154,21 +155,22 @@ const Window = React.memo(({
       onPointerDown={handleWindowPointerDown}
     >
       <View
-        horizontal
         fillColor="gray-3"
-        alignVertical="middle"
         className={styles.Titlebar}
         {...events}
       >
-        <View absolute className={styles.Extender} style={{ left: 0, right: 0, top: 8, height: 12, zIndex: 2 }} />
-        <Button hover size="xsmall" icon="close" style={{ marginBottom: -2 }} onPointerDown={handleCloseButtonPointerDown} onClick={handleCloseButtonClick} />
-        <Button hover size="xsmall" icon="bars" style={{ marginBottom: -2 }} onPointerDown={handleCloseButtonPointerDown} onClick={handleMenuButtonClick} />
-        <Spacer flex size="small" />
-        <Text fontWeight="bold" textColor="gray-7" textAlign="center" padding="small large" style={{ marginBottom: -2 }}>
-          {title}
-        </Text>
-        <Spacer flex size="small" />
-        <Button hover size="xsmall" icon="close" style={{ marginBottom: -2, visibility: 'hidden' }} />
+        <View absolute className={styles.Extender} />
+        <View horizontal alignVertical="middle" style={{ height: 32, flexShrink: 0 }}>
+          <Button hover size="xsmall" icon="close" style={{ marginBottom: -2 }} onPointerDown={handleCloseButtonPointerDown} onClick={handleCloseButtonClick} />
+          <Button hover size="xsmall" icon="bars" style={{ marginBottom: -2 }} onPointerDown={handleCloseButtonPointerDown} onClick={handleMenuButtonClick} />
+          <Spacer flex size="small" />
+          <Text fontWeight="bold" textColor="gray-7" textAlign="center" padding="small large" style={{ marginBottom: -2 }}>
+            {title}
+          </Text>
+          <Spacer flex size="small" />
+          <Button hover size="xsmall" icon="arrows-left-right" style={{ marginBottom: -2 }} />
+          <Button hover size="xsmall" icon="arrows-up-down" style={{ marginBottom: -2 }} />
+        </View>
       </View>
       <Divider fillColor="gray-4" />
       {React.isValidElement(children) && (children.type as any).name === 'Browser' ? (
