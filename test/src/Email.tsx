@@ -268,7 +268,7 @@ const Email = () => {
           <Button hover icon="sliders" />
         </Stack>
         <Splitter flex horizontal>
-          <MessageList style={{ width: 300 }} onComposeMessage={() => setIsNewMessageModalOpen(true)} />
+          <MessageList minWidth={192} style={{ width: 300 }} onComposeMessage={() => setIsNewMessageModalOpen(true)} />
           <MessageDetails />
         </Splitter>
       </Stack>

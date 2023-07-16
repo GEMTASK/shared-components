@@ -55,7 +55,7 @@ const Calendar = () => {
             </Label>
           ))}
         </View>
-        <Spacer size="xsmall" />
+        <Spacer size="small" />
       </View>
       <Divider />
       <Grid flex padding="small" columns={7}>
