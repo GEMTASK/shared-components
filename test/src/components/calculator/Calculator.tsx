@@ -82,7 +82,7 @@ const CalcButton = ({ title, onClick, ...props }: any) => {
   );
 };
 
-const Calculator = () => {
+const Calculator = ({ ...props }: any) => {
   const [{ display }, dispatch] = useReducer(reducer, { op: 'ADD', replace: true, value: 0, display: '0' });
 
   const NumberPress = (number: typeof Buttons[number]) => dispatch({ type: 'NUMBER', payload: number });
@@ -114,7 +114,7 @@ const Calculator = () => {
   };
 
   return (
-    <>
+    <View {...props}>
       <Text fontSize="xlarge" textAlign="right" padding="large large" fillColor="white">
         {display}
       </Text>
@@ -138,7 +138,7 @@ const Calculator = () => {
         <CalcButton title="0" style={{ gridColumn: '1 / 3' }} onClick={() => NumberPress('0')} />
         <CalcButton title="." onClick={() => NumberPress('.')} />
       </Grid>
-    </>
+    </View>
   );
 };
 

@@ -30,7 +30,7 @@ const Song = ({ index, title, length, artist, selected, favorite, onSongSelect }
   );
 };
 
-const Music = () => {
+const Music = ({ ...props }: any) => {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [favoriteIndexes, setFavoriteIndexes] = useState([2, 4]);
 
@@ -39,7 +39,7 @@ const Music = () => {
   };
 
   return (
-    <>
+    <View {...props}>
       <Stack divider dividerInset={16} style={{ overflowY: 'auto' }}>
         {songs.map(({ title, length, artist }, index) => (
           <Song
@@ -64,7 +64,7 @@ const Music = () => {
           <Button text iconSize="2x" icon="forward-step" />
         </Stack>
       </View>
-    </>
+    </View>
   );
 };
 

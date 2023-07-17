@@ -180,20 +180,12 @@ const Window = React.memo(({
         </View>
       </View>
       {/* <Divider fillColor="gray-4" /> */}
-      {React.isValidElement(children) && (children.type as any).name === 'Browser' ? (
-        React.cloneElement(React.Children.only(children) as React.ReactElement, {
-          fillColor: 'white',
-          flex: true,
-          isMenuOpen,
-        })
-      ) : (
-        <View flex fillColor="white" style={{ minHeight: 0, borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}>
-          {children}
-        </View>
-      )}
-      {/* <View flex fillColor="white" style={{ minHeight: 0, borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}>
-        {children}
-      </View> */}
+      {React.cloneElement(React.Children.only(children) as React.ReactElement, {
+        fillColor: 'white',
+        flex: true,
+        minHeight: 0,
+        isMenuOpen,
+      })}
     </View>
   );
 });

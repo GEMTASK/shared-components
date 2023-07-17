@@ -129,7 +129,7 @@ type Display = React.ElementType<DisplayProps>;
 //
 //
 
-const Filesystem = () => {
+const Filesystem = ({ ...props }: any) => {
   const [selectedDisplay, setSelectedDisplay] = useState<Display>(() => IconDisplay);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
@@ -148,7 +148,7 @@ const Filesystem = () => {
   const DisplayComponent = selectedDisplay;
 
   return (
-    <>
+    <View {...props}>
       <Splitter flex horizontal style={{ minHeight: 0 }}>
         <View padding="small" minWidth={112} style={{ width: 192 }}>
           <DisplayItem horizontal align="left" key={0} filename={'Foo Bar'} selected={false}>
@@ -177,7 +177,7 @@ const Filesystem = () => {
           </View>
         </View>
       </Splitter>
-    </>
+    </View>
   );
 };
 

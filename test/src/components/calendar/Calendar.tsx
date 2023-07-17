@@ -14,7 +14,7 @@ const Label = ({ children, ...props }: any) => {
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-const Calendar = () => {
+const Calendar = ({ ...props }: any) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const firstDayInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth());
@@ -35,7 +35,7 @@ const Calendar = () => {
   const today = new Date();
 
   return (
-    <>
+    <View {...props}>
       <View fillColor="gray-1">
         <View horizontal align="left" padding="large">
           <Text flex fontSize="large">
@@ -76,7 +76,7 @@ const Calendar = () => {
           </Text>
         ))}
       </Grid>
-    </>
+    </View>
   );
 };
 

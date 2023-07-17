@@ -24,7 +24,7 @@ const calculateHands = (date: Date) => {
   });
 };
 
-const Clock = () => {
+const Clock = ({ ...props }: any) => {
   const [date, setDate] = useState(new Date());
   const timerRef = useRef<number>();
 
@@ -49,7 +49,7 @@ const Clock = () => {
   }, [updateDate]);
 
   return (
-    <>
+    <View {...props}>
       <View as="svg" flex viewBox="0 0 200 200">
         {Array.from({ length: 12 }, (_, index, angle = (index * 30 + 180) * (Math.PI / 180)) => (
           <circle
@@ -89,7 +89,7 @@ const Clock = () => {
         />
         <circle cx="100" cy="100" r="2" fill="white" />
       </View>
-    </>
+    </View>
   );
 };
 
