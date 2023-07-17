@@ -42,6 +42,7 @@ const Contacts = ({ ...props }) => {
           <View>
             <Form
               id="form"
+              flush
               fields={[
                 { key: 'firstName', label: 'First Name', type: 'text' },
                 { key: 'lastName', label: 'Last Name', type: 'text' },
@@ -51,6 +52,7 @@ const Contacts = ({ ...props }) => {
               initialValues={{
                 firstName: 'Joe',
                 lastName: 'Smith',
+                email: 'john.appleseed@example.com',
               }}
             >
             </Form>

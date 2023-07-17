@@ -58,9 +58,9 @@ const Form = ({
 
   return (
     <FormContext.Provider value={{ onFieldChange: handleFieldChange }}>
-      <Stack as="form" spacing="xlarge" onSubmit={handleFormSubmit} {...props}>
+      <Stack as="form" spacing={!flush ? "xlarge" : 'medium'} onSubmit={handleFormSubmit} {...props}>
         {fields.map(({ key, ...props }, index) => (
-          <Field flush key={index} _key={key} value={values[key]} {...props} />
+          <Field flush={flush} key={index} _key={key} value={values[key]} {...props} />
         ))}
       </Stack>
     </FormContext.Provider>
