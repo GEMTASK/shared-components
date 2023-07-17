@@ -329,8 +329,7 @@ function App() {
                 married: true,
                 state: 'AK',
               }}
-            >
-            </Form>
+            />
             <Spacer size="large" />
 
             <Table />

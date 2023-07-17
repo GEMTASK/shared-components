@@ -50,11 +50,13 @@ const useFontSizeStyles = createUseStyles({
   medium: {
     fontSize: 18,
     lineHeight: '25px',
+    letterSpacing: -0.75,
     margin: '-5px 0 -5px 0'
   },
   large: {
     fontSize: 24,
     lineHeight: '30px',
+    letterSpacing: -0.5,
     margin: '-6px 0 -5px 0'
   },
   xlarge: {
