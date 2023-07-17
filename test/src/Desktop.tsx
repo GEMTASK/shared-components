@@ -14,10 +14,12 @@ import Filesystem from './components/filesystem';
 
 const About = () => {
   return (
-    <Text flex textAlign="center" padding="large" align="center">
-      A React-based desktop environment and component library<br /><br />
-      2023 Mike Austin
-    </Text>
+    <View flex fillColor="gray-1" padding="large" align="center">
+      <Text textAlign="center">
+        A React-based desktop environment and component library<br /><br />
+        2023 Mike Austin
+      </Text>
+    </View>
   );
 };
 
@@ -69,14 +71,19 @@ const App = () => {
 
   const desktopMenuItems = [
     {
-      title: 'About React-Desktop...', action: () => setWindows(windows => [
-        ...windows,
-        {
-          id: uuidv4(), title: 'About React-Desktop', element: <About />, rect: {
-            x: (window.innerWidth - 500) / 2, y: (window.innerHeight - 200) / 2, width: 500, height: 200,
+      title: 'About React-Desktop...', action: () => {
+        const id = uuidv4();
+
+        setWindows(windows => [
+          ...windows,
+          {
+            id, title: 'About React-Desktop', element: <About />, rect: {
+              x: (window.innerWidth - 500) / 2, y: (window.innerHeight - 200) / 2, width: 500, height: 200,
+            }
           }
-        }
-      ])
+        ]);
+        setWindowOrder(windowOrder => [...windowOrder, id]);
+      }
     },
   ];
 
