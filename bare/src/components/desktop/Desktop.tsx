@@ -92,6 +92,7 @@ const Window = React.memo(({
 
   const handleTitlePointerDown = useCallback((event: React.PointerEvent) => {
     event.preventDefault();
+    event.stopPropagation();
     event.currentTarget.setPointerCapture(event.pointerId);
 
     firstEventRef.current = event;
