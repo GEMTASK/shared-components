@@ -137,8 +137,6 @@ const Window = React.memo(({
   }, []);
 
   const handleMenuButtonClick = () => {
-    console.log('menu');
-
     setIsMenuOpen(isMenuOpen => !isMenuOpen);
   };
 
@@ -152,10 +150,13 @@ const Window = React.memo(({
     onPointerUp: handleTitlePointerUp,
   };
 
+  const client = React.Children.only(children);
+
   return (
     <View
       ref={windowElementRef}
       style={{ zIndex: order }}
+      minWidth={React.isValidElement(client) && client.props.minWidth}
       tabIndex={0}
       className={styles.Window}
       {...props}
@@ -180,7 +181,7 @@ const Window = React.memo(({
         </View>
       </View>
       {/* <Divider fillColor="gray-4" /> */}
-      {React.cloneElement(React.Children.only(children) as React.ReactElement, {
+      {React.cloneElement(client as React.ReactElement, {
         fillColor: 'white',
         flex: true,
         minHeight: 0,
@@ -227,7 +228,7 @@ const Desktop = ({
 
   const handlePointerDown = useCallback((event: React.PointerEvent) => {
     event.preventDefault();
-    event.currentTarget.setPointerCapture(event.pointerId);
+    // event.currentTarget.setPointerCapture(event.pointerId);
 
     firstEventRef.current = event;
 
@@ -244,8 +245,6 @@ const Desktop = ({
 
       leftWindowRectsRef.current = leftWindowsRef.current.map(window => getOffsetsRect(window));
       rightWindowRectsRef.current = rightWindowsRef.current.map(window => getOffsetsRect(window));
-
-      console.log(rightWindowsRef.current);
     }
   }, []);
 

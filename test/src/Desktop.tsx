@@ -25,7 +25,7 @@ const About = () => {
 
 const initialState = [
   {
-    id: uuidv4(), title: 'Calendar', element: <Calendar />, rect: {
+    id: uuidv4(), title: 'Calendar', element: <Calendar minWidth={360} />, rect: {
       x: 15, y: 15, width: 360, height: 332,
     }
   },
