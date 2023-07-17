@@ -137,7 +137,7 @@ const Filesystem = ({ ...props }: any) => {
     const handleClick = () => setSelectedDisplay(() => display);
 
     return (
-      <Button hover size="medium" selected={selectedDisplay === display} {...props} onClick={handleClick} />
+      <Button hover selected={selectedDisplay === display} {...props} onClick={handleClick} />
     );
   };
 
@@ -165,11 +165,13 @@ const Filesystem = ({ ...props }: any) => {
           </DisplayItem>
         </View>
         <View flex>
-          <View horizontal padding="small" fillColor="gray-1">
+          <View horizontal padding="small large" fillColor="gray-1">
             <DisplayButton icon="square" display={IconDisplay} />
             <DisplayButton icon="table-list" display={TileDisplay} />
             <DisplayButton icon="list" display={ListDisplay} />
             <DisplayButton icon="border-all" display={TableDisplay} />
+            <Spacer flex size="large" />
+            <Button title="Action" />
           </View>
           <Divider />
           <View padding="small" style={{ overflow: 'auto' }}>

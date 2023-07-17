@@ -3,8 +3,9 @@ import { Button, Divider, Form, Input, Spacer, Splitter, Stack, Text, View } fro
 const Contacts = ({ ...props }) => {
   return (
     <Splitter horizontal {...props}>
+
       <View fillColor="gray-1">
-        <View horizontal padding="large">
+        <View horizontal padding="small large">
           <Button solid title="New Contact" />
         </View>
         <Divider />
@@ -29,10 +30,19 @@ const Contacts = ({ ...props }) => {
           <Divider />
         </View>
       </View>
+
       <View flex>
-        <View horizontal padding="large">
-          <Button title="Edit" />
-        </View>
+        <Stack horizontal>
+          <Stack horizontal spacing="small" padding="small large">
+            <Button icon="edit" title="Edit" />
+          </Stack>
+          <Spacer flex size="large" />
+          <Stack horizontal spacing="small" padding="small large">
+            <Button icon="message" title="Message" />
+            <Button icon="video" title="Facetime" />
+            <Button icon="envelope" title="Email" />
+          </Stack>
+        </Stack>
         <Divider />
         <View padding="large">
           <Text fontSize="large">
@@ -59,6 +69,7 @@ const Contacts = ({ ...props }) => {
           </View>
         </View>
       </View>
+
     </Splitter>
   );
 };

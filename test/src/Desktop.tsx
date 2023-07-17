@@ -52,7 +52,7 @@ const initialState = [
   },
   {
     id: uuidv4(), title: 'Contacts', element: <Contacts />, rect: {
-      x: 15, y: 360, width: 950, height: 540,
+      x: 15, y: 360, width: 675, height: 540,
     }
   },
   // {

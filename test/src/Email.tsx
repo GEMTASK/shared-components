@@ -161,7 +161,7 @@ const MessageList = React.forwardRef(({
   return (
     <View ref={ref} style={{ minHeight: 0, ...style }} {...props}>
       <View paddingHorizontal="large">
-        <Spacer size="large" />
+        <Spacer size="small" />
         <View horizontal>
           <Button solid primary icon="file-alt" title="Compose" onClick={onComposeMessage} />
         </View>
@@ -219,7 +219,7 @@ const MessageList = React.forwardRef(({
 const MessageDetails = () => {
   return (
     <View flex fillColor="white">
-      <View padding="large">
+      <View padding="small large">
         <Stack horizontal>
           <Stack horizontal spacing="small">
             <Button primary icon="reply" title="Reply" tabletTitleHidden />
