@@ -9,6 +9,7 @@ import Spacer from '../spacer/index.js';
 import Popup from '../popup/index.js';
 import Button from '../button/index.js';
 import Icon from '../icon/Icon.js';
+import clsx from 'clsx';
 
 type ChipProps = {
   label: string,
@@ -45,6 +46,24 @@ const useInnerStyles = createUseStyles({
       boxShadow: `inset 0 0 0 2px ${OpenColor.blue[5]}`,
     }
   },
+  flush: {
+    boxShadow: 'none',
+    borderRadius: 0,
+    '&:focus-within': {
+      boxShadow: 'none',
+      '&::before': {
+        borderBottom: `2px solid ${OpenColor.blue[5]}`,
+      }
+    },
+    '&::before': {
+      boxShadow: 'none',
+      content: '""',
+      position: 'absolute',
+      inset: 0,
+      borderBottom: `1px solid ${OpenColor.gray[3]}`,
+      pointerEvents: 'none',
+    }
+  }
 });
 
 type InputProps = {
@@ -53,6 +72,7 @@ type InputProps = {
   chips?: string[],
   value?: string,
   lines?: number,
+  flush?: boolean,
   options?: { [value: string]: string; },
   placeholder?: string,
   onChange?: (value: string) => void,
@@ -64,6 +84,7 @@ const Input = ({
   chips,
   value,
   lines,
+  flush,
   options,
   placeholder,
   onChange,
@@ -139,11 +160,16 @@ const Input = ({
     }
   })();
 
+  const elementClassName = clsx(
+    innerStyles.Inner,
+    flush && innerStyles.flush,
+  );
+
   return (
     <Popup
       flex
       element={
-        <View horizontal align="left" fillColor="white" paddingHorizontal="medium" className={innerStyles.Inner} {...props}>
+        <View horizontal align="left" fillColor={!flush ? 'white' : undefined} paddingHorizontal={!flush ? 'medium' : undefined} className={elementClassName} {...props}>
           {icon && (
             <Icon icon={icon} />
           )}

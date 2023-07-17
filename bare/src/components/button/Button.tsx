@@ -80,6 +80,15 @@ const getPaddingVertical = ({ size, title, text }: ButtonProps) => {
   }
 };
 
+const getIconSize = ({ size }: ButtonProps) => {
+  switch (size) {
+    case 'xsmall':
+      return 'sm';
+    case 'medium':
+      return 'lg';
+  }
+};
+
 type ButtonProps = {
   size?: 'xsmall' | 'small' | 'medium',
   icon?: React.ComponentProps<typeof Icon>['icon'],
@@ -159,7 +168,7 @@ const Button = ({
       {...props}
     >
       {!!icon && (
-        <Icon icon={icon} color={textColor} size={iconSize ?? (size === 'xsmall' ? 'sm' : undefined)} />
+        <Icon icon={icon} color={textColor} size={iconSize ?? getIconSize({ size })} />
       )}
       {!!icon && !!title && !(tabletTitleHidden && isTablet) && (
         <Spacer size="small" minWidth={size === 'xsmall' ? 6 : undefined} />

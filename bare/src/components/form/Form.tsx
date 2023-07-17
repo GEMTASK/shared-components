@@ -29,11 +29,13 @@ const getDefaultValueForType = (type: string = 'text') => {
 type FormProps = {
   fields?: FieldDefinition[],
   initialValues?: { [key: string]: string | number | boolean | string[]; },
+  flush?: boolean,
 } & ViewProps<'form'>;
 
 const Form = ({
   fields = [],
   initialValues = {},
+  flush,
   children,
   ...props
 }: FormProps) => {
@@ -58,7 +60,7 @@ const Form = ({
     <FormContext.Provider value={{ onFieldChange: handleFieldChange }}>
       <Stack as="form" spacing="xlarge" onSubmit={handleFormSubmit} {...props}>
         {fields.map(({ key, ...props }, index) => (
-          <Field key={index} _key={key} value={values[key]} {...props} />
+          <Field flush key={index} _key={key} value={values[key]} {...props} />
         ))}
       </Stack>
     </FormContext.Provider>

@@ -18,6 +18,7 @@ type FieldProps<T = unknown> = {
   value?: string | number | boolean | string[],
   lines?: number,
   options?: { [value: string]: string; },
+  flush?: boolean,
   render?: (item: T) => React.ReactNode,
 };
 
@@ -27,7 +28,8 @@ const Field = ({
   type,
   lines,
   options = {},
-  value
+  value,
+  flush,
 }: FieldProps) => {
   const { onFieldChange } = useContext(FormContext);
 
@@ -67,7 +69,7 @@ const Field = ({
     }
 
     return typeof value === 'string' ? (
-      <Input type={type} lines={lines} value={value} options={options} onChange={handleInputChange} />
+      <Input type={type} lines={lines} value={value} options={options} flush={flush} onChange={handleInputChange} />
     ) : null;
   })();
 
@@ -76,7 +78,7 @@ const Field = ({
       {!!label && (
         <>
           <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6">{label}</Text>
-          <Spacer size="small" />
+          {!flush && <Spacer size="small" />}
         </>
       )}
       {element}

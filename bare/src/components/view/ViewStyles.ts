@@ -25,7 +25,7 @@ const useStyles = createUseStyles({
   },
   border: {
     borderRadius: 2.5,
-    '&:before': {
+    '&::before': {
       content: '""',
       position: 'absolute',
       inset: 0,

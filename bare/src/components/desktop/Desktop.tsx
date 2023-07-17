@@ -231,7 +231,7 @@ const Desktop = ({
       return;
     }
 
-    event.preventDefault();
+    // event.preventDefault();
     // event.currentTarget.setPointerCapture(event.pointerId);
 
     firstEventRef.current = event;

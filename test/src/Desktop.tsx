@@ -11,6 +11,7 @@ import Notes from './components/notes';
 import Music from './components/music';
 import Browser from './components/browser';
 import Filesystem from './components/filesystem';
+import Contacts from './components/contacts';
 
 const About = () => {
   return (
@@ -50,10 +51,15 @@ const initialState = [
     }
   },
   {
-    id: uuidv4(), title: 'Browser', element: <Browser />, rect: {
+    id: uuidv4(), title: 'Contacts', element: <Contacts />, rect: {
       x: 15, y: 360, width: 950, height: 540,
     }
   },
+  // {
+  //   id: uuidv4(), title: 'Browser', element: <Browser />, rect: {
+  //     x: 15, y: 360, width: 950, height: 540,
+  //   }
+  // },
   {
     id: uuidv4(), title: 'Files', element: <Filesystem />, rect: {
       x: 980, y: 360, width: 685, height: 540,
@@ -101,10 +107,10 @@ const App = () => {
   ];
 
   const handleWindowFocus = (windowId: string) => {
-    setWindowOrder(windowOrder => [
-      ...windowOrder.filter((id) => id !== windowId),
-      windowId,
-    ]);
+    // setWindowOrder(windowOrder => [
+    //   ...windowOrder.filter((id) => id !== windowId),
+    //   windowId,
+    // ]);
   };
 
   const handleWindowChange = useCallback((id: string, rect: DOMRect) => {
