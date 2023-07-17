@@ -227,6 +227,10 @@ const Desktop = ({
   const rightWindowsRef = useRef<HTMLElement[]>([]);
 
   const handlePointerDown = useCallback((event: React.PointerEvent) => {
+    if (event.currentTarget !== desktopElementRef.current) {
+      return;
+    }
+
     event.preventDefault();
     // event.currentTarget.setPointerCapture(event.pointerId);
 
