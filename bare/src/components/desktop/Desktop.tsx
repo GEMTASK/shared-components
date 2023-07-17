@@ -185,6 +185,10 @@ const Window = React.memo(({
         fillColor: 'white',
         flex: true,
         minHeight: 0,
+        style: {
+          borderBottomLeftRadius: 4,
+          borderBottomRightRadius: 4,
+        },
         isMenuOpen,
       })}
     </View>

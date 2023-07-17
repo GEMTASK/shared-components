@@ -99,10 +99,7 @@ const Tabs = ({
         ))}
       </View>
       <Divider />
-      <Spacer size="large" />
-      <View>
-        {childrenArray[selectedTabIndex] as React.ReactElement}
-      </View>
+      {childrenArray[selectedTabIndex] as React.ReactElement}
     </View>
   );
 };

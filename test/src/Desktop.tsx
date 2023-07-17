@@ -12,6 +12,7 @@ import Music from './components/music';
 import Browser from './components/browser';
 import Filesystem from './components/filesystem';
 import Contacts from './components/contacts';
+import Preferences from './components/preferences';
 
 const About = () => {
   return (
@@ -75,20 +76,31 @@ const App = () => {
   const [windows, setWindows] = useState<WindowsProp>(initialState);
   const [windowOrder, setWindowOrder] = useState<string[]>(windows.map(({ id }) => id));
 
+  const addWindow = (title: string, element: React.ReactElement) => {
+    const id = uuidv4();
+
+    setWindows(windows => [
+      ...windows,
+      {
+        id, title, element, rect: {
+          x: (window.innerWidth - 500) / 2, y: (window.innerHeight - 200) / 2, width: 500, height: 200,
+        }
+      }
+    ]);
+
+    setWindowOrder(windowOrder => [...windowOrder, id]);
+  };
+
   const desktopMenuItems = [
     {
+      title: 'Preferences...', action: () => {
+        addWindow('Preferences...', <Preferences />);
+      }
+    },
+    null,
+    {
       title: 'About React-Desktop...', action: () => {
-        const id = uuidv4();
-
-        setWindows(windows => [
-          ...windows,
-          {
-            id, title: 'About React-Desktop', element: <About />, rect: {
-              x: (window.innerWidth - 500) / 2, y: (window.innerHeight - 200) / 2, width: 500, height: 200,
-            }
-          }
-        ]);
-        setWindowOrder(windowOrder => [...windowOrder, id]);
+        addWindow('About React-Desktop...', <About />);
       }
     },
   ];

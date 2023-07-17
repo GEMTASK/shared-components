@@ -8,6 +8,7 @@ export { default as Divider } from './divider/index.js';
 export { default as Stack } from './stack/index.js';
 export { default as Grid } from './grid/index.js';
 export { default as Input } from './input/index.js';
+export { default as Checkbox } from './checkbox/index.js';
 export { default as Slider } from './slider/index.js';
 export { default as Popup } from './popup/index.js';
 export { default as Menu } from './menu/index.js';
