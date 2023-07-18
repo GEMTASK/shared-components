@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import OpenColor from 'open-color';
 import { createUseStyles } from 'react-jss';
 import { pick, omit } from 'rambda';
@@ -74,9 +74,8 @@ type InputProps = {
   lines?: number,
   flush?: boolean,
   options?: { [value: string]: string; },
-  placeholder?: string,
-  onChange?: (value: string) => void,
-} & Omit<ViewProps<'input'>, 'children' | 'onChange'>;
+  onValueChange?: (value: string) => void,
+} & Omit<ViewProps<'input'>, 'type' | 'value' | 'children'>;
 
 const Input = ({
   type = 'text',
@@ -88,29 +87,71 @@ const Input = ({
   options,
   placeholder,
   onChange,
+  onKeyDown,
+  onValueChange,
   onBlur,
   ...props
 }: InputProps) => {
+  const [internalValue, setInternalValue] = useState(value ?? '');
+
   const innerStyles = useInnerStyles();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInternalValue(event.target.value);
+
     if (onChange) {
-      onChange(event.target.value);
+      onChange(event);
+    }
+  };
+
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (onValueChange && event.key === 'Enter' && internalValue !== value) {
+      onValueChange(internalValue);
+    }
+
+    if (onKeyDown) {
+      onKeyDown(event);
+    }
+  };
+
+  const handleInputBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    if (onValueChange && internalValue !== value) {
+      onValueChange(internalValue);
+    }
+
+    if (onBlur) {
+      onBlur(event);
     }
   };
 
   const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (onChange) {
-      onChange(event.target.value);
-    }
+    setInternalValue(event.target.value);
   };
 
   const handleOptionSelect = (value: string) => {
     console.log('handleOptionSelect', value);
 
-    if (onChange) {
-      onChange(value);
+    if (onValueChange) {
+      onValueChange(value);
     }
+  };
+
+  useEffect(() => {
+    setInternalValue(value ?? '');
+  }, [value]);
+
+  const inputStyle = {
+    background: 'none',
+    margin: 0,
+    padding: 0,
+    border: 'none',
+    outline: 'none',
+    // borderRadius: 2.5,
+    flex: 1,
+    lineHeight: '20px',
+    fontSize: 14,
+    fontFamily: 'Open Sans',
+    width: '100%'
   };
 
   const inputElement = (() => {
@@ -118,43 +159,44 @@ const Input = ({
       case 'number': return (
         <input
           type="text"
-          value={value}
-          style={{ background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2.5, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans', textAlign: 'right', width: '100%' }}
+          value={internalValue}
+          style={{ ...inputStyle, textAlign: 'right', width: '100%' }}
           onChange={handleInputChange}
         />
       );
       case 'date': return (
         <input
           type="date"
-          value={value}
-          style={{ background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2.5, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans' }}
+          value={internalValue}
+          style={{ ...inputStyle }}
           onChange={handleInputChange}
         />
       );
       case 'color': return (
         <input
           type="color"
-          value={value}
-          style={{ appearance: 'none', background: 'none', padding: 0, margin: 0, border: 'none', outline: 'none', width: '100%', minHeight: 32 }}
+          value={internalValue}
+          style={{ ...inputStyle, appearance: 'none', minHeight: 32 }}
           onChange={handleInputChange}
         />
       );
       default: return lines && lines > 1 ? (
         <textarea
-          value={value}
+          value={internalValue}
           rows={lines}
           placeholder={placeholder}
-          style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2.5, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans', width: '100%' }}
+          style={{ ...innerStyles, appearance: 'none' }}
           onChange={handleTextAreaChange}
         />
       ) : (
         <input
           type={type}
-          value={value}
+          value={internalValue}
           placeholder={placeholder}
-          style={{ appearance: 'none', background: 'none', padding: 0, border: 'none', outline: 'none', borderRadius: 2.5, flex: 1, lineHeight: '20px', fontSize: 14, fontFamily: 'Open Sans', width: '100%' }}
+          style={{ ...inputStyle, appearance: 'none' }}
           onChange={handleInputChange}
-          onBlur={onBlur}
+          onKeyDown={handleInputKeyDown}
+          onBlur={handleInputBlur}
         />
       );
     }

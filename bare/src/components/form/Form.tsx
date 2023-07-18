@@ -47,11 +47,14 @@ const Form = ({
   }), initialValues));
 
   useEffect(() => {
-    setValues(initialValues);
+    setValues(fields.reduce((acc, { key, type }) => ({
+      ...acc,
+      [key]: acc[key] ?? getDefaultValueForType(type)
+    }), initialValues));
   }, [initialValues]);
 
   const handleFieldChange = (key: string, value: string | number | boolean | string[]) => {
-    // console.log('handleFieldChange', key, value);
+    console.log('handleFieldChange', key, value);
 
     if (onFieldChange) {
       onFieldChange(key, value);

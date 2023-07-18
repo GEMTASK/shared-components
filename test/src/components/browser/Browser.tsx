@@ -38,7 +38,7 @@ const Browser = ({ isMenuOpen, ...props }: any) => {
         <View flex>
           <Stack horizontal spacing="small" padding="small" fillColor="gray-1">
             <Button hover icon="home" />
-            <Input flex value={value} onChange={setValue} onBlur={handleBlur} />
+            <Input flex value={value} onValueChange={setValue} onBlur={handleBlur} />
           </Stack>
           <Divider />
           <View as="iframe" flex fillColor="white" style={{ border: 'none' }} src={url} />

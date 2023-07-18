@@ -37,7 +37,7 @@ const Field = ({
     onFieldChange(_key, value);
   };
 
-  const handleSliderChange = (value: number) => {
+  const handleSliderValueChange = (value: number) => {
     onFieldChange(_key, value);
   };
 
@@ -45,9 +45,11 @@ const Field = ({
     onFieldChange(_key, value);
   };
 
-  const handleCheckboxListChange = (value: string[]) => {
+  const handleCheckboxListValueChange = (value: string[]) => {
     onFieldChange(_key, value);
   };
+
+  console.log(type, value);
 
   const element = (() => {
     switch (type) {
@@ -55,7 +57,7 @@ const Field = ({
         <RadioButton.List key={_key} value={value} options={options} onValueChange={handleInputValueChange} />
       );
       case 'checkboxlist': return Array.isArray(value) && (
-        <Checkbox.List key={_key} value={value} options={options} onValueChange={handleCheckboxListChange} />
+        <Checkbox.List key={_key} value={value} options={options} onValueChange={handleCheckboxListValueChange} />
       );
       case 'checkbox': return typeof value === 'boolean' ? (
         <Checkbox key={_key} label={label} value={value} onValueChange={handleCheckboxChange} />
@@ -64,12 +66,12 @@ const Field = ({
         <Select value={value} options={options} onValueChange={handleInputValueChange} />
       ) : null;
       case 'range': return typeof value === 'number' ? (
-        <Slider value={value} onValueChange={handleSliderChange} />
-      ) : null;
+        <Slider value={value} onValueChange={handleSliderValueChange} />
+      ) : 'xxx';
     }
 
     return typeof value === 'string' ? (
-      <Input type={type} lines={lines} value={value} options={options} flush={flush} onChange={handleInputValueChange} />
+      <Input type={type} lines={lines} value={value} options={options} flush={flush} onValueChange={handleInputValueChange} />
     ) : null;
   })();
 
