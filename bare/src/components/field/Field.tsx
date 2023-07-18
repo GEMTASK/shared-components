@@ -49,8 +49,6 @@ const Field = ({
     onFieldChange(_key, value);
   };
 
-  console.log(type, value);
-
   const element = (() => {
     switch (type) {
       case 'radio': return typeof value === 'string' && (

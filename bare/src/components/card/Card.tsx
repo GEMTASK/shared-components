@@ -32,7 +32,6 @@ const Card = ({
     </Text>
   ) : headingSubtitleRight;
 
-  console.log(imageWidth);
   return (
     <View border borderColor="alpha-1" fillColor="white" {...props}>
       <Image src={imageSrc} width={imageWidth ?? '100%'} height="100%" style={{ objectFit: 'cover', objectPosition: 'left  center' }} />
