@@ -10,7 +10,11 @@ const Preferences = ({ ...props }: any) => {
       <Spacer size="large" />
       <Tabs flex labels={['General', 'Background', 'Colors']}>
         <View flex fillColor="white" padding="large">
-          <Checkbox label="Use collapsed titlebars" value={useCollapsed} onChange={(value: boolean) => setUseCollapsed(value)} />
+          <Checkbox
+            label="Use collapsed titlebars"
+            value={useCollapsed}
+            onValueChange={(value: boolean) => setUseCollapsed(value)}
+          />
         </View>
       </Tabs>
     </View>

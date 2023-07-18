@@ -13,13 +13,13 @@ import { useStyles as useControlStyles } from '../control/Control.js';
 type ListProps = {
   value: string[],
   options: { [value: string]: string; },
-  onChange?: (value: string[]) => void,
+  onValueChange?: (value: string[]) => void,
 };
 
-const List = ({ value, options, onChange }: ListProps) => {
-  const handleChange = (value: string[]) => {
-    if (onChange) {
-      onChange(value);
+const List = ({ value, options, onValueChange }: ListProps) => {
+  const handleValueChange = (value: string[]) => {
+    if (onValueChange) {
+      onValueChange(value);
     }
   };
 
@@ -31,7 +31,7 @@ const List = ({ value, options, onChange }: ListProps) => {
           key={checkboxValue}
           label={label}
           value={value.includes(checkboxValue)}
-          onChange={(checked: boolean) => handleChange(
+          onValueChange={(checked: boolean) => handleValueChange(
             checked ? concat([checkboxValue], value) : without([checkboxValue], value)
           )}
         />
@@ -45,15 +45,15 @@ const List = ({ value, options, onChange }: ListProps) => {
 type CheckboxProps = {
   label: string,
   value: boolean,
-  onChange?: (value: boolean) => void,
+  onValueChange?: (value: boolean) => void,
 } & Omit<ViewProps, 'onChange'>;
 
-const Checkbox = ({ label, value, onChange, ...props }: CheckboxProps) => {
+const Checkbox = ({ label, value, onValueChange, ...props }: CheckboxProps) => {
   const styles = useControlStyles();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (onChange) {
-      onChange(event.target.checked);
+    if (onValueChange) {
+      onValueChange(event.target.checked);
     }
   };
 

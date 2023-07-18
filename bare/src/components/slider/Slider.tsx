@@ -35,18 +35,18 @@ const useStyles = createUseStyles({
 
 type SliderProps = {
   value: number,
-  onChange?: (value: number) => void,
+  onValueChange?: (value: number) => void,
 } & ViewProps;
 
 const Slider = ({
   value,
-  onChange,
+  onValueChange,
   ...props
 }: SliderProps) => {
   const styles = useStyles();
 
   const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange?.(Number(event.target.value));
+    onValueChange?.(Number(event.target.value));
   };
 
   return (

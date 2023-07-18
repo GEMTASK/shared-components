@@ -12,13 +12,13 @@ import { useStyles as useControlStyles } from '../control/Control.js';
 type ListProps = {
   value: string,
   options: { [value: string]: string; },
-  onChange?: (value: string) => void,
+  onValueChange?: (value: string) => void,
 };
 
-const List = ({ value, options, onChange }: ListProps) => {
-  const handleChange = (value: string) => {
-    if (onChange) {
-      onChange(value);
+const List = ({ value, options, onValueChange }: ListProps) => {
+  const handleValueChange = (value: string) => {
+    if (onValueChange) {
+      onValueChange(value);
     }
   };
 
@@ -29,7 +29,7 @@ const List = ({ value, options, onChange }: ListProps) => {
           key={radiobuttonValue}
           label={label}
           value={radiobuttonValue === value}
-          onChange={() => handleChange(radiobuttonValue)}
+          onValueChange={() => handleValueChange(radiobuttonValue)}
         />
       ))}
     </Stack>
@@ -39,13 +39,13 @@ const List = ({ value, options, onChange }: ListProps) => {
 type RadioButtonProps = {
   label: string,
   value: boolean,
-  onChange?: (value: boolean) => void,
+  onValueChange?: (value: boolean) => void,
 };
 
-const RadioButton = ({ label, value, onChange, ...props }: RadioButtonProps) => {
+const RadioButton = ({ label, value, onValueChange, ...props }: RadioButtonProps) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (onChange) {
-      onChange(event.target.checked);
+    if (onValueChange) {
+      onValueChange(event.target.checked);
     }
   };
 

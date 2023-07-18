@@ -33,19 +33,19 @@ const Field = <T extends React.ElementType>({
 type SelectProps = {
   value: string,
   options?: { [value: string]: string; },
-  onChange?: (value: string) => void,
-} & Omit<ViewProps, 'onChange'>;
+  onValueChange?: (value: string) => void,
+} & Omit<ViewProps, 'onValueChange'>;
 
 const Select = ({
   value,
   options = {},
-  onChange,
+  onValueChange,
 }: SelectProps) => {
   const controlStyles = useControlStyles();
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    if (onChange) {
-      onChange(event.target.value);
+    if (onValueChange) {
+      onValueChange(event.target.value);
     }
   };
 
