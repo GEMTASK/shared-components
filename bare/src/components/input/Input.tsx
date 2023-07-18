@@ -140,23 +140,22 @@ const Input = ({
     setInternalValue(value ?? '');
   }, [value]);
 
-  // const handleBeforeUnload = (event: any) => {
-  //   console.log('visibilityState', event.target.visibilityState);
+  const handleBeforeUnload = (event: any) => {
+    if (value !== undefined && value !== internalValue) {
+      event.preventDefault();
 
-  //   if (onValueChange && internalValue !== value) {
-  //     console.log('here', internalValue);
+      return (event.returnValue = '');
+    }
+  };
 
-  //     onValueChange(internalValue);
-  //   }
-  // };
+  useEffect(() => {
+    window.removeEventListener('beforeunload', handleBeforeUnload, { capture: true });
+    window.addEventListener('beforeunload', handleBeforeUnload, { capture: true });
 
-  // useEffect(() => {
-  //   window.addEventListener('visibilitychange', handleBeforeUnload);
-
-  //   return () => {
-  //     window.removeEventListener('visibilitychange', handleBeforeUnload);
-  //   };
-  // }, [internalValue]);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload, { capture: true });
+    };
+  }, [value, internalValue]);
 
   const inputStyle = {
     background: 'none',
