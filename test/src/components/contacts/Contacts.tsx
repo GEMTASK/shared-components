@@ -79,14 +79,10 @@ const Contacts = ({ ...props }) => {
     console.log(key, value);
 
     setContacts(contacts => {
-      if (!contacts) {
-        return;
-      }
-
-      const foo = contacts.find(contact => contact.id === selectedContactId);
+      const foo = contacts?.find(contact => contact.id === selectedContactId);
 
       if (!foo) {
-        return;
+        return contacts;
       }
 
       const updatedContact = {
