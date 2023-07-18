@@ -11,23 +11,9 @@ type Contact = {
 
 const Contacts = ({ ...props }) => {
   const databaseRef = useRef<IDBDatabase>();
+
   const [contacts, setContacts] = useState<Contact[]>();
   const [selectedContactId, setSelectedContactId] = useState<number>();
-
-  // useEffect(() => {
-  //   if (contacts) {
-  //     setSelectedContact(contacts.find(contact => contact.id === selectedContactId));
-  //   }
-  // }, [contacts, selectedContactId]);
-
-  // useEffect(() => {
-  //   if (databaseRef.current) {
-  //     databaseRef.current
-  //       .transaction('contacts', 'readwrite')
-  //       .objectStore("contacts")
-  //       .put(selectedContact);
-  //   }
-  // }, [selectedContact]);
 
   useEffect(() => {
     (async () => {
@@ -76,7 +62,7 @@ const Contacts = ({ ...props }) => {
   }, []);
 
   const handleFormValueChange = (key: string, value: any) => {
-    console.log(key, value);
+    console.log('handleFormValueChange', key, value);
 
     setContacts(contacts => {
       const foo = contacts?.find(contact => contact.id === selectedContactId);

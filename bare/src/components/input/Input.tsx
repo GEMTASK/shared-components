@@ -140,6 +140,24 @@ const Input = ({
     setInternalValue(value ?? '');
   }, [value]);
 
+  // const handleBeforeUnload = (event: any) => {
+  //   console.log('visibilityState', event.target.visibilityState);
+
+  //   if (onValueChange && internalValue !== value) {
+  //     console.log('here', internalValue);
+
+  //     onValueChange(internalValue);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   window.addEventListener('visibilitychange', handleBeforeUnload);
+
+  //   return () => {
+  //     window.removeEventListener('visibilitychange', handleBeforeUnload);
+  //   };
+  // }, [internalValue]);
+
   const inputStyle = {
     background: 'none',
     margin: 0,
