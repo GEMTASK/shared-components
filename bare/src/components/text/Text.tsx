@@ -12,7 +12,7 @@ import View from '../view/index.js';
 
 import TextContext from './TextContext.js';
 
-type Children<T> = string | number | React.ReactElement<T | HTMLBRElement> | Children<T>[];
+type Children<T> = false | null | undefined | string | number | React.ReactElement<T | HTMLBRElement> | Children<T>[];
 
 type TextProps<T extends React.ElementType = 'span'> = {
   inner?: T,

@@ -11,12 +11,23 @@ type Contact = {
 
 const Contacts = ({ ...props }) => {
   const databaseRef = useRef<IDBDatabase>();
-  const [contacts, setContacts] = useState<Contact[] | null>(null);
-  const [selectedContactId, setSelectedContactId] = useState<number | null>(null);
+  const [contacts, setContacts] = useState<Contact[]>();
+  const [selectedContactId, setSelectedContactId] = useState<number>();
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   if (contacts) {
+  //     setSelectedContact(contacts.find(contact => contact.id === selectedContactId));
+  //   }
+  // }, [contacts, selectedContactId]);
 
-  }, [selectedContactId]);
+  // useEffect(() => {
+  //   if (databaseRef.current) {
+  //     databaseRef.current
+  //       .transaction('contacts', 'readwrite')
+  //       .objectStore("contacts")
+  //       .put(selectedContact);
+  //   }
+  // }, [selectedContact]);
 
   useEffect(() => {
     (async () => {
@@ -64,9 +75,39 @@ const Contacts = ({ ...props }) => {
     })();
   }, []);
 
-
   const handleFormValueChange = (key: string, value: any) => {
     console.log(key, value);
+
+    setContacts(contacts => {
+      if (!contacts) {
+        return;
+      }
+
+      const foo = contacts.find(contact => contact.id === selectedContactId);
+
+      if (!foo) {
+        return;
+      }
+
+      const updatedContact = {
+        ...foo,
+        [key]: value,
+      };
+
+      if (databaseRef.current) {
+        databaseRef.current
+          .transaction('contacts', 'readwrite')
+          .objectStore("contacts")
+          .put(updatedContact);
+      }
+
+      return contacts?.map(contact => contact.id === selectedContactId
+        ? {
+          ...contact,
+          [key]: value,
+        }
+        : contact);
+    });
   };
 
   const selectedContact = contacts?.find(contact => contact.id === selectedContactId);
