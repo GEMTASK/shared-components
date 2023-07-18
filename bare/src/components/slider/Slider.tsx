@@ -4,6 +4,7 @@ import { createUseStyles } from 'react-jss';
 import View, { ViewProps } from '../view/index.js';
 import Input from '../input/index.js';
 import Spacer from '../spacer/Spacer.js';
+import { useEffect, useRef, useState } from 'react';
 
 const useStyles = createUseStyles({
   Inner: {
@@ -43,17 +44,37 @@ const Slider = ({
   onValueChange,
   ...props
 }: SliderProps) => {
+  const inputElementRef = useRef<HTMLInputElement>(null);
+  const internalValueRef = useRef(value);
+
   const styles = useStyles();
 
-  const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onValueChange?.(Number(event.target.value));
+  function handleRangeInput(this: HTMLInputElement) {
+    internalValueRef.current = Number(this.value);
+
+    if (inputElementRef.current) {
+      inputElementRef.current.value = this.value;
+    }
   };
+
+  function handleRangeChange(this: HTMLInputElement) {
+    onValueChange?.(Number(this.value));
+  };
+
+  useEffect(() => {
+    if (inputElementRef.current) {
+      inputElementRef.current.addEventListener('input', handleRangeInput);
+      inputElementRef.current.addEventListener('change', handleRangeChange);
+
+      inputElementRef.current.value = String(value);
+    }
+  }, []);
 
   return (
     <View flex horizontal align="left" {...props}>
       {/* <Input type="number" value={`${value}`} style={{ width: 60 }} />
       <Spacer size="small" /> */}
-      <input type="range" value={value} className={styles.Inner} onChange={handleRangeChange} />
+      <input ref={inputElementRef} type="range" className={styles.Inner} />
     </View>
   );
 };
