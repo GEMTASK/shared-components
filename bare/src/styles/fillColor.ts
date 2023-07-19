@@ -26,6 +26,9 @@ const useFillColorStyles = createUseStyles({
   ...colors,
   'alpha-1': {
     background: 'hsla(0, 0%, 0%, 0.1)'
+  },
+  'white-2': {
+    background: 'hsla(0, 0%, 100%, 0.2)'
   }
 });
 
