@@ -131,7 +131,6 @@ const Contacts = ({ ...props }) => {
         <View horizontal padding="small large">
           <Stack horizontal spacing="large">
             <Button text icon="message" title="Message" titleTextColor="blue-5" />
-            <Button text icon="video" title="Facetime" titleTextColor="blue-5" />
             <Button text icon="envelope" title="Email" titleTextColor="blue-5" />
           </Stack>
           <Spacer flex size="large" />

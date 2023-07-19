@@ -12,6 +12,7 @@ import Music from './components/music';
 import Browser from './components/browser';
 import Filesystem from './components/filesystem';
 import Contacts from './components/contacts';
+import Terminal from './components/terminal';
 import Preferences from './components/preferences';
 
 const About = () => {
@@ -53,7 +54,7 @@ const initialState = [
   },
   {
     id: uuidv4(), title: 'Contacts', element: <Contacts />, rect: {
-      x: 15, y: 360, width: 675, height: 540,
+      x: 390, y: 360, width: 575, height: 540,
     }
   },
   // {
@@ -61,6 +62,11 @@ const initialState = [
   //     x: 15, y: 360, width: 950, height: 540,
   //   }
   // },
+  {
+    id: uuidv4(), title: 'Terminal', element: <Terminal />, rect: {
+      x: 15, y: 360, width: 360, height: 540,
+    }
+  },
   {
     id: uuidv4(), title: 'Files', element: <Filesystem />, rect: {
       x: 980, y: 360, width: 685, height: 540,
