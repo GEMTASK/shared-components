@@ -91,7 +91,7 @@ const Input = ({
   onValueChange,
   onBlur,
   ...props
-}: InputProps) => {
+}: InputProps, ref: React.Ref<HTMLInputElement>) => {
   const [internalValue, setInternalValue] = useState(value ?? '');
 
   const innerStyles = useInnerStyles();
@@ -207,6 +207,8 @@ const Input = ({
         />
       ) : (
         <input
+          ref={ref}
+          data-here
           type={type}
           value={internalValue}
           placeholder={placeholder}
@@ -247,4 +249,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default React.forwardRef(Input);

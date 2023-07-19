@@ -49,7 +49,7 @@ const Clock = ({ ...props }: any) => {
   }, [updateDate]);
 
   return (
-    <View {...props}>
+    <View fillColor="white" {...props}>
       <View as="svg" flex viewBox="0 0 200 200">
         {Array.from({ length: 12 }, (_, index, angle = (index * 30 + 180) * (Math.PI / 180)) => (
           <circle

@@ -65,7 +65,7 @@ const Field = ({
       ) : null;
       case 'range': return typeof value === 'number' ? (
         <Slider value={value} onValueChange={handleSliderValueChange} />
-      ) : 'xxx';
+      ) : null;
     }
 
     return typeof value === 'string' ? (

@@ -59,9 +59,9 @@ const Music = ({ ...props }: any) => {
         <Slider value={0} style={{ marginTop: -4 }} />
         <Spacer size="small" />
         <Stack horizontal spacing="large" align="center">
-          <Button text iconSize="2x" icon="backward-step" />
-          <Button text iconSize="4x" icon="play-circle" />
-          <Button text iconSize="2x" icon="forward-step" />
+          <Button text iconSize="2x" icon="backward-step" titleTextColor="gray-6" />
+          <Button text iconSize="4x" icon="play-circle" titleTextColor="gray-6" />
+          <Button text iconSize="2x" icon="forward-step" titleTextColor="gray-6" />
         </Stack>
       </View>
     </View>

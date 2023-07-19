@@ -5,7 +5,7 @@ const useInnerStyles = createUseStyles({
   Text: {
     fontSize: 14,
     lineHeight: '20px',
-    margin: '-4px 0 -3px 0',
+    margin: '-4px 0 -4px 0',
     display: 'inline-block',
     // height: '100%',
     // color: 'hsla(0, 0%, 0%, 0.8)',
@@ -45,7 +45,7 @@ const useFontSizeStyles = createUseStyles({
   small: {
     fontSize: 14,
     lineHeight: '20px',
-    margin: '-4px 0 -3px 0'
+    margin: '-4px 0 -4px 0'
   },
   medium: {
     fontSize: 18,

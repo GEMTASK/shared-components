@@ -51,10 +51,26 @@ const RadioButton = ({ label, value, onValueChange, ...props }: RadioButtonProps
 
   return (
     <View as="label" horizontal align="middle left" {...props}>
+      <View border={!value} fillColor={value ? 'blue-5' : 'white'} align="center" minWidth={24} minHeight={24} style={{ overflow: 'hidden', borderRadius: 1000 }}>
+        <input type="radio" checked={value} style={{ position: 'absolute', left: -1000 }} onChange={handleInputChange} />
+        {value && (
+          <Icon
+            color={value ? 'white' : 'gray-3'}
+            icon={'check'}
+          />
+        )}
+      </View>
+      <Spacer size="small" />
+      <Text>{label}</Text>
+    </View>
+  );
+
+  return (
+    <View as="label" horizontal align="middle left" {...props}>
       <input hidden type="radio" checked={value} onChange={handleInputChange} />
       <Icon
         size="xl"
-        color={value ? OpenColor.blue[5] : OpenColor.gray[3]}
+        color={value ? 'blue-5' : 'gray-3'}
         icon={value ? 'circle-check' : 'circle'}
       // style={{ boxShadow: 'inset 0 0 0 1px gray', margin: '-10px 0' }}
       />

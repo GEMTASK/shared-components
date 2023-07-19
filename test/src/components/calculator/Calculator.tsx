@@ -78,7 +78,7 @@ const reducer = (state: State, action: Action): State => {
 
 const CalcButton = ({ title, onClick, ...props }: any) => {
   return (
-    <Button solid title={title} minWidth={50} onClick={onClick} {...props} />
+    <Button solid title={title} minWidth={0} minHeight={0} onClick={onClick} {...props} />
   );
 };
 
@@ -115,11 +115,20 @@ const Calculator = ({ ...props }: any) => {
 
   return (
     <View {...props}>
-      <Text fontSize="xlarge" textAlign="right" padding="large large" fillColor="white">
+      <Text fontSize="xlarge" textAlign="right" padding="large large" fillColor="white" style={{ borderTopLeftRadius: 4, borderTopRightRadius: 4 }}>
         {display}
       </Text>
       <Divider />
-      <Grid flex tabIndex={0} fillColor="gray-1" padding="small" columns={4} gap={8} style={{ borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }} onKeyDown={handleKeyDown}>
+      <Grid
+        flex
+        tabIndex={0}
+        fillColor="gray-1"
+        padding="small"
+        columns={4}
+        gap={8}
+        style={{ borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}
+        onKeyDown={handleKeyDown}
+      >
         <CalcButton title="C" onClick={() => dispatch({ type: 'CLEAR' })} />
         <CalcButton title="÷" onClick={() => OperatorPress('DIVIDE')} />
         <CalcButton title="×" onClick={() => OperatorPress('MULTIPLY')} />

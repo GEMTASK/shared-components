@@ -36,13 +36,15 @@ const Line = ({
 
 const Terminal = ({ ...props }: any) => {
   const historyElementRef = useRef<HTMLElement>(null);
+  const inputElementRef = useRef<HTMLInputElement>(null);
 
   const [value, setValue] = useState('');
   const [history, setHistory] = useState<React.ReactElement[]>([
     <Text align="left" paddingVertical="xsmall" style={{ flexShrink: 0 }} >
       Type a command such as "date", "clock", or "icon house" or any free icon from{' '}
       <Link to="http://fontawesome.com/search?o=r&m=free" target="_blank">fontawesome.com</Link>
-    </Text>
+    </Text>,
+    <Clock style={{ width: 150 }} />
   ]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,9 +101,14 @@ const Terminal = ({ ...props }: any) => {
     }
   };
 
+  const handlePointerDown = () => {
+    setTimeout(() => {
+      inputElementRef.current?.focus();
+    });
+  };
 
   return (
-    <View {...props}>
+    <View {...props} onPointerDown={handlePointerDown}>
       <View ref={historyElementRef} paddingHorizontal="small" style={{ overflowY: 'auto' }}>
         <Spacer size="small" />
         {history.map(item => (
@@ -109,7 +116,7 @@ const Terminal = ({ ...props }: any) => {
         ))}
       </View>
       <View horizontal align="left" paddingHorizontal="small" style={{ marginTop: -5 }}>
-        <Input flush icon="angle-right" value={value} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
+        <Input ref={inputElementRef} flush icon="angle-right" value={value} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
       </View>
       <Spacer size="small" />
     </View>

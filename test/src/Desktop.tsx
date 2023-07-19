@@ -143,18 +143,24 @@ const App = () => {
 
   return (
     <View style={{ minHeight: '100vh' }}>
-      <Stack horizontal paddingHorizontal="large">
+      <Stack horizontal shadow paddingHorizontal="large" style={{ zIndex: 1 }}>
         <Menu hover title="React-Desktop" rightIcon={undefined} items={desktopMenuItems} />
         <Menu hover title="Applications" rightIcon={undefined} items={applicationMenuItems} />
       </Stack>
-      <Desktop
-        wallpaper="images/d1e91a4058a8a1082da711095b4e0163.jpg"
-        windows={windows}
-        windowOrder={windowOrder}
-        onWindowFocus={handleWindowFocus}
-        onWindowChange={handleWindowChange}
-        onWindowClose={handleWindowClose}
-      />
+      <View flex horizontal>
+        <Desktop
+          wallpaper="images/d1e91a4058a8a1082da711095b4e0163.jpg"
+          windows={windows}
+          windowOrder={windowOrder}
+          onWindowFocus={handleWindowFocus}
+          onWindowChange={handleWindowChange}
+          onWindowClose={handleWindowClose}
+        />
+        <Stack shadow spacing="small" fillColor="gray-3" padding="small">
+          <Clock style={{ borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }} />
+          <Calculator style={{ borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }} />
+        </Stack>
+      </View>
     </View>
   );
 };
