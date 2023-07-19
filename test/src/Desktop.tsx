@@ -156,7 +156,7 @@ const App = () => {
           onWindowChange={handleWindowChange}
           onWindowClose={handleWindowClose}
         />
-        <Stack shadow spacing="small" fillColor="gray-3" padding="small">
+        <Stack absolute shadow fillColor="alpha-1" spacing="small" padding="small" style={{ top: 0, right: 0, bottom: 0, backdropFilter: 'blur(20px)' }}>
           <Clock style={{ borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }} />
           <Calculator style={{ borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }} />
         </Stack>
