@@ -18,8 +18,13 @@ import Preferences from './components/preferences';
 const About = () => {
   return (
     <View flex fillColor="gray-1" padding="large" align="center">
+      <Text fontSize="large">React Desktop</Text>
+      <Spacer size="xxlarge" />
       <Text textAlign="center">
-        A React-based desktop environment and component library<br /><br />
+        A React-based desktop environment and component library
+      </Text>
+      <Spacer size="large" />
+      <Text textAlign="center">
         2023 Mike Austin
       </Text>
     </View>
@@ -100,13 +105,13 @@ const App = () => {
   const desktopMenuItems = [
     {
       title: 'Preferences...', action: () => {
-        addWindow('Preferences...', <Preferences />);
+        addWindow('Preferences', <Preferences />);
       }
     },
     null,
     {
       title: 'About React-Desktop...', action: () => {
-        addWindow('About React-Desktop...', <About />);
+        addWindow('React-Desktop', <About />);
       }
     },
   ];
