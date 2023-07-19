@@ -6,6 +6,7 @@ type Contact = {
   id: number,
   firstName: string,
   lastName: string,
+  phone: string,
   email: string,
 };
 
@@ -14,6 +15,7 @@ const Contacts = ({ ...props }) => {
 
   const [contacts, setContacts] = useState<Contact[]>();
   const [selectedContactId, setSelectedContactId] = useState<number>();
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -39,6 +41,7 @@ const Contacts = ({ ...props }) => {
 
               customerObjectStore.add({ firstName: 'John', lastName: 'Appleseed', email: 'john.appleseed@example.com' });
               customerObjectStore.add({ firstName: 'Susan', lastName: 'Hotchkins', email: 'susan.hotchins@example.com' });
+              customerObjectStore.add({ firstName: 'Ryan', lastName: 'Blanchard', email: 'ryan.blanchard@example.com' });
             }
           };
         }
@@ -52,9 +55,8 @@ const Contacts = ({ ...props }) => {
             .transaction('contacts')
             .objectStore("contacts")
             .getAll().onsuccess = (event: any) => {
-              console.log(event.target.result);
-
               setContacts(event.target.result);
+              setSelectedContactId(event.target.result[0].id);
             };
         }
       };
@@ -99,7 +101,7 @@ const Contacts = ({ ...props }) => {
 
       <View fillColor="gray-1" minWidth={192}>
         <View horizontal padding="small large">
-          <Button solid title="New Contact" />
+          <Button solid primary title="New Contact" />
         </View>
         <Divider />
         <View padding="large">
@@ -109,27 +111,37 @@ const Contacts = ({ ...props }) => {
         </View>
         <Divider />
         <View flex padding="small" fillColor="white">
-          <Stack divider>
+          <Stack >
             {contacts?.map(contact => (
-              <View padding="small" onClick={() => setSelectedContactId(contact.id)}>
-                <Text>{contact.firstName} {contact.lastName}</Text>
+              <View key={contact.id} padding="small" fillColor={contact.id === selectedContactId ? 'blue-5' : undefined} style={{ borderRadius: 2.5 }} onClick={() => setSelectedContactId(contact.id)}>
+                <Text
+                  textColor={contact.id === selectedContactId ? 'white' : undefined}
+                  fontWeight={contact.id === selectedContactId ? 'semibold' : undefined}
+                >
+                  {contact.firstName} {contact.lastName}
+                </Text>
               </View>
             ))}
           </Stack>
-          <Divider />
+          {/* <Divider /> */}
         </View>
       </View>
 
       <View flex>
         <View horizontal padding="small large">
-          <Stack horizontal spacing="small">
-            <Button icon="edit" title="Edit" />
+          <Stack horizontal spacing="large">
+            <Button text icon="message" title="Message" titleTextColor="blue-5" />
+            <Button text icon="video" title="Facetime" titleTextColor="blue-5" />
+            <Button text icon="envelope" title="Email" titleTextColor="blue-5" />
           </Stack>
           <Spacer flex size="large" />
           <Stack horizontal spacing="small">
-            <Button icon="message" title="Message" />
-            <Button icon="video" title="Facetime" />
-            <Button icon="envelope" title="Email" />
+            <Button
+              primary
+              icon="edit"
+              title={isEditing ? 'Done' : 'Edit'}
+              onClick={() => setIsEditing(isEditing => !isEditing)}
+            />
           </Stack>
         </View>
         <Divider />
@@ -145,10 +157,10 @@ const Contacts = ({ ...props }) => {
               id="form"
               flush
               fields={[
-                { key: 'firstName', label: 'First Name', type: 'text' },
-                { key: 'lastName', label: 'Last Name', type: 'text' },
-                // { key: 'phone', label: 'phone', type: 'text' },
-                { key: 'email', label: 'Email', type: 'text' },
+                ...(isEditing || selectedContact?.firstName ? [{ key: 'firstName', label: 'First Name' } as const] : []),
+                ...(isEditing || selectedContact?.lastName ? [{ key: 'lastName', label: 'Last Name' } as const] : []),
+                ...(isEditing || selectedContact?.phone ? [{ key: 'phone', label: 'Phone' } as const] : []),
+                ...(isEditing || selectedContact?.email ? [{ key: 'email', label: 'Email' } as const] : []),
               ]}
               initialValues={selectedContact}
               onFieldChange={handleFormValueChange}
