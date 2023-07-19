@@ -1,14 +1,32 @@
 import { useLayoutEffect, useRef, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { Icon, Input, Spacer, Text, View, ViewProps } from 'bare';
+import Clock from '../clock/Clock';
+import { TextProps } from 'bare/dist/components/text/Text';
+
+type LinkProps = TextProps<'a'> & React.ComponentProps<typeof RouterLink>;
+
+const Link = ({
+  children,
+  to,
+  target,
+  ...props
+}: LinkProps) => {
+  return (
+    <Text inner={RouterLink} innerProps={{ to, target }} textColor="blue-5" {...props}>
+      {children}
+    </Text>
+  );
+};
 
 const Line = ({
   children,
 }: {
 } & ViewProps) => {
   return (
-    <View horizontal align="left" minHeight={24}>
+    <View horizontal align="left" paddingVertical="xsmall">
       <Icon icon="angle-right" />
       <Spacer size="xsmall" />
       {children}
@@ -21,8 +39,9 @@ const Terminal = ({ ...props }: any) => {
 
   const [value, setValue] = useState('');
   const [history, setHistory] = useState<React.ReactElement[]>([
-    <Text align="left" minHeight={24}>
-      Type a command such as "date" or "icon car"
+    <Text align="left" paddingVertical="xsmall" style={{ flexShrink: 0 }} >
+      Type a command such as "date", "clock", or "icon house" or any free icon from{' '}
+      <Link to="http://fontawesome.com/search?o=r&m=free" target="_blank">fontawesome.com</Link>
     </Text>
   ]);
 
@@ -48,22 +67,29 @@ const Terminal = ({ ...props }: any) => {
       ]);
 
       if (value) {
-        let element = <Text align="left" minHeight={24}>Command not found</Text>;
+        let element: React.ReactNode = 'Command not found';
         const [command, arg] = value.split(' ');
 
         switch (command) {
           case 'date':
-            element = <Text align="left" minHeight={24}>{new Date().toLocaleString()}</Text>;
+            element = new Date().toLocaleString();
             break;
           case 'icon':
             element = <Icon icon={arg as any} size="3x" />;
+            break;
+          case 'clock':
+            element = <Clock style={{ width: 150 }} />;
         }
+
         setHistory(history => [
           ...history,
           <View horizontal>
             <ErrorBoundary fallback={<Text>Error</Text>} onError={() => console.log('here')}>
-              {/* <Icon icon={value as any} size="3x" /> */}
-              {element}
+              {typeof element === 'string' ? (
+                <Text align="left" paddingVertical="xsmall">{element}</Text>
+              ) : (
+                element
+              )}
             </ErrorBoundary>
           </View>
         ]);
@@ -82,7 +108,7 @@ const Terminal = ({ ...props }: any) => {
           item
         ))}
       </View>
-      <View horizontal align="left" paddingHorizontal="small" style={{ marginTop: -4 }}>
+      <View horizontal align="left" paddingHorizontal="small" style={{ marginTop: -5 }}>
         <Input flush icon="angle-right" value={value} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
       </View>
       <Spacer size="small" />

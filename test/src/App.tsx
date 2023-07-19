@@ -9,9 +9,9 @@ import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table, Toast, toast } from
 
 import { TextProps } from 'bare/dist/components/text/Text';
 
-type LinkProps = TextProps<'a'> & React.ComponentProps<typeof RouterLink>;
-
 const lorem = new LoremIpsum({ wordsPerSentence: { min: 2, max: 8 } });
+
+type LinkProps = TextProps<'a'> & React.ComponentProps<typeof RouterLink>;
 
 const Link = ({
   children,
