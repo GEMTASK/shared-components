@@ -113,7 +113,7 @@ const Contacts = ({ ...props }) => {
         <View flex padding="small" fillColor="white">
           <Stack >
             {contacts?.map(contact => (
-              <View key={contact.id} padding="small" fillColor={contact.id === selectedContactId ? 'blue-5' : undefined} style={{ borderRadius: 2.5 }} onClick={() => setSelectedContactId(contact.id)}>
+              <View key={contact.id} padding="small medium" fillColor={contact.id === selectedContactId ? 'blue-5' : undefined} style={{ borderRadius: 2.5 }} onClick={() => setSelectedContactId(contact.id)}>
                 <Text
                   textColor={contact.id === selectedContactId ? 'white' : undefined}
                   fontWeight={contact.id === selectedContactId ? 'semibold' : undefined}
