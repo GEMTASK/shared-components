@@ -10,7 +10,7 @@ library.add(fas, far);
 
 type IconProps = {
   icon: React.ComponentProps<typeof FontAwesomeIcon>['icon'],
-  color?: React.ComponentProps<typeof FontAwesomeIcon>['color'],
+  color?: React.ComponentProps<typeof View>['fillColor'],
 } & React.ComponentProps<typeof FontAwesomeIcon>;
 
 const Icon = ({

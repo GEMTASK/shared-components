@@ -59,12 +59,11 @@ const Checkbox = ({ label, value, onValueChange, ...props }: CheckboxProps) => {
 
   return (
     <View as="label" horizontal align="middle left" {...props}>
-      <View border fillColor={value ? 'blue-5' : 'white'} align="center" minWidth={24} minHeight={24} style={{ overflow: 'hidden', boxShadow: value ? 'none' : undefined }}>
+      <View border={!value} fillColor={value ? 'blue-5' : 'white'} align="center" minWidth={24} minHeight={24} style={{ overflow: 'hidden', borderRadius: 2.5 }}>
         <input type="checkbox" checked={value} style={{ position: 'absolute', left: -1000 }} onChange={handleInputChange} />
         {value && (
           <Icon
-            size="sm"
-            color={value ? OpenColor.white : OpenColor.gray[3]}
+            color={value ? 'white' : 'gray-3'}
             icon={'check'}
           />
         )}
