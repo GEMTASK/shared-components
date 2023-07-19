@@ -330,9 +330,6 @@ function App() {
                 state: 'AK',
               }}
             />
-            <Spacer size="large" />
-
-            <Table />
 
             <Spacer size="large" />
             <View horizontal>
@@ -423,13 +420,10 @@ function App() {
 
         <Divider spacing="large" />
 
-        <Table />
-
-        <Divider spacing="large" />
-
-        <View horizontal>
-          <Table borderless />
-        </View>
+        <Stack horizontal spacing="large">
+          <Table flex />
+          <Table flex borderless />
+        </Stack>
 
       </View>
 
