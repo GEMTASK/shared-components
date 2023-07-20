@@ -18,7 +18,7 @@ async function OperatorExpression(
     return leftValue[operator](rightValue);
   }
 
-  throw new Error(`'${await leftValue.inspect()}' of type ${leftValue.constructor.name} doesn't have an operator method '${operator}'`);
+  throw new Error(`"${await leftValue.inspect()}" of type ${leftValue.constructor.name} doesn't have an operator method "${operator}".`);
 }
 
 async function ApplyExpression(
@@ -32,7 +32,7 @@ async function ApplyExpression(
     return func.apply(undefined, [await evaluate(argumentExpression, environment)]);
   }
 
-  throw new Error(`No KopiApplicative.apply() method found for ${func.constructor.name}`);
+  throw new Error(`No KopiApplicative.apply() method found for ${func.constructor.name}.`);
 }
 
 async function NumericLiteral(
@@ -51,7 +51,7 @@ async function Identifier(
     return value;
   }
 
-  throw new Error(`Variable '${astNode.name}' not found in current scope`);
+  throw new Error(`Variable "${astNode.name}" not found in current scope.`);
 }
 
 export {

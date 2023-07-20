@@ -43,7 +43,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
     default:
       console.warn('No transformAst found for', rawASTNode);
 
-      return new ASTNode(rawASTNode.location);
+      throw new Error(`No transformAst found for ${rawASTNode.type}`);
   }
 }
 
@@ -85,7 +85,7 @@ function evaluate(astNode: ASTNode, environment: Environment) {
   } else {
     console.warn('No visitor found for', astNode);
 
-    throw new Error();
+    throw new Error(`No visitor found for ${astNode.constructor.name}`);
   }
 }
 

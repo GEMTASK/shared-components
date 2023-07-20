@@ -85,7 +85,11 @@ const Terminal = ({ ...props }: any) => {
 
         setValue('');
 
-        element = await (await interpret(value)).inspect();
+        try {
+          element = await (await interpret(value)).inspect();
+        } catch (error) {
+          element = (error as Error).message;
+        }
 
         setHistory(history => [
           ...history,
