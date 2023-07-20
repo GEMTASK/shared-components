@@ -114,20 +114,18 @@ const Calculator = ({ ...props }: any) => {
   };
 
   return (
-    <View {...props}>
+    <View {...props} tabIndex={0} onKeyDown={handleKeyDown}>
       <Text fontSize="xlarge" textAlign="right" padding="large large" fillColor="white" style={{ borderTopLeftRadius: 4, borderTopRightRadius: 4 }}>
         {display}
       </Text>
       <Divider />
       <Grid
         flex
-        tabIndex={0}
         fillColor="gray-1"
         padding="small"
         columns={4}
         gap={8}
         style={{ borderBottomLeftRadius: 4, borderBottomRightRadius: 4 }}
-        onKeyDown={handleKeyDown}
       >
         <CalcButton title="C" onClick={() => dispatch({ type: 'CLEAR' })} />
         <CalcButton title="÷" onClick={() => OperatorPress('DIVIDE')} />
