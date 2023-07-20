@@ -85,11 +85,7 @@ const Terminal = ({ ...props }: any) => {
 
         setValue('');
 
-        const result = await interpret(value);
-
-        element = await result.inspect();
-
-        console.log('>>>', result);
+        element = await (await interpret(value)).inspect();
 
         setHistory(history => [
           ...history,

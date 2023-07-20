@@ -61,9 +61,7 @@ Function.prototype.inspect = function () {
   return Promise.resolve(`<native-function>`);
 };
 
-const environment: {
-  [name: string]: KopiValue;
-} = {
+const environment: Environment = {
   // async date() {
   //   // return new KopiString(new Date().toLocaleString())
   //   return 100;
