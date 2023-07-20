@@ -6,6 +6,8 @@ import { Icon, Input, Spacer, Text, View, ViewProps } from 'bare';
 import Clock from '../clock/Clock';
 import { TextProps } from 'bare/dist/components/text/Text';
 
+import { interpret } from './kopi-language';
+
 type LinkProps = TextProps<'a'> & React.ComponentProps<typeof RouterLink>;
 
 const Link = ({
@@ -57,9 +59,7 @@ const Terminal = ({ ...props }: any) => {
     }
   }, [history]);
 
-  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log('handleInputValueChange');
-
+  const handleInputKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       setHistory(history => [
         ...history,
@@ -82,6 +82,10 @@ const Terminal = ({ ...props }: any) => {
           case 'clock':
             element = <Clock style={{ width: 150 }} />;
         }
+
+        const result = await interpret(value);
+
+        console.log('>>>', result);
 
         setHistory(history => [
           ...history,

@@ -15,6 +15,7 @@
     "cors-anywhere": "^0.4.4",
     "cra": "file:../cra",
     "lorem-ipsum": "^2.0.8",
+    "peggy": "^3.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.10",
@@ -30,6 +31,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "peggy": "peggy --format es --output src/components/terminal/kopi-language/lib/parser.js src/components/terminal/kopi-language/src/parser.pegjs",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
