@@ -88,6 +88,8 @@ const Terminal = ({ ...props }: any) => {
         try {
           element = await (await interpret(value)).inspect();
         } catch (error) {
+          console.warn((error as any).location);
+
           element = (error as Error).message;
         }
 
