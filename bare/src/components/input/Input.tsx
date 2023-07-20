@@ -86,6 +86,7 @@ const Input = ({
   flush,
   options,
   placeholder,
+  style,
   onChange,
   onKeyDown,
   onValueChange,
@@ -157,6 +158,8 @@ const Input = ({
     };
   }, [value, internalValue]);
 
+  const { fontFamily } = style ?? {};
+
   const inputStyle = {
     background: 'none',
     margin: 0,
@@ -212,7 +215,7 @@ const Input = ({
           type={type}
           value={internalValue}
           placeholder={placeholder}
-          style={{ ...inputStyle, appearance: 'none' }}
+          style={{ ...inputStyle, appearance: 'none', fontFamily }}
           onChange={handleInputChange}
           onKeyDown={handleInputKeyDown}
           onBlur={handleInputBlur}

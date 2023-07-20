@@ -2,8 +2,10 @@
 Expression
   = AddExpression
 
+//
+
 AddExpression
-  = head:PrimaryExpression tail:(__ ("+" / "-") __ PrimaryExpression)* {
+  = head:ApplyExpression tail:(__ ("+" / "-") __ ApplyExpression)* {
       return tail.reduce((leftExpression, [, operator, , rightExpression]) => ({
         type: 'OperatorExpression',
         operator,
@@ -13,12 +15,22 @@ AddExpression
        }), head);
     }
 
+ApplyExpression
+  = expression:PrimaryExpression _arguments:(__ PrimaryExpression)* {
+      return _arguments.reduce((expression, [, argumentExpression]) => ({
+        type: 'ApplyExpression',
+        expression,
+        argumentExpression,
+      }), expression);
+    }
+
 PrimaryExpression
   = "(" expr:Expression ")" !"=>" {
       return expr;
     }
   / FunctionExpression
   / NumericLiteral
+  / Identifier
 
 FunctionExpression
   = parameterPattern:Pattern __ "=>" __ bodyExpression:Expression {
@@ -29,8 +41,12 @@ FunctionExpression
       }
     }
 
+//
+
 Pattern
   = "(" __ ")"
+
+//
 
 NumericLiteral "number"
   = value:([0-9]+ ("." !"." [0-9]+)?) {
@@ -40,6 +56,16 @@ NumericLiteral "number"
       location: location(),
     });
   }
+
+Identifier "identifier"
+  = name:([_a-zA-Z][_a-zA-Z0-9]*) {
+      return ({
+        type: 'Identifier',
+        name: name[0] + name[1].join('')
+      });
+    }
+
+//
 
 __ "whitespace"
   = (" " / Newline)*

@@ -1,7 +1,7 @@
 import { ASTNode } from './types';
 
 class OperatorExpression extends ASTNode {
-  readonly operator: string;
+  readonly operator: '+' | '-';
   readonly leftExpression: ASTNode;
   readonly rightExpression: ASTNode;
 
@@ -29,6 +29,18 @@ class FunctionExpression extends ASTNode {
   }
 }
 
+class ApplyExpression extends ASTNode {
+  readonly expression: ASTNode;
+  readonly argumentExpression: ASTNode;
+
+  constructor({ expression, argumentExpression, location }: ApplyExpression) {
+    super(location);
+
+    this.expression = expression;
+    this.argumentExpression = argumentExpression;
+  }
+};
+
 class NumericLiteral extends ASTNode {
   readonly value: number;
 
@@ -39,8 +51,20 @@ class NumericLiteral extends ASTNode {
   }
 }
 
+class Identifier extends ASTNode {
+  readonly name: string;
+
+  constructor({ name, location }: Identifier) {
+    super(location);
+
+    this.name = name;
+  }
+}
+
 export {
   OperatorExpression,
   FunctionExpression,
+  ApplyExpression,
   NumericLiteral,
+  Identifier,
 };

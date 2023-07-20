@@ -6,7 +6,7 @@ import { Icon, Input, Spacer, Text, View, ViewProps } from 'bare';
 import Clock from '../clock/Clock';
 import { TextProps } from 'bare/dist/components/text/Text';
 
-import { interpret } from './kopi-language';
+import { interpret, inspect } from './kopi-language';
 
 type LinkProps = TextProps<'a'> & React.ComponentProps<typeof RouterLink>;
 
@@ -42,7 +42,7 @@ const Terminal = ({ ...props }: any) => {
 
   const [value, setValue] = useState('');
   const [history, setHistory] = useState<React.ReactElement[]>([
-    <Text align="left" paddingVertical="xsmall" style={{ flexShrink: 0 }} >
+    <Text as="code" align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }} >
       Type a command such as "date", "clock", or "icon house" or any free icon from{' '}
       <Link to="http://fontawesome.com/search?o=r&m=free" target="_blank">fontawesome.com</Link>
     </Text>,
@@ -64,7 +64,7 @@ const Terminal = ({ ...props }: any) => {
       setHistory(history => [
         ...history,
         <Line>
-          <Text>{value}</Text>
+          <Text as="code" style={{ whiteSpace: 'pre-wrap' }}>{value}</Text>
         </Line>
       ]);
 
@@ -83,7 +83,11 @@ const Terminal = ({ ...props }: any) => {
             element = <Clock style={{ width: 150 }} />;
         }
 
+        setValue('');
+
         const result = await interpret(value);
+
+        element = await result.inspect();
 
         console.log('>>>', result);
 
@@ -92,7 +96,7 @@ const Terminal = ({ ...props }: any) => {
           <View horizontal>
             <ErrorBoundary fallback={<Text>Error</Text>} onError={() => console.log('here')}>
               {typeof element === 'string' ? (
-                <Text align="left" paddingVertical="xsmall">{element}</Text>
+                <Text as="code" align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>{element}</Text>
               ) : (
                 element
               )}
@@ -100,8 +104,6 @@ const Terminal = ({ ...props }: any) => {
           </View>
         ]);
       }
-
-      setValue('');
     }
   };
 
@@ -120,7 +122,7 @@ const Terminal = ({ ...props }: any) => {
         ))}
       </View>
       <View horizontal align="left" paddingHorizontal="small" style={{ marginTop: -5 }}>
-        <Input ref={inputElementRef} flush icon="angle-right" value={value} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
+        <Input ref={inputElementRef} flush icon="angle-right" value={value} style={{ fontFamily: 'monospace' }} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
       </View>
       <Spacer size="small" />
     </View>
