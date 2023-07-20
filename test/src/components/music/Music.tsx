@@ -40,7 +40,7 @@ const Music = ({ ...props }: any) => {
 
   return (
     <View {...props}>
-      <Stack divider dividerInset={16} style={{ overflowY: 'auto' }}>
+      <Stack flex divider dividerInset={16} style={{ overflowY: 'auto' }}>
         {songs.map(({ title, length, artist }, index) => (
           <Song
             key={index}

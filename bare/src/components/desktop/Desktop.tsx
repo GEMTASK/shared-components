@@ -304,3 +304,7 @@ const Desktop = ({
 };
 
 export default Desktop;
+
+export {
+  type Rect,
+};
