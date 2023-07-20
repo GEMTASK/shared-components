@@ -44,12 +44,12 @@ const initialState = [
   },
   {
     id: uuidv4(), title: 'Calculator', element: <Calculator />, rect: {
-      x: 705, y: 15, width: 260, height: 332,
+      x: 705, y: 15, width: 255, height: 332,
     }
   },
   {
     id: uuidv4(), title: 'Notes', element: <Notes />, rect: {
-      x: 980, y: 15, width: 310, height: 332,
+      x: 975, y: 15, width: 315, height: 332,
     }
   },
   {
@@ -59,7 +59,7 @@ const initialState = [
   },
   {
     id: uuidv4(), title: 'Contacts', element: <Contacts />, rect: {
-      x: 390, y: 360, width: 575, height: 540,
+      x: 390, y: 360, width: 570, height: 540,
     }
   },
   // {
@@ -74,7 +74,7 @@ const initialState = [
   },
   {
     id: uuidv4(), title: 'Files', element: <Filesystem />, rect: {
-      x: 980, y: 360, width: 685, height: 540,
+      x: 975, y: 360, width: 690, height: 540,
     }
   },
 ];
