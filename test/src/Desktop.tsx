@@ -126,6 +126,9 @@ const App = () => {
     { title: 'Browser', action: () => addWindow('Browser', <Browser />, { width: 1280, height: 800 }) },
     { title: 'Email', action: () => addWindow('Email', <Email />, { width: 1280, height: 800 }) },
     null,
+    'Programs',
+    { title: 'Draw', action: () => addWindow('Email', <View as="iframe" frameBorder="0" src="https://mike-austin.com/draw-2/" />, { width: 1280, height: 800 }) },
+    null,
     'Games',
     { title: 'Asteroids', action: () => console.log('3') },
   ];
@@ -153,7 +156,7 @@ const App = () => {
         <Menu hover title="React-Desktop" rightIcon={undefined} items={desktopMenuItems} />
         <Menu hover title="Applications" rightIcon={undefined} items={applicationMenuItems} />
       </Stack>
-      <View flex horizontal>
+      <View flex horizontal style={{ zIndex: 0 }}>
         <Desktop
           wallpaper="images/d1e91a4058a8a1082da711095b4e0163.jpg"
           windows={windows}

@@ -87,7 +87,7 @@ const Item = ({
   };
 
   return (
-    <View horizontal padding="small large" className={styles.Item} onClick={handleClick} {...props}>
+    <View horizontal padding="small large" className={styles.Item} minWidth={144} onClick={handleClick} {...props}>
       <Text fontWeight="semibold" style={{ whiteSpace: 'nowrap' }}>{title}</Text>
     </View>
   );
