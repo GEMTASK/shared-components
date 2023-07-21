@@ -1,3 +1,5 @@
+import React from 'react';
+
 const spaces = (level: number) => {
   return '  '.repeat(level);
 };
@@ -42,7 +44,7 @@ class ASTNode {
 }
 
 class KopiValue {
-  async inspect() {
+  async inspect(): Promise<string | React.ReactElement> {
     return inspect(this);
   }
 }

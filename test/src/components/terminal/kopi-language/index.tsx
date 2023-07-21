@@ -61,18 +61,6 @@ Function.prototype.inspect = function () {
   return Promise.resolve(`<native-function>`);
 };
 
-const environment: Environment = {
-  // async date() {
-  //   // return new KopiString(new Date().toLocaleString())
-  //   return 100;
-  // },
-  async sleep(number: KopiNumber) {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(number), number.value * 1000);
-    });
-  }
-};
-
 function evaluate(astNode: ASTNode, environment: Environment) {
   if (astNode instanceof astNodes.OperatorExpression) {
     return visitors.OperatorExpression(astNode, environment, evaluate);
@@ -91,7 +79,7 @@ function evaluate(astNode: ASTNode, environment: Environment) {
   }
 }
 
-async function interpret(source: string) {
+async function interpret(source: string, environment: Environment) {
   var rootAst = parser.parse(source);
 
   return evaluate(transform(rootAst), environment);

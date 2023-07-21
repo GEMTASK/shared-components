@@ -7,8 +7,23 @@ import Clock from '../clock/Clock';
 import { TextProps } from 'bare/dist/components/text/Text';
 
 import { interpret, inspect } from './kopi-language';
+import { KopiNumber } from './kopi-language/src/classes';
 
 type LinkProps = TextProps<'a'> & React.ComponentProps<typeof RouterLink>;
+
+const environment = {
+  date: {
+    inspect: async () => new Date().toLocaleString()
+  },
+  async sleep(number: KopiNumber) {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(number), number.value * 1000);
+    });
+  },
+  clock: {
+    inspect: async () => <Clock style={{ width: 150 }} />
+  }
+};
 
 const Link = ({
   children,
@@ -73,20 +88,15 @@ const Terminal = ({ ...props }: any) => {
         const [command, arg] = value.split(' ');
 
         switch (command) {
-          case 'date':
-            element = new Date().toLocaleString();
-            break;
           case 'icon':
             element = <Icon icon={arg as any} size="3x" />;
             break;
-          case 'clock':
-            element = <Clock style={{ width: 150 }} />;
         }
 
         setValue('');
 
         try {
-          element = await (await interpret(value)).inspect();
+          element = await (await interpret(value, environment)).inspect();
         } catch (error) {
           console.warn((error as any).location);
 
