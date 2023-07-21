@@ -44,7 +44,12 @@ FunctionExpression
 //
 
 Pattern
-  = "(" __ ")"
+  = "(" __ ")" {
+    return {
+      type: "NumericLiteral",
+      value: 100,
+    }
+  }
 
 //
 

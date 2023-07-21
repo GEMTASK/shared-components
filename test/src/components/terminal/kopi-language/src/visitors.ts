@@ -35,6 +35,19 @@ async function ApplyExpression(
   throw new Error(`No KopiApplicative.apply() method found for ${func.constructor.name}.`);
 }
 
+async function FunctionExpression(
+  { parameterPattern, bodyExpression, name }: astNodes.FunctionExpression,
+  environment: Environment,
+): Promise<KopiValue> {
+  return new KopiNumber(5);
+  // return new KopiFunction(
+  //   parameterPattern,
+  //   bodyExpression,
+  //   environment,
+  //   name,
+  // );
+}
+
 async function NumericLiteral(
   { value }: astNodes.NumericLiteral,
 ): Promise<KopiValue> {
@@ -57,6 +70,7 @@ async function Identifier(
 export {
   OperatorExpression,
   ApplyExpression,
+  FunctionExpression,
   NumericLiteral,
   Identifier,
 };

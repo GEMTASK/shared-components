@@ -78,6 +78,8 @@ function evaluate(astNode: ASTNode, environment: Environment) {
     return visitors.OperatorExpression(astNode, environment, evaluate);
   } else if (astNode instanceof astNodes.ApplyExpression) {
     return visitors.ApplyExpression(astNode, environment, evaluate);
+  } else if (astNode instanceof astNodes.FunctionExpression) {
+    return visitors.FunctionExpression(astNode, environment);
   } else if (astNode instanceof astNodes.NumericLiteral) {
     return visitors.NumericLiteral(astNode);
   } else if (astNode instanceof astNodes.Identifier) {

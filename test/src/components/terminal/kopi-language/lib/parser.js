@@ -232,14 +232,20 @@ function peg$parse(input, options) {
         bodyExpression,
       }
     };
-  var peg$f4 = function(value) {
+  var peg$f4 = function() {
+    return {
+      type: "NumericLiteral",
+      value: 100,
+    }
+  };
+  var peg$f5 = function(value) {
     return ({
       type: 'NumericLiteral',
       value: Number(`${value[0].join('')}.${value[1] ? value[1][2].join('') : ''}`),
       location: location(),
     });
   };
-  var peg$f5 = function(name) {
+  var peg$f6 = function(name) {
       return ({
         type: 'Identifier',
         name: name[0] + name[1].join('')
@@ -664,8 +670,8 @@ function peg$parse(input, options) {
         if (peg$silentFails === 0) { peg$fail(peg$e3); }
       }
       if (s3 !== peg$FAILED) {
-        s1 = [s1, s2, s3];
-        s0 = s1;
+        peg$savedPos = s0;
+        s0 = peg$f4();
       } else {
         peg$currPos = s0;
         s0 = peg$FAILED;
@@ -781,7 +787,7 @@ function peg$parse(input, options) {
     }
     if (s1 !== peg$FAILED) {
       peg$savedPos = s0;
-      s1 = peg$f4(s1);
+      s1 = peg$f5(s1);
     }
     s0 = s1;
     peg$silentFails--;
@@ -833,7 +839,7 @@ function peg$parse(input, options) {
     }
     if (s1 !== peg$FAILED) {
       peg$savedPos = s0;
-      s1 = peg$f5(s1);
+      s1 = peg$f6(s1);
     }
     s0 = s1;
     peg$silentFails--;
