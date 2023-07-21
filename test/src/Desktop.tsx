@@ -116,8 +116,7 @@ const App = () => {
     { title: 'About React Desktop...', action: () => addWindow('React Desktop', <About />) },
   ];
 
-  const applicationMenuItems = [
-    'Utilities',
+  const utilitiesMenuItems = [
     { title: 'Calendar', action: () => addWindow('Calendar', <Calendar />, { width: 360, height: 332 }) },
     { title: 'Clock', action: () => addWindow('Clock', <Clock />, { width: 300, height: 332 }) },
     { title: 'Calculator', action: () => addWindow('Calculator', <Calculator />, { width: 255, height: 332 }) },
@@ -125,7 +124,9 @@ const App = () => {
     { title: 'Music', action: () => addWindow('Music', <Music />, { width: 400, height: 500 }) },
     { title: 'Browser', action: () => addWindow('Browser', <Browser />, { width: 1280, height: 800 }) },
     { title: 'Email', action: () => addWindow('Email', <Email />, { width: 1280, height: 800 }) },
-    null,
+  ];
+
+  const applicationMenuItems = [
     'Programs',
     { title: 'Grid Draw', action: () => addWindow('Grid Draw', <View as="iframe" frameBorder="0" src="https://mike-austin.com/draw-2" />, { width: 1280, height: 800 }) },
     { title: 'Bestest Movies Ever', action: () => addWindow('Bestest Movies Ever', <View as="iframe" frameBorder="0" src="https://bestestmoviesever.com" />, { width: 1280, height: 800 }) },
@@ -159,7 +160,8 @@ const App = () => {
   return (
     <View style={{ minHeight: '100vh' }}>
       <Stack horizontal shadow paddingHorizontal="large" style={{ zIndex: 1 }}>
-        <Menu hover title="React-Desktop" rightIcon={undefined} items={desktopMenuItems} />
+        <Menu hover title="React-Desktop 2.0" titleFontWeight="bold" rightIcon={undefined} items={desktopMenuItems} />
+        <Menu hover title="Utilities" rightIcon={undefined} items={utilitiesMenuItems} />
         <Menu hover title="Applications" rightIcon={undefined} items={applicationMenuItems} />
       </Stack>
       <View flex horizontal style={{ zIndex: 0 }}>
