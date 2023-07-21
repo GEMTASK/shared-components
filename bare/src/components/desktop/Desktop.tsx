@@ -93,9 +93,12 @@ const Window = React.memo(({
   const handleTitlePointerDown = useCallback((event: React.PointerEvent) => {
     event.preventDefault();
     event.stopPropagation();
+
     event.currentTarget.setPointerCapture(event.pointerId);
 
     firstEventRef.current = event;
+
+    onWindowFocus?.(id);
 
     if (windowElementRef.current) {
       leftWindowRectsRef.current = getOffsetsRect(windowElementRef.current);
@@ -144,7 +147,7 @@ const Window = React.memo(({
     onWindowFocus?.(id);
   };
 
-  const events = {
+  const titleBarEvents = {
     onPointerDown: handleTitlePointerDown,
     onPointerMove: handleTitlePointerMove,
     onPointerUp: handleTitlePointerUp,
@@ -162,11 +165,7 @@ const Window = React.memo(({
       {...props}
       onPointerDown={handleWindowPointerDown}
     >
-      <View
-        fillColor="gray-4"
-        className={styles.Titlebar}
-        {...events}
-      >
+      <View fillColor="gray-4" className={styles.Titlebar} {...titleBarEvents}>
         <View absolute className={styles.Extender} />
         <View horizontal alignVertical="middle" style={{ height: 32, flexShrink: 0 }}>
           <Button hover size="xsmall" icon="close" onPointerDown={handleCloseButtonPointerDown} onClick={handleCloseButtonClick} />

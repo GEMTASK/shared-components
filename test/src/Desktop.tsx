@@ -134,10 +134,10 @@ const App = () => {
   ];
 
   const handleWindowFocus = (windowId: string) => {
-    // setWindowOrder(windowOrder => [
-    //   ...windowOrder.filter((id) => id !== windowId),
-    //   windowId,
-    // ]);
+    setWindowOrder(windowOrder => [
+      ...windowOrder.filter((id) => id !== windowId),
+      windowId,
+    ]);
   };
 
   const handleWindowChange = useCallback((id: string, rect: DOMRect) => {
