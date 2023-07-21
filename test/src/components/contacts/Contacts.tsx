@@ -107,7 +107,7 @@ const Contacts = ({ ...props }) => {
         <View padding="large">
           <Text fontSize="large">Contacts</Text>
           <Spacer size="small" />
-          <Input />
+          <Input icon="search" placeholder="Search" style={{ borderRadius: 1000 }} />
         </View>
         <Divider />
         <View flex padding="small" fillColor="white">

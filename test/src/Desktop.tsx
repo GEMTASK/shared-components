@@ -100,7 +100,7 @@ const App = () => {
       {
         id, title, element, rect: {
           x: (window.innerWidth - width) / 2,
-          y: (window.innerHeight - height) / 2,
+          y: (window.innerHeight - height - 32) / 2,
           width,
           height,
         }
@@ -127,10 +127,16 @@ const App = () => {
     { title: 'Email', action: () => addWindow('Email', <Email />, { width: 1280, height: 800 }) },
     null,
     'Programs',
-    { title: 'Draw', action: () => addWindow('Email', <View as="iframe" frameBorder="0" src="https://mike-austin.com/draw-2/" />, { width: 1280, height: 800 }) },
+    { title: 'Grid Draw', action: () => addWindow('Grid Draw', <View as="iframe" frameBorder="0" src="https://mike-austin.com/draw-2" />, { width: 1280, height: 800 }) },
+    { title: 'Bestest Movies Ever', action: () => addWindow('Bestest Movies Ever', <View as="iframe" frameBorder="0" src="https://bestestmoviesever.com" />, { width: 1280, height: 800 }) },
+    { title: 'Kopi Notebook', action: () => addWindow('Kopi Notebook', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/kopi-ide" />, { width: 1280, height: 800 }) },
+    { title: 'UI Builder', action: () => addWindow('UI Builder', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/builder" />, { width: 1280, height: 800 }) },
+    { title: 'Virtual Machine', action: () => addWindow('Virtual Machine', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/vmachine" />, { width: 455, height: 845 }) },
     null,
     'Games',
-    { title: 'Asteroids', action: () => console.log('3') },
+    { title: 'React Asteroids', action: () => addWindow('Virtual Machine', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/mdpYMym?default-tab=js%2Cresult" />, { width: 1440, height: 800 }) },
+    { title: 'Stetegic Asteroids', action: () => addWindow('Stetegic Asteroids', <View as="iframe" frameBorder="0" src="https://editor.p5js.org/mike_ekim1024/full/q8nWdZV0U" />, { width: 800, height: 873 }) },
+    { title: 'Snakey Snake', action: () => addWindow('Snakey Snake', <View as="iframe" frameBorder="0" src="https://editor.p5js.org/mike_ekim1024/full/8c5ovMThX" />, { width: 400, height: 474 }) },
   ];
 
   const handleWindowFocus = (windowId: string) => {
