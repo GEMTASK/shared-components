@@ -57,7 +57,7 @@ const Terminal = ({ ...props }: any) => {
 
   const [value, setValue] = useState('');
   const [history, setHistory] = useState<React.ReactElement[]>([
-    <Text as="code" align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }} >
+    <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }} >
       Type a command such as "date", "clock", or "icon house" or any free icon from{' '}
       <Link to="http://fontawesome.com/search?o=r&m=free" target="_blank">fontawesome.com</Link>
     </Text>,
@@ -79,7 +79,7 @@ const Terminal = ({ ...props }: any) => {
       setHistory(history => [
         ...history,
         <Line>
-          <Text as="code" style={{ whiteSpace: 'pre-wrap' }}>{value}</Text>
+          <Text style={{ whiteSpace: 'pre-wrap' }}>{value}</Text>
         </Line>
       ]);
 
@@ -108,7 +108,7 @@ const Terminal = ({ ...props }: any) => {
           <View horizontal>
             <ErrorBoundary fallback={<Text>Error</Text>} onError={() => console.log('here')}>
               {typeof element === 'string' ? (
-                <Text as="code" align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>{element}</Text>
+                <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>{element}</Text>
               ) : (
                 element
               )}
@@ -134,7 +134,7 @@ const Terminal = ({ ...props }: any) => {
         ))}
       </View>
       <View horizontal align="left" paddingHorizontal="small" style={{ marginTop: -5 }}>
-        <Input ref={inputElementRef} flush icon="angle-right" value={value} style={{ fontFamily: 'monospace' }} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
+        <Input ref={inputElementRef} flush icon="angle-right" value={value} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
       </View>
       <Spacer size="small" />
     </View>
