@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-import { View, Text, Image, Button, Spacer, Divider, Stack, Grid } from 'bare';
+import { View, Text, Image, Button, Spacer, Divider, Stack, Grid, createLink } from 'bare';
 import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table, Desktop } from 'bare';
 import { Rect } from 'bare/dist/components/desktop/Desktop';
 
@@ -17,17 +18,35 @@ import Contacts from './components/contacts';
 import Terminal from './components/terminal';
 import Preferences from './components/preferences';
 
+const Link = createLink(RouterLink);
+
 const About = () => {
   return (
     <View flex fillColor="gray-1" padding="large" align="center">
-      <Text fontSize="large">React Desktop</Text>
+      <Text fontSize="large">React Desktop 2.0</Text>
       <Spacer size="xxlarge" />
       <Text textAlign="center">
         A React-based desktop environment and component library
       </Text>
       <Spacer size="large" />
-      <Text textAlign="center">
+      <Text fontSize="xsmall" textColor="gray-6" textAlign="center">
         2023 Mike Austin
+      </Text>
+      <Spacer size="xxlarge" />
+      <Text textAlign="center" maxWidth={300}>
+        <Link to="https://www.npmjs.com/package/open-color" target="_blank">open-color</Link>
+        <Text> &nbsp; </Text>
+        <Link to="https://www.npmjs.com/package/react-jss" target="_blank">react-jss</Link>
+        <Text> &nbsp; </Text>
+        <Link to="https://www.npmjs.com/package/clsx" target="_blank">clsx</Link>
+        <Text> &nbsp; </Text>
+        <Link to="https://www.npmjs.com/package/react-responsive" target="_blank">react-responsive</Link>
+        <Text> &nbsp; </Text>
+        <Link to="https://www.npmjs.com/package/uuid" target="_blank">uuid</Link>
+        <Text> &nbsp; </Text>
+        <Link to="https://www.npmjs.com/package/@fortawesome/react-fontawesome" target="_blank">react-fontawesome</Link>
+        <Text> &nbsp; </Text>
+        <Link to="https://www.npmjs.com/package/lorem-ipsum" target="_blank">lorem-ipsum</Link>
       </Text>
     </View>
   );
@@ -113,7 +132,7 @@ const App = () => {
   const desktopMenuItems = [
     { title: 'Preferences...', action: () => addWindow('Preferences', <Preferences />) },
     null,
-    { title: 'About React Desktop...', action: () => addWindow('React Desktop', <About />) },
+    { title: 'About React Desktop 2.0...', action: () => addWindow('React Desktop 2.0', <About />) },
   ];
 
   const utilitiesMenuItems = [

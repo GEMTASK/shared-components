@@ -4,26 +4,12 @@ import { LoremIpsum } from 'lorem-ipsum';
 
 import styles from './App.module.css';
 
-import { hues, View, Text, Image, Button, Stack, Spacer, Divider } from 'bare';
+import { hues, View, Text, Image, Button, Stack, Spacer, Divider, createLink } from 'bare';
 import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table, Toast, toast } from 'bare';
 
-import { TextProps } from 'bare/dist/components/text/Text';
+const Link = createLink(RouterLink);
 
 const lorem = new LoremIpsum({ wordsPerSentence: { min: 2, max: 8 } });
-
-type LinkProps = TextProps<'a'> & React.ComponentProps<typeof RouterLink>;
-
-const Link = ({
-  children,
-  to,
-  ...props
-}: LinkProps) => {
-  return (
-    <Text inner={RouterLink} innerProps={{ to }} textColor="blue-5" {...props}>
-      {children}
-    </Text>
-  );
-};
 
 const Header = () => {
   return (

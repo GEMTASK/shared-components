@@ -2,14 +2,11 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { Icon, Input, Spacer, Text, View, ViewProps } from 'bare';
+import { Icon, Input, Spacer, Text, View, ViewProps, createLink } from 'bare';
 import Clock from '../clock/Clock';
-import { TextProps } from 'bare/dist/components/text/Text';
 
 import { interpret, inspect } from './kopi-language';
 import { KopiNumber } from './kopi-language/src/classes';
-
-type LinkProps = TextProps<'a'> & React.ComponentProps<typeof RouterLink>;
 
 const environment = {
   date: {
@@ -25,18 +22,7 @@ const environment = {
   }
 };
 
-const Link = ({
-  children,
-  to,
-  target,
-  ...props
-}: LinkProps) => {
-  return (
-    <Text inner={RouterLink} innerProps={{ to, target }} textColor="blue-5" {...props}>
-      {children}
-    </Text>
-  );
-};
+const Link = createLink(RouterLink);
 
 const Line = ({
   children,

@@ -1,1 +1,1 @@
-export { default } from './Text.js';
+export { default, type TextProps } from './Text.js';
