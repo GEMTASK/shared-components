@@ -1,4 +1,4 @@
-import { ASTNode, ASTPatternNode, Environment, Evaluate, KopiValue } from './types';
+import { ASTNode, ASTPatternNode, Context, Environment, Evaluate, KopiValue } from './types';
 
 class KopiNumber extends KopiValue {
   readonly value: number;
@@ -78,9 +78,11 @@ class KopiFunction extends KopiValue {
 
   async apply(
     thisArg: KopiValue,
-    [argument, environment, evaluate]: [KopiValue, Environment, Evaluate]
+    [argument, context]: [KopiValue, Context]
   ): Promise<KopiValue> {
-    const matches = await this.parameterPattern.match(argument, environment, evaluate);
+    const { environment, evaluate } = context;
+
+    const matches = await this.parameterPattern.match(argument, context);
 
     const newEnvironment = {
       ...this.environment,

@@ -48,8 +48,7 @@ class ASTNode {
 abstract class ASTPatternNode extends ASTNode {
   abstract match(
     value: KopiValue,
-    environment: Environment,
-    evaluate: Evaluate
+    context: Context,
   ): Promise<{ [name: string]: KopiValue; } | undefined>;
 }
 
@@ -63,8 +62,18 @@ interface Environment {
   [name: string | symbol]: KopiValue;
 }
 
+// class Environment {
+
+// }
+
 type Transform = (rawASTNode: RawASTNode) => ASTNode;
 type Evaluate = (astNode: ASTNode, environment: Environment) => Promise<KopiValue>;
+
+type Context = {
+  environment: Environment,
+  evaluate: Evaluate,
+  // bindValues: BindValues,
+};
 
 export {
   inspect,
@@ -72,6 +81,7 @@ export {
   type Environment,
   type Transform,
   type Evaluate,
+  type Context,
   ASTNode,
   ASTPatternNode,
   KopiValue,

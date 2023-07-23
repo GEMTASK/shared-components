@@ -1,18 +1,18 @@
 import * as astNodes from './astnodes';
-import { ASTNode, Environment, Evaluate, KopiValue } from './types';
+import { ASTNode, Context, Environment, Evaluate, KopiValue } from './types';
 import { KopiFunction, KopiNumber, KopiTuple } from './classes';
 
 interface Visitor {
   astNode: ASTNode,
-  environment: Environment,
-  evaluate: Evaluate,
+  context: Context;
 }
 
 async function TupleExpression(
   { fieldExpressions, fieldNames }: astNodes.TupleExpression,
-  environment: Environment,
-  evaluate: Evaluate,
+  context: Context
 ): Promise<KopiValue> {
+  const { environment, evaluate } = context;
+
   return new KopiTuple(
     fieldExpressions.map(expressionField => evaluate(expressionField, environment)),
   );
@@ -20,10 +20,10 @@ async function TupleExpression(
 
 async function OperatorExpression(
   astNode: astNodes.OperatorExpression,
-  environment: Environment,
-  evaluate: Evaluate,
+  context: Context
 ): Promise<KopiValue> {
   const { operator, leftExpression, rightExpression } = astNode;
+  const { environment, evaluate } = context;
 
   const [leftValue, rightValue] = await Promise.all([
     evaluate(leftExpression, environment),
@@ -39,16 +39,16 @@ async function OperatorExpression(
 
 async function ApplyExpression(
   { expression, argumentExpression }: astNodes.ApplyExpression,
-  environment: Environment,
-  evaluate: Evaluate,
+  context: Context
 ): Promise<KopiValue> {
+  const { environment, evaluate } = context;
+
   const func = await evaluate(expression, environment);
 
   if ('apply' in func && typeof func.apply === 'function') {
     return func.apply(undefined, [
       await evaluate(argumentExpression, environment),
-      environment,
-      evaluate
+      context
     ]);
   }
 
@@ -57,8 +57,10 @@ async function ApplyExpression(
 
 async function FunctionExpression(
   { parameterPattern, bodyExpression, name }: astNodes.FunctionExpression,
-  environment: Environment,
+  context: Context,
 ): Promise<KopiValue> {
+  const { environment, evaluate } = context;
+
   return new KopiFunction(
     parameterPattern,
     bodyExpression,
@@ -68,15 +70,17 @@ async function FunctionExpression(
 }
 
 async function NumericLiteral(
-  { value }: astNodes.NumericLiteral,
+  { value }: astNodes.NumericLiteral
 ): Promise<KopiValue> {
   return new KopiNumber(value);
 }
 
 async function Identifier(
   astNode: astNodes.Identifier,
-  environment: Environment,
+  context: Context,
 ): Promise<KopiValue> {
+  const { environment, evaluate } = context;
+
   const value = environment[astNode.name];
 
   if (astNode.name in environment) {

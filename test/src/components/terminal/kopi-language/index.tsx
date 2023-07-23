@@ -80,18 +80,20 @@ Function.prototype.inspect = function () {
 function evaluate(astNode: ASTNode, environment: Environment) {
   // const foo = visitorMap[astNode.constructor.name as keyof typeof visitorMap];
 
+  const context = { environment, evaluate };
+
   if (astNode instanceof astNodes.OperatorExpression) {
-    return visitors.OperatorExpression(astNode, environment, evaluate);
+    return visitors.OperatorExpression(astNode, context);
   } else if (astNode instanceof astNodes.ApplyExpression) {
-    return visitors.ApplyExpression(astNode, environment, evaluate);
+    return visitors.ApplyExpression(astNode, context);
   } else if (astNode instanceof astNodes.FunctionExpression) {
-    return visitors.FunctionExpression(astNode, environment);
+    return visitors.FunctionExpression(astNode, context);
   } else if (astNode instanceof astNodes.TupleExpression) {
-    return visitors.TupleExpression(astNode, environment, evaluate);
+    return visitors.TupleExpression(astNode, context);
   } else if (astNode instanceof astNodes.NumericLiteral) {
     return visitors.NumericLiteral(astNode);
   } else if (astNode instanceof astNodes.Identifier) {
-    return visitors.Identifier(astNode, environment);
+    return visitors.Identifier(astNode, context);
   } else {
     console.warn('No visitor found for', astNode);
 

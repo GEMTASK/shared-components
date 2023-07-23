@@ -1,4 +1,4 @@
-import { ASTNode, ASTPatternNode, Environment, Evaluate, KopiValue } from './types';
+import { ASTNode, ASTPatternNode, Context, Environment, Evaluate, KopiValue } from './types';
 
 class TupleExpression extends ASTNode {
   readonly fieldExpressions: ASTNode[];
@@ -85,8 +85,7 @@ class TuplePattern extends ASTPatternNode {
 
   override async match(
     value: KopiValue,
-    environment: Environment,
-    evaluate: Evaluate
+    context: Context,
   ) {
     return {};
   }
