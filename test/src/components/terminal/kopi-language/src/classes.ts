@@ -9,6 +9,10 @@ class KopiNumber extends KopiValue {
     this.value = value;
   }
 
+  override async inspect() {
+    return `${this.value}`;
+  }
+
   '+'(that: KopiValue) {
     if (that instanceof KopiNumber) {
       return new KopiNumber(this.value + that.value);
@@ -41,6 +45,14 @@ class KopiTuple extends KopiValue {
     }
 
     this.fields = fields;
+  }
+
+  override async inspect() {
+    const fields = await Promise.all(
+      this.fields.map(async (element) => `${await (await element).inspect()}`)
+    );
+
+    return `(${fields.join(', ')})`;
   }
 }
 

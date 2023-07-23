@@ -45,6 +45,7 @@ class ASTNode {
 
 class KopiValue {
   async inspect(): Promise<string | React.ReactElement> {
+    console.log('inspect', this);
     return inspect(this);
   }
 }
