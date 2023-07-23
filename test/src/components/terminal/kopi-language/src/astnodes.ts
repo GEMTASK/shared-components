@@ -1,5 +1,17 @@
 import { ASTNode } from './types';
 
+class TupleExpression extends ASTNode {
+  readonly expressionFields: ASTNode[];
+  readonly fieldNames: string[];
+
+  constructor({ expressionFields, fieldNames, location }: TupleExpression) {
+    super(location);
+
+    this.expressionFields = expressionFields;
+    this.fieldNames = fieldNames;
+  }
+}
+
 class OperatorExpression extends ASTNode {
   readonly operator: '+' | '-';
   readonly leftExpression: ASTNode;
@@ -41,6 +53,8 @@ class ApplyExpression extends ASTNode {
   }
 };
 
+//
+
 class NumericLiteral extends ASTNode {
   readonly value: number;
 
@@ -62,6 +76,7 @@ class Identifier extends ASTNode {
 }
 
 export {
+  TupleExpression,
   OperatorExpression,
   FunctionExpression,
   ApplyExpression,

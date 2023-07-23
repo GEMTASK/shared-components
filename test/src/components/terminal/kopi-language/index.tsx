@@ -11,6 +11,13 @@ import { KopiNumber } from './src/classes';
 
 function transform(rawASTNode: RawASTNode): ASTNode {
   switch (rawASTNode.type) {
+    case 'TupleExpression':
+      return new astNodes.TupleExpression({
+        expressionFields: rawASTNode.expressionFields.map((expressionElement: ASTNode) => transform(expressionElement)),
+        fieldNames: rawASTNode.fieldNames,
+        location: rawASTNode.location,
+      });
+
     case 'OperatorExpression':
       return new astNodes.OperatorExpression({
         operator: rawASTNode.operator,
@@ -41,9 +48,9 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         location: rawASTNode.location,
       });
     default:
-      console.warn('No transformAst found for', rawASTNode);
+      console.warn('No transform found for', rawASTNode);
 
-      throw new Error(`No transformAst found for ${rawASTNode.type}`);
+      throw new Error(`No transform found for ${rawASTNode.type}`);
   }
 }
 
@@ -68,6 +75,8 @@ function evaluate(astNode: ASTNode, environment: Environment) {
     return visitors.ApplyExpression(astNode, environment, evaluate);
   } else if (astNode instanceof astNodes.FunctionExpression) {
     return visitors.FunctionExpression(astNode, environment);
+  } else if (astNode instanceof astNodes.TupleExpression) {
+    return visitors.TupleExpression(astNode, environment, evaluate);
   } else if (astNode instanceof astNodes.NumericLiteral) {
     return visitors.NumericLiteral(astNode);
   } else if (astNode instanceof astNodes.Identifier) {

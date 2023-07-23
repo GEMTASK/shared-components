@@ -25,7 +25,14 @@ ApplyExpression
     }
 
 PrimaryExpression
-  = "(" expr:Expression ")" !"=>" {
+  = "(" __ ")" __ !"=>" {
+      return {
+        type: 'TupleExpression',
+        expressionFields: [],
+        expressionFieldNames: [],
+      }
+    }
+  / "(" __ expr:Expression __ ")" !"=>" {
       return expr;
     }
   / FunctionExpression

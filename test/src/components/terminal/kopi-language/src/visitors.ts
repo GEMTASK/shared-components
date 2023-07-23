@@ -1,6 +1,16 @@
 import * as astNodes from './astnodes';
 import { Environment, Evaluate, KopiValue } from './types';
-import { KopiNumber } from './classes';
+import { KopiNumber, KopiTuple } from './classes';
+
+async function TupleExpression(
+  { expressionFields, fieldNames }: astNodes.TupleExpression,
+  environment: Environment,
+  evaluate: Evaluate,
+): Promise<KopiValue> {
+  return new KopiTuple(
+    expressionFields.map(expressionField => evaluate(expressionField, environment)),
+  );
+}
 
 async function OperatorExpression(
   astNode: astNodes.OperatorExpression,
@@ -68,6 +78,7 @@ async function Identifier(
 }
 
 export {
+  TupleExpression,
   OperatorExpression,
   ApplyExpression,
   FunctionExpression,

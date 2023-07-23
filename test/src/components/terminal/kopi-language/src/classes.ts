@@ -26,6 +26,25 @@ class KopiNumber extends KopiValue {
   }
 }
 
+class KopiTuple extends KopiValue {
+  static readonly empty = new KopiTuple([]);
+
+  readonly fields: Promise<KopiValue>[];
+
+  constructor(fields: Promise<KopiValue>[]) {
+    super();
+
+    if (fields.length === 0 && KopiTuple.empty) {
+      this.fields = [];
+
+      return KopiTuple.empty;
+    }
+
+    this.fields = fields;
+  }
+}
+
 export {
   KopiNumber,
+  KopiTuple,
 };

@@ -26,10 +26,10 @@ const Link = createLink(RouterLink);
 
 const Line = ({
   children,
-}: {
-} & ViewProps) => {
+  ...props
+}: ViewProps) => {
   return (
-    <View horizontal align="left" paddingVertical="xsmall">
+    <View horizontal align="left" paddingVertical="xsmall" {...props}>
       <Icon icon="angle-right" />
       <Spacer size="xsmall" />
       {children}
