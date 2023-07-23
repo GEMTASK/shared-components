@@ -1,4 +1,4 @@
-import { ASTNode, ASTPatternNode, Context, Environment, Evaluate, KopiValue } from './types';
+import { ASTNode, ASTPatternNode, Context, Environment, KopiValue } from './types';
 
 class KopiNumber extends KopiValue {
   readonly value: number;

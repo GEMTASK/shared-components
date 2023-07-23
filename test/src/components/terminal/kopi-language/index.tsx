@@ -2,12 +2,11 @@
 
 import * as parser from './lib/parser.js';
 
-import { inspect, RawASTNode, ASTNode, Environment, KopiValue, ASTPatternNode } from './src/types';
+import { RawASTNode, ASTNode, Environment, ASTPatternNode } from './src/types';
+import { inspect } from './src/utils';
 
 import * as astNodes from './src/astnodes';
 import * as visitors from './src/visitors';
-
-import { KopiNumber } from './src/classes';
 
 function transform(rawASTNode: RawASTNode): ASTNode {
   switch (rawASTNode.type) {

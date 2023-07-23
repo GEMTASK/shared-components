@@ -1,5 +1,5 @@
 import * as astNodes from './astnodes';
-import { ASTNode, Context, Environment, Evaluate, KopiValue } from './types';
+import { ASTNode, Context, KopiValue } from './types';
 import { KopiFunction, KopiNumber, KopiTuple } from './classes';
 
 interface Visitor {

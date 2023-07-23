@@ -1,4 +1,4 @@
-import { ASTNode, ASTPatternNode, Context, Environment, Evaluate, KopiValue } from './types';
+import { ASTNode, ASTPatternNode, Context, KopiValue } from './types';
 
 class TupleExpression extends ASTNode {
   readonly fieldExpressions: ASTNode[];
