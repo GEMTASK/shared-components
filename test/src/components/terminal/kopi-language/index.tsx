@@ -13,11 +13,10 @@ function transform(rawASTNode: RawASTNode): ASTNode {
   switch (rawASTNode.type) {
     case 'TupleExpression':
       return new astNodes.TupleExpression({
-        expressionFields: rawASTNode.expressionFields.map((expressionElement: ASTNode) => transform(expressionElement)),
+        fieldExpressions: rawASTNode.fieldExpressions.map((expressionElement: ASTNode) => transform(expressionElement)),
         fieldNames: rawASTNode.fieldNames,
         location: rawASTNode.location,
       });
-
     case 'OperatorExpression':
       return new astNodes.OperatorExpression({
         operator: rawASTNode.operator,

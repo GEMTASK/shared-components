@@ -1,13 +1,13 @@
 import { ASTNode } from './types';
 
 class TupleExpression extends ASTNode {
-  readonly expressionFields: ASTNode[];
+  readonly fieldExpressions: ASTNode[];
   readonly fieldNames: string[];
 
-  constructor({ expressionFields, fieldNames, location }: TupleExpression) {
+  constructor({ fieldExpressions, fieldNames, location }: TupleExpression) {
     super(location);
 
-    this.expressionFields = expressionFields;
+    this.fieldExpressions = fieldExpressions;
     this.fieldNames = fieldNames;
   }
 }

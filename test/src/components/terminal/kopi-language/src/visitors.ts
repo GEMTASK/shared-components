@@ -1,14 +1,20 @@
 import * as astNodes from './astnodes';
-import { Environment, Evaluate, KopiValue } from './types';
+import { ASTNode, Environment, Evaluate, KopiValue } from './types';
 import { KopiNumber, KopiTuple } from './classes';
 
+interface Visitor {
+  astNode: ASTNode,
+  environment: Environment,
+  evaluate: Evaluate,
+}
+
 async function TupleExpression(
-  { expressionFields, fieldNames }: astNodes.TupleExpression,
+  { fieldExpressions, fieldNames }: astNodes.TupleExpression,
   environment: Environment,
   evaluate: Evaluate,
 ): Promise<KopiValue> {
   return new KopiTuple(
-    expressionFields.map(expressionField => evaluate(expressionField, environment)),
+    fieldExpressions.map(expressionField => evaluate(expressionField, environment)),
   );
 }
 
@@ -78,6 +84,7 @@ async function Identifier(
 }
 
 export {
+  type Visitor,
   TupleExpression,
   OperatorExpression,
   ApplyExpression,

@@ -225,8 +225,8 @@ function peg$parse(input, options) {
   var peg$f2 = function() {
       return {
         type: 'TupleExpression',
-        expressionFields: [],
-        expressionFieldNames: [],
+        fieldExpressions: [],
+        fieldNames: [],
       }
     };
   var peg$f3 = function(expr) {

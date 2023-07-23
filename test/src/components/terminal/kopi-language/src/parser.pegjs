@@ -28,8 +28,8 @@ PrimaryExpression
   = "(" __ ")" __ !"=>" {
       return {
         type: 'TupleExpression',
-        expressionFields: [],
-        expressionFieldNames: [],
+        fieldExpressions: [],
+        fieldNames: [],
       }
     }
   / "(" __ expr:Expression __ ")" !"=>" {
