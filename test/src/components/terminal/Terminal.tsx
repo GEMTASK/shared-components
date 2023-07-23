@@ -7,8 +7,9 @@ import Clock from '../clock/Clock';
 
 import { interpret, inspect } from './kopi-language';
 import { KopiNumber } from './kopi-language/src/classes';
+import { Environment } from './kopi-language/src/types';
 
-const environment = {
+const environment = new Environment({
   x: new KopiNumber(3),
   date: {
     inspect: async () => new Date().toLocaleString()
@@ -21,7 +22,7 @@ const environment = {
   clock: {
     inspect: async () => <Clock style={{ width: 150 }} />
   }
-};
+});
 
 const Link = createLink(RouterLink);
 

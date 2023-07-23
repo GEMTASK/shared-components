@@ -84,12 +84,12 @@ class KopiFunction extends KopiValue {
 
     const matches = await this.parameterPattern.match(argument, context);
 
-    const newEnvironment = {
+    const newEnvironment = new Environment({
       ...this.environment,
       ...matches,
-      ...(this.name ? { [this.name]: this } : {}),
+      ...(this.name && { [this.name]: this }),
       'this': thisArg
-    };
+    });
 
     Object.setPrototypeOf(newEnvironment, Object.getPrototypeOf(this.environment));
 

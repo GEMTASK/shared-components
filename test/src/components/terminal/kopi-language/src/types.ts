@@ -58,13 +58,21 @@ class KopiValue {
   }
 }
 
-interface Environment {
-  [name: string | symbol]: KopiValue;
-}
-
-// class Environment {
-
+// interface Environment {
+//   [name: string | symbol]: KopiValue;
 // }
+
+class Environment {
+  [key: string | symbol]: KopiValue;
+
+  constructor(bindings: { [key: string | symbol]: KopiValue; }) {
+    Object.entries(bindings).map(([key, binding]) => this[key] = binding);
+  }
+
+  bind(bindings: Environment) {
+    return new Environment({ ...this, ...bindings });
+  }
+}
 
 type Transform = (rawASTNode: RawASTNode) => ASTNode;
 type Evaluate = (astNode: ASTNode, environment: Environment) => Promise<KopiValue>;
@@ -78,7 +86,7 @@ type Context = {
 export {
   inspect,
   type RawASTNode,
-  type Environment,
+  Environment,
   type Transform,
   type Evaluate,
   type Context,
