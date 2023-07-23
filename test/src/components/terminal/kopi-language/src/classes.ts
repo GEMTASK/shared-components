@@ -1,4 +1,4 @@
-import { KopiValue } from './types';
+import { ASTNode, ASTPatternNode, Environment, Evaluate, KopiValue } from './types';
 
 class KopiNumber extends KopiValue {
   readonly value: number;
@@ -56,7 +56,47 @@ class KopiTuple extends KopiValue {
   }
 }
 
+class KopiFunction extends KopiValue {
+  readonly parameterPattern: ASTPatternNode;
+  readonly bodyExpression: ASTNode;
+  readonly environment: Environment;
+  readonly name?: string;
+
+  constructor(
+    parameterPattern: ASTPatternNode,
+    bodyExpression: ASTNode,
+    environment: Environment,
+    name?: string
+  ) {
+    super();
+
+    this.parameterPattern = parameterPattern;
+    this.bodyExpression = bodyExpression;
+    this.environment = environment;
+    this.name = name;
+  }
+
+  async apply(
+    thisArg: KopiValue,
+    [argument, environment, evaluate]: [KopiValue, Environment, Evaluate]
+  ): Promise<KopiValue> {
+    const matches = await this.parameterPattern.match(argument, environment, evaluate);
+
+    const newEnvironment = {
+      ...this.environment,
+      ...matches,
+      ...(this.name ? { [this.name]: this } : {}),
+      'this': thisArg
+    };
+
+    Object.setPrototypeOf(newEnvironment, Object.getPrototypeOf(this.environment));
+
+    return evaluate(this.bodyExpression, newEnvironment);
+  }
+}
+
 export {
   KopiNumber,
   KopiTuple,
+  KopiFunction,
 };

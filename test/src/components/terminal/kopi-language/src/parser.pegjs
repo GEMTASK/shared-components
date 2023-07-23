@@ -59,8 +59,8 @@ FunctionExpression
 Pattern
   = "(" __ ")" {
     return {
-      type: "NumericLiteral",
-      value: 100,
+      type: "TuplePattern",
+      fieldPatterns: [],
     }
   }
 

@@ -1,6 +1,6 @@
 import * as astNodes from './astnodes';
 import { ASTNode, Environment, Evaluate, KopiValue } from './types';
-import { KopiNumber, KopiTuple } from './classes';
+import { KopiFunction, KopiNumber, KopiTuple } from './classes';
 
 interface Visitor {
   astNode: ASTNode,
@@ -45,7 +45,11 @@ async function ApplyExpression(
   const func = await evaluate(expression, environment);
 
   if ('apply' in func && typeof func.apply === 'function') {
-    return func.apply(undefined, [await evaluate(argumentExpression, environment)]);
+    return func.apply(undefined, [
+      await evaluate(argumentExpression, environment),
+      environment,
+      evaluate
+    ]);
   }
 
   throw new Error(`No KopiApplicative.apply() method found for ${func.constructor.name}.`);
@@ -55,13 +59,12 @@ async function FunctionExpression(
   { parameterPattern, bodyExpression, name }: astNodes.FunctionExpression,
   environment: Environment,
 ): Promise<KopiValue> {
-  return new KopiNumber(5);
-  // return new KopiFunction(
-  //   parameterPattern,
-  //   bodyExpression,
-  //   environment,
-  //   name,
-  // );
+  return new KopiFunction(
+    parameterPattern,
+    bodyExpression,
+    environment,
+    name,
+  );
 }
 
 async function NumericLiteral(

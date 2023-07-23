@@ -9,6 +9,7 @@ import { interpret, inspect } from './kopi-language';
 import { KopiNumber } from './kopi-language/src/classes';
 
 const environment = {
+  x: new KopiNumber(3),
   date: {
     inspect: async () => new Date().toLocaleString()
   },

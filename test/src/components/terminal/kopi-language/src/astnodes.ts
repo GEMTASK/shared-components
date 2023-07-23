@@ -1,4 +1,4 @@
-import { ASTNode } from './types';
+import { ASTNode, ASTPatternNode, Environment, Evaluate, KopiValue } from './types';
 
 class TupleExpression extends ASTNode {
   readonly fieldExpressions: ASTNode[];
@@ -27,8 +27,7 @@ class OperatorExpression extends ASTNode {
 }
 
 class FunctionExpression extends ASTNode {
-  // readonly parameterPattern: ASTPatternNode;
-  readonly parameterPattern: any;
+  readonly parameterPattern: ASTPatternNode;
   readonly bodyExpression: ASTNode;
   readonly name?: string;
 
@@ -75,11 +74,30 @@ class Identifier extends ASTNode {
   }
 }
 
+class TuplePattern extends ASTPatternNode {
+  readonly patterns: ASTPatternNode[];
+
+  constructor({ patterns, location }: TuplePattern) {
+    super(location);
+
+    this.patterns = patterns;
+  }
+
+  override async match(
+    value: KopiValue,
+    environment: Environment,
+    evaluate: Evaluate
+  ) {
+    return {};
+  }
+}
+
 export {
   TupleExpression,
   OperatorExpression,
   FunctionExpression,
   ApplyExpression,
+  TuplePattern,
   NumericLiteral,
   Identifier,
 };

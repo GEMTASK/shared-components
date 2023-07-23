@@ -2,7 +2,7 @@
 
 import * as parser from './lib/parser.js';
 
-import { inspect, RawASTNode, ASTNode, Environment, KopiValue } from './src/types';
+import { inspect, RawASTNode, ASTNode, Environment, KopiValue, ASTPatternNode } from './src/types';
 
 import * as astNodes from './src/astnodes';
 import * as visitors from './src/visitors';
@@ -35,7 +35,12 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         parameterPattern: transform(rawASTNode.parameterPattern),
         bodyExpression: transform(rawASTNode.bodyExpression),
         location: rawASTNode.location,
-      });
+      } as astNodes.FunctionExpression);
+    case 'TuplePattern':
+      return new astNodes.TuplePattern({
+        patterns: rawASTNode.fieldPatterns.map((pattern: ASTPatternNode) => transform(pattern)),
+        location: rawASTNode.location,
+      } as astNodes.TuplePattern);
     case 'NumericLiteral':
       return new astNodes.NumericLiteral({
         value: rawASTNode.value,

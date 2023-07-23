@@ -31,6 +31,8 @@ const inspect = (value: unknown, level: number = 0): string => {
   return `${value}`;
 };
 
+//
+
 interface RawASTNode {
   [key: string]: any;
 }
@@ -39,13 +41,20 @@ class ASTNode {
   location: {} = {};
 
   constructor(location: {}) {
-    this.location = location;
+    // this.location = location;
   }
+}
+
+abstract class ASTPatternNode extends ASTNode {
+  abstract match(
+    value: KopiValue,
+    environment: Environment,
+    evaluate: Evaluate
+  ): Promise<{ [name: string]: KopiValue; } | undefined>;
 }
 
 class KopiValue {
   async inspect(): Promise<string | React.ReactElement> {
-    console.log('inspect', this);
     return inspect(this);
   }
 }
@@ -64,5 +73,6 @@ export {
   type Transform,
   type Evaluate,
   ASTNode,
+  ASTPatternNode,
   KopiValue,
 };

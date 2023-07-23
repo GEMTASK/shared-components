@@ -249,8 +249,8 @@ function peg$parse(input, options) {
     };
   var peg$f5 = function() {
     return {
-      type: "NumericLiteral",
-      value: 100,
+      type: "TuplePattern",
+      fieldPatterns: [],
     }
   };
   var peg$f6 = function(value) {
