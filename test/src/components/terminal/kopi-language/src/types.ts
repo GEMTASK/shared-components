@@ -21,7 +21,7 @@ abstract class ASTPatternNode extends ASTNode {
   ): Promise<{ [name: string]: KopiValue; } | undefined>;
 }
 
-class KopiValue {
+abstract class KopiValue {
   async inspect(): Promise<string | React.ReactElement> {
     return inspect(this);
   }
@@ -58,11 +58,11 @@ type Context = {
 
 export {
   type RawASTNode,
-  Environment,
   type Transform,
   type Evaluate,
   type Context,
   ASTNode,
   ASTPatternNode,
+  Environment,
   KopiValue,
 };
