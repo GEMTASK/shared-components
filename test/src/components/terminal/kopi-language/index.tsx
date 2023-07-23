@@ -67,7 +67,14 @@ Function.prototype.inspect = function () {
   return Promise.resolve(`<native-function>`);
 };
 
+// const visitorMap = {
+//   OperatorExpression: { astNode: astNodes.OperatorExpression, visitor: visitors.OperatorExpression },
+//   ApplyExpression: { astNode: astNodes.ApplyExpression, visitor: visitors.ApplyExpression },
+// } as const;
+
 function evaluate(astNode: ASTNode, environment: Environment) {
+  // const foo = visitorMap[astNode.constructor.name as keyof typeof visitorMap];
+
   if (astNode instanceof astNodes.OperatorExpression) {
     return visitors.OperatorExpression(astNode, environment, evaluate);
   } else if (astNode instanceof astNodes.ApplyExpression) {

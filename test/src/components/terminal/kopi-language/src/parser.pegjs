@@ -32,8 +32,14 @@ PrimaryExpression
         fieldNames: [],
       }
     }
-  / "(" __ expr:Expression __ ")" !"=>" {
-      return expr;
+  / "(" __ head:Expression __ tail:(__ "," __ Expression)* ")" !"=>" {
+      return tail.length === 0? head : {
+        type: 'TupleExpression',
+        fieldExpressions: tail.reduce((expressions, [, , , expression]) => [
+          ...expressions,
+          expression
+        ], [head])
+      };
     }
   / FunctionExpression
   / NumericLiteral
