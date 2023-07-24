@@ -268,14 +268,21 @@ function peg$parse(input, options) {
         value: number.value,
       }
     };
-  var peg$f8 = function(value) {
+  var peg$f8 = function(identifier) {
+      return {
+        type: 'IdentifierPattern',
+        name: identifier.name,
+        defaultExpression: null,
+      };
+    };
+  var peg$f9 = function(value) {
     return ({
       type: 'NumericLiteral',
       value: Number(`${value[0].join('')}.${value[1] ? value[1][2].join('') : ''}`),
       location: location(),
     });
   };
-  var peg$f9 = function(name) {
+  var peg$f10 = function(name) {
       return ({
         type: 'Identifier',
         name: name[0] + name[1].join('')
@@ -903,6 +910,9 @@ function peg$parse(input, options) {
       }
       if (s0 === peg$FAILED) {
         s0 = peg$parseNumericLiteralPattern();
+        if (s0 === peg$FAILED) {
+          s0 = peg$parseIdentifierPattern();
+        }
       }
     }
 
@@ -917,6 +927,20 @@ function peg$parse(input, options) {
     if (s1 !== peg$FAILED) {
       peg$savedPos = s0;
       s1 = peg$f7(s1);
+    }
+    s0 = s1;
+
+    return s0;
+  }
+
+  function peg$parseIdentifierPattern() {
+    var s0, s1;
+
+    s0 = peg$currPos;
+    s1 = peg$parseIdentifier();
+    if (s1 !== peg$FAILED) {
+      peg$savedPos = s0;
+      s1 = peg$f8(s1);
     }
     s0 = s1;
 
@@ -1026,7 +1050,7 @@ function peg$parse(input, options) {
     }
     if (s1 !== peg$FAILED) {
       peg$savedPos = s0;
-      s1 = peg$f8(s1);
+      s1 = peg$f9(s1);
     }
     s0 = s1;
     peg$silentFails--;
@@ -1078,7 +1102,7 @@ function peg$parse(input, options) {
     }
     if (s1 !== peg$FAILED) {
       peg$savedPos = s0;
-      s1 = peg$f9(s1);
+      s1 = peg$f10(s1);
     }
     s0 = s1;
     peg$silentFails--;

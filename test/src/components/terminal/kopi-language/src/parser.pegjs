@@ -76,6 +76,7 @@ PrimaryPattern
       }
     }
   / NumericLiteralPattern
+  / IdentifierPattern
 
 NumericLiteralPattern
   = number:NumericLiteral {
@@ -83,6 +84,15 @@ NumericLiteralPattern
         type: 'NumericLiteralPattern',
         value: number.value,
       }
+    }
+
+IdentifierPattern
+  = identifier:Identifier {
+      return {
+        type: 'IdentifierPattern',
+        name: identifier.name,
+        defaultExpression: null,
+      };
     }
 
 //
