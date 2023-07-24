@@ -6,8 +6,8 @@ import { Icon, Input, Spacer, Text, View, ViewProps, createLink } from 'bare';
 import Clock from '../clock/Clock';
 
 import { interpret, inspect } from './kopi-language';
-import { KopiNumber } from './kopi-language/src/classes';
-import { Environment, KopiValue } from './kopi-language/src/types';
+import { KopiFunction, KopiNumber, KopiTuple } from './kopi-language/src/classes';
+import { Context, Environment, KopiValue } from './kopi-language/src/types';
 
 class Inspectable extends KopiValue {
   func: () => Promise<string | React.ReactElement>;
@@ -32,13 +32,16 @@ class NativeFunction extends KopiValue {
     this.func = func;
   }
 
-  async apply(thisArg: this, [argument]: [KopiValue]) {
-    return this.func.apply(thisArg, [argument]);
+  async apply(thisArg: this, [argument, context]: [KopiValue, Context]) {
+    return this.func.apply(thisArg, [argument, context]);
   }
 }
 
 const environment = new Environment({
   x: new KopiNumber(3),
+  let: new NativeFunction((func: KopiFunction, context: Context) => {
+    return func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+  }),
   date: {
     inspect: async () => new Date().toLocaleString(),
     get fields() { return [Promise.resolve(this)]; }

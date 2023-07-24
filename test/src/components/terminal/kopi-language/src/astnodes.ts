@@ -79,7 +79,7 @@ class TuplePattern extends ASTPatternNode {
     let bindings = {};
 
     for (const [index, pattern] of this.patterns.entries()) {
-      let matches = await pattern.match(await tuple.fields[index], context);
+      let matches = await pattern.match(await tuple.fields[index] ?? KopiTuple.empty, context);
 
       if (matches === undefined) {
         // return undefined;
@@ -90,15 +90,6 @@ class TuplePattern extends ASTPatternNode {
     }
 
     return bindings;
-
-    // const bindings = await this.patterns.reduce(async (bindings, pattern, index) => ({
-    //   ...await bindings,
-    //   ...await pattern.match(await tuple.fields[index], context)
-    // }), {});
-
-    // if (Object.keys(bindings).length > 0) {
-    //   return bindings;
-    // }
   }
 }
 
@@ -137,7 +128,7 @@ class IdentifierPattern extends ASTPatternNode {
   override async match(value: KopiValue, context: Context) {
     const { environment, evaluate } = context;
 
-    if (value === undefined) {
+    if (value === KopiTuple.empty) {
       if (this.defaultExpression !== null) {
         return {
           [this.name]: await evaluate(this.defaultExpression, environment)
