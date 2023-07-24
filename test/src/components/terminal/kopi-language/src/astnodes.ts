@@ -65,12 +65,34 @@ class TuplePattern extends ASTPatternNode {
   }
 
   override async match(value: KopiValue, context: Context) {
-    const tuple = value as KopiTuple;
+    if (!(value instanceof KopiTuple)) {
+      throw new Error(`TuplePattern match(): value is not a tuple`);
+    }
 
-    return this.patterns.reduce(async (bindings, pattern, index) => ({
-      ...await bindings,
-      ...await pattern.match(await tuple.fields[index], context)
-    }), {});
+    const tuple = value as KopiTuple;
+    let bindings = {};
+
+    for (const [index, pattern] of this.patterns.entries()) {
+      let matches = await pattern.match(await tuple.fields[index], context);
+
+      if (matches === undefined) {
+        // return undefined;
+        throw new Error(`TuplePattern: match() failed.`);
+      }
+
+      bindings = { ...bindings, ...matches };
+    }
+
+    return bindings;
+
+    // const bindings = await this.patterns.reduce(async (bindings, pattern, index) => ({
+    //   ...await bindings,
+    //   ...await pattern.match(await tuple.fields[index], context)
+    // }), {});
+
+    // if (Object.keys(bindings).length > 0) {
+    //   return bindings;
+    // }
   }
 }
 
@@ -84,11 +106,14 @@ class NumericLiteralPattern extends ASTPatternNode {
   }
 
   override async match(number: KopiValue, context: Context) {
-    if (number instanceof KopiNumber && number.value === this.value) {
-      return {};
+    // TODO: Do we want to throw when testing function predicates?
+    // Should we return Error instead?
+
+    if (!(number instanceof KopiNumber && number.value === this.value)) {
+      throw new Error(`NumericLiteralPattern: match() failed. Expected "${this.value}" but found "${await number.inspect()}".`);
     }
 
-    return undefined;
+    return {};
   }
 }
 
@@ -103,6 +128,10 @@ class IdentifierPattern extends ASTPatternNode {
 
   override async match(value: KopiValue, context: Context) {
     const { environment, evaluate } = context;
+
+    if (value === undefined) {
+      throw new Error(`IdentifierPattern: match() failed. Expected a value but found "${value}"`);
+    }
 
     return {
       [this.name]: value
