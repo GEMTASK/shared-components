@@ -7,20 +7,54 @@ import Clock from '../clock/Clock';
 
 import { interpret, inspect } from './kopi-language';
 import { KopiNumber } from './kopi-language/src/classes';
-import { Environment } from './kopi-language/src/types';
+import { Environment, KopiValue } from './kopi-language/src/types';
+
+class Inspectable extends KopiValue {
+  func: () => Promise<string | React.ReactElement>;
+
+  constructor(func: () => Promise<string | React.ReactElement>) {
+    super();
+
+    this.func = func;
+  }
+
+  async inspect() {
+    return this.func();
+  }
+}
+
+class NativeFunction extends KopiValue {
+  func: (...args: any[]) => Promise<KopiValue>;
+
+  constructor(func: (...args: any[]) => Promise<KopiValue>) {
+    super();
+
+    this.func = func;
+  }
+
+  async apply(thisArg: this, [argument]: [KopiValue]) {
+    return this.func.apply(thisArg, [argument]);
+  }
+}
 
 const environment = new Environment({
   x: new KopiNumber(3),
   date: {
-    inspect: async () => new Date().toLocaleString()
+    inspect: async () => new Date().toLocaleString(),
+    get fields() { return [Promise.resolve(this)]; }
   },
+  date2: new Inspectable(async () => new Date().toLocaleString()),
   async sleep(number: KopiNumber) {
     return new Promise((resolve) => {
       setTimeout(() => resolve(number), number.value * 1000);
     });
   },
+  sleep2: new NativeFunction((number: KopiNumber) => new Promise((resolve) => {
+    setTimeout(() => resolve(number), number.value * 1000);
+  })),
   clock: {
-    inspect: async () => <Clock style={{ width: 150 }} />
+    inspect: async () => <Clock style={{ width: 150 }} />,
+    get fields() { return [Promise.resolve(this)]; }
   }
 });
 

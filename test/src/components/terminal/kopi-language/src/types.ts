@@ -24,6 +24,10 @@ abstract class KopiValue {
   async inspect(): Promise<string | React.ReactElement> {
     return inspect(this);
   }
+
+  get fields(): Promise<KopiValue>[] {
+    return [Promise.resolve(this)];
+  }
 }
 
 // interface Environment {
@@ -37,13 +41,9 @@ class Environment {
     Object.entries(bindings).map(([key, binding]) => this[key] = binding);
   }
 
-  async inspect() {
-    return 'here';
-  }
-
-  bind(bindings: Environment) {
-    return new Environment({ ...this, ...bindings });
-  }
+  // bind(bindings: Environment) {
+  //   return new Environment({ ...this, ...bindings });
+  // }
 }
 
 type Transform = (rawASTNode: RawASTNode) => ASTNode;

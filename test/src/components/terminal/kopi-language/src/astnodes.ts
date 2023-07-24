@@ -71,9 +71,9 @@ class TuplePattern extends ASTPatternNode {
   }
 
   override async match(value: KopiValue, context: Context) {
-    if (!(value instanceof KopiTuple)) {
-      throw new Error(`TuplePattern match(): value is not a tuple`);
-    }
+    // if (!(value instanceof KopiTuple)) {
+    //   throw new Error(`TuplePattern match(): value is not a tuple`);
+    // }
 
     const tuple = value as KopiTuple;
     let bindings = {};

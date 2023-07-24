@@ -33,18 +33,22 @@ class KopiNumber extends KopiValue {
 class KopiTuple extends KopiValue {
   static readonly empty = new KopiTuple([]);
 
-  readonly fields: Promise<KopiValue>[];
+  readonly _fields: Promise<KopiValue>[];
+
+  override get fields() {
+    return this._fields;
+  }
 
   constructor(fields: Promise<KopiValue>[]) {
     super();
 
     if (fields.length === 0 && KopiTuple.empty) {
-      this.fields = [];
+      this._fields = [];
 
       return KopiTuple.empty;
     }
 
-    this.fields = fields;
+    this._fields = fields;
   }
 
   override async inspect() {
