@@ -42,6 +42,7 @@ const Line = ({
 const Terminal = ({ ...props }: any) => {
   const historyElementRef = useRef<HTMLElement>(null);
   const inputElementRef = useRef<HTMLInputElement>(null);
+  const firstEventRef = useRef<React.PointerEvent | null>(null);
 
   const [value, setValue] = useState('');
   const [history, setHistory] = useState<React.ReactElement[]>([
@@ -107,14 +108,24 @@ const Terminal = ({ ...props }: any) => {
     }
   };
 
-  const handlePointerDown = () => {
-    setTimeout(() => {
-      inputElementRef.current?.focus();
-    });
+  const handlePointerDown = (event: React.PointerEvent) => {
+    firstEventRef.current = event;
+  };
+
+  const handlePointerUp = (event: React.PointerEvent) => {
+    if (firstEventRef.current) {
+      if (
+        event.button === 0
+        && event.clientX === firstEventRef.current.clientX
+        && event.clientY === firstEventRef.current.clientY
+      ) {
+        inputElementRef.current?.focus();
+      }
+    }
   };
 
   return (
-    <View {...props} onPointerDown={handlePointerDown}>
+    <View {...props} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
       <View ref={historyElementRef} paddingHorizontal="small" style={{ overflowY: 'auto' }}>
         <Spacer size="small" />
         {history.map(item => (
