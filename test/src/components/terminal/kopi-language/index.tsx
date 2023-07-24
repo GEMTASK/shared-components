@@ -36,6 +36,11 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         bodyExpression: transform(rawASTNode.bodyExpression),
         location: rawASTNode.location,
       } as astNodes.FunctionExpression);
+    case 'NumericLiteralPattern':
+      return new astNodes.NumericLiteralPattern({
+        value: rawASTNode.value,
+        location: rawASTNode.location,
+      } as astNodes.NumericLiteralPattern);
     case 'TuplePattern':
       return new astNodes.TuplePattern({
         patterns: rawASTNode.fieldPatterns.map((pattern: ASTPatternNode) => transform(pattern)),
@@ -54,7 +59,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
     default:
       console.warn('No transform found for', rawASTNode);
 
-      throw new Error(`No transform found for ${rawASTNode.type}`);
+      throw new Error(`No transform found for ${rawASTNode.type}.`);
   }
 }
 
@@ -97,7 +102,7 @@ function evaluate(astNode: ASTNode, environment: Environment) {
   } else {
     console.warn('No visitor found for', astNode);
 
-    throw new Error(`No visitor found for ${astNode.constructor.name}`);
+    throw new Error(`No visitor found for ${astNode.constructor.name}.`);
   }
 }
 

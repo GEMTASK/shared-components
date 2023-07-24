@@ -32,8 +32,8 @@ PrimaryExpression
         fieldNames: [],
       }
     }
-  / "(" __ head:Expression __ tail:(__ "," __ Expression)* ")" !"=>" {
-      return tail.length === 0? head : {
+  / "(" __ head:Expression tail:(__ "," __ Expression)* __ ")" __ !"=>" {
+      return tail.length === 0 ? head : {
         type: 'TupleExpression',
         fieldExpressions: tail.reduce((expressions, [, , , expression]) => [
           ...expressions,
@@ -57,12 +57,33 @@ FunctionExpression
 //
 
 Pattern
+  = PrimaryPattern
+
+PrimaryPattern
   = "(" __ ")" {
-    return {
-      type: "TuplePattern",
-      fieldPatterns: [],
+      return {
+        type: "TuplePattern",
+        fieldPatterns: [],
+      }
     }
-  }
+  / "(" __ head:Pattern tail:(__ "," __ Pattern)* __ ")" {
+      return tail.length === 0 ? head : {
+        type: 'TuplePattern',
+        fieldPatterns: tail.reduce((patterns, [, , , pattern]) => [
+          ...patterns,
+          pattern
+        ], [head])
+      }
+    }
+  / NumericLiteralPattern
+
+NumericLiteralPattern
+  = number:NumericLiteral {
+      return {
+        type: 'NumericLiteralPattern',
+        value: number.value,
+      }
+    }
 
 //
 

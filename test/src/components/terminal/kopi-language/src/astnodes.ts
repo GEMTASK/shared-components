@@ -1,3 +1,4 @@
+import { KopiNumber } from './classes';
 import { ASTNode, ASTPatternNode, Context, KopiValue } from './types';
 
 class TupleExpression extends ASTNode {
@@ -54,6 +55,43 @@ class ApplyExpression extends ASTNode {
 
 //
 
+class TuplePattern extends ASTPatternNode {
+  readonly patterns: ASTPatternNode[];
+
+  constructor({ patterns, location }: TuplePattern) {
+    super(location);
+
+    this.patterns = patterns;
+  }
+
+  override async match(
+    value: KopiValue,
+    context: Context,
+  ) {
+    return {};
+  }
+}
+
+class NumericLiteralPattern extends ASTPatternNode {
+  readonly value: number;
+
+  constructor({ value, location }: NumericLiteralPattern) {
+    super(location);
+
+    this.value = value;
+  }
+
+  override async match(number: KopiValue, context: Context) {
+    if (number instanceof KopiNumber && number.value === this.value) {
+      return {};
+    }
+
+    return undefined;
+  }
+}
+
+//
+
 class NumericLiteral extends ASTNode {
   readonly value: number;
 
@@ -74,29 +112,15 @@ class Identifier extends ASTNode {
   }
 }
 
-class TuplePattern extends ASTPatternNode {
-  readonly patterns: ASTPatternNode[];
-
-  constructor({ patterns, location }: TuplePattern) {
-    super(location);
-
-    this.patterns = patterns;
-  }
-
-  override async match(
-    value: KopiValue,
-    context: Context,
-  ) {
-    return {};
-  }
-}
-
 export {
   TupleExpression,
   OperatorExpression,
   FunctionExpression,
   ApplyExpression,
+  //
   TuplePattern,
+  NumericLiteralPattern,
+  //
   NumericLiteral,
   Identifier,
 };
