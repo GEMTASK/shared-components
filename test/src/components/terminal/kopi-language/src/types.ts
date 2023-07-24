@@ -10,7 +10,7 @@ class ASTNode {
   location: {} = {};
 
   constructor(location: {}) {
-    // this.location = location;
+    this.location = {};
   }
 }
 

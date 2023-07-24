@@ -1,8 +1,14 @@
+//
+// Expressions
+//
+
+Program =
+  __ expr:Expression __ {
+    return expr;
+  }
 
 Expression
   = AddExpression
-
-//
 
 AddExpression
   = head:ApplyExpression tail:(__ ("+" / "-") __ ApplyExpression)* {
@@ -55,6 +61,8 @@ FunctionExpression
     }
 
 //
+// Patterns
+//
 
 Pattern
   = PrimaryPattern
@@ -96,6 +104,8 @@ IdentifierPattern
     }
 
 //
+// Literals
+//
 
 NumericLiteral "number"
   = value:([0-9]+ ("." !"." [0-9]+)?) {
@@ -114,6 +124,8 @@ Identifier "identifier"
       });
     }
 
+//
+// Miscellaneous
 //
 
 __ "whitespace"

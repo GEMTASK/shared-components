@@ -7,16 +7,9 @@ interface Visitor {
   context: Context;
 }
 
-async function TupleExpression(
-  { fieldExpressions, fieldNames }: astNodes.TupleExpression,
-  context: Context
-): Promise<KopiValue> {
-  const { environment, evaluate } = context;
-
-  return new KopiTuple(
-    fieldExpressions.map(expressionField => evaluate(expressionField, environment)),
-  );
-}
+//
+// Expressions
+//
 
 async function OperatorExpression(
   astNode: astNodes.OperatorExpression,
@@ -69,6 +62,21 @@ async function FunctionExpression(
   );
 }
 
+async function TupleExpression(
+  { fieldExpressions, fieldNames }: astNodes.TupleExpression,
+  context: Context
+): Promise<KopiValue> {
+  const { environment, evaluate } = context;
+
+  return new KopiTuple(
+    fieldExpressions.map(expressionField => evaluate(expressionField, environment)),
+  );
+}
+
+//
+// Literals
+//
+
 async function NumericLiteral(
   { value }: astNodes.NumericLiteral
 ): Promise<KopiValue> {
@@ -92,10 +100,11 @@ async function Identifier(
 
 export {
   type Visitor,
-  TupleExpression,
   OperatorExpression,
   ApplyExpression,
   FunctionExpression,
+  TupleExpression,
+  //
   NumericLiteral,
   Identifier,
 };

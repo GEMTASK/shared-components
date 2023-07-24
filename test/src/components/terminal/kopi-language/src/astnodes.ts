@@ -1,17 +1,9 @@
 import { KopiNumber, KopiTuple } from './classes';
 import { ASTNode, ASTPatternNode, Context, KopiValue } from './types';
 
-class TupleExpression extends ASTNode {
-  readonly fieldExpressions: ASTNode[];
-  readonly fieldNames: string[];
-
-  constructor({ fieldExpressions, fieldNames, location }: TupleExpression) {
-    super(location);
-
-    this.fieldExpressions = fieldExpressions;
-    this.fieldNames = fieldNames;
-  }
-}
+//
+// Expressions
+//
 
 class OperatorExpression extends ASTNode {
   readonly operator: '+' | '-';
@@ -27,6 +19,18 @@ class OperatorExpression extends ASTNode {
   }
 }
 
+class ApplyExpression extends ASTNode {
+  readonly expression: ASTNode;
+  readonly argumentExpression: ASTNode;
+
+  constructor({ expression, argumentExpression, location }: ApplyExpression) {
+    super(location);
+
+    this.expression = expression;
+    this.argumentExpression = argumentExpression;
+  }
+};
+
 class FunctionExpression extends ASTNode {
   readonly parameterPattern: ASTPatternNode;
   readonly bodyExpression: ASTNode;
@@ -41,18 +45,20 @@ class FunctionExpression extends ASTNode {
   }
 }
 
-class ApplyExpression extends ASTNode {
-  readonly expression: ASTNode;
-  readonly argumentExpression: ASTNode;
+class TupleExpression extends ASTNode {
+  readonly fieldExpressions: ASTNode[];
+  readonly fieldNames: string[];
 
-  constructor({ expression, argumentExpression, location }: ApplyExpression) {
+  constructor({ fieldExpressions, fieldNames, location }: TupleExpression) {
     super(location);
 
-    this.expression = expression;
-    this.argumentExpression = argumentExpression;
+    this.fieldExpressions = fieldExpressions;
+    this.fieldNames = fieldNames;
   }
-};
+}
 
+//
+// Patterns
 //
 
 class TuplePattern extends ASTPatternNode {
@@ -140,6 +146,8 @@ class IdentifierPattern extends ASTPatternNode {
 }
 
 //
+// Literals
+//
 
 class NumericLiteral extends ASTNode {
   readonly value: number;
@@ -162,14 +170,14 @@ class Identifier extends ASTNode {
 }
 
 export {
-  TupleExpression,
   OperatorExpression,
   FunctionExpression,
   ApplyExpression,
+  TupleExpression,
   //
-  TuplePattern,
   NumericLiteralPattern,
   IdentifierPattern,
+  TuplePattern,
   //
   NumericLiteral,
   Identifier,
