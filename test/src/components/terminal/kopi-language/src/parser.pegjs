@@ -95,7 +95,7 @@ NumericLiteralPattern
     }
 
 IdentifierPattern
-  = identifier:Identifier {
+  = identifier:Identifier expr:(__ "=" __ Expression)? {
       return {
         type: 'IdentifierPattern',
         name: identifier.name,

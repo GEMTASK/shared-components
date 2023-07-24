@@ -125,11 +125,13 @@ class NumericLiteralPattern extends ASTPatternNode {
 
 class IdentifierPattern extends ASTPatternNode {
   readonly name: string;
+  readonly defaultExpression: ASTNode | null;
 
-  constructor({ name, location }: IdentifierPattern) {
+  constructor({ name, defaultExpression, location }: IdentifierPattern) {
     super(location);
 
     this.name = name;
+    this.defaultExpression = defaultExpression;
   }
 
   override async match(value: KopiValue, context: Context) {
