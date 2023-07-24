@@ -45,7 +45,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       return new astNodes.IdentifierPattern({
         name: rawASTNode.name,
         location: rawASTNode.location,
-        defaultExpression: null,
+        defaultExpression: rawASTNode.defaultExpression && transform(rawASTNode.defaultExpression),
       } as astNodes.IdentifierPattern);
     case 'TuplePattern':
       return new astNodes.TuplePattern({

@@ -138,7 +138,13 @@ class IdentifierPattern extends ASTPatternNode {
     const { environment, evaluate } = context;
 
     if (value === undefined) {
-      throw new Error(`IdentifierPattern: match() failed. Expected a value but found "${value}"`);
+      if (this.defaultExpression !== null) {
+        return {
+          [this.name]: await evaluate(this.defaultExpression, environment)
+        };
+      } else {
+        throw new Error(`IdentifierPattern: match() failed. Expected a value but found "${value}"`);
+      }
     }
 
     return {

@@ -99,7 +99,7 @@ IdentifierPattern
       return {
         type: 'IdentifierPattern',
         name: identifier.name,
-        defaultExpression: null,
+        defaultExpression: expr && expr[3],
       };
     }
 

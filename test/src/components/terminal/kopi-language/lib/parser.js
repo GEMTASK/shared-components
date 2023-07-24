@@ -277,7 +277,7 @@ function peg$parse(input, options) {
       return {
         type: 'IdentifierPattern',
         name: identifier.name,
-        defaultExpression: null,
+        defaultExpression: expr && expr[3],
       };
     };
   var peg$f10 = function(value) {
