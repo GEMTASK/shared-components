@@ -80,7 +80,7 @@ const initialState = [
   },
   {
     id: uuidv4(), title: 'Contacts', element: <Contacts />, rect: {
-      x: 390, y: 360, width: 570, height: 540,
+      x: 540, y: 360, width: 510, height: 540,
     }
   },
   // {
@@ -90,12 +90,12 @@ const initialState = [
   // },
   {
     id: uuidv4(), title: 'Terminal', element: <Terminal />, rect: {
-      x: 15, y: 360, width: 360, height: 540,
+      x: 15, y: 360, width: 510, height: 540,
     }
   },
   {
     id: uuidv4(), title: 'Files', element: <Filesystem />, rect: {
-      x: 975, y: 360, width: 690, height: 540,
+      x: 1065, y: 360, width: 600, height: 540,
     }
   },
 ];
