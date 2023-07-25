@@ -200,15 +200,21 @@ const Terminal = ({ ...props }: any) => {
         <Spacer size="small" />
       </View>
       <Divider />
-      <View padding="small">
-        <HistoryItem source={'1 + 2 * 3'} onItemSelect={handleHistorySelect} />
-        <HistoryItem source={'(1 + 2) * 3'} onItemSelect={handleHistorySelect} />
-        <HistoryItem source={'((a, b) => a + b) (1, 2)'} onItemSelect={handleHistorySelect} />
-        <HistoryItem source={'((a, b = 2) => a + b) 1'} onItemSelect={handleHistorySelect} />
-        <HistoryItem source={'((a = 1, b = 2) => a + b) ()'} onItemSelect={handleHistorySelect} />
-        <HistoryItem source={'let (a = 1) => a'} onItemSelect={handleHistorySelect} />
-        <HistoryItem source={'let (a = 1, b = 2) => a + b'} onItemSelect={handleHistorySelect} />
-        <HistoryItem source={'sleep 5 + sleep 5'} onItemSelect={handleHistorySelect} />
+      <View>
+        <View fillColor="gray-1" padding="small large" minHeight={48} align="bottom left">
+          <Text fontSize="medium">History</Text>
+        </View>
+        <Divider />
+        <View padding="small">
+          <HistoryItem source={'1 + 2 * 3'} onItemSelect={handleHistorySelect} />
+          <HistoryItem source={'(1 + 2) * 3'} onItemSelect={handleHistorySelect} />
+          <HistoryItem source={'((a, b) => a + b) (1, 2)'} onItemSelect={handleHistorySelect} />
+          <HistoryItem source={'((a, b = 2) => a + b) 1'} onItemSelect={handleHistorySelect} />
+          <HistoryItem source={'((a = 1, b = 2) => a + b) ()'} onItemSelect={handleHistorySelect} />
+          <HistoryItem source={'let (a = 1) => a'} onItemSelect={handleHistorySelect} />
+          <HistoryItem source={'let (a = 1, b = 2) => a + b'} onItemSelect={handleHistorySelect} />
+          <HistoryItem source={'sleep 5 + sleep 5'} onItemSelect={handleHistorySelect} />
+        </View>
       </View>
     </View>
   );
