@@ -107,7 +107,8 @@ const Terminal = ({ ...props }: any) => {
 
   const [value, setValue] = useState('');
   const [history, setHistory] = useState<React.ReactElement[]>([
-    <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }} >
+    <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+      Kopi shell – a simple, immutable, async programming langauge.<br />
       Type a command such as "date", "clock", or "icon".
     </Text>,
     <Clock style={{ width: 150 }} />
