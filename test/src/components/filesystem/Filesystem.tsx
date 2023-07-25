@@ -166,6 +166,12 @@ const Filesystem = ({ ...props }: any) => {
         </View>
         <View flex>
           <View horizontal padding="small large" fillColor="gray-1">
+            <View>
+              <Text fontSize="xsmall" textColor="gray-6">file://localhost</Text>
+              <Spacer size="small" />
+              <Text fontWeight="semibold">/photos/beach/</Text>
+            </View>
+            <Spacer flex size="large" />
             <DisplayButton icon="square" display={IconDisplay} />
             <DisplayButton icon="table-list" display={TileDisplay} />
             <DisplayButton icon="list" display={ListDisplay} />

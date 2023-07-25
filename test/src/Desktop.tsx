@@ -23,14 +23,15 @@ const Link = createLink(RouterLink);
 const About = () => {
   return (
     <View flex fillColor="gray-1" padding="large" align="center">
-      <Text fontSize="large">React Desktop 2.0</Text>
+      <Text fontSize="large">React Desktop</Text>
       <Spacer size="xxlarge" />
       <Text textAlign="center">
-        A React-based desktop environment and component library
+        A React-based desktop environment, component library,<br />
+        and integrated programming language (Kopi)
       </Text>
       <Spacer size="large" />
       <Text fontSize="xsmall" textColor="gray-6" textAlign="center">
-        2023 Mike Austin
+        2022 – 2023 Mike Austin
       </Text>
       <Spacer size="xxlarge" />
       <Text textAlign="center" maxWidth={300}>
@@ -107,7 +108,7 @@ const App = () => {
     const id = uuidv4();
 
     const width = rect?.width ?? 500;
-    const height = rect?.height ?? 200;
+    const height = rect?.height ?? 250;
 
     setWindows(windows => [
       ...windows,
@@ -125,9 +126,9 @@ const App = () => {
   };
 
   const desktopMenuItems = [
-    { title: 'Preferences...', action: () => addWindow('Preferences', <Preferences />) },
+    { title: 'Preferences', action: () => addWindow('Preferences', <Preferences />) },
     null,
-    { title: 'About React Desktop 2.0...', action: () => addWindow('React Desktop 2.0', <About />) },
+    { title: 'About React Desktop', action: () => addWindow('React Desktop', <About />) },
   ];
 
   const utilitiesMenuItems = [
@@ -174,7 +175,7 @@ const App = () => {
   return (
     <View style={{ minHeight: '100vh' }}>
       <Stack horizontal shadow paddingHorizontal="large" style={{ zIndex: 1 }}>
-        <Menu hover title="React-Desktop 2.0" titleFontWeight="bold" rightIcon={undefined} items={desktopMenuItems} />
+        <Menu hover title="React-Desktop" titleFontWeight="bold" rightIcon={undefined} items={desktopMenuItems} />
         <Menu hover title="Utilities" rightIcon={undefined} items={utilitiesMenuItems} />
         <Menu hover title="Applications" rightIcon={undefined} items={applicationMenuItems} />
       </Stack>

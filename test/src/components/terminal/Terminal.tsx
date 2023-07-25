@@ -135,7 +135,6 @@ const Terminal = ({ ...props }: any) => {
 
       if (value) {
         let element: React.ReactNode = 'Command not found';
-        const [command, arg] = value.split(' ');
 
         setValue('');
 
@@ -204,7 +203,7 @@ const Terminal = ({ ...props }: any) => {
   return (
     <Stack horizontal divider {...props} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
       <View flex>
-        <View horizontal padding="small" fillColor="gray-1">
+        <View horizontal padding="small large" fillColor="gray-1">
           <Button icon="trash-alt" onClick={() => setHistory([])} />
           <Spacer flex size="large" />
           <Button icon="history" selected={isHistoryVisible} onClick={() => setIsHistoryVisible(isHistoryVisible => !isHistoryVisible)} />
