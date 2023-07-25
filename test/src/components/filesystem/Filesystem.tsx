@@ -137,7 +137,7 @@ const Filesystem = ({ ...props }: any) => {
     const handleClick = () => setSelectedDisplay(() => display);
 
     return (
-      <Button hover selected={selectedDisplay === display} {...props} onClick={handleClick} />
+      <Button hover iconSize="lg" selected={selectedDisplay === display} {...props} onClick={handleClick} />
     );//
   };
 

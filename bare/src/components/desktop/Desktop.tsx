@@ -76,7 +76,7 @@ const Window = React.memo(({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const windowElementRef = useRef<HTMLElement>(null);
-  const leftWindowRectsRef = useRef<DOMRect>(new DOMRect());
+  const rightWindowRectsRef = useRef<DOMRect>(new DOMRect());
   const firstEventRef = useRef<React.PointerEvent | null>(null);
 
   const styles = useStyles();
@@ -101,13 +101,13 @@ const Window = React.memo(({
     onWindowFocus?.(id);
 
     if (windowElementRef.current) {
-      leftWindowRectsRef.current = getOffsetsRect(windowElementRef.current);
+      rightWindowRectsRef.current = getOffsetsRect(windowElementRef.current);
     }
   }, []);
 
   const handleTitlePointerMove = useCallback((event: React.PointerEvent) => {
     if (firstEventRef.current && windowElementRef.current) {
-      const windowRect = leftWindowRectsRef.current;
+      const windowRect = rightWindowRectsRef.current;
       const firstEvent = firstEventRef.current;
 
       windowElementRef.current.style.left = `${windowRect.left + (event.clientX - firstEvent.clientX)}px`;
@@ -124,7 +124,7 @@ const Window = React.memo(({
       onWindowChange(id, {
         ...rect,
         x: Math.round(rect.x / 15) * 15,
-        y: Math.round(rect.y / 15) * 15
+        y: Math.round(rect.y / 15) * 15,
       });
     }
   }, []);
@@ -243,11 +243,11 @@ const Desktop = ({
       const children = [...desktopElementRef.current.children] as HTMLElement[];
 
       leftWindowsRef.current = children.filter(
-        ({ offsetLeft }) => offsetLeft - event.clientX >= 0 && offsetLeft - event.clientX <= 15
+        ({ offsetLeft, offsetWidth }) => event.clientX - (offsetLeft + offsetWidth) >= 0 && event.clientX - (offsetLeft + offsetWidth) <= 15
       );
 
       rightWindowsRef.current = children.filter(
-        ({ offsetLeft, offsetWidth }) => event.clientX - (offsetLeft + offsetWidth) >= 0 && event.clientX - (offsetLeft + offsetWidth) <= 15
+        ({ offsetLeft }) => offsetLeft - event.clientX >= 0 && offsetLeft - event.clientX <= 15
       );
 
       leftWindowRectsRef.current = leftWindowsRef.current.map(window => getOffsetsRect(window));
@@ -256,22 +256,32 @@ const Desktop = ({
   }, []);
 
   const handlePointerMove = useCallback((event: React.PointerEvent) => {
-    if (firstEventRef.current && leftWindowsRef.current && leftWindowRectsRef.current) {
+    if (firstEventRef.current && rightWindowsRef.current && rightWindowRectsRef.current) {
       const firstEvent = firstEventRef.current;
 
       leftWindowsRef.current.forEach((window, index) => {
-        window.style.left = `${leftWindowRectsRef.current[index].x + (event.clientX - firstEvent.clientX)}px`;
-        window.style.width = `${leftWindowRectsRef.current[index].width - (event.clientX - firstEvent.clientX)}px`;
+        window.style.width = `${leftWindowRectsRef.current[index].width - (firstEvent.clientX - event.clientX)}px`;
       });
 
       rightWindowsRef.current.forEach((window, index) => {
-        // window.style.left = `${leftWindowRectsRef.current[index].x + (event.clientX - firstEvent.clientX)}px`;
-        window.style.width = `${rightWindowRectsRef.current[index].width - (firstEvent.clientX - event.clientX)}px`;
+        window.style.left = `${rightWindowRectsRef.current[index].x + (event.clientX - firstEvent.clientX)}px`;
+        window.style.width = `${rightWindowRectsRef.current[index].width - (event.clientX - firstEvent.clientX)}px`;
       });
     }
   }, []);
 
   const handlePointerUp = useCallback(() => {
+    if (firstEventRef.current && rightWindowsRef.current && rightWindowRectsRef.current) {
+      leftWindowsRef.current.forEach((window, index) => {
+        window.style.width = `${Math.round(window.offsetWidth / 15) * 15}px`;
+      });
+
+      rightWindowsRef.current.forEach((window, index) => {
+        window.style.left = `${Math.round(window.offsetLeft / 15) * 15}px`;
+        window.style.width = `${Math.round(window.offsetWidth / 15) * 15}px`;
+      });
+    }
+
     firstEventRef.current = null;
   }, []);
 
