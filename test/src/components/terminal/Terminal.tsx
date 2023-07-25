@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { Divider, Icon, Input, Spacer, Text, View, ViewProps, createLink } from 'bare';
+import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps, createLink } from 'bare';
 import Clock from '../clock/Clock';
 
 import { interpret, inspect } from './kopi-language';
@@ -78,6 +78,19 @@ const HistoryItem = ({
   );
 };
 
+const historyItems = [
+  'date',
+  'clock',
+  '1 + 2 * 3',
+  '(1 + 2) * 3',
+  'sleep 5 + sleep 5',
+  '((a, b) => a + b) (1, 2)',
+  '((a, b = 2) => a + b) 1',
+  '((a = 1, b = 2) => a + b) ()',
+  'let (a = 1) => a',
+  'let (a = 1, b = 2) => a + b',
+];
+
 const Terminal = ({ ...props }: any) => {
   const historyElementRef = useRef<HTMLElement>(null);
   const inputElementRef = useRef<HTMLInputElement>(null);
@@ -91,6 +104,7 @@ const Terminal = ({ ...props }: any) => {
     </Text>,
     <Clock style={{ width: 150 }} />
   ]);
+  const [isHistoryVisible, setIsHistoryVisible] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -186,8 +200,14 @@ const Terminal = ({ ...props }: any) => {
   };
 
   return (
-    <View horizontal {...props} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
+    <Stack horizontal divider {...props} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
       <View flex>
+        <View horizontal padding="small" fillColor="gray-1">
+          <Button icon="trash-alt" onClick={() => setHistory([])} />
+          <Spacer flex size="large" />
+          <Button icon="history" selected={isHistoryVisible} onClick={() => setIsHistoryVisible(isHistoryVisible => !isHistoryVisible)} />
+        </View>
+        <Divider />
         <View ref={historyElementRef} paddingHorizontal="small" style={{ overflowY: 'auto' }}>
           <Spacer size="small" />
           {history.map(item => (
@@ -199,24 +219,20 @@ const Terminal = ({ ...props }: any) => {
         </View>
         <Spacer size="small" />
       </View>
-      <Divider />
-      <View>
-        <View fillColor="gray-1" padding="small large" minHeight={48} align="bottom left">
-          <Text fontSize="medium">History</Text>
+      {isHistoryVisible && (
+        <View>
+          <View fillColor="gray-1" padding="small large" minHeight={48} align="bottom left">
+            <Text fontSize="medium">History</Text>
+          </View>
+          <Divider />
+          <View padding="small">
+            {historyItems.map(item => (
+              <HistoryItem source={item} onItemSelect={handleHistorySelect} />
+            ))}
+          </View>
         </View>
-        <Divider />
-        <View padding="small">
-          <HistoryItem source={'1 + 2 * 3'} onItemSelect={handleHistorySelect} />
-          <HistoryItem source={'(1 + 2) * 3'} onItemSelect={handleHistorySelect} />
-          <HistoryItem source={'((a, b) => a + b) (1, 2)'} onItemSelect={handleHistorySelect} />
-          <HistoryItem source={'((a, b = 2) => a + b) 1'} onItemSelect={handleHistorySelect} />
-          <HistoryItem source={'((a = 1, b = 2) => a + b) ()'} onItemSelect={handleHistorySelect} />
-          <HistoryItem source={'let (a = 1) => a'} onItemSelect={handleHistorySelect} />
-          <HistoryItem source={'let (a = 1, b = 2) => a + b'} onItemSelect={handleHistorySelect} />
-          <HistoryItem source={'sleep 5 + sleep 5'} onItemSelect={handleHistorySelect} />
-        </View>
-      </View>
-    </View>
+      )}
+    </Stack>
   );
 };
 

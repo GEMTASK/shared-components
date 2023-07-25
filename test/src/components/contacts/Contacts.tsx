@@ -99,7 +99,7 @@ const Contacts = ({ ...props }) => {
   return (
     <Splitter horizontal {...props}>
 
-      <View fillColor="gray-1" minWidth={192}>
+      <View fillColor="gray-1" minWidth={112} style={{ width: 192 }}>
         <View horizontal padding="small large">
           <Button solid primary title="New Contact" />
         </View>
