@@ -1,5 +1,11 @@
 import { ASTNode, ASTPatternNode, Context, Environment, KopiValue } from './types';
 
+function assert(value: KopiValue, type: Function, message: string) {
+  if (!(value instanceof Function)) {
+    throw new Error(message);
+  }
+}
+
 class KopiNumber extends KopiValue {
   readonly value: number;
 
@@ -14,19 +20,43 @@ class KopiNumber extends KopiValue {
   }
 
   '+'(that: KopiValue) {
-    if (that instanceof KopiNumber) {
-      return new KopiNumber(this.value + that.value);
+    if (!(that instanceof KopiNumber)) {
+      throw new Error(`Right side of operation is not a number.`);
     }
 
-    throw new Error();
+    return new KopiNumber(this.value + that.value);
   }
 
   '-'(that: KopiValue) {
-    if (that instanceof KopiNumber) {
-      return new KopiNumber(this.value - that.value);
+    if (!(that instanceof KopiNumber)) {
+      throw new Error(`Right side of operation is not a number.`);
     }
 
-    throw new Error();
+    return new KopiNumber(this.value - that.value);
+  }
+
+  '*'(that: KopiValue) {
+    if (!(that instanceof KopiNumber)) {
+      throw new Error(`Right side of operation is not a number.`);
+    }
+
+    return new KopiNumber(this.value * that.value);
+  }
+
+  '/'(that: KopiValue) {
+    if (!(that instanceof KopiNumber)) {
+      throw new Error(`Right side of operation is not a number.`);
+    }
+
+    return new KopiNumber(this.value / that.value);
+  }
+
+  '%'(that: KopiValue) {
+    if (!(that instanceof KopiNumber)) {
+      throw new Error(`Right side of operation is not a number.`);
+    }
+
+    return new KopiNumber(this.value % that.value);
   }
 }
 

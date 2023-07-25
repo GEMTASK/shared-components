@@ -6,7 +6,7 @@ import { ASTNode, ASTPatternNode, Context, KopiValue } from './types';
 //
 
 class OperatorExpression extends ASTNode {
-  readonly operator: '+' | '-';
+  readonly operator: '+' | '-' | '*' | '/' | '%';
   readonly leftExpression: ASTNode;
   readonly rightExpression: ASTNode;
 

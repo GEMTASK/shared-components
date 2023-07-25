@@ -23,7 +23,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         leftExpression: transform(rawASTNode.leftExpression),
         rightExpression: transform(rawASTNode.rightExpression),
         location: rawASTNode.location,
-      });
+      } as astNodes.OperatorExpression);
     case 'ApplyExpression':
       return new astNodes.ApplyExpression({
         expression: transform(rawASTNode.expression),

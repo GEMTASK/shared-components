@@ -11,7 +11,18 @@ Expression
   = AddExpression
 
 AddExpression
-  = head:ApplyExpression tail:(__ ("+" / "-") __ ApplyExpression)* {
+  = head:MultiplyExpression tail:(__ ("+" / "-") __ MultiplyExpression)* {
+      return tail.reduce((leftExpression, [, operator, , rightExpression]) => ({
+        type: 'OperatorExpression',
+        operator,
+        leftExpression,
+        rightExpression,
+        location: location(),
+       }), head);
+    }
+
+MultiplyExpression
+  = head:ApplyExpression tail:(__ ("*" / "/" / "%") __ ApplyExpression)* {
       return tail.reduce((leftExpression, [, operator, , rightExpression]) => ({
         type: 'OperatorExpression',
         operator,
