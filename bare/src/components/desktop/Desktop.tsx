@@ -229,6 +229,16 @@ const Desktop = ({
   const rightWindowRectsRef = useRef<DOMRect[]>([]);
   const rightWindowsRef = useRef<HTMLElement[]>([]);
 
+  const handleWindowBlur = () => {
+    if (onWindowFocus && document.activeElement) {
+      const id = document.activeElement.parentElement?.getAttribute('data-id');
+
+      if (id) {
+        onWindowFocus(id);
+      }
+    }
+  };
+
   const handlePointerDown = useCallback((event: React.PointerEvent) => {
     if (event.currentTarget !== desktopElementRef.current) {
       return;
@@ -253,6 +263,12 @@ const Desktop = ({
       leftWindowRectsRef.current = leftWindowsRef.current.map(window => getOffsetsRect(window));
       rightWindowRectsRef.current = rightWindowsRef.current.map(window => getOffsetsRect(window));
     }
+
+    window.addEventListener('blur', handleWindowBlur);
+
+    return () => {
+      window.removeEventListener('blur', handleWindowBlur);
+    };
   }, []);
 
   const handlePointerMove = useCallback((event: React.PointerEvent) => {
@@ -300,6 +316,7 @@ const Desktop = ({
           id={id}
           title={title}
           rect={rect}
+          data-id={id}
           order={windowOrder.indexOf(id)}
           onWindowFocus={onWindowFocus}
           onWindowChange={onWindowChange}
