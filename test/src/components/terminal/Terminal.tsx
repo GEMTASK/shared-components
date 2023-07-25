@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { Icon, Input, Spacer, Text, View, ViewProps, createLink } from 'bare';
+import { Divider, Icon, Input, Spacer, Text, View, ViewProps, createLink } from 'bare';
 import Clock from '../clock/Clock';
 
 import { interpret, inspect } from './kopi-language';
@@ -49,7 +49,7 @@ const environment = new Environment({
 
 const Link = createLink(RouterLink);
 
-const Line = ({
+const HistoryLine = ({
   children,
   ...props
 }: ViewProps) => {
@@ -59,6 +59,22 @@ const Line = ({
       <Spacer size="xsmall" />
       {children}
     </View>
+  );
+};
+
+type HistoryItemProps = {
+  source: string,
+  onItemSelect: (source: string) => void;
+};
+
+const HistoryItem = ({
+  source,
+  onItemSelect
+}: HistoryItemProps) => {
+  return (
+    <Text padding="small" onClick={() => onItemSelect(source)}>
+      {source}
+    </Text>
   );
 };
 
@@ -90,9 +106,9 @@ const Terminal = ({ ...props }: any) => {
     if (event.key === 'Enter') {
       setHistory(history => [
         ...history,
-        <Line>
+        <HistoryLine>
           <Text style={{ whiteSpace: 'pre-wrap' }}>{value}</Text>
-        </Line>
+        </HistoryLine>
       ]);
 
       if (value) {
@@ -147,18 +163,53 @@ const Terminal = ({ ...props }: any) => {
     }
   };
 
+  const handleHistorySelect = async (source: string) => {
+    setHistory(history => [
+      ...history,
+      <HistoryLine>
+        <Text style={{ whiteSpace: 'pre-wrap' }}>{source}</Text>
+      </HistoryLine>
+    ]);
+
+    const element = await (await interpret(source, environment)).inspect();
+
+    setHistory(history => [
+      ...history,
+      <View horizontal>
+        {typeof element === 'string' ? (
+          <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>{element}</Text>
+        ) : (
+          element
+        )}
+      </View>
+    ]);
+  };
+
   return (
-    <View {...props} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
-      <View ref={historyElementRef} paddingHorizontal="small" style={{ overflowY: 'auto' }}>
+    <View horizontal {...props} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
+      <View flex>
+        <View ref={historyElementRef} paddingHorizontal="small" style={{ overflowY: 'auto' }}>
+          <Spacer size="small" />
+          {history.map(item => (
+            item
+          ))}
+        </View>
+        <View horizontal align="left" paddingHorizontal="small" style={{ marginTop: -5 }}>
+          <Input ref={inputElementRef} flush icon="angle-right" value={value} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
+        </View>
         <Spacer size="small" />
-        {history.map(item => (
-          item
-        ))}
       </View>
-      <View horizontal align="left" paddingHorizontal="small" style={{ marginTop: -5 }}>
-        <Input ref={inputElementRef} flush icon="angle-right" value={value} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
+      <Divider />
+      <View padding="small">
+        <HistoryItem source={'1 + 2 * 3'} onItemSelect={handleHistorySelect} />
+        <HistoryItem source={'(1 + 2) * 3'} onItemSelect={handleHistorySelect} />
+        <HistoryItem source={'((a, b) => a + b) (1, 2)'} onItemSelect={handleHistorySelect} />
+        <HistoryItem source={'((a, b = 2) => a + b) 1'} onItemSelect={handleHistorySelect} />
+        <HistoryItem source={'((a = 1, b = 2) => a + b) ()'} onItemSelect={handleHistorySelect} />
+        <HistoryItem source={'let (a = 1) => a'} onItemSelect={handleHistorySelect} />
+        <HistoryItem source={'let (a = 1, b = 2) => a + b'} onItemSelect={handleHistorySelect} />
+        <HistoryItem source={'sleep 5 + sleep 5'} onItemSelect={handleHistorySelect} />
       </View>
-      <Spacer size="small" />
     </View>
   );
 };
