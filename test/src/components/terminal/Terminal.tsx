@@ -9,56 +9,42 @@ import { interpret, inspect } from './kopi-language';
 import { KopiFunction, KopiNumber, KopiTuple } from './kopi-language/src/classes';
 import { Context, Environment, KopiValue } from './kopi-language/src/types';
 
-class Inspectable extends KopiValue {
-  func: () => Promise<string | React.ReactElement>;
-
-  constructor(func: () => Promise<string | React.ReactElement>) {
-    super();
-
-    this.func = func;
+class KopiDate extends KopiValue implements KopiValue {
+  override async inspect() {
+    return new Date().toLocaleString();
   }
 
-  async inspect() {
-    return this.func();
+  async apply(thisArg: this, [value]: [value: KopiValue]) {
+    return value;
   }
 }
 
-class NativeFunction extends KopiValue {
-  func: (...args: any[]) => Promise<KopiValue>;
-
-  constructor(func: (...args: any[]) => Promise<KopiValue>) {
-    super();
-
-    this.func = func;
+class KopiSleep extends KopiValue {
+  async apply(thisArg: this, [seconds]: [KopiNumber]) {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(seconds), seconds.value * 1000);
+    });
   }
+}
 
-  async apply(thisArg: this, [argument, context]: [KopiValue, Context]) {
-    return this.func.apply(thisArg, [argument, context]);
+class KopiLet extends KopiValue {
+  async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
+    return func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+  }
+}
+
+class KopiClock extends KopiValue {
+  async inspect() {
+    return <Clock style={{ width: 150 }} />;
   }
 }
 
 const environment = new Environment({
   x: new KopiNumber(3),
-  let: new NativeFunction((func: KopiFunction, context: Context) => {
-    return func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
-  }),
-  date: {
-    inspect: async () => new Date().toLocaleString(),
-    get fields() { return [Promise.resolve(this)]; }
-  },
-  date2: new Inspectable(async () => new Date().toLocaleString()),
-  async sleep(number: KopiNumber) {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(number), number.value * 1000);
-    });
-  },
-  sleep2: new NativeFunction((number: KopiNumber) => new Promise((resolve) => {
-    setTimeout(() => resolve(number), number.value * 1000);
-  })),
-  clock: {
-    inspect: async () => <Clock style={{ width: 150 }} />,
-    get fields() { return [Promise.resolve(this)]; }
-  }
+  let: new KopiLet(),
+  date: new KopiDate(),
+  sleep: new KopiSleep(),
+  clock: new KopiClock(),
 });
 
 const Link = createLink(RouterLink);

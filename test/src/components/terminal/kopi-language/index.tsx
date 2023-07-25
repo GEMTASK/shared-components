@@ -2,27 +2,12 @@
 
 import * as parser from './lib/parser.js';
 
-import { RawASTNode, ASTNode, ASTPatternNode, Environment, KopiValue } from './src/types';
+import { RawASTNode, ASTNode, ASTPatternNode, Environment } from './src/types';
 
 import * as astNodes from './src/astnodes';
 import * as visitors from './src/visitors';
 
 import { inspect } from './src/utils';
-
-declare global {
-  interface FunctionConstructor {
-    // traits: KopiTrait[];
-  }
-
-  interface Function {
-    inspect(): Promise<string>;
-    get fields(): Promise<KopiValue>[];
-  }
-}
-
-Function.prototype.inspect = function () {
-  return Promise.resolve(`<native-function>`);
-};
 
 function transform(rawASTNode: RawASTNode): ASTNode {
   switch (rawASTNode.type) {
