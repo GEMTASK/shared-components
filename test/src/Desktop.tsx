@@ -80,22 +80,17 @@ const initialState = [
   },
   {
     id: uuidv4(), title: 'Contacts', element: <Contacts />, rect: {
-      x: 540, y: 360, width: 510, height: 540,
+      x: 615, y: 360, width: 510, height: 540,
     }
   },
-  // {
-  //   id: uuidv4(), title: 'Browser', element: <Browser />, rect: {
-  //     x: 15, y: 360, width: 950, height: 540,
-  //   }
-  // },
   {
     id: uuidv4(), title: 'Terminal', element: <Terminal />, rect: {
-      x: 15, y: 360, width: 510, height: 540,
+      x: 1140, y: 360, width: 525, height: 540,
     }
   },
   {
     id: uuidv4(), title: 'Files', element: <Filesystem />, rect: {
-      x: 1065, y: 360, width: 600, height: 540,
+      x: 15, y: 360, width: 585, height: 540,
     }
   },
 ];

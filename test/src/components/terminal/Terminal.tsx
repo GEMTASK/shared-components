@@ -39,12 +39,21 @@ class KopiClock extends KopiValue {
   }
 }
 
+class KopiIcon extends KopiValue {
+  async inspect() {
+    return <Icon icon="house" size="3x" />;
+  }
+}
+
+//
+
 const environment = new Environment({
   x: new KopiNumber(3),
   let: new KopiLet(),
   date: new KopiDate(),
   sleep: new KopiSleep(),
   clock: new KopiClock(),
+  icon: new KopiIcon(),
 });
 
 const Link = createLink(RouterLink);
@@ -99,8 +108,7 @@ const Terminal = ({ ...props }: any) => {
   const [value, setValue] = useState('');
   const [history, setHistory] = useState<React.ReactElement[]>([
     <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }} >
-      Type a command such as "date", "clock", or "icon house" or any free icon from{' '}
-      <Link to="http://fontawesome.com/search?o=r&m=free" target="_blank">fontawesome.com</Link>
+      Type a command such as "date", "clock", or "icon".
     </Text>,
     <Clock style={{ width: 150 }} />
   ]);
@@ -128,12 +136,6 @@ const Terminal = ({ ...props }: any) => {
       if (value) {
         let element: React.ReactNode = 'Command not found';
         const [command, arg] = value.split(' ');
-
-        switch (command) {
-          case 'icon':
-            element = <Icon icon={arg as any} size="3x" />;
-            break;
-        }
 
         setValue('');
 
