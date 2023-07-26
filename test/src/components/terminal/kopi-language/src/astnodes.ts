@@ -158,6 +158,16 @@ class NumericLiteral extends ASTNode {
   }
 }
 
+class AstLiteral extends ASTNode {
+  readonly value: ASTNode;
+
+  constructor({ value, location }: AstLiteral) {
+    super(location);
+
+    this.value = value;
+  }
+}
+
 class Identifier extends ASTNode {
   readonly name: string;
 
@@ -179,5 +189,6 @@ export {
   TuplePattern,
   //
   NumericLiteral,
+  AstLiteral,
   Identifier,
 };

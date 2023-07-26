@@ -1,6 +1,6 @@
 import * as astNodes from './astnodes';
 import { ASTNode, Context, KopiValue } from './types';
-import { KopiFunction, KopiNumber, KopiTuple } from './classes';
+import { KopiAstLiteral, KopiFunction, KopiNumber, KopiTuple } from './classes';
 
 interface Visitor {
   astNode: ASTNode,
@@ -83,6 +83,12 @@ async function NumericLiteral(
   return new KopiNumber(value);
 }
 
+async function AstLiteral(
+  { value }: astNodes.AstLiteral
+): Promise<KopiValue> {
+  return new KopiAstLiteral(value);
+}
+
 async function Identifier(
   astNode: astNodes.Identifier,
   context: Context,
@@ -106,5 +112,6 @@ export {
   TupleExpression,
   //
   NumericLiteral,
+  AstLiteral,
   Identifier,
 };

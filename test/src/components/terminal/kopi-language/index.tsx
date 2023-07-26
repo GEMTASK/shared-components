@@ -16,7 +16,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         fieldExpressions: rawASTNode.fieldExpressions.map((expression: ASTNode) => transform(expression)),
         fieldNames: rawASTNode.fieldNames,
         location: rawASTNode.location,
-      });
+      } as astNodes.TupleExpression);
     case 'OperatorExpression':
       return new astNodes.OperatorExpression({
         operator: rawASTNode.operator,
@@ -29,7 +29,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         expression: transform(rawASTNode.expression),
         argumentExpression: transform(rawASTNode.argumentExpression),
         location: rawASTNode.location,
-      });
+      } as astNodes.ApplyExpression);
     case 'FunctionExpression':
       return new astNodes.FunctionExpression({
         parameterPattern: transform(rawASTNode.parameterPattern),
@@ -56,12 +56,17 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       return new astNodes.NumericLiteral({
         value: rawASTNode.value,
         location: rawASTNode.location,
-      });
+      } as astNodes.NumericLiteral);
+    case 'AstLiteral':
+      return new astNodes.AstLiteral({
+        value: transform(rawASTNode.value),
+        location: rawASTNode.location,
+      } as astNodes.AstLiteral);
     case 'Identifier':
       return new astNodes.Identifier({
         name: rawASTNode.name,
         location: rawASTNode.location,
-      });
+      } as astNodes.Identifier);
     default:
       console.warn('No transform found for', rawASTNode);
 
@@ -89,6 +94,8 @@ function evaluate(astNode: ASTNode, environment: Environment) {
     return visitors.TupleExpression(astNode, context);
   } else if (astNode instanceof astNodes.NumericLiteral) {
     return visitors.NumericLiteral(astNode);
+  } else if (astNode instanceof astNodes.AstLiteral) {
+    return visitors.AstLiteral(astNode);
   } else if (astNode instanceof astNodes.Identifier) {
     return visitors.Identifier(astNode, context);
   } else {

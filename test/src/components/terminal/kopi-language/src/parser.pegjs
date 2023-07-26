@@ -60,6 +60,7 @@ PrimaryExpression
     }
   / FunctionExpression
   / NumericLiteral
+  / AstLiteral
   / Identifier
 
 FunctionExpression
@@ -126,6 +127,14 @@ NumericLiteral "number"
       location: location(),
     });
   }
+
+AstLiteral "ast-literal"
+  = "'" expression:PrimaryExpression {
+      return {
+        type: 'AstLiteral',
+        value: expression,
+      };
+    }
 
 Identifier "identifier"
   = name:([_a-zA-Z][_a-zA-Z0-9]*) {

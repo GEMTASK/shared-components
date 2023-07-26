@@ -98,6 +98,8 @@ const historyItems = [
   '((a = 1, b = 2) => a + b) ()',
   'let (a = 1) => a',
   'let (a = 1, b = 2) => a + b',
+  `'sin (45 * (3.14159 / 180))`,
+  `'cos (45 * (3.14159 / 180))`,
 ];
 
 const Terminal = ({ ...props }: any) => {

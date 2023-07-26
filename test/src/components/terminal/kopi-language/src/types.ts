@@ -6,6 +6,29 @@ interface RawASTNode {
   [key: string]: any;
 }
 
+abstract class KopiValue {
+  async inspect(): Promise<string | React.ReactElement> {
+    return inspect(this);
+  }
+
+  get fields(): Promise<KopiValue>[] {
+    return [Promise.resolve(this)];
+  }
+
+  async invoke(
+    methodName: string,
+    [argument, context]: [KopiValue, Context]
+  ): Promise<KopiValue> {
+    const method = (this as any)[methodName];
+
+    if (method) {
+      return await method.apply(this, [argument, context]);
+    }
+
+    throw new Error(`No method named "${methodName}" found in ${await this.inspect()}.`);
+  }
+}
+
 class ASTNode {
   location: {} = {};
 
@@ -18,16 +41,6 @@ abstract class ASTPatternNode extends ASTNode {
   abstract match(value: KopiValue, context: Context): Promise<{
     [name: string]: KopiValue;
   } | undefined>;
-}
-
-abstract class KopiValue {
-  async inspect(): Promise<string | React.ReactElement> {
-    return inspect(this);
-  }
-
-  get fields(): Promise<KopiValue>[] {
-    return [Promise.resolve(this)];
-  }
 }
 
 // interface Environment {

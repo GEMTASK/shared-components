@@ -1,12 +1,10 @@
 import { ASTNode, ASTPatternNode, Context, Environment, KopiValue } from './types';
-
-function assert(value: KopiValue, type: Function, message: string) {
-  if (!(value instanceof Function)) {
-    throw new Error(message);
-  }
-}
+import { Identifier } from './astnodes';
 
 class KopiNumber extends KopiValue {
+  static readonly PI: KopiNumber = new KopiNumber(Math.PI);
+  static readonly E: KopiNumber = new KopiNumber(Math.E);
+
   readonly value: number;
 
   constructor(value: number) {
@@ -18,6 +16,10 @@ class KopiNumber extends KopiValue {
   override async inspect() {
     return `${this.value}`;
   }
+
+  //
+  // Arithmetic
+  //
 
   '+'(that: KopiValue) {
     if (!(that instanceof KopiNumber)) {
@@ -57,6 +59,18 @@ class KopiNumber extends KopiValue {
     }
 
     return new KopiNumber(this.value % that.value);
+  }
+
+  //
+  // Trigonometry
+  //
+
+  sin() {
+    return new KopiNumber(Math.sin(this.value));
+  }
+
+  cos() {
+    return new KopiNumber(Math.cos(this.value));
   }
 }
 
@@ -131,8 +145,26 @@ class KopiFunction extends KopiValue {
   }
 }
 
+class KopiAstLiteral extends KopiValue {
+  readonly value: ASTNode;
+
+  constructor(value: ASTNode) {
+    super();
+
+    this.value = value;
+  }
+
+  async apply(
+    thisArg: KopiValue,
+    [argument, context]: [KopiValue, Context]
+  ): Promise<KopiValue> {
+    return argument.invoke((this.value as Identifier).name, [KopiTuple.empty, context]);
+  }
+}
+
 export {
   KopiNumber,
   KopiTuple,
   KopiFunction,
+  KopiAstLiteral,
 };
