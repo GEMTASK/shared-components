@@ -15,6 +15,13 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         expression: transform(rawASTNode.expression),
       } as astNodes.AssignmentStatement);
     //
+    case 'PipeExpression':
+      return new astNodes.PipeExpression({
+        expression: transform(rawASTNode.expression),
+        methodName: rawASTNode.methodName,
+        argumentExpression: rawASTNode.argumentExpression && transform(rawASTNode.argumentExpression),
+        location: rawASTNode.location,
+      } as astNodes.PipeExpression);
     case 'TupleExpression':
       return new astNodes.TupleExpression({
         fieldExpressions: rawASTNode.fieldExpressions.map((expression: ASTNode) => transform(expression)),
@@ -97,6 +104,8 @@ function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
 
   if (astNode instanceof astNodes.AssignmentStatement) {
     return visitors.AssignmentStatement(astNode, context);
+  } else if (astNode instanceof astNodes.PipeExpression) {
+    return visitors.PipeExpression(astNode, context);
   } else if (astNode instanceof astNodes.OperatorExpression) {
     return visitors.OperatorExpression(astNode, context);
   } else if (astNode instanceof astNodes.ApplyExpression) {

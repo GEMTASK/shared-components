@@ -17,9 +17,9 @@ class KopiNumber extends KopiValue {
     return `${this.value}`;
   }
 
-  // toFixed(digits: KopiNumber) {
-  //   return new KopiNumber(this.value.toFixed(digits));
-  // }
+  toFixed(digits: KopiNumber) {
+    return new KopiString(this.value.toFixed(digits.value));
+  }
 
   abs() {
     return new KopiNumber(Math.abs(this.value));
@@ -119,8 +119,20 @@ class KopiString extends KopiValue {
     return new KopiString(this.value.toLocaleUpperCase());
   }
 
-  trim(string: KopiString) {
+  trim() {
     return new KopiString(this.value.trim());
+  }
+
+  // split() {
+  //   return new KopiString(this.value.split(''))
+  // }
+
+  // "abc" | reduce 1 (acc, n) => acc * n
+  reduce(value: KopiValue) {
+    return (func: KopiValue) => {
+      console.log(value, func);
+      return new KopiString(`String.reduce with curried parameters.`);
+    };
   }
 }
 

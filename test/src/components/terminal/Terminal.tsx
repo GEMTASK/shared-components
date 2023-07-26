@@ -116,6 +116,59 @@ const historyItems = [
   `'size (fetch "robots.txt")`,
   `add1 = n => n + 1`,
   `x = sleep 5 + sleep 5`,
+  `"🥥🍏🍓"`,
+];
+
+const interpret = async (
+  source: string,
+  setInputValue: React.Dispatch<React.SetStateAction<string>>,
+  setHistory: React.Dispatch<React.SetStateAction<React.ReactElement<any, string | React.JSXElementConstructor<any>>[]>>
+) => {
+  setHistory(history => [
+    ...history,
+    <HistoryLine>
+      <Text style={{ whiteSpace: 'pre-wrap' }}>{source}</Text>
+    </HistoryLine>
+  ]);
+
+  setInputValue('');
+
+  let element: string | React.ReactElement | null = null;
+
+  try {
+    const value = await kopi.interpret(source, environment, bind);
+
+    if (value) {
+      element = await value.inspect();
+    }
+  } catch (error) {
+    // console.warn((error as any).location);
+
+    element = (error as Error).toString();
+  }
+
+  if (element !== null) {
+    setHistory(history => [
+      ...history,
+      <View horizontal>
+        {typeof element === 'string' ? (
+          <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+            {element}
+          </Text>
+        ) : (
+          element
+        )}
+      </View>
+    ]);
+  }
+};
+
+const initialHistory = [
+  <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+    Kopi shell – a simple, immutable, async programming langauge.<br />
+    Type a command such as "date", "clock", or "icon".
+  </Text>,
+  <Clock style={{ width: 150 }} />
 ];
 
 const Terminal = ({ ...props }: any) => {
@@ -124,54 +177,8 @@ const Terminal = ({ ...props }: any) => {
   const firstEventRef = useRef<React.PointerEvent | null>(null);
 
   const [inputValue, setInputValue] = useState('');
-  const [history, setHistory] = useState<React.ReactElement[]>([
-    <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
-      Kopi shell – a simple, immutable, async programming langauge.<br />
-      Type a command such as "date", "clock", or "icon".
-    </Text>,
-    <Clock style={{ width: 150 }} />
-  ]);
+  const [history, setHistory] = useState<React.ReactElement[]>(initialHistory);
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
-
-  const interpret = async (source: string) => {
-    setHistory(history => [
-      ...history,
-      <HistoryLine>
-        <Text style={{ whiteSpace: 'pre-wrap' }}>{source}</Text>
-      </HistoryLine>
-    ]);
-
-    setInputValue('');
-
-    let element: string | React.ReactElement | null = null;
-
-    try {
-      const value = await kopi.interpret(source, environment, bind);
-
-      if (value) {
-        element = await value.inspect();
-      }
-    } catch (error) {
-      // console.warn((error as any).location);
-
-      element = (error as Error).toString();
-    }
-
-    if (element !== null) {
-      setHistory(history => [
-        ...history,
-        <View horizontal>
-          {typeof element === 'string' ? (
-            <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
-              {element}
-            </Text>
-          ) : (
-            element
-          )}
-        </View>
-      ]);
-    }
-  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -179,7 +186,7 @@ const Terminal = ({ ...props }: any) => {
 
   const handleInputKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      interpret(inputValue);
+      interpret(inputValue, setInputValue, setHistory);
     }
   };
 
@@ -216,9 +223,7 @@ const Terminal = ({ ...props }: any) => {
         <Divider />
         <View ref={historyElementRef} paddingHorizontal="small" style={{ overflowY: 'auto' }}>
           <Spacer size="small" />
-          {history.map(item => (
-            item
-          ))}
+          {history}
         </View>
         <View horizontal align="left" paddingHorizontal="small" style={{ marginTop: -5 }}>
           <Input ref={inputElementRef} flush icon="angle-right" value={inputValue} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
@@ -233,7 +238,7 @@ const Terminal = ({ ...props }: any) => {
           <Divider />
           <View padding="small">
             {historyItems.map(item => (
-              <HistoryItem source={item} onItemSelect={interpret} />
+              <HistoryItem source={item} onItemSelect={(source: string) => interpret(source, setInputValue, setHistory)} />
             ))}
           </View>
         </View>

@@ -21,6 +21,20 @@ class AssignmentStatement extends ASTNode {
 // Expressions
 //
 
+class PipeExpression extends ASTNode {
+  readonly expression: ASTNode;
+  readonly methodName: string;
+  readonly argumentExpression: ASTNode | null;
+
+  constructor({ expression, methodName, argumentExpression, location }: PipeExpression) {
+    super(location);
+
+    this.expression = expression;
+    this.methodName = methodName;
+    this.argumentExpression = argumentExpression;
+  }
+}
+
 class OperatorExpression extends ASTNode {
   readonly operator: '+' | '-' | '*' | '/' | '%';
   readonly leftExpression: ASTNode;
@@ -207,6 +221,7 @@ class Identifier extends ASTNode {
 export {
   AssignmentStatement,
   //
+  PipeExpression,
   OperatorExpression,
   FunctionExpression,
   ApplyExpression,

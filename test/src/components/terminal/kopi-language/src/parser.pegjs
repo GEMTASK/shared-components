@@ -21,7 +21,26 @@ Assignment
     }
 
 Expression
-  = AddExpression
+  = PipeExpression
+
+PipeExpression
+  = head:AddExpression tail:(__ "|" __ Identifier __ PrimaryExpression? (__ PrimaryExpression)*)* {
+      return tail.reduce((expression, [, , , identifier, , argumentExpression, argumentExpressions]) => {
+        const pipelineExpression = {
+          type: 'PipeExpression',
+          expression,
+          methodName: identifier.name,
+          argumentExpression,
+          location: location(),
+        }
+
+        return argumentExpressions.reduce((expression, [, argumentExpression]) => ({
+          type: 'ApplyExpression',
+          expression,
+          argumentExpression,
+        }), pipelineExpression);
+      }, head);
+    }
 
 AddExpression
   = head:MultiplyExpression tail:(__ ("+" / "-") __ MultiplyExpression)* {
@@ -53,6 +72,8 @@ ApplyExpression
         argumentExpression,
       }), expression);
     }
+
+// PipeExpression?
 
 PrimaryExpression
   = "(" __ ")" __ !"=>" {

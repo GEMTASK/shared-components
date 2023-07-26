@@ -31,6 +31,20 @@ async function AssignmentStatement(
 // Expressions
 //
 
+async function PipeExpression(
+  { expression, methodName, argumentExpression }: astNodes.PipeExpression,
+  context: Context,
+): Promise<KopiValue> {
+  const { environment, evaluate, bind } = context;
+
+  const expressionValue = await evaluate(expression, environment, bind);
+  const argumentValue = argumentExpression
+    ? await evaluate(argumentExpression, environment, bind)
+    : KopiTuple.empty;
+
+  return expressionValue.invoke(methodName, [argumentValue, context]);
+}
+
 async function OperatorExpression(
   astNode: astNodes.OperatorExpression,
   context: Context
@@ -134,6 +148,7 @@ export {
   type Visitor,
   AssignmentStatement,
   //
+  PipeExpression,
   OperatorExpression,
   ApplyExpression,
   FunctionExpression,
