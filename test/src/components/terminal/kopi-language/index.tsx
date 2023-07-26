@@ -1,8 +1,6 @@
-/* eslint-disable no-extend-native */
-
 import * as parser from './lib/parser.js';
 
-import { RawASTNode, ASTNode, ASTPatternNode, Environment } from './src/types';
+import { RawASTNode, ASTNode, ASTPatternNode, Environment, Bind } from './src/types';
 
 import * as astNodes from './src/astnodes';
 import * as visitors from './src/visitors';
@@ -92,10 +90,10 @@ function transform(rawASTNode: RawASTNode): ASTNode {
 //   ApplyExpression: { astNode: astNodes.ApplyExpression, visitor: visitors.ApplyExpression },
 // } as const;
 
-function evaluate(astNode: ASTNode, environment: Environment) {
+function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
   // const foo = visitorMap[astNode.constructor.name as keyof typeof visitorMap];
 
-  const context = { environment, evaluate };
+  const context = { environment, evaluate, bind };
 
   if (astNode instanceof astNodes.AssignmentStatement) {
     return visitors.AssignmentStatement(astNode, context);
@@ -122,10 +120,10 @@ function evaluate(astNode: ASTNode, environment: Environment) {
   }
 }
 
-async function interpret(source: string, environment: Environment) {
+async function interpret(source: string, environment: Environment, bind: Bind) {
   var rootAst = parser.parse(source);
 
-  return evaluate(transform(rootAst), environment);
+  return evaluate(transform(rootAst), environment, bind);
 }
 
 export {

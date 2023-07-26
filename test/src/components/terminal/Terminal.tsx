@@ -53,7 +53,7 @@ class KopiIcon extends KopiValue {
 
 //
 
-const environment = new Environment({
+let environment = new Environment({
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
   let: new KopiLet(),
@@ -63,6 +63,12 @@ const environment = new Environment({
   icon: new KopiIcon(),
   fetch: new KopiFetch(),
 });
+
+const bind = (bindings: { [name: string]: KopiValue; }) => {
+  const newEnvironment = { ...environment, ...bindings };
+
+  environment = newEnvironment;
+};
 
 const HistoryLine = ({
   children,
@@ -108,6 +114,7 @@ const historyItems = [
   `'cos (30 * (PI / 180))`,
   `fetch "robots.txt"`,
   `'size (fetch "robots.txt")`,
+  `x = sleep 5 + sleep 5`,
 ];
 
 const Terminal = ({ ...props }: any) => {
@@ -150,11 +157,12 @@ const Terminal = ({ ...props }: any) => {
         setValue('');
 
         try {
-          element = await (await interpret(value, environment)).inspect();
+          element = await (await interpret(value, environment, bind)).inspect();
         } catch (error) {
           console.warn((error as any).location);
+          console.log(error);
 
-          element = (error as Error).message;
+          element = (error as Error).toString();
         }
 
         setHistory(history => [
@@ -200,7 +208,7 @@ const Terminal = ({ ...props }: any) => {
     ]);
 
     try {
-      element = await (await interpret(source, environment)).inspect();
+      element = await (await interpret(source, environment, bind)).inspect();
     } catch (error) {
       console.warn((error as any).location);
 

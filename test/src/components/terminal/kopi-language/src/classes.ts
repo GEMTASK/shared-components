@@ -43,7 +43,7 @@ class KopiNumber extends KopiValue {
 
   '+'(that: KopiValue) {
     if (!(that instanceof KopiNumber)) {
-      throw new Error(`Right side of operation is not a number.`);
+      throw new TypeError(`Right side of operation is not a number.`);
     }
 
     return new KopiNumber(this.value + that.value);
@@ -51,7 +51,7 @@ class KopiNumber extends KopiValue {
 
   '-'(that: KopiValue) {
     if (!(that instanceof KopiNumber)) {
-      throw new Error(`Right side of operation is not a number.`);
+      throw new TypeError(`Right side of operation is not a number.`);
     }
 
     return new KopiNumber(this.value - that.value);
@@ -59,7 +59,7 @@ class KopiNumber extends KopiValue {
 
   '*'(that: KopiValue) {
     if (!(that instanceof KopiNumber)) {
-      throw new Error(`Right side of operation is not a number.`);
+      throw new TypeError(`Right side of operation is not a number.`);
     }
 
     return new KopiNumber(this.value * that.value);
@@ -67,7 +67,7 @@ class KopiNumber extends KopiValue {
 
   '/'(that: KopiValue) {
     if (!(that instanceof KopiNumber)) {
-      throw new Error(`Right side of operation is not a number.`);
+      throw new TypeError(`Right side of operation is not a number.`);
     }
 
     return new KopiNumber(this.value / that.value);
@@ -75,7 +75,7 @@ class KopiNumber extends KopiValue {
 
   '%'(that: KopiValue) {
     if (!(that instanceof KopiNumber)) {
-      throw new Error(`Right side of operation is not a number.`);
+      throw new TypeError(`Right side of operation is not a number.`);
     }
 
     return new KopiNumber(this.value % that.value);
@@ -186,7 +186,7 @@ class KopiFunction extends KopiValue {
     thisArg: KopiValue,
     [argument, context]: [KopiValue, Context]
   ): Promise<KopiValue> {
-    const { environment, evaluate } = context;
+    const { environment, evaluate, bind } = context;
 
     const matches = await this.parameterPattern.match(argument, context);
 
@@ -199,7 +199,7 @@ class KopiFunction extends KopiValue {
 
     Object.setPrototypeOf(newEnvironment, Object.getPrototypeOf(this.environment));
 
-    return evaluate(this.bodyExpression, newEnvironment);
+    return evaluate(this.bodyExpression, newEnvironment, bind);
   }
 }
 

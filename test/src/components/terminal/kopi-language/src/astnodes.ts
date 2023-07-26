@@ -123,7 +123,7 @@ class NumericLiteralPattern extends ASTPatternNode {
     // Should we return Error instead?
 
     if (!(number instanceof KopiNumber && number.value === this.value)) {
-      throw new Error(`NumericLiteralPattern: match() failed. Expected "${this.value}" but found "${await number.inspect()}".`);
+      throw new TypeError(`Expected ${this.value} but ${await number.inspect()} found.`);
     }
 
     return {};
@@ -142,15 +142,15 @@ class IdentifierPattern extends ASTPatternNode {
   }
 
   override async match(value: KopiValue, context: Context) {
-    const { environment, evaluate } = context;
+    const { environment, evaluate, bind } = context;
 
     if (value === KopiTuple.empty) {
       if (this.defaultExpression !== null) {
         return {
-          [this.name]: await evaluate(this.defaultExpression, environment)
+          [this.name]: await evaluate(this.defaultExpression, environment, bind)
         };
       } else {
-        throw new Error(`IdentifierPattern: match() failed. Expected a value but found "${value}"`);
+        throw new TypeError(`Expected a value but ${value} found.`);
       }
     }
 

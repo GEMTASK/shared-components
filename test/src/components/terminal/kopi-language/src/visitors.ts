@@ -15,7 +15,14 @@ async function AssignmentStatement(
   { pattern, expression }: astNodes.AssignmentStatement,
   context: Context,
 ): Promise<KopiValue> {
-  const { environment, evaluate } = context;
+  const { environment, evaluate, bind } = context;
+
+  const expressionValue = await evaluate(expression, environment, bind);
+  const patternMatches = await pattern.match(expressionValue, context);
+
+  if (patternMatches) {
+    bind(patternMatches);
+  }
 
   return KopiTuple.empty;
 }
@@ -29,11 +36,11 @@ async function OperatorExpression(
   context: Context
 ): Promise<KopiValue> {
   const { operator, leftExpression, rightExpression } = astNode;
-  const { environment, evaluate } = context;
+  const { environment, evaluate, bind } = context;
 
   const [leftValue, rightValue] = await Promise.all([
-    evaluate(leftExpression, environment),
-    evaluate(rightExpression, environment),
+    evaluate(leftExpression, environment, bind),
+    evaluate(rightExpression, environment, bind),
   ]);
 
   if (leftValue instanceof KopiNumber) {
@@ -47,13 +54,13 @@ async function ApplyExpression(
   { expression, argumentExpression }: astNodes.ApplyExpression,
   context: Context
 ): Promise<KopiValue> {
-  const { environment, evaluate } = context;
+  const { environment, evaluate, bind } = context;
 
-  const func = await evaluate(expression, environment);
+  const func = await evaluate(expression, environment, bind);
 
   if ('apply' in func && typeof func.apply === 'function') {
     return func.apply(undefined, [
-      await evaluate(argumentExpression, environment),
+      await evaluate(argumentExpression, environment, bind),
       context
     ]);
   }
@@ -79,10 +86,10 @@ async function TupleExpression(
   { fieldExpressions, fieldNames }: astNodes.TupleExpression,
   context: Context
 ): Promise<KopiValue> {
-  const { environment, evaluate } = context;
+  const { environment, evaluate, bind } = context;
 
   return new KopiTuple(
-    fieldExpressions.map(expressionField => evaluate(expressionField, environment)),
+    fieldExpressions.map(expressionField => evaluate(expressionField, environment, bind)),
   );
 }
 
@@ -120,7 +127,7 @@ async function Identifier(
     return value;
   }
 
-  throw new Error(`Variable "${astNode.name}" not found in current scope.`);
+  throw new ReferenceError(`Variable "${astNode.name}" not found in current scope.`);
 }
 
 export {

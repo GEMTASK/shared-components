@@ -60,18 +60,20 @@ class Environment {
 }
 
 type Transform = (rawASTNode: RawASTNode) => ASTNode;
-type Evaluate = (astNode: ASTNode, environment: Environment) => Promise<KopiValue>;
+type Evaluate = (astNode: ASTNode, environment: Environment, bind: Bind) => Promise<KopiValue>;
+type Bind = (bindings: { [name: string]: KopiValue; }) => void;
 
 type Context = {
   environment: Environment,
   evaluate: Evaluate,
-  // bindValues: BindValues,
+  bind: Bind,
 };
 
 export {
   type RawASTNode,
   type Transform,
   type Evaluate,
+  type Bind,
   type Context,
   ASTNode,
   ASTPatternNode,
