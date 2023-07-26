@@ -123,7 +123,7 @@ const Terminal = ({ ...props }: any) => {
   const inputElementRef = useRef<HTMLInputElement>(null);
   const firstEventRef = useRef<React.PointerEvent | null>(null);
 
-  const [value, setValue] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const [history, setHistory] = useState<React.ReactElement[]>([
     <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
       Kopi shell – a simple, immutable, async programming langauge.<br />
@@ -134,7 +134,7 @@ const Terminal = ({ ...props }: any) => {
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+    setInputValue(event.target.value);
   };
 
   useLayoutEffect(() => {
@@ -148,36 +148,41 @@ const Terminal = ({ ...props }: any) => {
       setHistory(history => [
         ...history,
         <HistoryLine>
-          <Text style={{ whiteSpace: 'pre-wrap' }}>{value}</Text>
+          <Text style={{ whiteSpace: 'pre-wrap' }}>{inputValue}</Text>
         </HistoryLine>
       ]);
 
-      if (value.length !== 0) {
-        let element: string | React.ReactElement = 'Command not found';
+      if (inputValue.length !== 0) {
+        let element: string | React.ReactElement | null = null;
 
-        setValue('');
+        setInputValue('');
 
         try {
-          element = await (await interpret(value, environment, bind)).inspect();
+          const value = await interpret(inputValue, environment, bind);
+
+          if (value) {
+            element = await value.inspect();
+          }
         } catch (error) {
-          console.warn((error as any).location);
-          console.log(error);
+          // console.warn((error as any).location);
 
           element = (error as Error).toString();
         }
 
-        setHistory(history => [
-          ...history,
-          <View horizontal>
-            {typeof element === 'string' ? (
-              <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
-                {element}
-              </Text>
-            ) : (
-              element
-            )}
-          </View>
-        ]);
+        if (element !== null) {
+          setHistory(history => [
+            ...history,
+            <View horizontal>
+              {typeof element === 'string' ? (
+                <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+                  {element}
+                </Text>
+              ) : (
+                element
+              )}
+            </View>
+          ]);
+        }
       }
     }
   };
@@ -209,7 +214,11 @@ const Terminal = ({ ...props }: any) => {
     ]);
 
     try {
-      element = await (await interpret(source, environment, bind)).inspect();
+      const value = await interpret(inputValue, environment, bind);
+
+      if (value) {
+        element = await value.inspect();
+      }
     } catch (error) {
       console.warn((error as any).location);
 
@@ -246,7 +255,7 @@ const Terminal = ({ ...props }: any) => {
           ))}
         </View>
         <View horizontal align="left" paddingHorizontal="small" style={{ marginTop: -5 }}>
-          <Input ref={inputElementRef} flush icon="angle-right" value={value} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
+          <Input ref={inputElementRef} flush icon="angle-right" value={inputValue} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
         </View>
         <Spacer size="small" />
       </View>

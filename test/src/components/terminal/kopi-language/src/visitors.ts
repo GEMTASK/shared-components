@@ -14,7 +14,7 @@ interface Visitor {
 async function AssignmentStatement(
   { pattern, expression }: astNodes.AssignmentStatement,
   context: Context,
-): Promise<KopiValue> {
+) {
   const { environment, evaluate, bind } = context;
 
   const expressionValue = await evaluate(expression, environment, bind);
@@ -24,7 +24,7 @@ async function AssignmentStatement(
     bind(patternMatches);
   }
 
-  return KopiTuple.empty;
+  // return KopiTuple.empty;
 }
 
 //
