@@ -162,6 +162,7 @@ const Input = ({
 
   const inputStyle = {
     background: 'none',
+    color: OpenColor.gray[7],
     margin: 0,
     padding: 0,
     border: 'none',
@@ -170,7 +171,7 @@ const Input = ({
     flex: 1,
     lineHeight: '20px',
     fontSize: 14,
-    fontFamily: 'Open Sans',
+    fontFamily: fontFamily ?? 'Open Sans',
     width: '100%'
   };
 
@@ -215,7 +216,7 @@ const Input = ({
           type={type}
           value={internalValue}
           placeholder={placeholder}
-          style={{ ...inputStyle, appearance: 'none', fontFamily }}
+          style={{ ...inputStyle, appearance: 'none' }}
           onChange={handleInputChange}
           onKeyDown={handleInputKeyDown}
           onBlur={handleInputBlur}
