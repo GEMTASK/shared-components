@@ -114,6 +114,7 @@ const historyItems = [
   `'cos (30 * (PI / 180))`,
   `fetch "robots.txt"`,
   `'size (fetch "robots.txt")`,
+  `add1 = n => n + 1`,
   `x = sleep 5 + sleep 5`,
 ];
 

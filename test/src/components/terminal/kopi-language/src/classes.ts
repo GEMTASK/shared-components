@@ -182,6 +182,10 @@ class KopiFunction extends KopiValue {
     this.name = name;
   }
 
+  async inspect() {
+    return `<function>`;
+  }
+
   async apply(
     thisArg: KopiValue,
     [argument, context]: [KopiValue, Context]
