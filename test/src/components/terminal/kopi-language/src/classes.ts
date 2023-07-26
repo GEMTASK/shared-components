@@ -17,6 +17,26 @@ class KopiNumber extends KopiValue {
     return `${this.value}`;
   }
 
+  // toFixed(digits: KopiNumber) {
+  //   return new KopiNumber(this.value.toFixed(digits));
+  // }
+
+  abs() {
+    return new KopiNumber(Math.abs(this.value));
+  }
+
+  floor() {
+    return new KopiNumber(Math.floor(this.value));
+  }
+
+  round() {
+    return new KopiNumber(Math.round(this.value));
+  }
+
+  ceil() {
+    return new KopiNumber(Math.ceil(this.value));
+  }
+
   //
   // Arithmetic
   //
@@ -74,6 +94,10 @@ class KopiNumber extends KopiValue {
   }
 }
 
+//
+//
+//
+
 class KopiTuple extends KopiValue {
   static readonly empty = new KopiTuple([]);
 
@@ -103,6 +127,10 @@ class KopiTuple extends KopiValue {
     return `(${fields.join(', ')})`;
   }
 }
+
+//
+//
+//
 
 class KopiFunction extends KopiValue {
   readonly parameterPattern: ASTPatternNode;
@@ -144,6 +172,10 @@ class KopiFunction extends KopiValue {
     return evaluate(this.bodyExpression, newEnvironment);
   }
 }
+
+//
+//
+//
 
 class KopiAstLiteral extends KopiValue {
   readonly value: ASTNode;
