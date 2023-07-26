@@ -36,6 +36,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         bodyExpression: transform(rawASTNode.bodyExpression),
         location: rawASTNode.location,
       } as astNodes.FunctionExpression);
+    //
     case 'NumericLiteralPattern':
       return new astNodes.NumericLiteralPattern({
         value: rawASTNode.value,
@@ -52,11 +53,17 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         patterns: rawASTNode.fieldPatterns.map((pattern: ASTPatternNode) => transform(pattern)),
         location: rawASTNode.location,
       } as astNodes.TuplePattern);
+    //
     case 'NumericLiteral':
       return new astNodes.NumericLiteral({
         value: rawASTNode.value,
         location: rawASTNode.location,
       } as astNodes.NumericLiteral);
+    case 'StringLiteral':
+      return new astNodes.StringLiteral({
+        value: rawASTNode.value,
+        location: rawASTNode.location,
+      } as astNodes.StringLiteral);
     case 'AstLiteral':
       return new astNodes.AstLiteral({
         value: transform(rawASTNode.value),
@@ -94,6 +101,8 @@ function evaluate(astNode: ASTNode, environment: Environment) {
     return visitors.TupleExpression(astNode, context);
   } else if (astNode instanceof astNodes.NumericLiteral) {
     return visitors.NumericLiteral(astNode);
+  } else if (astNode instanceof astNodes.StringLiteral) {
+    return visitors.StringLiteral(astNode);
   } else if (astNode instanceof astNodes.AstLiteral) {
     return visitors.AstLiteral(astNode);
   } else if (astNode instanceof astNodes.Identifier) {

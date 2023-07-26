@@ -60,6 +60,7 @@ PrimaryExpression
     }
   / FunctionExpression
   / NumericLiteral
+  / StringLiteral
   / AstLiteral
   / Identifier
 
@@ -121,12 +122,21 @@ IdentifierPattern
 
 NumericLiteral "number"
   = value:([0-9]+ ("." !"." [0-9]+)?) {
-    return ({
-      type: 'NumericLiteral',
-      value: Number(`${value[0].join('')}.${value[1] ? value[1][2].join('') : ''}`),
-      location: location(),
-    });
-  }
+      return ({
+        type: 'NumericLiteral',
+        value: Number(`${value[0].join('')}.${value[1] ? value[1][2].join('') : ''}`),
+        location: location(),
+      });
+    }
+
+StringLiteral "string"
+  = __ "\"" value:[^"]* "\"" __ {
+      return {
+        type: 'StringLiteral',
+        value: value.join(''),
+        location: location(),
+      };
+    }
 
 AstLiteral "ast-literal"
   = "'" expression:PrimaryExpression {

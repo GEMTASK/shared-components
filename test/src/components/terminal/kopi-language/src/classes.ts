@@ -98,6 +98,32 @@ class KopiNumber extends KopiValue {
 //
 //
 
+class KopiString extends KopiValue {
+  readonly value: string;
+
+  constructor(value: string, withIterator = true) {
+    super();
+
+    this.value = value;
+  }
+
+  override async inspect() {
+    return `"${await this.value}"`;
+  }
+
+  toUpperCase() {
+    return new KopiString(this.value.toLocaleUpperCase());
+  }
+
+  trim(string: KopiString) {
+    return new KopiString(this.value.trim());
+  }
+}
+
+//
+//
+//
+
 class KopiTuple extends KopiValue {
   static readonly empty = new KopiTuple([]);
 
@@ -196,6 +222,7 @@ class KopiAstLiteral extends KopiValue {
 
 export {
   KopiNumber,
+  KopiString,
   KopiTuple,
   KopiFunction,
   KopiAstLiteral,

@@ -6,7 +6,7 @@ import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps, cre
 import Clock from '../clock/Clock';
 
 import { interpret, inspect } from './kopi-language';
-import { KopiFunction, KopiNumber, KopiTuple } from './kopi-language/src/classes';
+import { KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
 import { Context, Environment, KopiValue } from './kopi-language/src/types';
 
 class KopiDate extends KopiValue implements KopiValue {
@@ -33,6 +33,12 @@ class KopiLet extends KopiValue {
   }
 }
 
+class KopiFetch extends KopiValue {
+  async apply(thisArg: this, [url, context]: [KopiString, Context]) {
+    return new KopiString((await (await fetch(url.value)).text()));
+  }
+}
+
 class KopiClock extends KopiValue {
   async inspect() {
     return <Clock style={{ width: 150 }} />;
@@ -54,9 +60,8 @@ const environment = new Environment({
   sleep: new KopiSleep(),
   clock: new KopiClock(),
   icon: new KopiIcon(),
+  fetch: new KopiFetch(),
 });
-
-const Link = createLink(RouterLink);
 
 const HistoryLine = ({
   children,
@@ -88,18 +93,19 @@ const HistoryItem = ({
 };
 
 const historyItems = [
-  'date',
-  'clock',
-  '1 + 2 * 3',
-  '(1 + 2) * 3',
-  'sleep 5 + sleep 5',
-  '((a, b) => a + b) (1, 2)',
-  '((a, b = 2) => a + b) 1',
-  '((a = 1, b = 2) => a + b) ()',
-  'let (a = 1) => a',
-  'let (a = 1, b = 2) => a + b',
+  `date`,
+  `clock`,
+  `1 + 2 * 3`,
+  `(1 + 2) * 3`,
+  `sleep 5 + sleep 5`,
+  `((a, b) => a + b) (1, 2)`,
+  `((a, b = 2) => a + b) 1`,
+  `((a = 1, b = 2) => a + b) ()`,
+  `let (a = 1) => a`,
+  `let (a = 1, b = 2) => a + b`,
   `'sin (45 * (3.14159 / 180))`,
   `'cos (45 * (3.14159 / 180))`,
+  `fetch "robots.txt"`,
 ];
 
 const Terminal = ({ ...props }: any) => {
@@ -136,8 +142,8 @@ const Terminal = ({ ...props }: any) => {
         </HistoryLine>
       ]);
 
-      if (value) {
-        let element: React.ReactNode = 'Command not found';
+      if (value.length !== 0) {
+        let element: string | React.ReactElement = 'Command not found';
 
         setValue('');
 
@@ -152,13 +158,13 @@ const Terminal = ({ ...props }: any) => {
         setHistory(history => [
           ...history,
           <View horizontal>
-            <ErrorBoundary fallback={<Text>Error</Text>} onError={() => console.log('here')}>
-              {typeof element === 'string' ? (
-                <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>{element}</Text>
-              ) : (
-                element
-              )}
-            </ErrorBoundary>
+            {typeof element === 'string' ? (
+              <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+                {element}
+              </Text>
+            ) : (
+              element
+            )}
           </View>
         ]);
       }
@@ -182,6 +188,8 @@ const Terminal = ({ ...props }: any) => {
   };
 
   const handleHistorySelect = async (source: string) => {
+    let element: string | React.ReactElement = 'Command not found';
+
     setHistory(history => [
       ...history,
       <HistoryLine>
@@ -189,13 +197,21 @@ const Terminal = ({ ...props }: any) => {
       </HistoryLine>
     ]);
 
-    const element = await (await interpret(source, environment)).inspect();
+    try {
+      element = await (await interpret(source, environment)).inspect();
+    } catch (error) {
+      console.warn((error as any).location);
+
+      element = (error as Error).message;
+    }
 
     setHistory(history => [
       ...history,
       <View horizontal>
         {typeof element === 'string' ? (
-          <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>{element}</Text>
+          <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+            {element}
+          </Text>
         ) : (
           element
         )}
