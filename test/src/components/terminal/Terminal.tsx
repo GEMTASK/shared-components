@@ -54,7 +54,8 @@ class KopiIcon extends KopiValue {
 //
 
 const environment = new Environment({
-  x: new KopiNumber(3),
+  PI: new KopiNumber(Math.PI),
+  E: new KopiNumber(Math.E),
   let: new KopiLet(),
   date: new KopiDate(),
   sleep: new KopiSleep(),
@@ -103,8 +104,8 @@ const historyItems = [
   `((a = 1, b = 2) => a + b) ()`,
   `let (a = 1) => a`,
   `let (a = 1, b = 2) => a + b`,
-  `'sin (45 * (3.14159 / 180))`,
-  `'cos (45 * (3.14159 / 180))`,
+  `'sin (45 * (PI / 180))`,
+  `'cos (45 * (PI / 180))`,
   `fetch "robots.txt"`,
 ];
 
