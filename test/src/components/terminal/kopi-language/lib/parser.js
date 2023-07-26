@@ -229,7 +229,7 @@ function peg$parse(input, options) {
   };
   var peg$f1 = function(pattern, expression) {
       return {
-        type: 'Assignment',
+        type: 'AssignmentStatement',
         pattern,
         expression,
       }
@@ -507,14 +507,12 @@ function peg$parse(input, options) {
     s0 = peg$currPos;
     s1 = peg$parse__();
     s2 = peg$parseStatement();
-    if (s2 !== peg$FAILED) {
-      s3 = peg$parse__();
-      peg$savedPos = s0;
-      s0 = peg$f0(s2);
-    } else {
-      peg$currPos = s0;
-      s0 = peg$FAILED;
+    if (s2 === peg$FAILED) {
+      s2 = null;
     }
+    s3 = peg$parse__();
+    peg$savedPos = s0;
+    s0 = peg$f0(s2);
 
     return s0;
   }

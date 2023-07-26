@@ -5,7 +5,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps, createLink } from 'bare';
 import Clock from '../clock/Clock';
 
-import { interpret, inspect } from './kopi-language';
+import * as kopi from './kopi-language';
 import { KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
 import { Context, Environment, KopiValue } from './kopi-language/src/types';
 
@@ -133,57 +133,53 @@ const Terminal = ({ ...props }: any) => {
   ]);
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
 
+  const interpret = async (source: string) => {
+    setHistory(history => [
+      ...history,
+      <HistoryLine>
+        <Text style={{ whiteSpace: 'pre-wrap' }}>{source}</Text>
+      </HistoryLine>
+    ]);
+
+    setInputValue('');
+
+    let element: string | React.ReactElement | null = null;
+
+    try {
+      const value = await kopi.interpret(source, environment, bind);
+
+      if (value) {
+        element = await value.inspect();
+      }
+    } catch (error) {
+      // console.warn((error as any).location);
+
+      element = (error as Error).toString();
+    }
+
+    if (element !== null) {
+      setHistory(history => [
+        ...history,
+        <View horizontal>
+          {typeof element === 'string' ? (
+            <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+              {element}
+            </Text>
+          ) : (
+            element
+          )}
+        </View>
+      ]);
+    }
+  };
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
   };
 
-  useLayoutEffect(() => {
-    if (historyElementRef.current) {
-      historyElementRef.current.scrollTop = historyElementRef.current.scrollHeight;
-    }
-  }, [history]);
-
   const handleInputKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      setHistory(history => [
-        ...history,
-        <HistoryLine>
-          <Text style={{ whiteSpace: 'pre-wrap' }}>{inputValue}</Text>
-        </HistoryLine>
-      ]);
-
-      if (inputValue.length !== 0) {
-        let element: string | React.ReactElement | null = null;
-
-        setInputValue('');
-
-        try {
-          const value = await interpret(inputValue, environment, bind);
-
-          if (value) {
-            element = await value.inspect();
-          }
-        } catch (error) {
-          // console.warn((error as any).location);
-
-          element = (error as Error).toString();
-        }
-
-        if (element !== null) {
-          setHistory(history => [
-            ...history,
-            <View horizontal>
-              {typeof element === 'string' ? (
-                <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
-                  {element}
-                </Text>
-              ) : (
-                element
-              )}
-            </View>
-          ]);
-        }
-      }
+      interpret(inputValue);
     }
   };
 
@@ -203,43 +199,11 @@ const Terminal = ({ ...props }: any) => {
     }
   };
 
-  const handleHistorySelect = async (source: string) => {
-    let element: string | React.ReactElement | null = null;
-
-    setHistory(history => [
-      ...history,
-      <HistoryLine>
-        <Text style={{ whiteSpace: 'pre-wrap' }}>{source}</Text>
-      </HistoryLine>
-    ]);
-
-    try {
-      const value = await interpret(source, environment, bind);
-
-      if (value) {
-        element = await value.inspect();
-      }
-    } catch (error) {
-      // console.warn((error as any).location);
-
-      element = (error as Error).message;
+  useLayoutEffect(() => {
+    if (historyElementRef.current) {
+      historyElementRef.current.scrollTop = historyElementRef.current.scrollHeight;
     }
-
-    if (element !== null) {
-      setHistory(history => [
-        ...history,
-        <View horizontal>
-          {typeof element === 'string' ? (
-            <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
-              {element}
-            </Text>
-          ) : (
-            element
-          )}
-        </View>
-      ]);
-    }
-  };
+  }, [history]);
 
   return (
     <Stack horizontal divider {...props} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
@@ -269,7 +233,7 @@ const Terminal = ({ ...props }: any) => {
           <Divider />
           <View padding="small">
             {historyItems.map(item => (
-              <HistoryItem source={item} onItemSelect={handleHistorySelect} />
+              <HistoryItem source={item} onItemSelect={interpret} />
             ))}
           </View>
         </View>

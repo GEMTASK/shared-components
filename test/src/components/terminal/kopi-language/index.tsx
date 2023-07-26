@@ -9,7 +9,7 @@ import { inspect } from './src/utils';
 
 function transform(rawASTNode: RawASTNode): ASTNode {
   switch (rawASTNode.type) {
-    case 'Assignment':
+    case 'AssignmentStatement':
       return new astNodes.AssignmentStatement({
         pattern: transform(rawASTNode.pattern),
         expression: transform(rawASTNode.expression),
@@ -123,7 +123,9 @@ function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
 async function interpret(source: string, environment: Environment, bind: Bind) {
   var rootAst = parser.parse(source);
 
-  return evaluate(transform(rootAst), environment, bind);
+  if (rootAst) {
+    return evaluate(transform(rootAst), environment, bind);
+  }
 }
 
 export {

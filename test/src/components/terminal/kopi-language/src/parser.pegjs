@@ -3,7 +3,7 @@
 //
 
 Program
-  = __ expr:Statement __ {
+  = __ expr:Statement? __ {
     return expr;
   }
 
