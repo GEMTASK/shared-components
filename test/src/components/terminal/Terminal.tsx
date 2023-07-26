@@ -204,7 +204,7 @@ const Terminal = ({ ...props }: any) => {
   };
 
   const handleHistorySelect = async (source: string) => {
-    let element: string | React.ReactElement = 'Command not found';
+    let element: string | React.ReactElement | null = null;
 
     setHistory(history => [
       ...history,
@@ -214,29 +214,31 @@ const Terminal = ({ ...props }: any) => {
     ]);
 
     try {
-      const value = await interpret(inputValue, environment, bind);
+      const value = await interpret(source, environment, bind);
 
       if (value) {
         element = await value.inspect();
       }
     } catch (error) {
-      console.warn((error as any).location);
+      // console.warn((error as any).location);
 
       element = (error as Error).message;
     }
 
-    setHistory(history => [
-      ...history,
-      <View horizontal>
-        {typeof element === 'string' ? (
-          <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
-            {element}
-          </Text>
-        ) : (
-          element
-        )}
-      </View>
-    ]);
+    if (element !== null) {
+      setHistory(history => [
+        ...history,
+        <View horizontal>
+          {typeof element === 'string' ? (
+            <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+              {element}
+            </Text>
+          ) : (
+            element
+          )}
+        </View>
+      ]);
+    }
   };
 
   return (
