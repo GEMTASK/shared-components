@@ -111,6 +111,10 @@ class KopiString extends KopiValue {
     return `"${await this.value}"`;
   }
 
+  size() {
+    return new KopiNumber(this.value.length);
+  }
+
   toUpperCase() {
     return new KopiString(this.value.toLocaleUpperCase());
   }

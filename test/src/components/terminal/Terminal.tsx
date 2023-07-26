@@ -104,9 +104,10 @@ const historyItems = [
   `((a = 1, b = 2) => a + b) ()`,
   `let (a = 1) => a`,
   `let (a = 1, b = 2) => a + b`,
-  `'sin (45 * (PI / 180))`,
-  `'cos (45 * (PI / 180))`,
+  `'sin (30 * (PI / 180))`,
+  `'cos (30 * (PI / 180))`,
   `fetch "robots.txt"`,
+  `'size (fetch "robots.txt")`,
 ];
 
 const Terminal = ({ ...props }: any) => {
