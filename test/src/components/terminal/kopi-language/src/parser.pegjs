@@ -2,10 +2,23 @@
 // Expressions
 //
 
-Program =
-  __ expr:Expression __ {
+Program
+  = __ expr:Statement __ {
     return expr;
   }
+
+Statement
+  = Assignment
+  / Expression
+
+Assignment
+  = pattern:PrimaryPattern __ "=" __ expression:Expression {
+      return {
+        type: 'AssignmentStatement',
+        pattern,
+        expression,
+      }
+    }
 
 Expression
   = AddExpression
@@ -78,7 +91,16 @@ FunctionExpression
 //
 
 Pattern
-  = PrimaryPattern
+  = DefaultExpressionPattern
+  / PrimaryPattern
+
+DefaultExpressionPattern
+  = pattern:PrimaryPattern __ "=" __ defaultExpression:Expression {
+      return {
+        ...pattern,
+        defaultExpression,
+      }
+    }
 
 PrimaryPattern
   = "(" __ ")" {
@@ -108,11 +130,10 @@ NumericLiteralPattern
     }
 
 IdentifierPattern
-  = identifier:Identifier expr:(__ "=" __ Expression)? {
+  = identifier:Identifier {
       return {
         type: 'IdentifierPattern',
         name: identifier.name,
-        defaultExpression: expr && expr[3],
       };
     }
 

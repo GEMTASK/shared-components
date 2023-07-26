@@ -11,6 +11,12 @@ import { inspect } from './src/utils';
 
 function transform(rawASTNode: RawASTNode): ASTNode {
   switch (rawASTNode.type) {
+    case 'Assignment':
+      return new astNodes.AssignmentStatement({
+        pattern: transform(rawASTNode.pattern),
+        expression: transform(rawASTNode.expression),
+      } as astNodes.AssignmentStatement);
+    //
     case 'TupleExpression':
       return new astNodes.TupleExpression({
         fieldExpressions: rawASTNode.fieldExpressions.map((expression: ASTNode) => transform(expression)),
@@ -91,7 +97,9 @@ function evaluate(astNode: ASTNode, environment: Environment) {
 
   const context = { environment, evaluate };
 
-  if (astNode instanceof astNodes.OperatorExpression) {
+  if (astNode instanceof astNodes.AssignmentStatement) {
+    return visitors.AssignmentStatement(astNode, context);
+  } else if (astNode instanceof astNodes.OperatorExpression) {
     return visitors.OperatorExpression(astNode, context);
   } else if (astNode instanceof astNodes.ApplyExpression) {
     return visitors.ApplyExpression(astNode, context);

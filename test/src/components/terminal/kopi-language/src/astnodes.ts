@@ -2,6 +2,22 @@ import { KopiNumber, KopiTuple } from './classes';
 import { ASTNode, ASTPatternNode, Context, KopiValue } from './types';
 
 //
+// Statements
+//
+
+class AssignmentStatement extends ASTNode {
+  readonly pattern: ASTPatternNode;
+  readonly expression: ASTNode;
+
+  constructor({ pattern, expression, location }: AssignmentStatement) {
+    super(location);
+
+    this.pattern = pattern;
+    this.expression = expression;
+  }
+}
+
+//
 // Expressions
 //
 
@@ -189,6 +205,8 @@ class Identifier extends ASTNode {
 }
 
 export {
+  AssignmentStatement,
+  //
   OperatorExpression,
   FunctionExpression,
   ApplyExpression,

@@ -8,6 +8,19 @@ interface Visitor {
 }
 
 //
+// Statements
+//
+
+async function AssignmentStatement(
+  { pattern, expression }: astNodes.AssignmentStatement,
+  context: Context,
+): Promise<KopiValue> {
+  const { environment, evaluate } = context;
+
+  return KopiTuple.empty;
+}
+
+//
 // Expressions
 //
 
@@ -112,6 +125,8 @@ async function Identifier(
 
 export {
   type Visitor,
+  AssignmentStatement,
+  //
   OperatorExpression,
   ApplyExpression,
   FunctionExpression,
