@@ -99,7 +99,7 @@ const initialState = [
 type WindowsProp = React.ComponentProps<typeof Desktop>['windows'];
 
 const App = () => {
-  console.log('App()');
+  // console.log('App()');
 
   const [windows, setWindows] = useState<WindowsProp>(initialState);
   const [windowOrder, setWindowOrder] = useState<string[]>(windows.map(({ id }) => id));

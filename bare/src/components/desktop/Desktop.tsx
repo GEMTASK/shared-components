@@ -71,7 +71,7 @@ const Window = React.memo(({
   onWindowClose,
   ...props
 }: WindowProps) => {
-  console.log('Window()');
+  // console.log('Window()');
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -220,7 +220,7 @@ const Desktop = ({
   onWindowChange,
   onWindowClose,
 }: DesktopProps) => {
-  console.log('Desktop()');
+  // console.log('Desktop()');
 
   const desktopElementRef = useRef<HTMLElement>(null);
   const firstEventRef = useRef<React.PointerEvent | null>(null);
