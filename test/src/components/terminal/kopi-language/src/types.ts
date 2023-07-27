@@ -2,11 +2,11 @@ import React from 'react';
 
 import { inspect } from './utils';
 
-interface RawASTNode {
-  [key: string]: any;
-}
-
 abstract class KopiValue {
+  // async _toString() {
+  //   return `${this}`;
+  // }
+
   async inspect(): Promise<string | React.ReactElement> {
     return inspect(this);
   }
@@ -27,6 +27,10 @@ abstract class KopiValue {
 
     throw new Error(`No method named "${methodName}" found in ${await this.inspect()}.`);
   }
+}
+
+interface RawASTNode {
+  [key: string]: any;
 }
 
 class ASTNode {

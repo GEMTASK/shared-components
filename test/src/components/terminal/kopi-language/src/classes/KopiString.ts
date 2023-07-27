@@ -1,8 +1,10 @@
 import { Context, KopiValue } from '../types';
 
-import { KopiNumber } from '../classes';
+import { KopiArray, KopiNumber } from '../classes';
 import { KopiFunction } from '../classes';
 import { KopiTuple } from '../classes';
+
+// TODO: Should all methods be async?
 
 class KopiStream<T extends KopiValue> extends KopiValue {
   readonly iterable: AsyncIterable<KopiValue>;
@@ -41,10 +43,14 @@ class KopiStream<T extends KopiValue> extends KopiValue {
 class KopiString extends KopiValue {
   readonly value: string;
 
-  constructor(value: string, withIterator = true) {
+  constructor(value: string) {
     super();
 
     this.value = value;
+  }
+
+  override async toString() {
+    return this.value;
   }
 
   override async inspect() {
@@ -61,7 +67,7 @@ class KopiString extends KopiValue {
     let values: string = '';
 
     for await (const element of iterable) {
-      values += (element as KopiString).value;
+      values += await element.toString();
     }
 
     return new KopiString(values);
@@ -89,9 +95,17 @@ class KopiString extends KopiValue {
     return new KopiStream(generator, KopiString.from);
   }
 
-  // split() {
-  //   return new KopiString(this.value.split(''))
-  // }
+  split(delimeter: KopiString | KopiTuple) {
+    if (delimeter instanceof KopiTuple) {
+      return new KopiArray(
+        this.value.split('').map(string => Promise.resolve(new KopiString(string)))
+      );
+    }
+
+    return new KopiArray(
+      this.value.split(delimeter.value).map(string => Promise.resolve(new KopiString(string)))
+    );
+  }
 
   // "abc" | reduce 1 (acc, n) => acc * n
   reduce(value: KopiValue) {

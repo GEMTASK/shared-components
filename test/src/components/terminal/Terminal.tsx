@@ -118,6 +118,8 @@ const historyItems = [
   `x = sleep 5 + sleep 5`,
   `"abc" | map (c) => 'toUpperCase c`,
   `"🥥🍏🍓"`,
+  `"abc" | split`,
+  `"a,b,c" | split ","`,
   // `"abc" | reduce 0 (acc, n) => acc + n | size`,
 ];
 
