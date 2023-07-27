@@ -1,8 +1,9 @@
 import { Context, KopiValue } from '../types';
 
-import { KopiArray, KopiNumber } from '../classes';
-import { KopiFunction } from '../classes';
-import { KopiTuple } from '../classes';
+import KopiNumber from './KopiNumber';
+import KopiArray from './KopiArray';
+import KopiFunction from './KopiFunction';
+import KopiTuple from './KopiTuple';
 
 // TODO: Should all methods be async?
 

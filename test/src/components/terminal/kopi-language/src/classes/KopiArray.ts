@@ -1,5 +1,7 @@
 import { KopiValue } from '../types';
 
+import KopiNumber from './KopiNumber';
+
 class KopiArray extends KopiValue {
   // static readonly emptyValue = () => new KopiArray([]);
 
@@ -17,6 +19,10 @@ class KopiArray extends KopiValue {
     );
 
     return `[${elements.join(', ')}]`;
+  }
+
+  size() {
+    return new KopiNumber(this.elements.length);
   }
 }
 

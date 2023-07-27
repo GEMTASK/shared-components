@@ -1,4 +1,4 @@
-import { ASTNode, ASTPatternNode, Context, Environment, KopiValue } from '../types';
+import { ASTNode, Context, KopiValue } from '../types';
 import { Identifier } from '../astnodes';
 
 import KopiTuple from './KopiTuple';

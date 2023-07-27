@@ -1,6 +1,6 @@
 import { KopiValue } from '../types';
 
-import { KopiString } from '../classes';
+import KopiString from './KopiString';
 
 class KopiNumber extends KopiValue {
   static readonly PI: KopiNumber = new KopiNumber(Math.PI);
