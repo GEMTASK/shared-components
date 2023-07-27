@@ -6,8 +6,9 @@ import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps, cre
 import Clock from '../clock/Clock';
 
 import * as kopi from './kopi-language';
-import { KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
+import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
 import { Context, Environment, KopiValue } from './kopi-language/src/types';
+import KopiStream from './kopi-language/src/classes/KopiStream';
 
 class KopiDate extends KopiValue implements KopiValue {
   override async inspect() {
@@ -51,6 +52,30 @@ class KopiIcon extends KopiValue {
   }
 }
 
+class KopiRepeat extends KopiValue {
+  static async from(iterable: AsyncIterable<KopiValue>) {
+    let values: KopiValue[] = [];
+
+    for await (const element of iterable) {
+      values = [...values, await element];
+    }
+
+    return new KopiArray(values);
+  }
+
+  async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
+    const generator = async function* (this: KopiValue) {
+      for (let n = 0; ; ++n) {
+        if (n === 1000) break;
+
+        yield new KopiNumber(n);
+      }
+    }.apply(KopiTuple.empty, []);
+
+    return new KopiStream(generator, KopiRepeat.from);
+  }
+}
+
 //
 
 let environment = new Environment({
@@ -62,6 +87,7 @@ let environment = new Environment({
   clock: new KopiClock(),
   icon: new KopiIcon(),
   fetch: new KopiFetch(),
+  repeat: new KopiRepeat(),
 });
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {
@@ -115,12 +141,13 @@ const historyItems = [
   `fetch "robots.txt"`,
   `'size (fetch "robots.txt")`,
   `add1 = n => n + 1`,
-  `x = sleep 5 + sleep 5`,
-  `"abc" | map (c) => 'toUpperCase c`,
+  `add1 5`,
+  `"abc" | map (c) => 'toUpper c`,
   `"🥥🍏🍓"`,
   `"abc" | split`,
   `"a,b,c" | split ","`,
-  `("ab", "xy") | map (a, x) => (a, x)`,
+  `("ab", "xy") | map (a, x) => a x`,
+  `repeat () | take 10`,
   // `"abc" | reduce 0 (acc, n) => acc + n | size`,
 ];
 

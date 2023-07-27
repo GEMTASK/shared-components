@@ -43,12 +43,16 @@ class KopiString extends KopiValue {
     return new KopiNumber(this.value.length);
   }
 
-  toUpperCase() {
+  toUpper() {
     return new KopiString(this.value.toLocaleUpperCase());
   }
 
   trim() {
     return new KopiString(this.value.trim());
+  }
+
+  apply(thisArg: this, [that]: [that: this]) {
+    return new KopiString(this.value.concat(that.value));
   }
 
   //
