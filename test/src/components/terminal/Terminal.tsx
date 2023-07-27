@@ -117,6 +117,7 @@ const historyItems = [
   `add1 = n => n + 1`,
   `x = sleep 5 + sleep 5`,
   `"🥥🍏🍓"`,
+  // `"abc" | reduce 0 (acc, n) => acc + n | size`,
 ];
 
 const interpret = async (
