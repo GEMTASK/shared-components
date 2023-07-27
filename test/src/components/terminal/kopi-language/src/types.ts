@@ -2,6 +2,10 @@ import React from 'react';
 
 import { inspect } from './utils';
 
+interface KopiValue {
+  [Symbol.asyncIterator]?(): AsyncIterator<KopiValue>;
+}
+
 abstract class KopiValue {
   // async _toString() {
   //   return `${this}`;
