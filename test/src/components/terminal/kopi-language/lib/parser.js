@@ -251,7 +251,6 @@ function peg$parse(input, options) {
           expression,
           argumentExpression,
         }), pipelineExpression);
-        // return pipelineExpression;
       }, head);
     };
   var peg$f3 = function(head, tail) {
@@ -1131,7 +1130,7 @@ function peg$parse(input, options) {
       }
       if (s3 !== peg$FAILED) {
         s4 = peg$parse__();
-        s5 = peg$parsePipeExpression();
+        s5 = peg$parseAddExpression();
         if (s5 !== peg$FAILED) {
           peg$savedPos = s0;
           s0 = peg$f8(s1, s5);

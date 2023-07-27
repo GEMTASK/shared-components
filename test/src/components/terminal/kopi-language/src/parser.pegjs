@@ -99,7 +99,7 @@ PrimaryExpression
   / Identifier
 
 FunctionExpression
-  = parameterPattern:Pattern __ "=>" __ bodyExpression:Expression {
+  = parameterPattern:Pattern __ "=>" __ bodyExpression:AddExpression {
       return {
         type: "FunctionExpression",
         parameterPattern,
