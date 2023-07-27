@@ -108,11 +108,15 @@ class KopiString extends KopiValue {
     );
   }
 
-  // "abc" | reduce 1 (acc, n) => acc * n
   reduce(value: KopiValue) {
-    return (func: KopiValue) => {
-      console.log(value, func);
-      return new KopiString(`String.reduce with curried parameters.`);
+    return async (func: KopiFunction, context: Context) => {
+      let accum: Promise<KopiValue> = Promise.resolve(value);
+
+      for await (const value of this) {
+        accum = func.apply(KopiTuple.empty, [new KopiTuple([accum, Promise.resolve(value)]), context]);
+      }
+
+      return accum;
     };
   }
 }
