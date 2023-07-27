@@ -1,7 +1,20 @@
-import { KopiValue } from '../types';
+import { Context, KopiValue } from '../types';
+
+import KopiFunction from './KopiFunction';
+import KopiStream from './KopiStream';
 
 class KopiTuple extends KopiValue {
   static readonly empty = new KopiTuple([]);
+
+  static async from(iterable: AsyncIterable<KopiValue>) {
+    let values: KopiValue[] = [];
+
+    for await (const element of iterable) {
+      values = [...values, await element];
+    }
+
+    return new KopiTuple(values);
+  }
 
   _fields: (KopiValue | Promise<KopiValue>)[];
 
@@ -32,6 +45,27 @@ class KopiTuple extends KopiValue {
 
     return `(${fields.join(', ')})`;
   }
+
+  map(func: KopiFunction, context: Context) {
+    const result = (async function* map(this: KopiTuple) {
+      const iters = await Promise.all(
+        this._fields.map(
+          async (element) => (await element as unknown as AsyncIterable<KopiValue>)[Symbol.asyncIterator]()
+        )
+      );
+
+      let results = await Promise.all(iters.map(iter => iter.next()));
+
+      while (results.every(result => !result.done)) {
+        yield func.apply(KopiTuple.empty, [new KopiTuple(results.map(result => result.value)), context]);
+
+        results = await Promise.all(iters.map(iter => iter.next()));
+      }
+    }).apply(this);
+
+    return new KopiStream(result, KopiTuple.from);
+  }
+
 }
 
 export default KopiTuple;

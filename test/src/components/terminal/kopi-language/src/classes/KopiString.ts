@@ -4,42 +4,7 @@ import KopiNumber from './KopiNumber';
 import KopiArray from './KopiArray';
 import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
-
-// TODO: Should all methods be async?
-
-class KopiStream<T extends KopiValue> extends KopiValue {
-  readonly iterable: AsyncIterable<KopiValue>;
-  readonly from: (iterable: AsyncIterable<KopiValue>) => Promise<T>;
-
-  constructor(iterable: AsyncIterable<KopiValue>, from: (iterable: AsyncIterable<KopiValue>) => Promise<T>) {
-    super();
-
-    this.iterable = iterable;
-    this.from = from;
-  }
-
-  override async inspect() {
-    return (await this.from(this.iterable)).inspect();
-  }
-
-  [Symbol.asyncIterator]() {
-    return this.iterable[Symbol.asyncIterator]();
-  }
-
-  map(func: KopiFunction, context: Context): KopiStream<T> {
-    const generator = async function* (this: KopiStream<T>) {
-      for await (const value of this) {
-        yield func.apply(KopiTuple.empty, [value, context]);
-      }
-    }.apply(this);
-
-    return new KopiStream(generator, this.from);
-  }
-}
-
-//
-//
-//
+import KopiStream from './KopiStream';
 
 class KopiString extends KopiValue {
   readonly value: string;
@@ -85,6 +50,8 @@ class KopiString extends KopiValue {
   trim() {
     return new KopiString(this.value.trim());
   }
+
+  //
 
   map(func: KopiFunction, context: Context): KopiStream<KopiString> {
     const generator = async function* (this: KopiString) {

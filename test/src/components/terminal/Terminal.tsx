@@ -120,6 +120,7 @@ const historyItems = [
   `"🥥🍏🍓"`,
   `"abc" | split`,
   `"a,b,c" | split ","`,
+  `("ab", "xy") | map (a, x) => (a, x)`,
   // `"abc" | reduce 0 (acc, n) => acc + n | size`,
 ];
 
