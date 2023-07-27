@@ -116,6 +116,7 @@ const historyItems = [
   `'size (fetch "robots.txt")`,
   `add1 = n => n + 1`,
   `x = sleep 5 + sleep 5`,
+  `"abc" | map (c) => 'toUpperCase c`,
   `"🥥🍏🍓"`,
   // `"abc" | reduce 0 (acc, n) => acc + n | size`,
 ];
@@ -237,7 +238,7 @@ const Terminal = ({ ...props }: any) => {
             <Text fontSize="medium">History</Text>
           </View>
           <Divider />
-          <View padding="small">
+          <View padding="small" style={{ overflow: 'auto' }}>
             {historyItems.map(item => (
               <HistoryItem source={item} onItemSelect={(source: string) => interpret(source, setInputValue, setHistory)} />
             ))}
