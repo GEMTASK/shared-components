@@ -99,21 +99,21 @@ class KopiString extends KopiValue {
   split(delimeter: KopiString | KopiTuple) {
     if (delimeter instanceof KopiTuple) {
       return new KopiArray(
-        this.value.split('').map(string => Promise.resolve(new KopiString(string)))
+        this.value.split('').map(string => new KopiString(string))
       );
     }
 
     return new KopiArray(
-      this.value.split(delimeter.value).map(string => Promise.resolve(new KopiString(string)))
+      this.value.split(delimeter.value).map(string => new KopiString(string))
     );
   }
 
   reduce(value: KopiValue) {
     return async (func: KopiFunction, context: Context) => {
-      let accum: Promise<KopiValue> = Promise.resolve(value);
+      let accum: KopiValue | Promise<KopiValue> = value;
 
       for await (const value of this) {
-        accum = func.apply(KopiTuple.empty, [new KopiTuple([accum, Promise.resolve(value)]), context]);
+        accum = func.apply(KopiTuple.empty, [new KopiTuple([accum, value]), context]);
       }
 
       return accum;

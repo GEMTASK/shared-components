@@ -3,13 +3,13 @@ import { KopiValue } from '../types';
 class KopiTuple extends KopiValue {
   static readonly empty = new KopiTuple([]);
 
-  readonly _fields: Promise<KopiValue>[];
+  _fields: (KopiValue | Promise<KopiValue>)[];
 
   override get fields() {
     return this._fields;
   }
 
-  constructor(fields: Promise<KopiValue>[]) {
+  constructor(fields: (KopiValue | Promise<KopiValue>)[]) {
     super();
 
     if (fields.length === 0 && KopiTuple.empty) {
@@ -19,6 +19,10 @@ class KopiTuple extends KopiValue {
     }
 
     this._fields = fields;
+
+    Promise.all(fields).then(resolvedFields => {
+      this._fields = resolvedFields;
+    });
   }
 
   override async inspect() {

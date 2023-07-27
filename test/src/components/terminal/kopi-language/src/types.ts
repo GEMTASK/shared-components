@@ -11,8 +11,8 @@ abstract class KopiValue {
     return inspect(this);
   }
 
-  get fields(): Promise<KopiValue>[] {
-    return [Promise.resolve(this)];
+  get fields(): (KopiValue | Promise<KopiValue>)[] {
+    return [this];
   }
 
   async invoke(

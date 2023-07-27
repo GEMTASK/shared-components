@@ -5,12 +5,16 @@ import KopiNumber from './KopiNumber';
 class KopiArray extends KopiValue {
   // static readonly emptyValue = () => new KopiArray([]);
 
-  elements: Promise<KopiValue>[];
+  elements: (KopiValue | Promise<KopiValue>)[];
 
-  constructor(elements: Promise<KopiValue>[]) {
+  constructor(elements: (KopiValue | Promise<KopiValue>)[]) {
     super();
 
     this.elements = elements;
+
+    Promise.all(elements).then(resolvedElements => {
+      this.elements = resolvedElements;
+    });
   }
 
   override async inspect() {
