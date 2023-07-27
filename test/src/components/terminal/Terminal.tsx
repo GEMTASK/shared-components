@@ -148,6 +148,7 @@ const interpret = async (
     }
   } catch (error) {
     // console.warn((error as any).location);
+    console.warn(error);
 
     element = (error as Error).toString();
   }
