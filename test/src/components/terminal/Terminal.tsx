@@ -66,8 +66,6 @@ class KopiRepeat extends KopiValue {
   async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
     const generator = async function* (this: KopiValue) {
       for (let n = 0; ; ++n) {
-        if (n === 1000) break;
-
         yield new KopiNumber(n);
       }
     }.apply(KopiTuple.empty, []);

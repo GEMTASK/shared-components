@@ -3,6 +3,7 @@ import { Context, KopiValue } from '../types';
 import KopiNumber from './KopiNumber';
 import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
+import KopiArray from './KopiArray';
 
 class KopiStream<T extends KopiValue> extends KopiValue {
   readonly iterable: AsyncIterable<KopiValue>;
@@ -15,8 +16,21 @@ class KopiStream<T extends KopiValue> extends KopiValue {
     this.from = from;
   }
 
-  override async inspect() {
-    return (await this.from(this.iterable)).inspect();
+  override async inspect(): Promise<string> {
+    const array = [];
+    let index = 0;
+
+    for await (const value of this) {
+      if (++index > 100) break;
+
+      array.push(value);
+    }
+
+    const elements = await Promise.all(
+      array.map(async element => (await element).inspect())
+    );
+
+    return `[${elements.join(', ')}${index > 100 ? ', ...' : ''}]`;
   }
 
   [Symbol.asyncIterator]() {
