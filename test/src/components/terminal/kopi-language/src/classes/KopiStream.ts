@@ -5,11 +5,17 @@ import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
 import KopiArray from './KopiArray';
 
-class KopiStream<T extends KopiValue> extends KopiValue {
-  readonly iterable: AsyncIterable<KopiValue>;
-  readonly from: (iterable: AsyncIterable<KopiValue>) => Promise<T>;
+interface Iterable<T extends KopiValue> {
+  map(func: KopiFunction, context: Context): KopiStream<T>;
+  filter(func: KopiFunction, context: Context): KopiStream<T>;
+  take(count: KopiNumber): KopiStream<T>;
+}
 
-  constructor(iterable: AsyncIterable<KopiValue>, from: (iterable: AsyncIterable<KopiValue>) => Promise<T>) {
+class KopiStream<T extends KopiValue = any> extends KopiValue implements Iterable<T> {
+  readonly iterable: AsyncIterable<KopiValue>;
+  readonly from?: (iterable: AsyncIterable<KopiValue>) => Promise<T>;
+
+  constructor(iterable: AsyncIterable<KopiValue>, from?: (iterable: AsyncIterable<KopiValue>) => Promise<T>) {
     super();
 
     this.iterable = iterable;
@@ -17,6 +23,8 @@ class KopiStream<T extends KopiValue> extends KopiValue {
   }
 
   override async inspect(): Promise<string> {
+    // TODO: Need to use from()
+
     const array = [];
     let index = 0;
 
@@ -77,3 +85,7 @@ class KopiStream<T extends KopiValue> extends KopiValue {
 }
 
 export default KopiStream;
+
+export {
+  type Iterable,
+};
