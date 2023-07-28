@@ -4,19 +4,11 @@ import KopiNumber from './KopiNumber';
 import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
 
-interface KopiIterable<T extends KopiValue> {
-  [Symbol.asyncIterator](): AsyncIterator<KopiValue>;
-
-  map(func: KopiFunction, context: Context): KopiStream<T>;
-  // filter(func: KopiFunction, context: Context): KopiStream<T>;
-  take(count: KopiNumber): KopiStream<T>;
-}
-
-function makeIterable<TIterable extends KopiIterable<TKopiValue>, TKopiValue extends KopiValue>(
+function makeIterable<TIterable extends AsyncIterable<TKopiValue>, TKopiValue extends KopiValue>(
   from?: (iterable: AsyncIterable<KopiValue>) => Promise<TKopiValue>
 ) {
-  abstract class Mixin implements KopiIterable<TKopiValue> {
-    abstract [Symbol.asyncIterator](): AsyncIterator<KopiValue>;
+  abstract class Mixin implements AsyncIterable<TKopiValue> {
+    abstract [Symbol.asyncIterator](): AsyncIterator<TKopiValue>;
 
     map(this: TIterable, func: KopiFunction, context: Context) {
       const generator = async function* (this: TIterable) {
@@ -48,7 +40,7 @@ function makeIterable<TIterable extends KopiIterable<TKopiValue>, TKopiValue ext
   return Mixin;
 }
 
-class KopiStream<T extends KopiValue> extends KopiValue implements KopiIterable<T> {
+class KopiStream<T extends KopiValue> extends KopiValue implements AsyncIterable<KopiValue> {
   readonly iterable: AsyncIterable<KopiValue>;
   readonly from?: (iterable: AsyncIterable<KopiValue>) => Promise<T>;
 
@@ -133,7 +125,3 @@ class KopiStream<T extends KopiValue> extends KopiValue implements KopiIterable<
 }
 
 export default KopiStream;
-
-export {
-  type KopiIterable,
-};

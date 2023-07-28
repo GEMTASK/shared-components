@@ -1,9 +1,9 @@
 import { KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
-import KopiStream, { KopiIterable } from './KopiStream';
+import KopiStream from './KopiStream';
 
-class KopiRange extends KopiValue implements KopiIterable<KopiRange> {
+class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
   // static emptyValue = () => new KopiArray([]);
 
   from: KopiValue | Promise<KopiValue>;
