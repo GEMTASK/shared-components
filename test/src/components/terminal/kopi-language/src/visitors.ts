@@ -1,6 +1,7 @@
 import * as astNodes from './astnodes';
 import { ASTNode, Context, KopiValue } from './types';
 import { KopiAstLiteral, KopiFunction, KopiNumber, KopiString, KopiTuple } from './classes';
+import KopiRange from './classes/KopiRange';
 
 interface Visitor {
   astNode: ASTNode,
@@ -23,8 +24,6 @@ async function AssignmentStatement(
   if (patternMatches) {
     bind(patternMatches);
   }
-
-  // return KopiTuple.empty;
 }
 
 //
@@ -80,6 +79,18 @@ async function ApplyExpression(
   }
 
   throw new Error(`No KopiApplicative.apply() method found for ${func.constructor.name}.`);
+}
+
+async function RangeExpression(
+  { from, to }: astNodes.RangeExpression,
+  context: Context,
+): Promise<KopiValue> {
+  const { environment, evaluate, bind } = context;
+
+  return new KopiRange(
+    evaluate(from, environment, bind),
+    evaluate(to, environment, bind)
+  );
 }
 
 async function FunctionExpression(
@@ -151,6 +162,7 @@ export {
   PipeExpression,
   OperatorExpression,
   ApplyExpression,
+  RangeExpression,
   FunctionExpression,
   TupleExpression,
   //

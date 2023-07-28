@@ -61,6 +61,18 @@ class ApplyExpression extends ASTNode {
   }
 };
 
+class RangeExpression extends ASTNode {
+  readonly from: ASTNode;
+  readonly to: ASTNode;
+
+  constructor({ from, to, location }: RangeExpression) {
+    super(location);
+
+    this.from = from;
+    this.to = to;
+  }
+}
+
 class FunctionExpression extends ASTNode {
   readonly parameterPattern: ASTPatternNode;
   readonly bodyExpression: ASTNode;
@@ -223,8 +235,9 @@ export {
   //
   PipeExpression,
   OperatorExpression,
-  FunctionExpression,
   ApplyExpression,
+  RangeExpression,
+  FunctionExpression,
   TupleExpression,
   //
   NumericLiteralPattern,

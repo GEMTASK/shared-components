@@ -24,7 +24,7 @@ Expression
   = PipeExpression
 
 PipeExpression
-  = head:AddExpression tail:(__ "|" __ Identifier __ PrimaryExpression? (__ PrimaryExpression)*)* {
+  = head:AddExpression tail:(__ "|" __ Identifier __ RangeExpression? (__ RangeExpression)*)* {
       return tail.reduce((expression, [, , , identifier, , argumentExpression, argumentExpressions]) => {
         const pipelineExpression = {
           type: 'PipeExpression',
@@ -65,7 +65,7 @@ MultiplyExpression
     }
 
 ApplyExpression
-  = expression:PrimaryExpression _arguments:(__ PrimaryExpression)* {
+  = expression:RangeExpression _arguments:(__ RangeExpression)* {
       return _arguments.reduce((expression, [, argumentExpression]) => ({
         type: 'ApplyExpression',
         expression,
@@ -73,7 +73,15 @@ ApplyExpression
       }), expression);
     }
 
-// PipeExpression?
+RangeExpression
+  = from:PrimaryExpression __ ".." __ to:PrimaryExpression {
+      return {
+        type: 'RangeExpression',
+        from,
+        to,
+      };
+    }
+  / PrimaryExpression
 
 PrimaryExpression
   = "(" __ ")" __ !"=>" {
