@@ -63,6 +63,8 @@ class KopiRepeat extends KopiValue {
     return new KopiArray(values);
   }
 
+  // TODO: Use KopiStream2
+
   async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
     const generator = async function* (this: KopiValue) {
       for (let n = 0; ; ++n) {

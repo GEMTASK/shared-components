@@ -1,7 +1,10 @@
 import { KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
-import KopiStream from './KopiStream';
+import KopiIterable from './KopiIterable';
+import KopiArray from './KopiArray';
+
+const Iterable = KopiIterable();
 
 class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
   // static emptyValue = () => new KopiArray([]);
@@ -9,6 +12,10 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
   from: KopiValue | Promise<KopiValue>;
   to: KopiValue | Promise<KopiValue>;
   stride: KopiNumber;
+
+  map = Iterable.prototype.map;
+  filter = Iterable.prototype.filter;
+  take = Iterable.prototype.take;
 
   constructor(
     from: KopiValue | Promise<KopiValue>,
@@ -42,28 +49,6 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
 
     throw new Error(`Only range over numbers is supported currently.`);
   }
-
-  // take = KopiStream.prototype.take;
-  // TODO: Can't use KopiStream.take because of this.from
-
-  take(count: KopiNumber) {
-    let index = 0;
-
-    const generator = async function* (this: KopiRange) {
-      for await (const value of this) {
-        if (++index <= count.value) {
-          yield value;
-        } else {
-          break;
-        }
-      }
-    }.apply(this);
-
-    return new KopiStream<KopiRange>(generator);
-  }
-
-  map = KopiStream.prototype.map;
-  filter = KopiStream.prototype.filter;
 }
 
 export default KopiRange;
