@@ -1,6 +1,5 @@
 import { KopiValue } from '../types';
 
-import KopiArray from './KopiArray';
 import KopiNumber from './KopiNumber';
 import KopiStream, { Iterable } from './KopiStream';
 
@@ -60,10 +59,10 @@ class KopiRange extends KopiValue implements Iterable<KopiRange> {
       }
     }.apply(this);
 
-    return new KopiStream(generator);
+    return new KopiStream<KopiRange>(generator);
   }
 
-  map = KopiStream.prototype.map;
+  // map = KopiStream.prototype.map;
   filter = KopiStream.prototype.filter;
 }
 
