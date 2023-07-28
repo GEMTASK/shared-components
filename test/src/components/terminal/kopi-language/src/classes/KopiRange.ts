@@ -44,7 +44,25 @@ class KopiRange extends KopiValue implements Iterable<KopiRange> {
     throw new Error(`Only range over numbers is supported currently.`);
   }
 
-  take = KopiStream.prototype.take;
+  // take = KopiStream.prototype.take;
+  // TODO: Can't use KopiStream.take because of this.from
+
+  take(count: KopiNumber) {
+    let index = 0;
+
+    const generator = async function* (this: KopiRange) {
+      for await (const value of this) {
+        if (++index <= count.value) {
+          yield value;
+        } else {
+          break;
+        }
+      }
+    }.apply(this);
+
+    return new KopiStream(generator);
+  }
+
   map = KopiStream.prototype.map;
   filter = KopiStream.prototype.filter;
 }

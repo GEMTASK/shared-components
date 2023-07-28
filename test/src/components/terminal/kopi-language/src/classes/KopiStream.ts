@@ -6,10 +6,32 @@ import KopiTuple from './KopiTuple';
 import KopiArray from './KopiArray';
 
 interface Iterable<T extends KopiValue> {
+  [Symbol.asyncIterator](): AsyncIterator<KopiValue>;
+
   map(func: KopiFunction, context: Context): KopiStream<T>;
   filter(func: KopiFunction, context: Context): KopiStream<T>;
   take(count: KopiNumber): KopiStream<T>;
 }
+
+// function make<A extends Iterable<T>, T extends KopiValue>(from?: (iterable: AsyncIterable<KopiValue>) => Promise<T>) {
+//   return class XIterable {
+//     take(count: KopiNumber) {
+//       let index = 0;
+
+//       const generator = async function* (this: A) {
+//         for await (const value of this) {
+//           if (++index <= count.value) {
+//             yield value;
+//           } else {
+//             break;
+//           }
+//         }
+//       }.apply(this);
+
+//       return new KopiStream(generator, from); // TODO
+//     }
+//   }
+// }
 
 class KopiStream<T extends KopiValue = any> extends KopiValue implements Iterable<T> {
   readonly iterable: AsyncIterable<KopiValue>;
@@ -22,8 +44,12 @@ class KopiStream<T extends KopiValue = any> extends KopiValue implements Iterabl
     this.from = from;
   }
 
-  override async inspect(): Promise<string> {
-    // TODO: Need to use from()
+  // TODO: Reproduce React.ReactElement type
+  override async inspect(): Promise<string | any> {
+    if (this.from) {
+      console.log(this.from);
+      return (await this.from(this)).inspect();
+    }
 
     const array = [];
     let index = 0;
@@ -80,7 +106,7 @@ class KopiStream<T extends KopiValue = any> extends KopiValue implements Iterabl
       }
     }.apply(this);
 
-    return new KopiStream(generator, this.from);
+    return new KopiStream(generator, this.from); // TODO
   }
 }
 
