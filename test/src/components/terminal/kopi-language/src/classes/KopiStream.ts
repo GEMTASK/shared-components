@@ -1,4 +1,4 @@
-import { Context, KopiValue } from '../types';
+import { Context, KopiValue, ReactElement } from '../types';
 
 import KopiNumber from './KopiNumber';
 import KopiFunction from './KopiFunction';
@@ -57,8 +57,7 @@ class KopiStream<T extends KopiValue> extends KopiValue implements AsyncIterable
     this.take = Iterable.prototype.take;
   }
 
-  // TODO: Reproduce React.ReactElement type
-  override async inspect(): Promise<string | any> {
+  override async inspect(): Promise<string | ReactElement> {
     if (this.from) {
       return (await this.from(this)).inspect();
     }

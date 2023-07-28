@@ -1,6 +1,10 @@
-import React from 'react';
-
 import { inspect } from './utils';
+
+type ReactElement = {
+  type: (props: object) => ReactElement;
+  props: object;
+  key: string | number | null;
+};
 
 interface KopiValue {
   [Symbol.asyncIterator]?(): AsyncIterator<KopiValue>;
@@ -11,7 +15,7 @@ abstract class KopiValue {
   //   return `${this}`;
   // }
 
-  async inspect(): Promise<string | React.ReactElement> {
+  async inspect(): Promise<string | ReactElement> {
     return inspect(this);
   }
 
@@ -51,10 +55,6 @@ abstract class ASTPatternNode extends ASTNode {
   } | undefined>;
 }
 
-// interface Environment {
-//   [name: string | symbol]: KopiValue;
-// }
-
 class Environment {
   [key: string | symbol]: KopiValue;
 
@@ -83,6 +83,7 @@ export {
   type Evaluate,
   type Bind,
   type Context,
+  type ReactElement,
   ASTNode,
   ASTPatternNode,
   Environment,
