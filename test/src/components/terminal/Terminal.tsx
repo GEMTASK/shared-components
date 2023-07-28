@@ -145,7 +145,8 @@ const historyItems = [
   `"abc" | split`,
   `"a,b,c" | split ","`,
   `("ab", "xy") | map (a, x) => a x`,
-  `repeat () | take 10`,
+  `1..5 | take 3`,
+  `1..(fetch "robots.txt" | size)`,
   // `"abc" | reduce 0 (acc, n) => acc + n | size`,
 ];
 

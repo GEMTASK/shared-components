@@ -64,7 +64,7 @@ class KopiStream<T extends KopiValue> extends KopiValue {
 
     const generator = async function* (this: KopiStream<T>) {
       for await (const value of this) {
-        if (index++ < count.value) {
+        if (++index <= count.value) {
           yield value;
         } else {
           break;
