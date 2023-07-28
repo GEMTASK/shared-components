@@ -4,7 +4,7 @@ import KopiNumber from './KopiNumber';
 import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
 
-function makeIterable<TIterable extends AsyncIterable<TFromResult>, TFromResult extends KopiValue>(
+function KopiIterable<TIterable extends AsyncIterable<TFromResult>, TFromResult extends KopiValue>(
   from?: (iterable: AsyncIterable<KopiValue>) => Promise<TFromResult>
 ) {
   abstract class Mixin {
@@ -51,10 +51,10 @@ class KopiStream<T extends KopiValue> extends KopiValue implements AsyncIterable
     this.iterable = iterable;
     this.from = from;
 
-    const cls = makeIterable(this.from);
+    const Iterable = KopiIterable(this.from);
 
-    this.map = cls.prototype.map;
-    this.take = cls.prototype.take;
+    this.map = Iterable.prototype.map;
+    this.take = Iterable.prototype.take;
   }
 
   // TODO: Reproduce React.ReactElement type
