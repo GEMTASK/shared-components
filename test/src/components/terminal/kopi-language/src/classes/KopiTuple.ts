@@ -7,13 +7,13 @@ class KopiTuple extends KopiValue {
   static readonly empty = new KopiTuple([]);
 
   static async from(iterable: AsyncIterable<KopiValue>) {
-    let values: KopiValue[] = [];
+    let fields: KopiValue[] = [];
 
     for await (const element of iterable) {
-      values = [...values, await element];
+      fields = [...fields, await element];
     }
 
-    return new KopiTuple(values);
+    return new KopiTuple(fields);
   }
 
   _fields: (KopiValue | Promise<KopiValue>)[];
