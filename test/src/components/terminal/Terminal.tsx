@@ -147,6 +147,7 @@ const historyItems = [
   `("ab", "xy") | map (a, x) => a x`,
   `1..5 | take 3`,
   `1..(fetch "robots.txt" | size)`,
+  `1..5 | take 3 | map 'toFixed`,
   // `"abc" | reduce 0 (acc, n) => acc + n | size`,
 ];
 
