@@ -1,5 +1,6 @@
-import { KopiValue, ReactElement } from '../types';
+import { Context, KopiValue, ReactElement } from '../types';
 import KopiArray from './KopiArray';
+import KopiFunction from './KopiFunction';
 
 import KopiIterable from './KopiIterable';
 
@@ -16,13 +17,11 @@ async function from(iterable: AsyncIterable<KopiValue>) {
 const KopiStream2 = <TFromResult extends KopiValue>(
   _from?: (iterable: AsyncIterable<KopiValue>) => Promise<TFromResult>
 ) => {
-  const Iterable = KopiIterable(from);
-
   class KopiStream extends KopiValue implements AsyncIterable<KopiValue> {
     readonly iterable: AsyncIterable<KopiValue>;
     readonly from?: (iterable: AsyncIterable<KopiValue>) => Promise<TFromResult>;
 
-    map = Iterable.prototype.map;
+    // map: (this: KopiStream, func: KopiFunction, context: Context) => Promise<KopiValue>;
 
     constructor(
       iterable: AsyncIterable<KopiValue>,
@@ -59,6 +58,10 @@ const KopiStream2 = <TFromResult extends KopiValue>(
       return this.iterable[Symbol.asyncIterator]();
     }
   }
+
+  const Iterable = KopiIterable(from);
+
+  (KopiStream.prototype as any).map = Iterable.prototype.map;
 
   return KopiStream;
 };

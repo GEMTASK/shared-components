@@ -8,7 +8,7 @@ import Clock from '../clock/Clock';
 import * as kopi from './kopi-language';
 import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
 import { Context, Environment, KopiValue } from './kopi-language/src/types';
-import KopiStream from './kopi-language/src/classes/KopiStream';
+import KopiStream, { KopiStream2 } from './kopi-language/src/classes/KopiStream';
 
 class KopiDate extends KopiValue implements KopiValue {
   override async inspect() {
@@ -52,27 +52,32 @@ class KopiIcon extends KopiValue {
   }
 }
 
-class KopiRepeat extends KopiValue {
-  static async from(iterable: AsyncIterable<KopiValue>) {
-    let values: KopiValue[] = [];
+async function from(iterable: AsyncIterable<KopiValue>) {
+  let values: KopiValue[] = [];
 
-    for await (const element of iterable) {
-      values = [...values, await element];
-    }
-
-    return new KopiArray(values);
+  for await (const element of iterable) {
+    values = [...values, await element];
   }
+
+  return new KopiArray(values);
+}
+
+const Stream = KopiStream2(from);
+
+class KopiRepeat extends KopiValue {
 
   // TODO: Use KopiStream2
 
   async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
     const generator = async function* (this: KopiValue) {
       for (let n = 0; ; ++n) {
+        if (n >= 10) break;
+
         yield new KopiNumber(n);
       }
     }.apply(KopiTuple.empty, []);
 
-    return new KopiStream(generator, KopiRepeat.from);
+    return new Stream(generator);
   }
 }
 

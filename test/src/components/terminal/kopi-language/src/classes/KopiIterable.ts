@@ -8,7 +8,7 @@ import KopiStream, { KopiStream2 } from './KopiStream';
 // TODO: Avoid recursive imports KopiStream > KopiIterable > KopiStream
 
 function KopiIterable<TIterable extends AsyncIterable<TFromResult>, TFromResult extends KopiValue>(
-  from?: (iterable: AsyncIterable<KopiValue>) => Promise<TFromResult>,
+  from?: (iterable: AsyncIterable<KopiValue>) => Promise<TFromResult>
 ) {
   // const Stream = KopiStream2(from);
 
