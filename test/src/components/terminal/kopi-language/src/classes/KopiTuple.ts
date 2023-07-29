@@ -1,7 +1,19 @@
 import { Context, KopiValue } from '../types';
 
 import KopiFunction from './KopiFunction';
-import KopiStream from './KopiStream';
+import { KopiStream2 } from './KopiStream';
+
+async function from(iterable: AsyncIterable<KopiValue>) {
+  let fields: KopiValue[] = [];
+
+  for await (const element of iterable) {
+    fields = [...fields, await element];
+  }
+
+  return new KopiTuple(fields);
+}
+
+const TupleStream = KopiStream2(from);
 
 class KopiTuple extends KopiValue {
   static readonly empty = new KopiTuple([]);
@@ -75,9 +87,8 @@ class KopiTuple extends KopiValue {
       }
     }).apply(this);
 
-    return new KopiStream(result, KopiTuple.from);
+    return new TupleStream(result);
   }
-
 }
 
 export default KopiTuple;

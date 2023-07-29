@@ -4,7 +4,7 @@ import KopiNumber from './KopiNumber';
 import KopiArray from './KopiArray';
 import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
-import KopiStream, { IKopiStream, KopiStream2 } from './KopiStream';
+import { IKopiStream, KopiStream2 } from './KopiStream';
 
 async function from(iterable: AsyncIterable<KopiValue>) {
   let values: string = '';

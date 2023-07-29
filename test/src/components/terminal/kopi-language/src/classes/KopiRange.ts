@@ -1,7 +1,7 @@
 import { KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
-import KopiIterable, { IKopiIterable, KopiIterable2 } from './KopiIterable';
+import { IKopiIterable, KopiIterable2 } from './KopiIterable';
 import KopiArray from './KopiArray';
 import { KopiStream2 } from './KopiStream';
 
