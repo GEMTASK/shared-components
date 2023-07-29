@@ -1,19 +1,8 @@
 import { Context, KopiValue, ReactElement } from '../types';
-import KopiArray from './KopiArray';
 import KopiFunction from './KopiFunction';
 
 import KopiIterable, { IKopiIterable, KopiIterable2 } from './KopiIterable';
 import KopiNumber from './KopiNumber';
-
-async function from(asyncIterable: AsyncIterable<KopiValue>) {
-  let elements: KopiValue[] = [];
-
-  for await (const element of asyncIterable) {
-    elements = [...elements, await element];
-  }
-
-  return new KopiArray(elements);
-}
 
 interface IKopiStream<FromResultType extends KopiValue> {
   map(func: KopiFunction, context: Context): IKopiStream<FromResultType>;
@@ -40,8 +29,8 @@ const KopiStream2 = <TFromResult extends KopiValue>(
     }
 
     override async inspect(): Promise<string | ReactElement> {
-      if (from) {
-        return (await from(this)).inspect();
+      if (_from) {
+        return (await _from(this)).inspect();
       }
 
       const array = [];
