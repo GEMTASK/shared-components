@@ -1,6 +1,7 @@
 import { KopiValue } from '../types';
 
 import KopiString from './KopiString';
+import KopiTuple from './KopiTuple';
 
 class KopiNumber extends KopiValue {
   static readonly PI: KopiNumber = new KopiNumber(Math.PI);
@@ -16,6 +17,16 @@ class KopiNumber extends KopiValue {
 
   override async inspect() {
     return `${this.value}`;
+  }
+
+  succ(count: KopiNumber | KopiTuple) {
+    if (count === KopiTuple.empty) {
+      count = new KopiNumber(1);
+    }
+
+    if (count instanceof KopiNumber) {
+      return new KopiNumber(this.value + count.value);
+    }
   }
 
   toFixed(digits: KopiNumber) {
