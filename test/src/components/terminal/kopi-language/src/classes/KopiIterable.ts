@@ -3,7 +3,7 @@ import { Context, KopiValue } from '../types';
 import KopiNumber from './KopiNumber';
 import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
-import KopiStream, { IKopiStream } from './KopiStream';
+import { IKopiStream } from './KopiStream';
 
 // TODO: Avoid recursive imports KopiStream > KopiIterable > KopiStream
 
@@ -11,52 +11,6 @@ interface IKopiIterable<FromResultType extends KopiValue> {
   map(func: KopiFunction, context: Context): IKopiStream<FromResultType>;
   filter(func: KopiFunction, context: Context): IKopiStream<FromResultType>;
   take(count: KopiNumber): IKopiStream<FromResultType>;
-}
-
-function KopiIterable<AsyncIterableType extends AsyncIterable<FromResultType>, FromResultType extends KopiValue>(
-  from?: (iterable: AsyncIterable<KopiValue>) => Promise<FromResultType>
-) {
-  abstract class KopiIterable {
-    map(this: AsyncIterableType, func: KopiFunction, context: Context) {
-      const generator = async function* (this: AsyncIterableType) {
-        for await (const value of this) {
-          yield func.apply(KopiTuple.empty, [value, context]);
-        }
-      }.apply(this);
-
-      return new KopiStream(generator, from);
-    }
-
-    take(this: AsyncIterableType, count: KopiNumber) {
-      let index = 0;
-
-      const generator = async function* (this: AsyncIterableType) {
-        for await (const value of this) {
-          if (++index <= count.value) {
-            yield value;
-          } else {
-            break;
-          }
-        }
-      }.apply(this);
-
-      return new KopiStream(generator, from);
-    }
-
-    filter(this: AsyncIterableType, func: KopiFunction, context: Context) {
-      const generator = async function* (this: AsyncIterableType) {
-        for await (const value of this) {
-          if ((await func.apply(KopiTuple.empty, [value, context]) as KopiNumber).value) {
-            yield value;
-          }
-        }
-      }.apply(this);
-
-      return new KopiStream(generator, from);
-    }
-  }
-
-  return KopiIterable;
 }
 
 function KopiIterable2<AsyncIterableType extends AsyncIterable<FromResultType>, FromResultType extends KopiValue>(
@@ -110,7 +64,7 @@ function KopiIterable2<AsyncIterableType extends AsyncIterable<FromResultType>, 
   return KopiIterable;
 }
 
-export default KopiIterable;
+// export default KopiIterable;
 
 export {
   type IKopiIterable,

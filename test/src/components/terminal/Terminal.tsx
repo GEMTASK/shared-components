@@ -1,14 +1,13 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps, createLink } from 'bare';
+import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 import Clock from '../clock/Clock';
 
 import * as kopi from './kopi-language';
 import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
 import { Context, Environment, KopiValue } from './kopi-language/src/types';
-import KopiStream, { KopiStream2 } from './kopi-language/src/classes/KopiStream';
+import { KopiStream2 } from './kopi-language/src/classes/KopiStream';
 
 class KopiDate extends KopiValue implements KopiValue {
   override async inspect() {
