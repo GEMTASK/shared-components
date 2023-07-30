@@ -2,17 +2,21 @@ import { KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
 
+async function fromIterable(iterable: AsyncIterable<KopiValue>) {
+  let elements: KopiValue[] = [];
+
+  for await (const element of iterable) {
+    elements = [...elements, await element];
+  }
+
+  return new KopiArray(elements);
+}
+
 class KopiArray extends KopiValue {
   // static readonly emptyValue = () => new KopiArray([]);
 
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {
-    let elements: KopiValue[] = [];
-
-    for await (const element of iterable) {
-      elements = [...elements, await element];
-    }
-
-    return new KopiArray(elements);
+    return fromIterable(iterable);
   }
 
   elements: (KopiValue | Promise<KopiValue>)[];
