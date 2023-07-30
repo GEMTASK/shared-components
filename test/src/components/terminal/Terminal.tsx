@@ -51,7 +51,7 @@ class KopiIcon extends KopiValue {
   }
 }
 
-const RepeatStream = makeStream(KopiArray.from);
+const RepeatStream = makeStream(KopiArray.fromIterable);
 
 class KopiRepeat extends KopiValue {
   async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {

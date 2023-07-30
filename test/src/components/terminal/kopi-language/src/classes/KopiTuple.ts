@@ -3,7 +3,7 @@ import { Context, KopiValue } from '../types';
 import KopiFunction from './KopiFunction';
 import makeStream from './KopiStream';
 
-async function from(iterable: AsyncIterable<KopiValue>) {
+async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   let fields: KopiValue[] = [];
 
   for await (const element of iterable) {
@@ -13,12 +13,12 @@ async function from(iterable: AsyncIterable<KopiValue>) {
   return new KopiTuple(fields);
 }
 
-const TupleStream = makeStream(from);
+const TupleStream = makeStream(fromIterable);
 
 class KopiTuple extends KopiValue {
   static readonly empty = new KopiTuple([]);
 
-  static async from(iterable: AsyncIterable<KopiValue>) {
+  static async fromIterable(iterable: AsyncIterable<KopiValue>) {
     let fields: KopiValue[] = [];
 
     for await (const element of iterable) {

@@ -6,7 +6,7 @@ import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
 import makeStream, { KopiStream } from './KopiStream';
 
-async function from(iterable: AsyncIterable<KopiValue>) {
+async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   let values: string = '';
 
   for await (const element of iterable) {
@@ -16,7 +16,7 @@ async function from(iterable: AsyncIterable<KopiValue>) {
   return new KopiString(values);
 }
 
-const StringStream = makeStream(from);
+const StringStream = makeStream(fromIterable);
 
 class KopiString extends KopiValue {
   readonly value: string;

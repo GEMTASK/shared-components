@@ -11,41 +11,28 @@ interface KopiStream<TResult extends KopiValue> {
 }
 
 const makeStream = <TResult extends KopiValue>(
-  _from?: (iterable: AsyncIterable<KopiValue>) => Promise<TResult>
+  _fromIterable: (iterable: AsyncIterable<KopiValue>) => Promise<TResult>
 ) => {
+  interface KopiStream extends KopiValue, KopiIterable<TResult> { };
+
   class KopiStream extends KopiValue implements AsyncIterable<KopiValue> {
     readonly iterable: AsyncIterable<KopiValue>;
-    readonly from?: (iterable: AsyncIterable<KopiValue>) => Promise<TResult>;
+    readonly fromIterable: (iterable: AsyncIterable<KopiValue>) => Promise<TResult>;
 
     constructor(
       iterable: AsyncIterable<KopiValue>,
-      from: ((iterable: AsyncIterable<KopiValue>) => Promise<TResult>) | undefined = _from
+      fromIterable: ((iterable: AsyncIterable<KopiValue>) => Promise<TResult>) = _fromIterable
     ) {
       super();
 
       this.iterable = iterable;
-      this.from = from;
+      this.fromIterable = fromIterable;
     }
 
     override async inspect(): Promise<string | ReactElement> {
-      if (_from) {
-        return (await _from(this)).inspect();
-      }
+      const stream = (this.take(new KopiNumber(100)) as any).iterable;
 
-      const array = [];
-      let index = 0;
-
-      for await (const value of this) {
-        if (++index > 100) break;
-
-        array.push(value);
-      }
-
-      const elements = await Promise.all(
-        array.map(async element => (await element).inspect())
-      );
-
-      return `[${elements.join(', ')}${index > 100 ? ', ...' : ''}]`;
+      return (await _fromIterable(stream)).inspect();
     }
 
     [Symbol.asyncIterator]() {
@@ -53,11 +40,10 @@ const makeStream = <TResult extends KopiValue>(
     }
   }
 
-  interface KopiStream extends KopiValue, KopiIterable<TResult> { };
-
   const StreamIterable = makeIterable(KopiStream);
 
   KopiStream.prototype.map = StreamIterable.prototype.map;
+  KopiStream.prototype.take = StreamIterable.prototype.take;
 
   return KopiStream;
 };

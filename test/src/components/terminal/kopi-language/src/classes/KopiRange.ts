@@ -47,7 +47,7 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
   }
 }
 
-const RangeStream = makeStream();
+const RangeStream = makeStream(KopiArray.fromIterable);
 const RangeIterable = makeIterable(RangeStream);
 
 KopiRange.prototype.map = RangeIterable.prototype.map;

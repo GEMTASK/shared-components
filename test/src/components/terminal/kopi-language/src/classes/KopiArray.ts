@@ -5,7 +5,7 @@ import KopiNumber from './KopiNumber';
 class KopiArray extends KopiValue {
   // static readonly emptyValue = () => new KopiArray([]);
 
-  static async from(iterable: AsyncIterable<KopiValue>) {
+  static async fromIterable(iterable: AsyncIterable<KopiValue>) {
     let elements: KopiValue[] = [];
 
     for await (const element of iterable) {
