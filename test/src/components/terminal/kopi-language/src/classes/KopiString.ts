@@ -19,6 +19,10 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
 const StringStream = makeStream(fromIterable);
 
 class KopiString extends KopiValue {
+  static async from(iterable: AsyncIterable<KopiValue>) {
+    return fromIterable(iterable);
+  }
+
   readonly value: string;
 
   constructor(value: string) {
@@ -41,16 +45,6 @@ class KopiString extends KopiValue {
     }
   }
 
-  static async from(iterable: AsyncIterable<KopiValue>) {
-    let values: string = '';
-
-    for await (const element of iterable) {
-      values += await element.toString();
-    }
-
-    return new KopiString(values);
-  }
-
   size() {
     return new KopiNumber(this.value.length);
   }
@@ -65,6 +59,22 @@ class KopiString extends KopiValue {
 
   apply(thisArg: this, [that]: [that: this]) {
     return new KopiString(this.value.concat(that.value));
+  }
+
+  succ(count: KopiNumber | KopiTuple): KopiString {
+    if (count === KopiTuple.empty) {
+      count = new KopiNumber(1);
+    }
+
+    if (count instanceof KopiNumber) {
+      const codePoint = this.value.codePointAt(0);
+
+      if (codePoint) {
+        return new KopiString(String.fromCodePoint(codePoint + count.value));
+      }
+    }
+
+    throw new Error('KopiString.succ()');
   }
 
   //
