@@ -1,30 +1,30 @@
 import { Context, KopiValue, ReactElement } from '../types';
 import KopiFunction from './KopiFunction';
 
-import { IKopiIterable, KopiIterable2 } from './KopiIterable';
+import KopiIterable, { IKopiIterable } from './KopiIterable';
 import KopiNumber from './KopiNumber';
 
-interface IKopiStream<FromResultType extends KopiValue> {
-  map(func: KopiFunction, context: Context): IKopiStream<FromResultType>;
-  filter(func: KopiFunction, context: Context): IKopiStream<FromResultType>;
-  take(count: KopiNumber): IKopiStream<FromResultType>;
+interface IKopiStream<TResult extends KopiValue> {
+  map(func: KopiFunction, context: Context): IKopiStream<TResult>;
+  filter(func: KopiFunction, context: Context): IKopiStream<TResult>;
+  take(count: KopiNumber): IKopiStream<TResult>;
 }
 
-const KopiStream2 = <TFromResult extends KopiValue>(
-  _from?: (asyncIterable: AsyncIterable<KopiValue>) => Promise<TFromResult>
+const KopiStream = <TResult extends KopiValue>(
+  _from?: (iterable: AsyncIterable<KopiValue>) => Promise<TResult>
 ) => {
-  interface KopiStream extends KopiValue, IKopiIterable<TFromResult> { };
+  interface KopiStream extends KopiValue, IKopiIterable<TResult> { };
   class KopiStream extends KopiValue implements AsyncIterable<KopiValue> {
-    readonly asyncIterable: AsyncIterable<KopiValue>;
-    readonly from?: (asyncIterable: AsyncIterable<KopiValue>) => Promise<TFromResult>;
+    readonly iterable: AsyncIterable<KopiValue>;
+    readonly from?: (iterable: AsyncIterable<KopiValue>) => Promise<TResult>;
 
     constructor(
-      asyncIterable: AsyncIterable<KopiValue>,
-      from: ((asyncIterable: AsyncIterable<KopiValue>) => Promise<TFromResult>) | undefined = _from
+      iterable: AsyncIterable<KopiValue>,
+      from: ((iterable: AsyncIterable<KopiValue>) => Promise<TResult>) | undefined = _from
     ) {
       super();
 
-      this.asyncIterable = asyncIterable;
+      this.iterable = iterable;
       this.from = from;
     }
 
@@ -50,20 +50,19 @@ const KopiStream2 = <TFromResult extends KopiValue>(
     }
 
     [Symbol.asyncIterator]() {
-      return this.asyncIterable[Symbol.asyncIterator]();
+      return this.iterable[Symbol.asyncIterator]();
     }
   }
 
-  const StreamIterable = KopiIterable2(KopiStream);
+  const StreamIterable = KopiIterable(KopiStream);
 
   KopiStream.prototype.map = StreamIterable.prototype.map;
 
   return KopiStream;
 };
 
-// export default KopiStream;
+export default KopiStream;
 
 export {
   type IKopiStream,
-  KopiStream2,
 };

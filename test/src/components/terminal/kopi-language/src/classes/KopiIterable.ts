@@ -7,23 +7,23 @@ import { IKopiStream } from './KopiStream';
 
 // TODO: Avoid recursive imports KopiStream > KopiIterable > KopiStream
 
-interface IKopiIterable<FromResultType extends KopiValue> {
-  map(func: KopiFunction, context: Context): IKopiStream<FromResultType>;
-  filter(func: KopiFunction, context: Context): IKopiStream<FromResultType>;
-  take(count: KopiNumber): IKopiStream<FromResultType>;
+interface IKopiIterable<TResult extends KopiValue> {
+  map(func: KopiFunction, context: Context): IKopiStream<TResult>;
+  filter(func: KopiFunction, context: Context): IKopiStream<TResult>;
+  take(count: KopiNumber): IKopiStream<TResult>;
 }
 
-function KopiIterable2<AsyncIterableType extends AsyncIterable<FromResultType>, FromResultType extends KopiValue>(
+function KopiIterable<TIterable extends AsyncIterable<TResult>, TResult extends KopiValue>(
   Stream: {
     new(
-      asyncIterable: AsyncIterable<KopiValue>,
-      from?: (asyncIterable: AsyncIterable<KopiValue>) => Promise<FromResultType>
-    ): KopiValue & IKopiIterable<FromResultType>;
+      iterable: AsyncIterable<KopiValue>,
+      from?: (iterable: AsyncIterable<KopiValue>) => Promise<TResult>
+    ): KopiValue & IKopiIterable<TResult>;
   }
 ) {
   abstract class KopiIterable {
-    map(this: AsyncIterableType, func: KopiFunction, context: Context) {
-      const generator = async function* (this: AsyncIterableType) {
+    map(this: TIterable, func: KopiFunction, context: Context) {
+      const generator = async function* (this: TIterable) {
         for await (const value of this) {
           yield func.apply(KopiTuple.empty, [value, context]);
         }
@@ -32,10 +32,10 @@ function KopiIterable2<AsyncIterableType extends AsyncIterable<FromResultType>, 
       return new Stream(generator);
     }
 
-    take(this: AsyncIterableType, count: KopiNumber) {
+    take(this: TIterable, count: KopiNumber) {
       let index = 0;
 
-      const generator = async function* (this: AsyncIterableType) {
+      const generator = async function* (this: TIterable) {
         for await (const value of this) {
           if (++index <= count.value) {
             yield value;
@@ -48,8 +48,8 @@ function KopiIterable2<AsyncIterableType extends AsyncIterable<FromResultType>, 
       return new Stream(generator);
     }
 
-    filter(this: AsyncIterableType, func: KopiFunction, context: Context) {
-      const generator = async function* (this: AsyncIterableType) {
+    filter(this: TIterable, func: KopiFunction, context: Context) {
+      const generator = async function* (this: TIterable) {
         for await (const value of this) {
           if ((await func.apply(KopiTuple.empty, [value, context]) as KopiNumber).value) {
             yield value;
@@ -64,9 +64,8 @@ function KopiIterable2<AsyncIterableType extends AsyncIterable<FromResultType>, 
   return KopiIterable;
 }
 
-// export default KopiIterable;
+export default KopiIterable;
 
 export {
   type IKopiIterable,
-  KopiIterable2,
 };
