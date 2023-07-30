@@ -43,6 +43,7 @@ const makeStream = <TResult extends KopiValue>(
   const StreamIterable = makeIterable(KopiStream);
 
   KopiStream.prototype.map = StreamIterable.prototype.map;
+  KopiStream.prototype.filter = StreamIterable.prototype.filter;
   KopiStream.prototype.take = StreamIterable.prototype.take;
 
   return KopiStream;
