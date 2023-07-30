@@ -7,7 +7,7 @@ import Clock from '../clock/Clock';
 import * as kopi from './kopi-language';
 import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
 import { Context, Environment, KopiValue } from './kopi-language/src/types';
-import KopiStream from './kopi-language/src/classes/KopiStream';
+import makeStream from './kopi-language/src/classes/KopiStream';
 
 class KopiDate extends KopiValue implements KopiValue {
   override async inspect() {
@@ -51,7 +51,7 @@ class KopiIcon extends KopiValue {
   }
 }
 
-const RepeatStream = KopiStream(KopiArray.from);
+const RepeatStream = makeStream(KopiArray.from);
 
 class KopiRepeat extends KopiValue {
   async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {

@@ -1,11 +1,11 @@
 import { KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
-import KopiIterable, { IKopiIterable } from './KopiIterable';
+import makeIterable, { KopiIterable } from './KopiIterable';
 import KopiArray from './KopiArray';
-import KopiStream from './KopiStream';
+import makeStream from './KopiStream';
 
-interface KopiRange extends KopiValue, IKopiIterable<KopiArray> { };
+interface KopiRange extends KopiValue, KopiIterable<KopiArray> { };
 class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
   // static emptyValue = () => new KopiArray([]);
 
@@ -47,8 +47,8 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
   }
 }
 
-const RangeStream = KopiStream();
-const RangeIterable = KopiIterable(RangeStream);
+const RangeStream = makeStream();
+const RangeIterable = makeIterable(RangeStream);
 
 KopiRange.prototype.map = RangeIterable.prototype.map;
 KopiRange.prototype.filter = RangeIterable.prototype.filter;
