@@ -16,9 +16,9 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   return new KopiString(values);
 }
 
-const StringStream = makeStream(fromIterable);
-
 class KopiString extends KopiValue {
+  static StringStream = makeStream(fromIterable);
+
   static async from(iterable: AsyncIterable<KopiValue>) {
     return fromIterable(iterable);
   }
@@ -86,7 +86,7 @@ class KopiString extends KopiValue {
       }
     }.apply(this);
 
-    return new StringStream(generator);
+    return new KopiString.StringStream(generator);
   }
 
   split(delimeter: KopiString | KopiTuple) {

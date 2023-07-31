@@ -13,10 +13,9 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   return new KopiTuple(fields);
 }
 
-const TupleStream = makeStream(fromIterable);
-
 class KopiTuple extends KopiValue {
   static readonly empty = new KopiTuple([]);
+  static TupleStream = makeStream(fromIterable);
 
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {
     let fields: KopiValue[] = [];
@@ -87,7 +86,7 @@ class KopiTuple extends KopiValue {
       }
     }).apply(this);
 
-    return new TupleStream(result);
+    return new KopiTuple.TupleStream(result);
   }
 }
 

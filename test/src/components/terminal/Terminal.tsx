@@ -51,9 +51,9 @@ class KopiIcon extends KopiValue {
   }
 }
 
-const RepeatStream = makeStream(KopiArray.fromIterable);
-
 class KopiRepeat extends KopiValue {
+  static RepeatStream = makeStream(KopiArray.fromIterable);
+
   async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
     const generator = async function* (this: KopiValue) {
       for (let n = 0; ; ++n) {
@@ -63,7 +63,7 @@ class KopiRepeat extends KopiValue {
       }
     }.apply(KopiTuple.empty, []);
 
-    return new RepeatStream(generator);
+    return new KopiRepeat.RepeatStream(generator);
   }
 }
 
