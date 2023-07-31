@@ -21,8 +21,13 @@ let StringStream: {
   new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiString>;
 };
 
+let ArrayStream: {
+  new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiString>;
+};
+
 import('./KopiStream').then((result) => {
   StringStream = result.default(fromIterable);
+  ArrayStream = result.default(KopiArray.fromIterable);
 });
 
 //
@@ -97,7 +102,7 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
       }
     }.apply(this);
 
-    return new StringStream(generator);
+    return new ArrayStream(generator);
   }
 
   split(delimeter: KopiString | KopiTuple) {
@@ -112,6 +117,22 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
     );
   }
 
+  async combine(iterable: AsyncIterable<KopiValue>) {
+    const generator = async function* (this: KopiString) {
+      let index = 0;
+
+      for await (const value of iterable) {
+        if (index++ > 0) {
+          yield this;
+        }
+
+        yield new KopiString(await value.toString());
+      }
+    }.apply(this);
+
+    return new StringStream(generator);
+  }
+
   reduce(value: KopiValue) {
     return async (func: KopiFunction, context: Context) => {
       let accum: KopiValue | Promise<KopiValue> = value;
@@ -122,6 +143,10 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
 
       return accum;
     };
+  }
+
+  join(joiner: KopiValue, context: Context) {
+    return joiner.invoke('combine', [this, context]);
   }
 }
 

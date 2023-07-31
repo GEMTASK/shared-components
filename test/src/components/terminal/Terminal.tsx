@@ -141,6 +141,11 @@ const historyItems = [
   `1..5 | take 3 | map (n) => n * n`,
   `1..(fetch "robots.txt" | size)`,
   `1..5 | take 3 | map 'toFixed`,
+  `", " | combine 1..3`,
+  `1..3 | join ", "`,
+  `", " | combine "abc"`,
+  `"abc" | join ", "`,
+  `1..3 | map 'toFixed | join ", "`,
   // `"abc" | reduce 0 (acc, n) => acc + n | size`,
 ];
 

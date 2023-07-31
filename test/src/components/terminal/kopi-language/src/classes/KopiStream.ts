@@ -4,6 +4,8 @@ import KopiFunction from './KopiFunction';
 import KopiNumber from './KopiNumber';
 
 import type { KopiIterable } from './KopiIterable';
+import KopiTuple from './KopiTuple';
+import KopiString from './KopiString';
 
 interface KopiStream<TResult extends KopiValue> {
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
@@ -52,6 +54,10 @@ const makeStream = <TResult extends KopiValue>(
 
     [Symbol.asyncIterator]() {
       return this.iterable[Symbol.asyncIterator]();
+    }
+
+    join(joiner: KopiValue, context: Context) {
+      return joiner.invoke('combine', [this, context]);
     }
   }
 

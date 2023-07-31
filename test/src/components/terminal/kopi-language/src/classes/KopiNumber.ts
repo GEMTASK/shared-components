@@ -15,6 +15,10 @@ class KopiNumber extends KopiValue {
     this.value = value;
   }
 
+  async toString() {
+    return `${this.value}`;
+  }
+
   override async inspect() {
     return `${this.value}`;
   }
@@ -29,8 +33,14 @@ class KopiNumber extends KopiValue {
     }
   }
 
-  toFixed(digits: KopiNumber) {
-    return new KopiString(this.value.toFixed(digits.value));
+  toFixed(digits: KopiNumber | KopiTuple) {
+    if (digits === KopiTuple.empty) {
+      return new KopiString(this.value.toFixed(2));
+    }
+
+    if (digits instanceof KopiNumber) {
+      return new KopiString(this.value.toFixed(digits.value));
+    }
   }
 
   abs() {

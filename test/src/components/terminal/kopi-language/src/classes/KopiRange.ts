@@ -1,4 +1,4 @@
-import { KopiValue } from '../types';
+import { Context, KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
 import KopiArray from './KopiArray';
@@ -72,6 +72,10 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
     }
 
     throw new Error(`Only range over numbers is supported currently.`);
+  }
+
+  join(joiner: KopiValue, context: Context) {
+    return joiner.invoke('combine', [this, context]);
   }
 }
 
