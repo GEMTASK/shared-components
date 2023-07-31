@@ -1,8 +1,9 @@
 import { Context, KopiValue, ReactElement } from '../types';
-import KopiFunction from './KopiFunction';
 
-import makeIterable, { KopiIterable } from './KopiIterable';
+import KopiFunction from './KopiFunction';
 import KopiNumber from './KopiNumber';
+
+import type { KopiIterable } from './KopiIterable';
 
 interface KopiStream<TResult extends KopiValue> {
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
@@ -15,15 +16,21 @@ const makeStream = <TResult extends KopiValue>(
 ) => {
   interface KopiStream extends KopiValue, KopiIterable<TResult> { };
 
+  let RangeIterable: {
+    new(Stream: {
+      new(iterable: AsyncIterable<KopiValue>): KopiIterable<KopiStream>;
+    }): KopiIterable<KopiStream>;
+  };
+
+  import('./KopiIterable').then((result) => {
+    RangeIterable = result.default(KopiStream);
+
+    KopiStream.prototype.map = RangeIterable.prototype.map;
+    KopiStream.prototype.filter = RangeIterable.prototype.filter;
+    KopiStream.prototype.take = RangeIterable.prototype.take;
+  });
+
   class KopiStream extends KopiValue implements AsyncIterable<KopiValue> {
-    static StreamIterable = makeIterable(KopiStream);
-
-    static {
-      KopiStream.prototype.map = KopiStream.StreamIterable.prototype.map;
-      KopiStream.prototype.filter = KopiStream.StreamIterable.prototype.filter;
-      KopiStream.prototype.take = KopiStream.StreamIterable.prototype.take;
-    }
-
     readonly iterable: AsyncIterable<KopiValue>;
     readonly fromIterable: (iterable: AsyncIterable<KopiValue>) => Promise<TResult>;
 

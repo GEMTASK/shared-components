@@ -1,9 +1,12 @@
 import { KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
-import type { KopiStream } from './KopiStream';
-import { KopiIterable } from './KopiIterable';
 import KopiArray from './KopiArray';
+
+import type { KopiStream } from './KopiStream';
+import type { KopiIterable } from './KopiIterable';
+
+interface KopiRange extends KopiValue, KopiIterable<KopiArray> { };
 
 let RangeStream: {
   new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiArray>;
@@ -27,7 +30,9 @@ import('./KopiStream').then((result) => {
   });
 });
 
-interface KopiRange extends KopiValue, KopiIterable<KopiArray> { };
+//
+//
+//
 
 class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
   // static emptyValue = () => new KopiArray([]);

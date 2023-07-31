@@ -4,6 +4,8 @@ import KopiNumber from './KopiNumber';
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
 
+interface KopiArray extends KopiValue, KopiIterable<KopiArray> { };
+
 let ArrayStream: {
   new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiArray>;
 };
@@ -36,7 +38,9 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   return new KopiArray(elements);
 }
 
-interface KopiArray extends KopiValue, KopiIterable<KopiArray> { };
+//
+//
+//
 
 class KopiArray extends KopiValue {
   // static readonly emptyValue = () => new KopiArray([]);

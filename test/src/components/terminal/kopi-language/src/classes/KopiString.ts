@@ -5,6 +5,8 @@ import KopiArray from './KopiArray';
 import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
 
+import type { KopiStream } from './KopiStream';
+
 async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   let values: string = '';
 
@@ -16,12 +18,16 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
 }
 
 let StringStream: {
-  new(iterable: AsyncIterable<KopiValue>): KopiValue;
+  new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiString>;
 };
 
 import('./KopiStream').then((result) => {
   StringStream = result.default(fromIterable);
 });
+
+//
+//
+//
 
 class KopiString extends KopiValue {
   static async from(iterable: AsyncIterable<KopiValue>) {

@@ -3,7 +3,8 @@ import { Context, KopiValue } from '../types';
 import KopiNumber from './KopiNumber';
 import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
-import { KopiStream } from './KopiStream';
+
+import type { KopiStream } from './KopiStream';
 
 // TODO: Avoid recursive imports KopiStream > KopiIterable > KopiStream
 
