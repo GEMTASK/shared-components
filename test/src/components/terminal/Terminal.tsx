@@ -148,6 +148,11 @@ const historyItems = [
   `1..3 | map 'toFixed | join ", "`,
   `1..5 | reduce (a = 1, n) => a * n`,
   `"abc" | reduce (a, c) => a ", " c`,
+  `[sleep 5, sleep 5]`,
+  `[1, "two", 1..3, n => n * n]`,
+  `[1, 2] | reduce (a, n) => a + n`,
+  `[1, 2, 3] | take 2 | take 1`,
+  `([1, 2], 3..4) | map (a, b) => a * b`,
   // `"abc" | reduce 0 (acc, n) => acc + n | size`,
 ];
 

@@ -81,6 +81,11 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         value: rawASTNode.value,
         location: rawASTNode.location,
       } as astNodes.StringLiteral);
+    case 'ArrayLiteral':
+      return new astNodes.ArrayLiteral({
+        elementExpressions: rawASTNode.elementExpressions.map((expression: ASTNode) => transform(expression)),
+        location: rawASTNode.location,
+      } as astNodes.ArrayLiteral);
     case 'AstLiteral':
       return new astNodes.AstLiteral({
         value: transform(rawASTNode.value),
@@ -126,6 +131,8 @@ function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
     return visitors.NumericLiteral(astNode);
   } else if (astNode instanceof astNodes.StringLiteral) {
     return visitors.StringLiteral(astNode);
+  } else if (astNode instanceof astNodes.ArrayLiteral) {
+    return visitors.ArrayLiteral(astNode, context);
   } else if (astNode instanceof astNodes.AstLiteral) {
     return visitors.AstLiteral(astNode);
   } else if (astNode instanceof astNodes.Identifier) {

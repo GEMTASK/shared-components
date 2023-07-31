@@ -56,7 +56,11 @@ function makeIterable<TIterable extends KopiValue & AsyncIterable<TResult>, TRes
       let accum: KopiValue = KopiTuple.empty;
 
       for await (const value of this) {
-        accum = await func.apply(KopiTuple.empty, [new KopiTuple([accum, value]), context]);
+        if (accum === KopiTuple.empty) {
+          accum = value;
+        } else {
+          accum = await func.apply(KopiTuple.empty, [new KopiTuple([accum, value]), context]);
+        }
       }
 
       return accum;

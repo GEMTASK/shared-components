@@ -3,7 +3,7 @@
 //
 
 Program
-  = __ expr:Statement? __ {
+  = _ expr:Statement? _ {
     return expr;
   }
 
@@ -12,7 +12,7 @@ Statement
   / Expression
 
 Assignment
-  = pattern:PrimaryPattern __ "=" __ expression:Expression {
+  = pattern:PrimaryPattern _ "=" _ expression:Expression {
       return {
         type: 'AssignmentStatement',
         pattern,
@@ -24,7 +24,7 @@ Expression
   = PipeExpression
 
 PipeExpression
-  = head:AddExpression tail:(__ "|" __ Identifier __ RangeExpression? (__ RangeExpression)*)* {
+  = head:AddExpression tail:(_ "|" _ Identifier _ RangeExpression? (_ RangeExpression)*)* {
       return tail.reduce((expression, [, , , identifier, , argumentExpression, argumentExpressions]) => {
         const pipelineExpression = {
           type: 'PipeExpression',
@@ -43,7 +43,7 @@ PipeExpression
     }
 
 AddExpression
-  = head:MultiplyExpression tail:(__ ("+" / "-") __ MultiplyExpression)* {
+  = head:MultiplyExpression tail:(_ ("+" / "-") _ MultiplyExpression)* {
       return tail.reduce((leftExpression, [, operator, , rightExpression]) => ({
         type: 'OperatorExpression',
         operator,
@@ -54,7 +54,7 @@ AddExpression
     }
 
 MultiplyExpression
-  = head:ApplyExpression tail:(__ ("*" / "/" / "%") __ ApplyExpression)* {
+  = head:ApplyExpression tail:(_ ("*" / "/" / "%") _ ApplyExpression)* {
       return tail.reduce((leftExpression, [, operator, , rightExpression]) => ({
         type: 'OperatorExpression',
         operator,
@@ -65,7 +65,7 @@ MultiplyExpression
     }
 
 ApplyExpression
-  = expression:RangeExpression _arguments:(__ RangeExpression)* {
+  = expression:RangeExpression _arguments:(_ RangeExpression)* {
       return _arguments.reduce((expression, [, argumentExpression]) => ({
         type: 'ApplyExpression',
         expression,
@@ -74,7 +74,7 @@ ApplyExpression
     }
 
 RangeExpression
-  = from:PrimaryExpression __ ".." __ to:PrimaryExpression {
+  = from:PrimaryExpression _ ".." _ to:PrimaryExpression {
       return {
         type: 'RangeExpression',
         from,
@@ -84,14 +84,14 @@ RangeExpression
   / PrimaryExpression
 
 PrimaryExpression
-  = "(" __ ")" __ !"=>" {
+  = "(" _ ")" _ !"=>" {
       return {
         type: 'TupleExpression',
         fieldExpressions: [],
         fieldNames: [],
       }
     }
-  / "(" __ head:Expression tail:(__ "," __ Expression)* __ ")" __ !"=>" {
+  / "(" _ head:Expression tail:(_ "," _ Expression)* _ ")" _ !"=>" {
       return tail.length === 0 ? head : {
         type: 'TupleExpression',
         fieldExpressions: tail.reduce((expressions, [, , , expression]) => [
@@ -103,11 +103,12 @@ PrimaryExpression
   / FunctionExpression
   / NumericLiteral
   / StringLiteral
+  / ArrayLiteral
   / AstLiteral
   / Identifier
 
 FunctionExpression
-  = parameterPattern:Pattern __ "=>" __ bodyExpression:AddExpression {
+  = parameterPattern:Pattern _ "=>" _ bodyExpression:AddExpression {
       return {
         type: "FunctionExpression",
         parameterPattern,
@@ -124,7 +125,7 @@ Pattern
   / PrimaryPattern
 
 DefaultExpressionPattern
-  = pattern:PrimaryPattern __ "=" __ defaultExpression:Expression {
+  = pattern:PrimaryPattern _ "=" _ defaultExpression:Expression {
       return {
         ...pattern,
         defaultExpression,
@@ -132,13 +133,13 @@ DefaultExpressionPattern
     }
 
 PrimaryPattern
-  = "(" __ ")" {
+  = "(" _ ")" {
       return {
         type: "TuplePattern",
         fieldPatterns: [],
       }
     }
-  / "(" __ head:Pattern tail:(__ "," __ Pattern)* __ ")" {
+  / "(" _ head:Pattern tail:(_ "," _ Pattern)* _ ")" {
       return tail.length === 0 ? head : {
         type: 'TuplePattern',
         fieldPatterns: tail.reduce((patterns, [, , , pattern]) => [
@@ -180,12 +181,21 @@ NumericLiteral "number"
     }
 
 StringLiteral "string"
-  = __ "\"" value:[^"]* "\"" __ {
+  = _ "\"" value:[^"]* "\"" _ {
       return {
         type: 'StringLiteral',
         value: value.join(''),
         location: location(),
       };
+    }
+
+ArrayLiteral
+  = "[" _ head:Expression? tail:(_ "," _ Expression)* _ "]" _ !"=>" {
+      return {
+        type: 'ArrayLiteral',
+        elementExpressions: !head ? [] : tail.reduce((elementExpressions, [, , , elementExpression]) =>
+          [...elementExpressions, elementExpression], [head]),
+      }
     }
 
 AstLiteral "ast-literal"
@@ -208,8 +218,11 @@ Identifier "identifier"
 // Miscellaneous
 //
 
-__ "whitespace"
-  = (" " / Newline)*
+_ "space"
+  = " "*
+
+// __ "whitespace"
+//   = (" " / Newline)*
 
 Comment "comment"
   = "#" (!Newline .)*

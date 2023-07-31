@@ -1,5 +1,6 @@
 import { Context, KopiValue } from '../types';
 
+import KopiArray from './KopiArray';
 import KopiFunction from './KopiFunction';
 
 import type { KopiStream } from './KopiStream';
@@ -18,8 +19,13 @@ let TupleStream: {
   new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiTuple>;
 };
 
+let ArrayStream: {
+  new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiTuple>;
+};
+
 import('./KopiStream').then((result) => {
   TupleStream = result.default(fromIterable);
+  ArrayStream = result.default(KopiArray.fromIterable);
 });
 
 //
@@ -98,7 +104,7 @@ class KopiTuple extends KopiValue {
       }
     }).apply(this);
 
-    return new TupleStream(result);
+    return new ArrayStream(result);
   }
 }
 

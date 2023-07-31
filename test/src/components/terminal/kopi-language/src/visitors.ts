@@ -1,6 +1,6 @@
 import * as astNodes from './astnodes';
 import { ASTNode, Context, KopiValue } from './types';
-import { KopiAstLiteral, KopiFunction, KopiNumber, KopiString, KopiTuple } from './classes';
+import { KopiArray, KopiAstLiteral, KopiFunction, KopiNumber, KopiString, KopiTuple } from './classes';
 import KopiRange from './classes/KopiRange';
 
 interface Visitor {
@@ -134,6 +134,17 @@ async function StringLiteral(
   return new KopiString(value);
 }
 
+async function ArrayLiteral(
+  { elementExpressions }: astNodes.ArrayLiteral,
+  context: Context,
+): Promise<KopiValue> {
+  const { environment, evaluate, bind } = context;
+
+  return new KopiArray(
+    elementExpressions.map((expression) => evaluate(expression, environment, bind))
+  );
+}
+
 async function AstLiteral(
   { value }: astNodes.AstLiteral
 ): Promise<KopiValue> {
@@ -144,7 +155,7 @@ async function Identifier(
   astNode: astNodes.Identifier,
   context: Context,
 ): Promise<KopiValue> {
-  const { environment, evaluate } = context;
+  const { environment } = context;
 
   const value = environment[astNode.name];
 
@@ -168,6 +179,7 @@ export {
   //
   NumericLiteral,
   StringLiteral,
+  ArrayLiteral,
   AstLiteral,
   Identifier,
 };

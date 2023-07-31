@@ -25,7 +25,9 @@ import('./KopiStream').then((result) => {
 
     KopiArray.prototype.map = ArrayIterable.prototype.map;
     KopiArray.prototype.filter = ArrayIterable.prototype.filter;
+    KopiArray.prototype.reduce = ArrayIterable.prototype.reduce;
     KopiArray.prototype.take = ArrayIterable.prototype.take;
+    KopiArray.prototype.join = ArrayIterable.prototype.join;
   });
 });
 
