@@ -4,7 +4,6 @@ import KopiNumber from './KopiNumber';
 import KopiArray from './KopiArray';
 import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
-import makeStream, { KopiStream } from './KopiStream';
 
 async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   let values: string = '';
@@ -16,9 +15,15 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   return new KopiString(values);
 }
 
-class KopiString extends KopiValue {
-  static StringStream = makeStream(fromIterable);
+let StringStream: {
+  new(iterable: AsyncIterable<KopiValue>): KopiValue;
+};
 
+import('./KopiStream').then((result) => {
+  StringStream = result.default(fromIterable);
+});
+
+class KopiString extends KopiValue {
   static async from(iterable: AsyncIterable<KopiValue>) {
     return fromIterable(iterable);
   }
@@ -79,14 +84,14 @@ class KopiString extends KopiValue {
 
   //
 
-  map(func: KopiFunction, context: Context): KopiStream<KopiString> {
+  map(func: KopiFunction, context: Context) {
     const generator = async function* (this: KopiString) {
       for await (const value of this) {
         yield func.apply(KopiTuple.empty, [value, context]);
       }
     }.apply(this);
 
-    return new KopiString.StringStream(generator);
+    return new StringStream(generator);
   }
 
   split(delimeter: KopiString | KopiTuple) {

@@ -1,13 +1,6 @@
 import { Context, KopiValue } from '../types';
 
 import KopiFunction from './KopiFunction';
-// import makeStream from './KopiStream';
-
-interface KopiStream<TResult extends KopiValue> {
-  map(func: KopiFunction, context: Context): KopiStream<TResult>;
-  filter(func: KopiFunction, context: Context): KopiStream<TResult>;
-  // take(count: KopiNumber): KopiStream<TResult>;
-}
 
 async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   let fields: KopiValue[] = [];
@@ -19,18 +12,16 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   return new KopiTuple(fields);
 }
 
+let TupleStream: {
+  new(iterable: AsyncIterable<KopiValue>): KopiValue;
+};
+
+import('./KopiStream').then((result) => {
+  TupleStream = result.default(fromIterable);
+});
+
 class KopiTuple extends KopiValue {
   static readonly empty = new KopiTuple([]);
-
-  static TupleStream: {
-    new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiTuple>;
-  };
-
-  static {
-    import('./KopiStream').then((result) => {
-      KopiTuple.TupleStream = result.default(fromIterable);
-    });
-  }
 
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {
     let fields: KopiValue[] = [];
@@ -101,7 +92,7 @@ class KopiTuple extends KopiValue {
       }
     }).apply(this);
 
-    return new KopiTuple.TupleStream(result);
+    return new TupleStream(result);
   }
 }
 

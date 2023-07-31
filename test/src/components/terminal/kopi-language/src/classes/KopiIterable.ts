@@ -18,7 +18,7 @@ function makeIterable<TIterable extends AsyncIterable<TResult>, TResult extends 
     new(iterable: AsyncIterable<KopiValue>): KopiIterable<TResult>;
   }
 ) {
-  abstract class KopiIterable {
+  class KopiIterable {
     map(this: TIterable, func: KopiFunction, context: Context) {
       const generator = async function* (this: TIterable) {
         for await (const value of this) {

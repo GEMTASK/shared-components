@@ -2,7 +2,7 @@ import { Context, KopiValue, ReactElement } from '../types';
 import KopiFunction from './KopiFunction';
 
 import makeIterable, { KopiIterable } from './KopiIterable';
-import KopiNumber from './KopiNumber'; // KopiNumber imports KopiString imports KopiArray
+import KopiNumber from './KopiNumber';
 
 interface KopiStream<TResult extends KopiValue> {
   map(func: KopiFunction, context: Context): KopiStream<TResult>;

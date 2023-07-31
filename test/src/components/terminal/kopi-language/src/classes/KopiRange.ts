@@ -1,23 +1,36 @@
 import { KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
-import makeIterable, { KopiIterable } from './KopiIterable';
+import type { KopiStream } from './KopiStream';
+import { KopiIterable } from './KopiIterable';
 import KopiArray from './KopiArray';
-import makeStream from './KopiStream';
+
+let RangeStream: {
+  new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiArray>;
+};
+
+let RangeIterable: {
+  new(Stream: {
+    new(iterable: AsyncIterable<KopiValue>): KopiIterable<KopiArray>;
+  }): KopiIterable<KopiArray>;
+};
+
+import('./KopiStream').then((result) => {
+  RangeStream = result.default(KopiArray.fromIterable);
+
+  import('./KopiIterable').then((result) => {
+    RangeIterable = result.default(RangeStream);
+
+    KopiRange.prototype.map = RangeIterable.prototype.map;
+    KopiRange.prototype.filter = RangeIterable.prototype.filter;
+    KopiRange.prototype.take = RangeIterable.prototype.take;
+  });
+});
 
 interface KopiRange extends KopiValue, KopiIterable<KopiArray> { };
 
 class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
   // static emptyValue = () => new KopiArray([]);
-
-  static RangeStream = makeStream(KopiArray.fromIterable);
-  static RangeIterable = makeIterable(KopiRange.RangeStream);
-
-  static {
-    KopiRange.prototype.map = KopiRange.RangeIterable.prototype.map;
-    KopiRange.prototype.filter = KopiRange.RangeIterable.prototype.filter;
-    KopiRange.prototype.take = KopiRange.RangeIterable.prototype.take;
-  }
 
   from: KopiValue | Promise<KopiValue>;
   to: KopiValue | Promise<KopiValue>;

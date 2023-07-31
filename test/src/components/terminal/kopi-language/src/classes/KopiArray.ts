@@ -1,7 +1,6 @@
 import { KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
-import makeStream, { KopiStream } from './KopiStream';
 
 async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   let elements: KopiValue[] = [];
