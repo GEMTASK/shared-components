@@ -17,7 +17,7 @@ interface KopiIterable<TResult extends KopiValue> {
 
 function makeIterable<TIterable extends KopiValue & AsyncIterable<TResult>, TResult extends KopiValue>(
   Stream: {
-    new(iterable: AsyncIterable<KopiValue>): KopiIterable<TResult>;
+    new(iterable: AsyncIterable<KopiValue>): KopiStream<TResult>;
   }
 ) {
   class KopiIterable {
