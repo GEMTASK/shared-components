@@ -31,6 +31,28 @@ function makeIterable<TIterable extends KopiValue & AsyncIterable<TResult>, TRes
       return new Stream(generator);
     }
 
+    filter(this: TIterable, func: KopiFunction, context: Context) {
+      const generator = async function* (this: TIterable) {
+        for await (const value of this) {
+          if ((await func.apply(KopiTuple.empty, [value, context]) as KopiNumber).value) {
+            yield value;
+          }
+        }
+      }.apply(this);
+
+      return new Stream(generator);
+    }
+
+    async reduce(this: TIterable, func: KopiFunction, context: Context) {
+      let accum: KopiValue = KopiTuple.empty;
+
+      for await (const value of this) {
+        accum = await func.apply(KopiTuple.empty, [new KopiTuple([accum, value]), context]);
+      }
+
+      return accum;
+    }
+
     take(this: TIterable, count: KopiNumber) {
       let index = 0;
 
@@ -40,18 +62,6 @@ function makeIterable<TIterable extends KopiValue & AsyncIterable<TResult>, TRes
             yield value;
           } else {
             break;
-          }
-        }
-      }.apply(this);
-
-      return new Stream(generator);
-    }
-
-    filter(this: TIterable, func: KopiFunction, context: Context) {
-      const generator = async function* (this: TIterable) {
-        for await (const value of this) {
-          if ((await func.apply(KopiTuple.empty, [value, context]) as KopiNumber).value) {
-            yield value;
           }
         }
       }.apply(this);
