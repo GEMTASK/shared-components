@@ -1,9 +1,7 @@
 import { KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
-// import makeStream from './KopiStream';
-
-// console.log(KopiStream);
+import makeStream, { KopiStream } from './KopiStream';
 
 async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   let elements: KopiValue[] = [];
@@ -17,8 +15,6 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
 
 class KopiArray extends KopiValue {
   // static readonly emptyValue = () => new KopiArray([]);
-
-  // static StringStream = makeStream(fromIterable);
 
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {
     return fromIterable(iterable);
