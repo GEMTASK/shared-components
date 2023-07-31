@@ -11,6 +11,15 @@ import type { KopiStream } from './KopiStream';
 interface KopiIterable<TResult extends KopiValue> {
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
   filter(func: KopiFunction, context: Context): KopiStream<TResult>;
+  reduce(func: KopiFunction, context: Context): Promise<KopiValue>;
+  take(count: KopiNumber): KopiStream<TResult>;
+  join(joiner: KopiValue, context: Context): Promise<KopiValue>;
+}
+
+interface IKopiIterable<TResult extends KopiValue> {
+  map(func: KopiFunction, context: Context): KopiStream<TResult>;
+  filter(func: KopiFunction, context: Context): KopiStream<TResult>;
+  reduce(func: KopiFunction, context: Context): Promise<KopiValue>;
   take(count: KopiNumber): KopiStream<TResult>;
   join(joiner: KopiValue, context: Context): Promise<KopiValue>;
 }
@@ -20,7 +29,7 @@ function makeIterable<TIterable extends KopiValue & AsyncIterable<TResult>, TRes
     new(iterable: AsyncIterable<KopiValue>): KopiStream<TResult>;
   }
 ) {
-  class KopiIterable {
+  class KopiIterable implements IKopiIterable<TResult> {
     map(this: TIterable, func: KopiFunction, context: Context) {
       const generator = async function* (this: TIterable) {
         for await (const value of this) {

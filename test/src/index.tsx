@@ -37,7 +37,9 @@ const router = createBrowserRouter([
       </Suspense>
     ),
   },
-]);
+], {
+  // basename: '/react-desktop2'
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

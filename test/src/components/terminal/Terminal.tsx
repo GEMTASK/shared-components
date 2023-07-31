@@ -146,6 +146,8 @@ const historyItems = [
   `", " | combine "abc"`,
   `"abc" | join ", "`,
   `1..3 | map 'toFixed | join ", "`,
+  `1..5 | reduce (a = 1, n) => a * n`,
+  `"abc" | reduce (a, c) => a ", " c`,
   // `"abc" | reduce 0 (acc, n) => acc + n | size`,
 ];
 

@@ -133,16 +133,18 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
     return new StringStream(generator);
   }
 
-  reduce(value: KopiValue) {
-    return async (func: KopiFunction, context: Context) => {
-      let accum: KopiValue | Promise<KopiValue> = value;
+  async reduce(func: KopiFunction, context: Context) {
+    let accum: KopiValue = KopiTuple.empty;
 
-      for await (const value of this) {
-        accum = func.apply(KopiTuple.empty, [new KopiTuple([accum, value]), context]);
+    for await (const value of this) {
+      if (accum === KopiTuple.empty) {
+        accum = value;
+      } else {
+        accum = await func.apply(KopiTuple.empty, [new KopiTuple([accum, value]), context]);
       }
+    }
 
-      return accum;
-    };
+    return accum;
   }
 
   join(joiner: KopiValue, context: Context) {
