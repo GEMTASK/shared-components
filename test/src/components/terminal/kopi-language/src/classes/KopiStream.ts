@@ -47,7 +47,7 @@ const makeStream = <TResult extends KopiValue>(
     override async inspect(): Promise<string | ReactElement> {
       const stream = (this.take(new KopiNumber(100)) as any).iterable;
 
-      return (await _fromIterable(stream)).inspect();
+      return (await _fromIterable(stream)).inspect(); // TODO: use _fromIterable or fromIterable?
     }
 
     [Symbol.asyncIterator]() {

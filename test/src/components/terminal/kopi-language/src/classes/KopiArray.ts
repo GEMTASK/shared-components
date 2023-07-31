@@ -42,7 +42,7 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
 //
 //
 
-class KopiArray extends KopiValue {
+class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
   // static readonly emptyValue = () => new KopiArray([]);
 
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {
