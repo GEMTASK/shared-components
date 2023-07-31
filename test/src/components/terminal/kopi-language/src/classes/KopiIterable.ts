@@ -12,9 +12,10 @@ interface KopiIterable<TResult extends KopiValue> {
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
   filter(func: KopiFunction, context: Context): KopiStream<TResult>;
   take(count: KopiNumber): KopiStream<TResult>;
+  join(joiner: KopiValue, context: Context): Promise<KopiValue>;
 }
 
-function makeIterable<TIterable extends AsyncIterable<TResult>, TResult extends KopiValue>(
+function makeIterable<TIterable extends KopiValue & AsyncIterable<TResult>, TResult extends KopiValue>(
   Stream: {
     new(iterable: AsyncIterable<KopiValue>): KopiIterable<TResult>;
   }
@@ -56,6 +57,10 @@ function makeIterable<TIterable extends AsyncIterable<TResult>, TResult extends 
       }.apply(this);
 
       return new Stream(generator);
+    }
+
+    join(this: TIterable, joiner: KopiValue, context: Context) {
+      return joiner.invoke('combine', [this, context]);
     }
   }
 

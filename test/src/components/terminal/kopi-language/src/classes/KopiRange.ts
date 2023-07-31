@@ -27,6 +27,7 @@ import('./KopiStream').then((result) => {
     KopiRange.prototype.map = RangeIterable.prototype.map;
     KopiRange.prototype.filter = RangeIterable.prototype.filter;
     KopiRange.prototype.take = RangeIterable.prototype.take;
+    KopiRange.prototype.join = RangeIterable.prototype.join;
   });
 });
 
@@ -72,10 +73,6 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
     }
 
     throw new Error(`Only range over numbers is supported currently.`);
-  }
-
-  join(joiner: KopiValue, context: Context) {
-    return joiner.invoke('combine', [this, context]);
   }
 }
 

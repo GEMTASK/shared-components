@@ -11,6 +11,7 @@ interface KopiStream<TResult extends KopiValue> {
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
   filter(func: KopiFunction, context: Context): KopiStream<TResult>;
   take(count: KopiNumber): KopiStream<TResult>;
+  join(joiner: KopiValue, context: Context): Promise<KopiValue>;
 }
 
 const makeStream = <TResult extends KopiValue>(
@@ -30,6 +31,7 @@ const makeStream = <TResult extends KopiValue>(
     KopiStream.prototype.map = RangeIterable.prototype.map;
     KopiStream.prototype.filter = RangeIterable.prototype.filter;
     KopiStream.prototype.take = RangeIterable.prototype.take;
+    KopiStream.prototype.join = RangeIterable.prototype.join;
   });
 
   class KopiStream extends KopiValue implements AsyncIterable<KopiValue> {
@@ -54,10 +56,6 @@ const makeStream = <TResult extends KopiValue>(
 
     [Symbol.asyncIterator]() {
       return this.iterable[Symbol.asyncIterator]();
-    }
-
-    join(joiner: KopiValue, context: Context) {
-      return joiner.invoke('combine', [this, context]);
     }
   }
 
