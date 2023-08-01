@@ -53,6 +53,35 @@ const About = () => {
   );
 };
 
+const DigitalClock = () => {
+  const [date, setDate] = useState(new Date());
+  const timerRef = useRef<number>();
+
+  const updateDate = useCallback(() => {
+    const now = new Date();
+
+    setDate(now);
+
+    timerRef.current = window.setTimeout(() => {
+      updateDate();
+    }, 1000 - now.getMilliseconds());
+  }, []);
+
+  useEffect(() => {
+    updateDate();
+
+    return () => {
+      clearTimeout(timerRef.current);
+    };
+  }, [updateDate]);
+
+  return (
+    <Text fontWeight="semibold" align="center">
+      {date.toLocaleTimeString()}
+    </Text>
+  );
+};
+
 const initialState = [
   {
     id: uuidv4(), title: 'Calendar', element: <Calendar minWidth={360} />, rect: {
@@ -182,6 +211,8 @@ const App = () => {
         <Menu hover title="React-Desktop" titleFontWeight="bold" rightIcon={undefined} items={desktopMenuItems} />
         <Menu hover title="Utilities" rightIcon={undefined} items={utilitiesMenuItems} />
         <Menu hover title="Applications" rightIcon={undefined} items={applicationMenuItems} />
+        <Spacer flex size="large" />
+        <DigitalClock />
       </Stack>
       <View flex horizontal style={{ zIndex: 0 }}>
         <Desktop
