@@ -12,12 +12,12 @@ class KopiAstLiteral extends KopiValue {
     this.value = value;
   }
 
-  async apply(
-    thisArg: KopiValue,
-    [argument, context]: [KopiValue, Context]
-  ): Promise<KopiValue> {
-    return argument.invoke((this.value as Identifier).name, [KopiTuple.empty, context]);
-  }
+  // async apply(
+  //   thisArg: KopiValue,
+  //   [argument, context]: [KopiValue, Context]
+  // ): Promise<KopiValue> {
+  //   return argument.invoke((this.value as Identifier).name, [KopiTuple.empty, context]);
+  // }
 }
 
 export default KopiAstLiteral;

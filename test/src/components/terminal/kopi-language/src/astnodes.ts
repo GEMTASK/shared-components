@@ -238,6 +238,13 @@ class Identifier extends ASTNode {
 
     this.name = name;
   }
+
+  async apply(
+    thisArg: KopiValue,
+    [argument, context]: [KopiValue, Context]
+  ): Promise<KopiValue> {
+    return argument.invoke(this.name, [KopiTuple.empty, context]);
+  }
 }
 
 export {

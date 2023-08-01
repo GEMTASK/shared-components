@@ -134,7 +134,7 @@ function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
   } else if (astNode instanceof astNodes.ArrayLiteral) {
     return visitors.ArrayLiteral(astNode, context);
   } else if (astNode instanceof astNodes.AstLiteral) {
-    return visitors.AstLiteral(astNode);
+    return astNode.value;
   } else if (astNode instanceof astNodes.Identifier) {
     return visitors.Identifier(astNode, context);
   } else {

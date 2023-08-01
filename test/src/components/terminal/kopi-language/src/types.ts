@@ -41,10 +41,12 @@ interface RawASTNode {
   [key: string]: any;
 }
 
-class ASTNode {
+class ASTNode extends KopiValue {
   location: {} = {};
 
   constructor(location: {}) {
+    super();
+
     this.location = {};
   }
 }
