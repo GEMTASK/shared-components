@@ -9,6 +9,7 @@ import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from './ko
 import { Context, Environment, KopiValue } from './kopi-language/src/types';
 import makeStream from './kopi-language/src/classes/KopiStream';
 import KopiRange from './kopi-language/src/classes/KopiRange';
+import Calendar from '../calendar/Calendar';
 
 class KopiDate extends KopiValue implements KopiValue {
   override async inspect() {
@@ -57,6 +58,12 @@ class KopiFetch extends KopiValue {
 class KopiClock extends KopiValue {
   async inspect() {
     return <Clock style={{ width: 150 }} />;
+  }
+}
+
+class KopiCalendar extends KopiValue {
+  async inspect() {
+    return <Calendar style={{ width: 360 }} />;
   }
 }
 
@@ -122,6 +129,7 @@ let environment = new Environment({
   date: new KopiDate(),
   sleep: new KopiSleep(),
   clock: new KopiClock(),
+  calendar: new KopiCalendar(),
   icon: new KopiIcon(),
   fetch: new KopiFetch(),
   random: new KopiRandom(),
@@ -167,6 +175,7 @@ const HistoryItem = ({
 const historyItems = [
   `date`,
   `clock`,
+  `calendar`,
   `1 + 2 * 3`,
   `(1 + 2) * 3`,
   `random 4.5..5.5`,
@@ -207,7 +216,6 @@ const historyItems = [
   `([1, 2], 3..4) | map (a, b) => a * b`,
   `1..3 | repeat | take 7`,
   `0..0.5 (by: 0.1) | map '(toFixed 1)`,
-  // `"abc" | reduce 0 (acc, n) => acc + n | size`,
 ];
 
 const interpret = async (
@@ -258,7 +266,7 @@ const interpret = async (
 const initialHistory = [
   <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
     Kopi shell – a simple, immutable, async programming langauge.<br />
-    Type a command such as "date", "clock", or "icon".
+    Type a command such as "date", "clock", or "calendar".
   </Text>,
   <Clock style={{ width: 150 }} />
 ];
