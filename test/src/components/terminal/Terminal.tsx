@@ -8,6 +8,7 @@ import * as kopi from './kopi-language';
 import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
 import { Context, Environment, KopiValue } from './kopi-language/src/types';
 import makeStream from './kopi-language/src/classes/KopiStream';
+import KopiRange from './kopi-language/src/classes/KopiRange';
 
 class KopiDate extends KopiValue implements KopiValue {
   override async inspect() {
@@ -65,6 +66,15 @@ class KopiIcon extends KopiValue {
   }
 }
 
+class KopiRandom extends KopiValue {
+  async apply(thisArg: this, [range, context]: [KopiRange, Context]) {
+    const from = (await range.from as KopiNumber).value;
+    const to = (await range.to as KopiNumber).value;
+
+    return new KopiNumber(Math.random() * (to - from) + from);
+  }
+}
+
 class KopiRepeat extends KopiValue {
   static RepeatStream = makeStream(KopiArray.fromIterable);
 
@@ -94,6 +104,7 @@ let environment = new Environment({
   clock: new KopiClock(),
   icon: new KopiIcon(),
   fetch: new KopiFetch(),
+  random: new KopiRandom(),
   repeat: new KopiRepeat(),
 });
 
