@@ -33,6 +33,20 @@ class KopiLet extends KopiValue {
   }
 }
 
+class KopiApply extends KopiValue {
+  async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
+    return (arg: KopiValue) => {
+      return func.apply(KopiTuple.empty, [arg, context]);
+    };
+  }
+}
+
+class KopiIdent extends KopiValue {
+  async apply(thisArg: this, [value, context]: [KopiFunction, Context]) {
+    return value;
+  }
+}
+
 class KopiFetch extends KopiValue {
   async apply(thisArg: this, [url, context]: [KopiString, Context]) {
     return new KopiString((await (await fetch(url.value)).text()));
@@ -73,6 +87,8 @@ let environment = new Environment({
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
   let: new KopiLet(),
+  apply: new KopiApply(),
+  ident: new KopiIdent(),
   date: new KopiDate(),
   sleep: new KopiSleep(),
   clock: new KopiClock(),
@@ -153,6 +169,7 @@ const historyItems = [
   `[1, 2] | reduce (a, n) => a + n`,
   `[1, 2, 3] | take 2 | take 1`,
   `([1, 2], 3..4) | map (a, b) => a * b`,
+  `1..3 | repeat | take 7`,
   // `"abc" | reduce 0 (acc, n) => acc + n | size`,
 ];
 

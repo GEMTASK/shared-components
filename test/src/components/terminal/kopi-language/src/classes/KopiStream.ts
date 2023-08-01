@@ -4,8 +4,6 @@ import KopiFunction from './KopiFunction';
 import KopiNumber from './KopiNumber';
 
 import type { KopiIterable } from './KopiIterable';
-import KopiTuple from './KopiTuple';
-import KopiString from './KopiString';
 
 interface KopiStream<TResult extends KopiValue> {
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
