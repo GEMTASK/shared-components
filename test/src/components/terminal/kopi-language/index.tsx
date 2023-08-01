@@ -47,6 +47,12 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         to: transform(rawASTNode.to),
         location: rawASTNode.location,
       } as astNodes.RangeExpression);
+    case 'MemberExpression':
+      return new astNodes.MemberExpression({
+        expression: transform(rawASTNode.expression),
+        member: rawASTNode.member,
+        location: rawASTNode.location,
+      } as astNodes.MemberExpression);
     case 'FunctionExpression':
       return new astNodes.FunctionExpression({
         parameterPattern: transform(rawASTNode.parameterPattern),
@@ -123,6 +129,8 @@ function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
     return visitors.ApplyExpression(astNode, context);
   } else if (astNode instanceof astNodes.RangeExpression) {
     return visitors.RangeExpression(astNode, context);
+  } else if (astNode instanceof astNodes.MemberExpression) {
+    return visitors.MemberExpression(astNode, context);
   } else if (astNode instanceof astNodes.FunctionExpression) {
     return visitors.FunctionExpression(astNode, context);
   } else if (astNode instanceof astNodes.TupleExpression) {

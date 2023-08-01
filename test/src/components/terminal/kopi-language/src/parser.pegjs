@@ -81,7 +81,16 @@ RangeExpression
         to,
       };
     }
-  / PrimaryExpression
+  / MemberExpression
+
+MemberExpression
+  = head:PrimaryExpression tail:("." (Identifier / NumericLiteral))* {
+      return tail.reduce((expression, [, member]) => ({
+        type: 'MemberExpression',
+        expression,
+        member: member.name ?? member.value,
+      }), head);
+    }
 
 PrimaryExpression
   = "(" _ ")" _ !"=>" {
@@ -91,7 +100,7 @@ PrimaryExpression
         fieldNames: [],
       }
     }
-  / "(" _ head:Expression tail:(_ "," _ Expression)* _ ")" _ !"=>" {
+  / "(" _ (Identifier ":" _)? head:Expression tail:(_ "," _ Expression)* _ ")" _ !"=>" {
       return tail.length === 0 ? head : {
         type: 'TupleExpression',
         fieldExpressions: tail.reduce((expressions, [, , , expression]) => [

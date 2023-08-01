@@ -45,6 +45,8 @@ class KopiTuple extends KopiValue {
     return new KopiTuple(fields);
   }
 
+  [key: number]: KopiValue | Promise<KopiValue>;
+
   _fields: (KopiValue | Promise<KopiValue>)[];
 
   override get fields() {
@@ -61,6 +63,10 @@ class KopiTuple extends KopiValue {
     }
 
     this._fields = fields;
+
+    fields.forEach((field, index) => {
+      this[index] = field;
+    });
 
     Promise.all(fields).then(resolvedFields => {
       this._fields = resolvedFields;

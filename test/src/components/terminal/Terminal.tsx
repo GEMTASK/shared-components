@@ -91,6 +91,26 @@ class KopiRepeat extends KopiValue {
   }
 }
 
+class KopiMeter extends KopiValue {
+  async apply(thisArg: this, [value]: [KopiNumber]) {
+    return new MetricUnit(value);
+  }
+}
+
+class MetricUnit extends KopiValue {
+  value: KopiNumber;
+
+  constructor(value: KopiNumber) {
+    super();
+
+    this.value = new KopiNumber(value.value * 1000);
+  }
+
+  // toImperial() {
+  //   return new ImperialUnit(new KopiNumber(this.value.value * 3.28084));
+  // }
+}
+
 //
 
 let environment = new Environment({
@@ -106,6 +126,7 @@ let environment = new Environment({
   fetch: new KopiFetch(),
   random: new KopiRandom(),
   repeat: new KopiRepeat(),
+  km: new KopiMeter(),
 });
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {
@@ -150,6 +171,7 @@ const historyItems = [
   `(1 + 2) * 3`,
   `random 4.5..5.5`,
   `sleep 5 + sleep 5`,
+  `("a", "b", "c").1`,
   `((a, b) => a + b) (1, 2)`,
   `((a, b = 2) => a + b) 1`,
   `((a = 1, b = 2) => a + b) ()`,
@@ -167,6 +189,7 @@ const historyItems = [
   `"abc" | split | map 'succ`,
   `"a,b,c" | split ","`,
   `("ab", "xy") | map (a, x) => a x`,
+  `[(1..5).from, (1..5).to]`,
   `1..5 | take 3 | map (n) => n * n`,
   `1..(fetch "robots.txt" | size)`,
   `1..5 | take 3 | map '(toFixed 2)`,
@@ -183,8 +206,7 @@ const historyItems = [
   `[1, 2, 3] | take 2 | take 1`,
   `([1, 2], 3..4) | map (a, b) => a * b`,
   `1..3 | repeat | take 7`,
-  `0..0.5 0.1 | map '(* 2) | map '(toFixed 2)`,
-  `0..0.5 0.1 | map (n) => (n * 2 | toFixed 2)`,
+  `0..0.5 (by: 0.1) | map '(toFixed 2)`,
   // `"abc" | reduce 0 (acc, n) => acc + n | size`,
 ];
 

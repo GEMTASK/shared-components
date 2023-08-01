@@ -84,6 +84,18 @@ class RangeExpression extends ASTNode {
   }
 }
 
+class MemberExpression extends ASTNode {
+  readonly expression: ASTNode;
+  readonly member: string;
+
+  constructor({ expression, member, location }: MemberExpression) {
+    super(location);
+
+    this.expression = expression;
+    this.member = member;
+  }
+}
+
 class FunctionExpression extends ASTNode {
   readonly parameterPattern: ASTPatternNode;
   readonly bodyExpression: ASTNode;
@@ -265,6 +277,7 @@ export {
   OperatorExpression,
   ApplyExpression,
   RangeExpression,
+  MemberExpression,
   FunctionExpression,
   TupleExpression,
   //

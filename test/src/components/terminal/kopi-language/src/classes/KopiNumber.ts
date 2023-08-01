@@ -1,4 +1,5 @@
-import { KopiValue } from '../types';
+import { Context, KopiValue } from '../types';
+import KopiFunction from './KopiFunction';
 
 import KopiString from './KopiString';
 import KopiTuple from './KopiTuple';
@@ -21,6 +22,10 @@ class KopiNumber extends KopiValue {
 
   override async inspect() {
     return `${this.value}`;
+  }
+
+  apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
+    return func.apply(KopiTuple.empty, [this, context]);
   }
 
   succ(count: KopiNumber | KopiTuple) {
