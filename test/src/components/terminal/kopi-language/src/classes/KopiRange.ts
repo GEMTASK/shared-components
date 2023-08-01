@@ -67,7 +67,7 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
 
   async *[Symbol.asyncIterator]() {
     if (this.from instanceof KopiNumber && this.to instanceof KopiNumber) {
-      for (let current = this.from.value; current <= this.to.value; ++current) {
+      for (let current = this.from.value; current <= this.to.value; current += this.stride.value) {
         yield new KopiNumber(current);
       }
 
@@ -75,6 +75,10 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
     }
 
     throw new Error(`Only range over numbers is supported currently.`);
+  }
+
+  apply(thisArg: this, [stride]: [stride: KopiNumber]) {
+    return new KopiRange(this.from, this.to, stride);
   }
 }
 

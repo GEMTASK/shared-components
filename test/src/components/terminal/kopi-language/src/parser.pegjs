@@ -199,7 +199,20 @@ ArrayLiteral
     }
 
 AstLiteral "ast-literal"
-  = "'" expression:PrimaryExpression {
+  = "'(" _ operator:('+' / '-' / '*' / '/' / '%') _ argumentExpression:ApplyExpression ")" {
+      return {
+        type: 'AstLiteral',
+        value: {
+          type: 'ApplyExpression',
+          expression: {
+            type: 'Identifier',
+            name: operator
+          },
+          argumentExpression
+        }
+      };
+    }
+  / "'" expression:PrimaryExpression {
       return {
         type: 'AstLiteral',
         value: expression,
