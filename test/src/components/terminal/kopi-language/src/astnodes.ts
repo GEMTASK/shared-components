@@ -59,6 +59,17 @@ class ApplyExpression extends ASTNode {
     this.expression = expression;
     this.argumentExpression = argumentExpression;
   }
+
+  async apply(
+    thisArg: KopiValue,
+    [argument, context]: [KopiValue, Context]
+  ): Promise<KopiValue> {
+    const { environment, evaluate, bind } = context;
+
+    const arg = await evaluate(this.argumentExpression, environment, bind);
+
+    return argument.invoke((this.expression as Identifier).name, [arg, context]);
+  }
 };
 
 class RangeExpression extends ASTNode {

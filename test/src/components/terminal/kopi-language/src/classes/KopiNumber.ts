@@ -35,7 +35,7 @@ class KopiNumber extends KopiValue {
 
   toFixed(digits: KopiNumber | KopiTuple) {
     if (digits === KopiTuple.empty) {
-      return new KopiString(this.value.toFixed(2));
+      return new KopiString(this.value.toFixed());
     }
 
     if (digits instanceof KopiNumber) {
