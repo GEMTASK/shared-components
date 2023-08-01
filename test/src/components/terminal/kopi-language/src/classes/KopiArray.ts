@@ -82,6 +82,10 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
   size() {
     return new KopiNumber(this.elements.length);
   }
+
+  empty() {
+    return new KopiNumber(this.elements.length === 0 ? 1 : 0);
+  }
 }
 
 export default KopiArray;

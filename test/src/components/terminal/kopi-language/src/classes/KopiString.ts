@@ -93,6 +93,10 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
     throw new Error('KopiString.succ()');
   }
 
+  empty() {
+    return new KopiNumber(this.value.length === 0 ? 1 : 0);
+  }
+
   //
 
   map(func: KopiFunction, context: Context) {
