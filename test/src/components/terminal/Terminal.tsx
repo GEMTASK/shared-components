@@ -148,6 +148,7 @@ const historyItems = [
   `clock`,
   `1 + 2 * 3`,
   `(1 + 2) * 3`,
+  `random 4.5..5.5`,
   `sleep 5 + sleep 5`,
   `((a, b) => a + b) (1, 2)`,
   `((a, b = 2) => a + b) 1`,
