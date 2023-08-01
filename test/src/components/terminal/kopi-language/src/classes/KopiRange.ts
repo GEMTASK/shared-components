@@ -28,10 +28,8 @@ import('./KopiStream').then((result) => {
     KopiRange.prototype.filter = RangeIterable.prototype.filter;
     KopiRange.prototype.reduce = RangeIterable.prototype.reduce;
     KopiRange.prototype.take = RangeIterable.prototype.take;
-    // KopiRange.prototype.repeat = RangeIterable.prototype.repeat;
+    KopiRange.prototype.repeat = RangeIterable.prototype.repeat;
     KopiRange.prototype.join = RangeIterable.prototype.join;
-
-    console.log('...', KopiRange.prototype.reduce);
   });
 });
 
@@ -77,24 +75,6 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
     }
 
     throw new Error(`Only range over numbers is supported currently.`);
-  }
-
-  async repeat() {
-    const values: KopiValue[] = [];
-
-    const generator = async function* (this: KopiRange) {
-      for await (const value of this) {
-        values.push(value);
-
-        yield value;
-      }
-
-      for (let index = 0; ; ++index) {
-        yield values[index % values.length];
-      }
-    }.apply(this);
-
-    return new RangeStream(generator);
   }
 }
 

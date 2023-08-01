@@ -8,7 +8,9 @@ import type { KopiIterable } from './KopiIterable';
 interface KopiStream<TResult extends KopiValue> {
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
   filter(func: KopiFunction, context: Context): KopiStream<TResult>;
+  reduce(func: KopiFunction, context: Context): Promise<KopiValue>;
   take(count: KopiNumber): KopiStream<TResult>;
+  repeat(): KopiStream<TResult>;
   join(joiner: KopiValue, context: Context): Promise<KopiValue>;
 }
 
@@ -28,6 +30,7 @@ const makeStream = <TResult extends KopiValue>(
 
     KopiStream.prototype.map = RangeIterable.prototype.map;
     KopiStream.prototype.filter = RangeIterable.prototype.filter;
+    KopiStream.prototype.reduce = RangeIterable.prototype.reduce;
     KopiStream.prototype.take = RangeIterable.prototype.take;
     KopiStream.prototype.join = RangeIterable.prototype.join;
   });
