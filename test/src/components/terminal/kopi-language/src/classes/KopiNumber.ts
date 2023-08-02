@@ -29,9 +29,13 @@ class KopiNumber extends KopiValue {
     return func.apply(KopiTuple.empty, [this, context]);
   }
 
+  //
+
   '=='(that: KopiNumber) {
     return new KopiBoolean(this.value === that.value);
   }
+
+  //
 
   succ(count: KopiNumber | KopiTuple) {
     if (count === KopiTuple.empty) {
@@ -52,6 +56,8 @@ class KopiNumber extends KopiValue {
       return new KopiString(this.value.toFixed(digits.value));
     }
   }
+
+  //
 
   abs() {
     return new KopiNumber(Math.abs(this.value));
