@@ -14,7 +14,7 @@ Statement
 Assignment
   = pattern:PrimaryPattern _ "=" _ expression:Expression {
       return {
-        type: 'AssignmentStatement',
+        type: 'Assignment',
         pattern,
         expression,
       }

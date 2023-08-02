@@ -12,8 +12,8 @@ interface Visitor {
 // Statements
 //
 
-async function AssignmentStatement(
-  { pattern, expression }: astNodes.AssignmentStatement,
+async function Assignment(
+  { pattern, expression }: astNodes.Assignment,
   context: Context,
 ) {
   const { environment, evaluate, bind } = context;
@@ -184,7 +184,7 @@ async function Identifier(
 
 export {
   type Visitor,
-  AssignmentStatement,
+  Assignment,
   //
   PipeExpression,
   OperatorExpression,

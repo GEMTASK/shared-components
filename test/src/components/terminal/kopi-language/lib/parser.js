@@ -241,7 +241,7 @@ function peg$parse(input, options) {
   };
   var peg$f1 = function(pattern, expression) {
       return {
-        type: 'AssignmentStatement',
+        type: 'Assignment',
         pattern,
         expression,
       }

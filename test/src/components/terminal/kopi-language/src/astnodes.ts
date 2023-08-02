@@ -5,11 +5,11 @@ import { ASTNode, ASTPatternNode, Context, KopiValue } from './types';
 // Statements
 //
 
-class AssignmentStatement extends ASTNode {
+class Assignment extends ASTNode {
   readonly pattern: ASTPatternNode;
   readonly expression: ASTNode;
 
-  constructor({ pattern, expression, location }: AssignmentStatement) {
+  constructor({ pattern, expression, location }: Assignment) {
     super(location);
 
     this.pattern = pattern;
@@ -271,7 +271,7 @@ class Identifier extends ASTNode {
 }
 
 export {
-  AssignmentStatement,
+  Assignment,
   //
   PipeExpression,
   OperatorExpression,

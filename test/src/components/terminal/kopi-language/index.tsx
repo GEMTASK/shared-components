@@ -9,11 +9,11 @@ import { inspect } from './src/utils';
 
 function transform(rawASTNode: RawASTNode): ASTNode {
   switch (rawASTNode.type) {
-    case 'AssignmentStatement':
-      return new astNodes.AssignmentStatement({
+    case 'Assignment':
+      return new astNodes.Assignment({
         pattern: transform(rawASTNode.pattern),
         expression: transform(rawASTNode.expression),
-      } as astNodes.AssignmentStatement);
+      } as astNodes.Assignment);
     //
     case 'PipeExpression':
       return new astNodes.PipeExpression({
@@ -119,8 +119,8 @@ function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
 
   const context = { environment, evaluate, bind };
 
-  if (astNode instanceof astNodes.AssignmentStatement) {
-    return visitors.AssignmentStatement(astNode, context);
+  if (astNode instanceof astNodes.Assignment) {
+    return visitors.Assignment(astNode, context);
   } else if (astNode instanceof astNodes.PipeExpression) {
     return visitors.PipeExpression(astNode, context);
   } else if (astNode instanceof astNodes.OperatorExpression) {
