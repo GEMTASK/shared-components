@@ -6,6 +6,11 @@ import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
 
 import type { KopiStream } from './KopiStream';
+import type { KopiIterable } from './KopiIterable';
+
+interface KopiString extends KopiValue {
+  map(func: KopiFunction, context: Context): KopiStream<KopiString>;
+};
 
 async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   let values: string = '';
@@ -25,9 +30,21 @@ let ArrayStream: {
   new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiString>;
 };
 
+let StringIterable: {
+  new(Stream: {
+    new(iterable: AsyncIterable<KopiValue>): KopiIterable<KopiArray>;
+  }): KopiIterable<KopiArray>;
+};
+
 import('./KopiStream').then((result) => {
   StringStream = result.default(fromIterable);
   ArrayStream = result.default(KopiArray.fromIterable);
+
+  import('./KopiIterable').then((result) => {
+    StringIterable = result.default(ArrayStream);
+
+    KopiString.prototype.map = StringIterable.prototype.map;
+  });
 });
 
 //
@@ -35,7 +52,7 @@ import('./KopiStream').then((result) => {
 //
 
 class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
-  static async from(iterable: AsyncIterable<KopiValue>) {
+  static async fromIterable(iterable: AsyncIterable<KopiValue>) {
     return fromIterable(iterable);
   }
 
@@ -98,16 +115,6 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
   }
 
   //
-
-  map(func: KopiFunction, context: Context) {
-    const generator = async function* (this: KopiString) {
-      for await (const value of this) {
-        yield func.apply(KopiTuple.empty, [value, context]);
-      }
-    }.apply(this);
-
-    return new ArrayStream(generator);
-  }
 
   split(delimeter: KopiString | KopiTuple) {
     if (delimeter instanceof KopiTuple) {

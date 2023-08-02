@@ -30,6 +30,7 @@ import('./KopiStream').then((result) => {
     KopiRange.prototype.take = RangeIterable.prototype.take;
     KopiRange.prototype.repeat = RangeIterable.prototype.repeat;
     KopiRange.prototype.join = RangeIterable.prototype.join;
+    KopiRange.prototype.toArray = RangeIterable.prototype.toArray;
   });
 });
 
@@ -66,8 +67,10 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
   }
 
   async *[Symbol.asyncIterator]() {
-    if (this.from instanceof KopiNumber && this.to instanceof KopiNumber) {
-      for (let current = this.from.value; current <= this.to.value; current += this.stride.value) {
+    const [from, to] = await Promise.all([this.from, this.to]);
+
+    if (from instanceof KopiNumber && to instanceof KopiNumber) {
+      for (let current = from.value; current <= to.value; current += this.stride.value) {
         yield new KopiNumber(current);
       }
 

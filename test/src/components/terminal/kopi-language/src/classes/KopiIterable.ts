@@ -3,12 +3,14 @@ import { Context, KopiValue } from '../types';
 import KopiNumber from './KopiNumber';
 import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
+import KopiArray from './KopiArray';
 
 import type { KopiStream } from './KopiStream';
 
 // TODO: Avoid recursive imports KopiStream > KopiIterable > KopiStream
 
 interface IKopiIterable<TResult extends KopiValue> {
+  toArray(): Promise<KopiArray>;
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
   filter(func: KopiFunction, context: Context): KopiStream<TResult>;
   reduce(func: KopiFunction, context: Context): Promise<KopiValue>;
@@ -23,6 +25,10 @@ function makeIterable<TIterable extends KopiValue & AsyncIterable<TResult>, TRes
   }
 ) {
   class KopiIterable implements IKopiIterable<TResult> {
+    async toArray(this: TIterable) {
+      return KopiArray.fromIterable(this);
+    }
+
     map(this: TIterable, func: KopiFunction, context: Context) {
       const generator = async function* (this: TIterable) {
         for await (const value of this) {
