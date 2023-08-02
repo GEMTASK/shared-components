@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
@@ -218,6 +218,38 @@ const historyItems = [
   `0..0.5 (by: 0.1) | map '(toFixed 1)`,
 ];
 
+const Value = ({ promise }: any) => {
+  const [value, setValue] = useState<React.ReactElement | null>(
+    <View minHeight={20} align="center">
+      <Icon icon="spinner" spin />
+    </View>
+  );
+
+  useEffect(() => {
+    (async () => {
+      const value = await promise;
+
+      if (value) {
+        const element = await value.inspect();
+
+        setValue(typeof element === 'string' ? (
+          <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+            {element}
+          </Text>
+        ) : (
+          element
+        ));
+      } else {
+        setValue(null);
+      }
+    })();
+  }, [promise]);
+
+  return (
+    value
+  );
+};
+
 const interpret = async (
   source: string,
   setInputValue: React.Dispatch<React.SetStateAction<string>>,
@@ -232,32 +264,28 @@ const interpret = async (
 
   setInputValue('');
 
-  let element: string | React.ReactElement | null = null;
+  let element: React.ReactElement | null = null;
 
   try {
-    const value = await kopi.interpret(source, environment, bind);
-
-    if (value) {
-      element = await value.inspect();
-    }
+    element = (
+      <Value promise={kopi.interpret(source, environment, bind)} />
+    );
   } catch (error) {
     // console.warn((error as any).location);
     console.warn(error);
 
-    element = (error as Error).toString();
+    element = (
+      <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+        {(error as Error).toString()}
+      </Text>
+    );
   }
 
   if (element !== null) {
     setHistory(history => [
       ...history,
       <View horizontal>
-        {typeof element === 'string' ? (
-          <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
-            {element}
-          </Text>
-        ) : (
-          element
-        )}
+        {element}
       </View>
     ]);
   }
