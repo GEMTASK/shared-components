@@ -1,6 +1,7 @@
 import { Context, KopiValue } from '../types';
 
 import KopiArray from './KopiArray';
+import KopiBoolean from './KopiBoolean';
 import KopiFunction from './KopiFunction';
 
 import type { KopiStream } from './KopiStream';
@@ -80,6 +81,29 @@ class KopiTuple extends KopiValue {
 
     return `(${fields.join(', ')})`;
   }
+
+  //
+
+  async '=='(that: KopiTuple, context: Context) {
+    if (!(that instanceof KopiTuple) || that._fields.length !== this._fields.length) {
+      return new KopiBoolean(false);
+    }
+
+    for (let index = 0; index < this._fields.length; ++index) {
+      const thisValue = await this._fields[index];
+      const thatValue = await that._fields[index];
+
+      const result = await thisValue.invoke('==', [thatValue, context]);
+
+      if (!(result as KopiBoolean).value) {
+        return new KopiBoolean(false);
+      }
+    }
+
+    return new KopiBoolean(true);
+  }
+
+  //
 
   map(func: KopiFunction, context: Context) {
     const result = (async function* map(this: KopiTuple) {

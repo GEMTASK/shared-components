@@ -24,7 +24,7 @@ Expression
   = PipeExpression
 
 PipeExpression
-  = head:AddExpression tail:(_ "|" _ Identifier _ RangeExpression? (_ RangeExpression)*)* {
+  = head:EqualityExpression tail:(_ "|" _ Identifier _ RangeExpression? (_ RangeExpression)*)* {
       return tail.reduce((expression, [, , , identifier, , argumentExpression, argumentExpressions]) => {
         const pipelineExpression = {
           type: 'PipeExpression',
@@ -40,6 +40,17 @@ PipeExpression
           argumentExpression,
         }), pipelineExpression);
       }, head);
+    }
+
+EqualityExpression
+  = head:AddExpression tail:(_ ("==" / "!=") _ AddExpression)* {
+      return tail.reduce((leftExpression, [, operator, , rightExpression]) => ({
+        type: 'OperatorExpression',
+        operator,
+        leftExpression,
+        rightExpression,
+        location: location(),
+       }), head);
     }
 
 AddExpression

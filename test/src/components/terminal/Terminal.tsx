@@ -216,6 +216,10 @@ const historyItems = [
   `([1, 2], 3..4) | map (a, b) => a * b`,
   `1..3 | repeat | take 7`,
   `0..0.5 (by: 0.1) | map '(toFixed 1)`,
+  `(1 == 1, "a" == "a")`,
+  `(1, "a") == (1, "a")`,
+  `[1, "a"] == [1, "a"]`,
+  `[1, 2, 3] == 'toArray 1..3`,
 ];
 
 const Value = ({ promise }: any) => {

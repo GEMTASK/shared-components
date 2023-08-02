@@ -1,4 +1,4 @@
-import { KopiValue } from '../types';
+import { Context, KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
 import KopiBoolean from './KopiBoolean';
@@ -86,6 +86,27 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
 
   empty() {
     return new KopiBoolean(this.elements.length === 0);
+  }
+
+  //
+
+  async '=='(that: KopiArray, context: Context) {
+    if (!(that instanceof KopiArray) || that.elements.length !== this.elements.length) {
+      return new KopiBoolean(false);
+    }
+
+    for (let index = 0; index < this.elements.length; ++index) {
+      const thisValue = await this.elements[index];
+      const thatValue = await that.elements[index];
+
+      const result = await thisValue.invoke('==', [thatValue, context]);
+
+      if (!(result as KopiBoolean).value) {
+        return new KopiBoolean(false);
+      }
+    }
+
+    return new KopiBoolean(true);
   }
 }
 

@@ -1,4 +1,4 @@
-import { KopiNumber, KopiTuple } from './classes';
+import { KopiBoolean, KopiNumber, KopiTuple } from './classes';
 import { ASTNode, ASTPatternNode, Context, KopiValue } from './types';
 
 //
@@ -267,6 +267,10 @@ class Identifier extends ASTNode {
     [argument, context]: [KopiValue, Context]
   ): Promise<KopiValue> {
     return argument.invoke(this.name, [KopiTuple.empty, context]);
+  }
+
+  '=='(that: Identifier) {
+    return new KopiBoolean(this.name === that.name);
   }
 }
 

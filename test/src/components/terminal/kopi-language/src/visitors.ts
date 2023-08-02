@@ -56,8 +56,8 @@ async function OperatorExpression(
     evaluate(rightExpression, environment, bind),
   ]);
 
-  if (leftValue instanceof KopiNumber) {
-    return leftValue[operator](rightValue);
+  if (operator in leftValue) {
+    return (leftValue as any)[operator](rightValue);
   }
 
   throw new Error(`"${await leftValue.inspect()}" of type ${leftValue.constructor.name} doesn't have an operator method "${operator}".`);

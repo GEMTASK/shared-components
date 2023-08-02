@@ -1,8 +1,9 @@
 import { Context, KopiValue } from '../types';
 
-import KopiFunction from './KopiFunction';
 import KopiString from './KopiString';
+import KopiBoolean from './KopiBoolean';
 import KopiTuple from './KopiTuple';
+import KopiFunction from './KopiFunction';
 
 class KopiNumber extends KopiValue {
   static readonly PI: KopiNumber = new KopiNumber(Math.PI);
@@ -26,6 +27,10 @@ class KopiNumber extends KopiValue {
 
   apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
     return func.apply(KopiTuple.empty, [this, context]);
+  }
+
+  '=='(that: KopiNumber) {
+    return new KopiBoolean(this.value === that.value);
   }
 
   succ(count: KopiNumber | KopiTuple) {
