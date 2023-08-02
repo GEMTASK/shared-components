@@ -4,6 +4,7 @@ import KopiNumber from './KopiNumber';
 import KopiArray from './KopiArray';
 import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
+import KopiBoolean from './KopiBoolean';
 
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
@@ -111,7 +112,7 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
   }
 
   empty() {
-    return new KopiNumber(this.value.length === 0 ? 1 : 0);
+    return new KopiBoolean(this.value.length === 0);
   }
 
   //

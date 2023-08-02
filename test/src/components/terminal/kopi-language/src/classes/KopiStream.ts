@@ -14,7 +14,7 @@ interface KopiStream<TResult extends KopiValue> {
   join(joiner: KopiValue, context: Context): Promise<KopiValue>;
 }
 
-const makeStream = <TResult extends KopiValue>(
+const KopiStream_T = <TResult extends KopiValue>(
   _fromIterable: (iterable: AsyncIterable<KopiValue>) => Promise<TResult>
 ) => {
   interface KopiStream extends KopiValue, KopiIterable<TResult> { };
@@ -63,7 +63,7 @@ const makeStream = <TResult extends KopiValue>(
   return KopiStream;
 };
 
-export default makeStream;
+export default KopiStream_T;
 
 export {
   type KopiStream,

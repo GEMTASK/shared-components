@@ -7,7 +7,7 @@ import Clock from '../clock/Clock';
 import * as kopi from './kopi-language';
 import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
 import { Context, Environment, KopiValue } from './kopi-language/src/types';
-import makeStream from './kopi-language/src/classes/KopiStream';
+import KopiStream_T from './kopi-language/src/classes/KopiStream';
 import KopiRange from './kopi-language/src/classes/KopiRange';
 import Calendar from '../calendar/Calendar';
 
@@ -83,7 +83,7 @@ class KopiRandom extends KopiValue {
 }
 
 class KopiRepeat extends KopiValue {
-  static RepeatStream = makeStream(KopiArray.fromIterable);
+  static RepeatStream = KopiStream_T(KopiArray.fromIterable);
 
   async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
     const generator = async function* (this: KopiValue) {

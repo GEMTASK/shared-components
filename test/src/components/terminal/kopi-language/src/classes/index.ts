@@ -1,6 +1,9 @@
 export { default as KopiNumber } from './KopiNumber';
 export { default as KopiString } from './KopiString';
+export { default as KopiBoolean } from './KopiBoolean';
 export { default as KopiTuple } from './KopiTuple';
+export { default as KopiRange } from './KopiRange';
+export { default as KopiArray } from './KopiArray';
 export { default as KopiFunction } from './KopiFunction';
 export { default as KopiAstLiteral } from './KopiAstLiteral';
-export { default as KopiArray } from './KopiArray';
+export { default as KopiStream_T } from './KopiStream';

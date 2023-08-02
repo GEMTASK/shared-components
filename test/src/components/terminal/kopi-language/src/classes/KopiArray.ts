@@ -1,6 +1,7 @@
 import { KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
+import KopiBoolean from './KopiBoolean';
 
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
@@ -84,7 +85,7 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
   }
 
   empty() {
-    return new KopiNumber(this.elements.length === 0 ? 1 : 0);
+    return new KopiBoolean(this.elements.length === 0);
   }
 }
 

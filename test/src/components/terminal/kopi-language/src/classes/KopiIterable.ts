@@ -7,8 +7,6 @@ import KopiArray from './KopiArray';
 
 import type { KopiStream } from './KopiStream';
 
-// TODO: Avoid recursive imports KopiStream > KopiIterable > KopiStream
-
 interface IKopiIterable<TResult extends KopiValue> {
   toArray(): Promise<KopiArray>;
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
@@ -19,7 +17,7 @@ interface IKopiIterable<TResult extends KopiValue> {
   join(joiner: KopiValue, context: Context): Promise<KopiValue>;
 }
 
-function makeIterable<TIterable extends KopiValue & AsyncIterable<TResult>, TResult extends KopiValue>(
+function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TResult extends KopiValue>(
   Stream: {
     new(iterable: AsyncIterable<KopiValue>): KopiStream<TResult>;
   }
@@ -107,7 +105,7 @@ function makeIterable<TIterable extends KopiValue & AsyncIterable<TResult>, TRes
   return KopiIterable;
 }
 
-export default makeIterable;
+export default KopiIterable_T;
 
 export {
   type IKopiIterable as KopiIterable,

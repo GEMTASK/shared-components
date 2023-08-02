@@ -1,6 +1,6 @@
 import { Context, KopiValue } from '../types';
-import KopiFunction from './KopiFunction';
 
+import KopiFunction from './KopiFunction';
 import KopiString from './KopiString';
 import KopiTuple from './KopiTuple';
 

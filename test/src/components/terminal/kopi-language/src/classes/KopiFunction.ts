@@ -28,7 +28,7 @@ class KopiFunction extends KopiValue {
     thisArg: KopiValue,
     [argument, context]: [KopiValue, Context]
   ): Promise<KopiValue> {
-    const { environment, evaluate, bind } = context;
+    const { evaluate, bind } = context;
 
     const matches = await this.parameterPattern.match(argument, context);
 
