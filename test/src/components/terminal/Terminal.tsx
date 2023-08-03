@@ -184,7 +184,7 @@ const historyItems = [
   `(a => b => a + b) 1 2`,
   `((a, b) => a + b) (1, 2)`,
   `((a, b = 2) => a + b) 1`,
-  // `1..3 | map a => ((a + 1)..3 | map b => (a, b))`,
+  // `1..3 | flatMap a => ((a + 1)..3 | map b => (a, b))`,
   `((a = 1, b = 2) => a + b) ()`,
   `let (a = 1) => a`,
   `let (a = 1, b = 2) => a + b`,
@@ -218,13 +218,14 @@ const historyItems = [
   `[1, 2, 3] | take 2 | take 1`,
   `([1, 2], 3..4) | map (a, b) => a * b`,
   `1..3 | repeat | take 7`,
-  `0..0.5 (by: 0.1) | map '(toFixed 1)`,
+  `0..0.5 (0.1) | map '(toFixed 1)`,
   `(1 == 1, "a" == "a")`,
   `(1, "a") == (1, "a")`,
   `[1, "a"] == [1, "a"]`,
   `[1, 2, 3] == 'toArray 1..3`,
   `a = ['(map n => n * n)]`,
   `a | reduce (x = 1..5, f) => f x`,
+  `["a", "b", "c"] | combinations`,
 ];
 
 const Value = ({ promise }: any) => {

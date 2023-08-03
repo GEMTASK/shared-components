@@ -24,13 +24,15 @@ import('./KopiStream').then((result) => {
   import('./KopiIterable').then((result) => {
     RangeIterable = result.default(RangeStream);
 
+    KopiRange.prototype.toArray = RangeIterable.prototype.toArray;
     KopiRange.prototype.map = RangeIterable.prototype.map;
+    KopiRange.prototype.flatMap = RangeIterable.prototype.flatMap;
     KopiRange.prototype.filter = RangeIterable.prototype.filter;
     KopiRange.prototype.reduce = RangeIterable.prototype.reduce;
     KopiRange.prototype.take = RangeIterable.prototype.take;
     KopiRange.prototype.repeat = RangeIterable.prototype.repeat;
     KopiRange.prototype.join = RangeIterable.prototype.join;
-    KopiRange.prototype.toArray = RangeIterable.prototype.toArray;
+    KopiRange.prototype.combinations = RangeIterable.prototype.combinations;
   });
 });
 

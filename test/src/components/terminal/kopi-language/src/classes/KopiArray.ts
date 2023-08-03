@@ -25,11 +25,13 @@ import('./KopiStream').then((result) => {
     ArrayIterable = result.default(ArrayStream);
 
     KopiArray.prototype.map = ArrayIterable.prototype.map;
+    KopiArray.prototype.flatMap = ArrayIterable.prototype.flatMap;
     KopiArray.prototype.filter = ArrayIterable.prototype.filter;
     KopiArray.prototype.reduce = ArrayIterable.prototype.reduce;
     KopiArray.prototype.take = ArrayIterable.prototype.take;
     KopiArray.prototype.repeat = ArrayIterable.prototype.repeat;
     KopiArray.prototype.join = ArrayIterable.prototype.join;
+    KopiArray.prototype.combinations = ArrayIterable.prototype.combinations;
   });
 });
 

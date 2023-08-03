@@ -136,6 +136,8 @@ class KopiTuple extends KopiValue {
 
     return new ArrayStream(result);
   }
+
+  // TODO: (1..2, "a".."b") | combinations
 }
 
 export default KopiTuple;

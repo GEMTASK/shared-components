@@ -10,11 +10,13 @@ import type { KopiStream } from './KopiStream';
 interface IKopiIterable<TResult extends KopiValue> {
   toArray(): Promise<KopiArray>;
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
+  flatMap(func: KopiFunction, context: Context): KopiStream<TResult>;
   filter(func: KopiFunction, context: Context): KopiStream<TResult>;
   reduce(func: KopiFunction, context: Context): Promise<KopiValue>;
   take(count: KopiNumber): KopiStream<TResult>;
   repeat(): KopiStream<TResult>;
   join(joiner: KopiValue, context: Context): Promise<KopiValue>;
+  combinations(): Promise<KopiValue>;
 }
 
 function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TResult extends KopiValue>(
@@ -37,6 +39,23 @@ function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TR
       return new Stream(generator);
     }
 
+    flatMap(this: TIterable, func: KopiFunction, context: Context) {
+      const generator = async function* (this: TIterable) {
+        for await (const value of this) {
+          const mappedValue = await func.apply(KopiTuple.empty, [value, context]);
+
+          if (Symbol.asyncIterator in mappedValue) {
+            yield* (mappedValue as TIterable);
+          } else {
+            yield mappedValue;
+          }
+
+        }
+      }.apply(this);
+
+      return new Stream(generator);
+    }
+
     filter(this: TIterable, func: KopiFunction, context: Context) {
       const generator = async function* (this: TIterable) {
         for await (const value of this) {
@@ -53,7 +72,7 @@ function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TR
       let accum: KopiValue = KopiTuple.empty;
 
       for await (const value of this) {
-        if (!(func.parameterPattern as any).patterns[0].defaultExpression) {
+        if (accum === KopiTuple.empty && !(func.parameterPattern as any).patterns[0].defaultExpression) {
           accum = value;
         } else {
           accum = await func.apply(KopiTuple.empty, [new KopiTuple([accum, value]), context]);
@@ -99,6 +118,23 @@ function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TR
 
     join(this: TIterable, joiner: KopiValue, context: Context) {
       return joiner.invoke('combine', [this, context]);
+    }
+
+    // TODO: Convert to generator
+    async combinations(this: TIterable) {
+      let array = await Promise.all(
+        (await KopiArray.fromIterable(this)).elements
+      );
+
+      return new KopiArray(
+        array.reduce(([combinations, subarray], a) => [
+          [...combinations, ...subarray.slice(1).map(b => new KopiTuple([a, b]))],
+          subarray.slice(1)
+        ], [
+          [] as KopiTuple[],
+          array
+        ])[0]
+      );
     }
   }
 
