@@ -216,15 +216,15 @@ const historyItems = [
   `[1, "two", 1..3, n => n * n]`,
   `[1, 2] | reduce (a, n) => a + n`,
   `[1, 2, 3] | take 2 | take 1`,
-  `([1, 2], 3..4) | map (a, b) => a * b`,
+  `(1..2, 3..4) | map (a, b) => a * b`,
   `1..3 | repeat | take 7`,
   `0..0.5 (0.1) | map '(toFixed 1)`,
   `(1 == 1, "a" == "a", 'b == 'b)`,
   `(1, "a", 'b) == (1, "a", 'b)`,
   `[1, "a", 'b] == [1, "a", 'b]`,
   `[1, 2, 3] == 'toArray 1..3`,
-  `a = ['(map n => n * n)]`,
-  `a | reduce (x = 1..5, f) => f x`,
+  `fs = ['(map n => n * n)]`,
+  `fs | reduce (x = 1..5, f) => f x`,
   `["a", "b", "c"] | combinations`,
 ];
 
