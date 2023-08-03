@@ -204,6 +204,7 @@ const historyItems = [
   `1..5 | take 3 | map (n) => n * n`,
   `1..(fetch "robots.txt" | size)`,
   `1..5 | take 3 | map '(toFixed 2)`,
+  `1..10 | filter (n) => n % 2 == 0`,
   `", " | combine 1..3`,
   `1..3 | join ", "`,
   `", " | combine "abc"`,
@@ -222,6 +223,8 @@ const historyItems = [
   `(1, "a") == (1, "a")`,
   `[1, "a"] == [1, "a"]`,
   `[1, 2, 3] == 'toArray 1..3`,
+  `a = ['(map n => n * n)]`,
+  `a | reduce (x = 1..5, f) => f x`,
 ];
 
 const Value = ({ promise }: any) => {

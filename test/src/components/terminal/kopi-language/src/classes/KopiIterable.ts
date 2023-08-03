@@ -53,7 +53,7 @@ function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TR
       let accum: KopiValue = KopiTuple.empty;
 
       for await (const value of this) {
-        if (accum === KopiTuple.empty) {
+        if (!(func.parameterPattern as any).patterns[0].defaultExpression) {
           accum = value;
         } else {
           accum = await func.apply(KopiTuple.empty, [new KopiTuple([accum, value]), context]);
