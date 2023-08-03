@@ -29,6 +29,7 @@ import('./KopiStream').then((result) => {
     KopiArray.prototype.filter = ArrayIterable.prototype.filter;
     KopiArray.prototype.reduce = ArrayIterable.prototype.reduce;
     KopiArray.prototype.take = ArrayIterable.prototype.take;
+    KopiArray.prototype.skip = ArrayIterable.prototype.skip;
     KopiArray.prototype.repeat = ArrayIterable.prototype.repeat;
     KopiArray.prototype.join = ArrayIterable.prototype.join;
     KopiArray.prototype.combinations = ArrayIterable.prototype.combinations;

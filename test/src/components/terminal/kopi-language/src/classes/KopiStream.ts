@@ -5,12 +5,13 @@ import KopiNumber from './KopiNumber';
 
 import type { KopiIterable } from './KopiIterable';
 
-interface KopiStream<TResult extends KopiValue> {
+interface KopiStream<TResult extends KopiValue> extends AsyncIterable<KopiValue> {
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
   flatMap(func: KopiFunction, context: Context): KopiStream<TResult>;
   filter(func: KopiFunction, context: Context): KopiStream<TResult>;
   reduce(func: KopiFunction, context: Context): Promise<KopiValue>;
   take(count: KopiNumber): KopiStream<TResult>;
+  skip(count: KopiNumber): KopiStream<TResult>;
   repeat(): KopiStream<TResult>;
   join(joiner: KopiValue, context: Context): Promise<KopiValue>;
 }
@@ -34,6 +35,7 @@ const KopiStream_T = <TResult extends KopiValue>(
     KopiStream.prototype.filter = RangeIterable.prototype.filter;
     KopiStream.prototype.reduce = RangeIterable.prototype.reduce;
     KopiStream.prototype.take = RangeIterable.prototype.take;
+    KopiStream.prototype.skip = RangeIterable.prototype.skip;
     KopiStream.prototype.join = RangeIterable.prototype.join;
   });
 

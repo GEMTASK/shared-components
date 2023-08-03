@@ -14,6 +14,7 @@ interface IKopiIterable<TResult extends KopiValue> {
   filter(func: KopiFunction, context: Context): KopiStream<TResult>;
   reduce(func: KopiFunction, context: Context): Promise<KopiValue>;
   take(count: KopiNumber): KopiStream<TResult>;
+  skip(count: KopiNumber): KopiStream<TResult>;
   repeat(): KopiStream<TResult>;
   join(joiner: KopiValue, context: Context): Promise<KopiValue>;
   combinations(): Promise<KopiValue>;
@@ -91,6 +92,20 @@ function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TR
             yield value;
           } else {
             break;
+          }
+        }
+      }.apply(this);
+
+      return new Stream(generator);
+    }
+
+    skip(this: TIterable, count: KopiNumber) {
+      let index = 0;
+
+      const generator = async function* (this: TIterable) {
+        for await (const value of this) {
+          if (!(++index <= count.value)) {
+            yield value;
           }
         }
       }.apply(this);
