@@ -1,10 +1,7 @@
-import { Context, KopiValue } from '../types';
+import { KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
 import KopiArray from './KopiArray';
-import KopiFunction from './KopiFunction';
-import KopiBoolean from './KopiBoolean';
-import KopiTuple from './KopiTuple';
 
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
@@ -87,6 +84,8 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
 
     throw new Error(`Only range over numbers is supported currently.`);
   }
+
+  //
 
   apply(thisArg: this, [stride]: [stride: KopiNumber]) {
     return new KopiRange(this.from, this.to, stride);
