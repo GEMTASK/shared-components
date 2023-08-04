@@ -32,7 +32,7 @@ import('./KopiStream').then((result) => {
     KopiArray.prototype.skip = ArrayIterable.prototype.skip;
     KopiArray.prototype.repeat = ArrayIterable.prototype.repeat;
     KopiArray.prototype.join = ArrayIterable.prototype.join;
-    KopiArray.prototype.combinations = ArrayIterable.prototype.combinations;
+    KopiArray.prototype.combos = ArrayIterable.prototype.combos;
   });
 });
 

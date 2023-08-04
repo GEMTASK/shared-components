@@ -33,7 +33,7 @@ import('./KopiStream').then((result) => {
     KopiRange.prototype.skip = RangeIterable.prototype.skip;
     KopiRange.prototype.repeat = RangeIterable.prototype.repeat;
     KopiRange.prototype.join = RangeIterable.prototype.join;
-    KopiRange.prototype.combinations = RangeIterable.prototype.combinations;
+    KopiRange.prototype.combos = RangeIterable.prototype.combos;
   });
 });
 

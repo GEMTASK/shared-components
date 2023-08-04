@@ -181,6 +181,7 @@ const historyItems = [
   `random 4.5..5.5`,
   `sleep 5 + sleep 5`,
   `("a", "b", "c").1`,
+  `((), 1, 'ast, "3", [])`,
   `(a => b => a + b) 1 2`,
   `((a, b) => a + b) (1, 2)`,
   `((a, b = 2) => a + b) 1`,
@@ -225,7 +226,9 @@ const historyItems = [
   `[1, 2, 3] == 'toArray 1..3`,
   `fs = ['(map n => n * n)]`,
   `fs | reduce (x = 1..5, f) => f x`,
-  `["a", "b", "c"] | combinations`,
+  `1..3 | combos`,
+  `"abc" | combos`,
+  `["a", "b", "c"] | combos`,
 ];
 
 const Value = ({ promise }: any) => {

@@ -17,7 +17,7 @@ interface IKopiIterable<TResult extends KopiValue> {
   skip(count: KopiNumber): KopiStream<TResult>;
   repeat(): KopiStream<TResult>;
   join(joiner: KopiValue, context: Context): Promise<KopiValue>;
-  combinations(): Promise<KopiValue>;
+  combos(): Promise<KopiValue>;
 }
 
 function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TResult extends KopiValue>(
@@ -135,21 +135,32 @@ function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TR
       return joiner.invoke('combine', [this, context]);
     }
 
-    // TODO: Convert to generator
-    async combinations(this: TIterable) {
-      let array = await Promise.all(
-        (await KopiArray.fromIterable(this)).elements
-      );
+    async combos(this: TIterable) {
+      let index = 0;
 
-      return new KopiArray(
-        array.reduce(([combinations, subarray], a) => [
-          [...combinations, ...subarray.slice(1).map(b => new KopiTuple([a, b]))],
-          subarray.slice(1)
-        ], [
-          [] as KopiTuple[],
-          array
-        ])[0]
-      );
+      const generator = async function* (this: TIterable) {
+        for await (const a of this) {
+          for await (const b of KopiIterable.prototype.skip.apply(this, [new KopiNumber(++index)])) {
+            yield new KopiTuple([a, b]);
+          }
+        }
+      }.apply(this);
+
+      return new Stream(generator);
+
+      // let array = await Promise.all(
+      //   (await KopiArray.fromIterable(this)).elements
+      // );
+
+      // return new KopiArray(
+      //   array.reduce(([combinations, subarray], a) => [
+      //     [...combinations, ...subarray.slice(1).map(b => new KopiTuple([a, b]))],
+      //     subarray.slice(1)
+      //   ], [
+      //     [] as KopiTuple[],
+      //     array
+      //   ])[0]
+      // );
     }
   }
 
