@@ -12,6 +12,8 @@ import type { KopiIterable } from './KopiIterable';
 interface KopiString extends KopiValue {
   map(func: KopiFunction, context: Context): KopiStream<KopiString>;
   combos(): Promise<KopiValue>;
+  some(func: KopiFunction, context: Context): Promise<KopiBoolean>;
+  every(func: KopiFunction, context: Context): Promise<KopiBoolean>;
 };
 
 async function fromIterable(iterable: AsyncIterable<KopiValue>) {
@@ -47,6 +49,8 @@ import('./KopiStream').then((result) => {
 
     KopiString.prototype.map = StringIterable.prototype.map;
     KopiString.prototype.combos = StringIterable.prototype.combos;
+    KopiString.prototype.some = StringIterable.prototype.some;
+    KopiString.prototype.every = StringIterable.prototype.every;
   });
 });
 

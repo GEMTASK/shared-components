@@ -6,6 +6,7 @@ import KopiTuple from './KopiTuple';
 import KopiArray from './KopiArray';
 
 import type { KopiStream } from './KopiStream';
+import KopiBoolean from './KopiBoolean';
 
 interface IKopiIterable<TResult extends KopiValue> {
   toArray(): Promise<KopiArray>;
@@ -18,6 +19,8 @@ interface IKopiIterable<TResult extends KopiValue> {
   repeat(): KopiStream<TResult>;
   join(joiner: KopiValue, context: Context): Promise<KopiValue>;
   combos(): Promise<KopiValue>;
+  some(func: KopiFunction, context: Context): Promise<KopiBoolean>;
+  every(func: KopiFunction, context: Context): Promise<KopiBoolean>;
 }
 
 function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TResult extends KopiValue>(
@@ -161,6 +164,26 @@ function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TR
       //     array
       //   ])[0]
       // );
+    }
+
+    async some(this: TIterable, func: KopiFunction, context: Context): Promise<KopiBoolean> {
+      for await (const value of this) {
+        if ((await func.apply(KopiTuple.empty, [value, context]) as KopiBoolean).value) {
+          return new KopiBoolean(true);
+        }
+      }
+
+      return new KopiBoolean(false);
+    }
+
+    async every(this: TIterable, func: KopiFunction, context: Context): Promise<KopiBoolean> {
+      for await (const value of this) {
+        if (!(await func.apply(KopiTuple.empty, [value, context]) as KopiBoolean).value) {
+          return new KopiBoolean(false);
+        }
+      }
+
+      return new KopiBoolean(true);
     }
   }
 

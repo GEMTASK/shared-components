@@ -1,7 +1,10 @@
-import { KopiValue } from '../types';
+import { Context, KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
 import KopiArray from './KopiArray';
+import KopiFunction from './KopiFunction';
+import KopiBoolean from './KopiBoolean';
+import KopiTuple from './KopiTuple';
 
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
@@ -34,6 +37,8 @@ import('./KopiStream').then((result) => {
     KopiRange.prototype.repeat = RangeIterable.prototype.repeat;
     KopiRange.prototype.join = RangeIterable.prototype.join;
     KopiRange.prototype.combos = RangeIterable.prototype.combos;
+    KopiRange.prototype.some = RangeIterable.prototype.some;
+    KopiRange.prototype.every = RangeIterable.prototype.every;
   });
 });
 

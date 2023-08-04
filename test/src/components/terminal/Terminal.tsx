@@ -231,6 +231,11 @@ const historyItems = [
   `1..4 | combos | map square`,
   `"abc" | combos`,
   `[1, 2, 3] | combos`,
+  `1..3 | some n => n == 2`,
+  `"abc" | some c => c == "b"`,
+  `['a, 'b, 'c] | some c => c == 'b`,
+  `"aaa" | every c => c == "a"`,
+  `['a, 'a, 'a] | every c => c == 'a`,
 ];
 
 const Value = ({ promise }: any) => {

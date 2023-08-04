@@ -33,6 +33,8 @@ import('./KopiStream').then((result) => {
     KopiArray.prototype.repeat = ArrayIterable.prototype.repeat;
     KopiArray.prototype.join = ArrayIterable.prototype.join;
     KopiArray.prototype.combos = ArrayIterable.prototype.combos;
+    KopiArray.prototype.some = ArrayIterable.prototype.some;
+    KopiArray.prototype.every = ArrayIterable.prototype.every;
   });
 });
 
