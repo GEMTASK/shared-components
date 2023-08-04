@@ -227,8 +227,10 @@ const historyItems = [
   `fs = ['(map n => n * n)]`,
   `fs | reduce (x = 1..5, f) => f x`,
   `1..3 | combos`,
+  `square = (a, b) => a * b`,
+  `1..4 | combos | map square`,
   `"abc" | combos`,
-  `["a", "b", "c"] | combos`,
+  `[1, 2, 3] | combos`,
 ];
 
 const Value = ({ promise }: any) => {

@@ -26,9 +26,9 @@ const scope = {
   Spacer,
 };
 
-const Grid = () => {
+const Grid = ({ ...props }: any) => {
   return (
-    <View fillColor="gray-0" minHeight="100vh">
+    <View {...props}>
       <LiveProvider code={code} scope={scope}>
         <LiveEditor />
         <LiveError />

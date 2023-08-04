@@ -33,41 +33,28 @@ const Header = () => {
   );
 };
 
-function App() {
+function App({ ...props }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <View className={styles.App}>
+    <View {...props}>
       <Toast.List />
-      <View flex id="container" className={styles.Container} padding="large">
-
-        <Stack horizontal spacing="large" align="left">
-          <Link to="grid" fillColor="gray-3" padding="small">Grid</Link>
-          <Text>
-            Go to <Link to="live">Live</Link> to learn more.
-          </Text>
-          <Link to="email">Email</Link>
-          <Link to="desktop">Desktop</Link>
-          <Spacer flex size="small" />
-          <Button title="Toast" onClick={() => toast(lorem.generateSentences(1).slice(0, -1))} />
-        </Stack>
-
-        <Divider spacing="large" />
+      <View flex id="container" padding="large" style={{ overflow: 'auto' }}>
         <View horizontal align="middle left">
           <Text flex fontSize="xlarge" fontWeight="bold" textColor="gray-8">Page Header</Text>
+          <Button title="Toast" onClick={() => toast(lorem.generateSentences(1).slice(0, -1))} />
+          <Spacer size="small" />
           <Button primary title="Action Button" />
           <Spacer size="small" />
           <Button solid primary title="Action Button" />
         </View>
         <Divider spacing="large" />
-
         <View horizontal align="middle left">
           <Text flex fontSize="large" fontWeight="thin">Section Header</Text>
           <Button primary size="xsmall" title="Action Button" />
           <Spacer size="small" />
           <Button solid primary size="xsmall" title="Action Button" />
         </View>
-
         <Divider spacing="large" />
         <View horizontal>
           <Stack align="middle center" spacing="small" spacingColor="gray-2">

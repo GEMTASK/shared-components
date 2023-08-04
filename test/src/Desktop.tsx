@@ -12,11 +12,15 @@ import Calculator from './components/calculator';
 import Notes from './components/notes';
 import Music from './components/music';
 import Browser from './components/browser';
-import Email from './Email';
 import Filesystem from './components/filesystem';
 import Contacts from './components/contacts';
 import Terminal from './components/terminal';
 import Preferences from './components/preferences';
+
+import Styleguide from './App';
+import Email from './Email';
+import GridPage from './Grid';
+import Live from './Live';
 
 const Link = createLink(RouterLink);
 
@@ -172,6 +176,10 @@ const App = () => {
     null,
     { title: 'Browser', action: () => addWindow('Browser', <Browser />, { width: 1280, height: 800 }) },
     { title: 'Email', action: () => addWindow('Email', <Email />, { width: 1280, height: 800 }) },
+    { title: 'Grid', action: () => addWindow('Grid', <GridPage />, { width: 1280, height: 800 }) },
+    { title: 'Live', action: () => addWindow('Live', <Live />, { width: 1280, height: 800 }) },
+    null,
+    { title: 'Styleguide', action: () => addWindow('Styleguide', <Styleguide />, { width: 1280, height: 800 }) },
   ];
 
   const applicationMenuItems = [

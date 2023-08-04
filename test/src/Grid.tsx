@@ -70,13 +70,13 @@ const Location3 = ({ children }: any) => {
   );
 };
 
-const Grid = () => {
+const Grid = ({ ...props }: any) => {
   return (
-    <View fillColor="gray-2" minHeight="100vh">
+    <View {...props}>
       <View fillColor="white" padding="large large" style={{ position: 'sticky', top: 0, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)', zIndex: 1 }}>
         <Text>Header</Text>
       </View>
-      <View flex padding="xxlarge xxlarge" maxWidth={'100vw'} fillColor="gray-1" style={{ width: 1400, margin: '0 auto', overflow: 'hidden', boxShadow: '0 0 32px hsla(0, 0%, 0%, 0.15)' }}>
+      <View flex padding="xxlarge xxlarge" maxWidth="100%" fillColor="gray-1" style={{ margin: '0 auto', overflow: 'auto', boxShadow: '0 0 32px hsla(0, 0%, 0%, 0.15)' }}>
         <Text fontSize="large" fontWeight="bold" textColor="gray-9">
           Beautiful locations near the beach
         </Text>

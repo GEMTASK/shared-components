@@ -3,39 +3,16 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import './index.css';
-import App from './App';
-import Grid from './Grid';
-import Email from './Email';
-import Live from './Live';
+import Desktop from './Desktop';
 
 import reportWebVitals from './reportWebVitals';
 
-const Desktop = React.lazy(() => import('./Desktop'));
+// const Desktop = React.lazy(() => import('./Desktop'));
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
-  },
-  {
-    path: "/grid",
-    element: <Grid />,
-  },
-  {
-    path: "/email",
-    element: <Email />,
-  },
-  {
-    path: "/live",
-    element: <Live />,
-  },
-  {
-    path: "/desktop",
-    element: (
-      <Suspense>
-        <Desktop />
-      </Suspense>
-    ),
+    element: <Desktop />,
   },
 ], {
   // basename: '/react-desktop2'
