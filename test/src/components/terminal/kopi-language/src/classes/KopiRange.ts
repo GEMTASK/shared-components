@@ -38,6 +38,7 @@ import('./KopiStream').then((result) => {
     KopiRange.prototype.every = RangeIterable.prototype.every;
     KopiRange.prototype.find = RangeIterable.prototype.find;
     KopiRange.prototype.count = RangeIterable.prototype.count;
+    KopiRange.prototype.includes = RangeIterable.prototype.includes;
   });
 });
 

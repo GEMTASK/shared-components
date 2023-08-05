@@ -16,6 +16,7 @@ interface KopiString extends KopiValue {
   every(func: KopiFunction, context: Context): Promise<KopiBoolean>;
   find(func: KopiFunction, context: Context): Promise<KopiValue | KopiTuple>;
   count(func: KopiFunction, context: Context): Promise<KopiNumber>;
+  includes(value: KopiValue, context: Context): Promise<KopiBoolean>;
 };
 
 async function fromIterable(iterable: AsyncIterable<KopiValue>) {
@@ -55,6 +56,7 @@ import('./KopiStream').then((result) => {
     KopiString.prototype.every = StringIterable.prototype.every;
     KopiString.prototype.find = StringIterable.prototype.find;
     KopiString.prototype.count = StringIterable.prototype.count;
+    KopiString.prototype.includes = StringIterable.prototype.includes;
   });
 });
 

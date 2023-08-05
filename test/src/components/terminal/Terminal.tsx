@@ -242,6 +242,9 @@ const historyItems = [
   `1..5 | count (n) => n % 2 == 0`,
   `[1, 2, 3] | count (n) => n % 2 == 0`,
   `"abc" | count (c) => c == "b"`,
+  `1..3 | includes 2`,
+  `"abc" | includes "b"`,
+  `[1, 2, 3] | includes 2`,
 ];
 
 const Value = ({ promise }: any) => {

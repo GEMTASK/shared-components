@@ -1,12 +1,21 @@
 import { Context, KopiValue } from '../types';
 
 class KopiBoolean extends KopiValue {
+  static true = new KopiBoolean(true);
+  static false = new KopiBoolean(false);
+
   readonly value: boolean;
 
   constructor(value: boolean) {
     super();
 
     this.value = value;
+
+    if (value && KopiBoolean.true) {
+      return KopiBoolean.true;
+    } else if (!value && KopiBoolean.false) {
+      return KopiBoolean.false;
+    }
   }
 
   async toString() {
