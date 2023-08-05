@@ -236,6 +236,9 @@ const historyItems = [
   `['a, 'b, 'c] | some c => c == 'b`,
   `"aaa" | every c => c == "a"`,
   `['a, 'a, 'a] | every c => c == 'a`,
+  `1..3 | find (n) => n == 2`,
+  `[1, 2, 3] | find (n) => n == 2`,
+  `"abc" | find (c) => c == "b"`,
 ];
 
 const Value = ({ promise }: any) => {
