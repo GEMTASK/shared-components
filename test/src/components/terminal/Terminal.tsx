@@ -239,12 +239,15 @@ const historyItems = [
   `1..3 | find (n) => n == 2`,
   `[1, 2, 3] | find (n) => n == 2`,
   `"abc" | find (c) => c == "b"`,
-  `1..5 | count (n) => n % 2 == 0`,
-  `[1, 2, 3] | count (n) => n % 2 == 0`,
+  `1..5 | count (n) => 'even n`,
+  `[1, 2, 3] | count (n) => 'even n`,
   `"abc" | count (c) => c == "b"`,
   `1..3 | includes 2`,
   `"abc" | includes "b"`,
   `[1, 2, 3] | includes 2`,
+  `1..10 | splitOn 3`,
+  `"aa,b,cc" | splitOn ","`,
+  `[1, 1, 0, 2, 0, 3, 3] | splitOn 0`,
 ];
 
 const Value = ({ promise }: any) => {

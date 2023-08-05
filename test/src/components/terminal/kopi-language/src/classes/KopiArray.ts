@@ -19,10 +19,10 @@ let ArrayIterable: {
 };
 
 import('./KopiStream').then((result) => {
-  ArrayStream = result.KopiStream_T(KopiArray.fromIterable);
+  ArrayStream = result.KopiStream_T(fromIterable);
 
   import('./KopiIterable').then((result) => {
-    ArrayIterable = result.KopiIterable_T(ArrayStream);
+    ArrayIterable = result.KopiIterable_T(ArrayStream, fromIterable);
 
     KopiArray.prototype.map = ArrayIterable.prototype.map;
     KopiArray.prototype.flatMap = ArrayIterable.prototype.flatMap;
@@ -38,6 +38,7 @@ import('./KopiStream').then((result) => {
     KopiArray.prototype.find = ArrayIterable.prototype.find;
     KopiArray.prototype.count = ArrayIterable.prototype.count;
     KopiArray.prototype.includes = ArrayIterable.prototype.includes;
+    KopiArray.prototype.splitOn = ArrayIterable.prototype.splitOn;
   });
 });
 

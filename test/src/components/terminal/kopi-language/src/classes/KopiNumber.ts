@@ -57,6 +57,14 @@ class KopiNumber extends KopiValue {
     }
   }
 
+  even() {
+    return this.value % 2 === 0 ? KopiBoolean.true : KopiBoolean.false;
+  }
+
+  odd() {
+    return this.value % 2 !== 0 ? KopiBoolean.true : KopiBoolean.false;
+  }
+
   //
 
   abs() {

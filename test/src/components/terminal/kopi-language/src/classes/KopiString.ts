@@ -17,6 +17,7 @@ interface KopiString extends KopiValue {
   find(func: KopiFunction, context: Context): Promise<KopiValue | KopiTuple>;
   count(func: KopiFunction, context: Context): Promise<KopiNumber>;
   includes(value: KopiValue, context: Context): Promise<KopiBoolean>;
+  splitOn(delimeter: KopiValue, context: Context): KopiStream<KopiString>;
 };
 
 async function fromIterable(iterable: AsyncIterable<KopiValue>) {
@@ -34,10 +35,16 @@ let StringStream: {
 };
 
 let ArrayStream: {
-  new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiString>;
+  new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiArray>;
 };
 
 let StringIterable: {
+  new(Stream: {
+    new(iterable: AsyncIterable<KopiValue>): KopiIterable<KopiString>;
+  }): KopiIterable<KopiString>;
+};
+
+let ArrayIterable: {
   new(Stream: {
     new(iterable: AsyncIterable<KopiValue>): KopiIterable<KopiArray>;
   }): KopiIterable<KopiArray>;
@@ -48,15 +55,17 @@ import('./KopiStream').then((result) => {
   ArrayStream = result.KopiStream_T(KopiArray.fromIterable);
 
   import('./KopiIterable').then((result) => {
-    StringIterable = result.KopiIterable_T(ArrayStream);
+    StringIterable = result.KopiIterable_T(StringStream, fromIterable);
+    ArrayIterable = result.KopiIterable_T(ArrayStream, KopiArray.fromIterable);
 
-    KopiString.prototype.map = StringIterable.prototype.map;
+    KopiString.prototype.map = ArrayIterable.prototype.map;
     KopiString.prototype.combos = StringIterable.prototype.combos;
     KopiString.prototype.some = StringIterable.prototype.some;
     KopiString.prototype.every = StringIterable.prototype.every;
     KopiString.prototype.find = StringIterable.prototype.find;
     KopiString.prototype.count = StringIterable.prototype.count;
     KopiString.prototype.includes = StringIterable.prototype.includes;
+    KopiString.prototype.splitOn = StringIterable.prototype.splitOn;
   });
 });
 

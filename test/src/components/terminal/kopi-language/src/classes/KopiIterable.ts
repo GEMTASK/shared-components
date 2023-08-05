@@ -8,6 +8,14 @@ import KopiArray from './KopiArray';
 import type { KopiStream } from './KopiStream';
 import KopiBoolean from './KopiBoolean';
 
+let ArrayStream: {
+  new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiArray>;
+};
+
+import('./KopiStream').then((result) => {
+  ArrayStream = result.KopiStream_T(KopiArray.fromIterable);
+});
+
 interface IKopiIterable<TResult extends KopiValue> {
   toArray(): Promise<KopiArray>;
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
@@ -24,12 +32,14 @@ interface IKopiIterable<TResult extends KopiValue> {
   find(func: KopiFunction, context: Context): Promise<KopiValue | KopiTuple>;
   count(func: KopiFunction, context: Context): Promise<KopiNumber>;
   includes(value: KopiValue, context: Context): Promise<KopiBoolean>;
+  splitOn(delimeter: KopiValue, context: Context): KopiStream<TResult>;
 }
 
 function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TResult extends KopiValue>(
   Stream: {
     new(iterable: AsyncIterable<KopiValue>): KopiStream<TResult>;
-  }
+  },
+  fromIterable: (iterable: AsyncIterable<KopiValue>) => Promise<TResult>
 ) {
   class KopiIterable implements IKopiIterable<TResult> {
     async toArray(this: TIterable) {
@@ -219,6 +229,26 @@ function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TR
       }
 
       return KopiBoolean.false;
+    }
+
+    splitOn(this: TIterable, delimeter: KopiValue, context: Context) {
+      let values: KopiValue[] = [];
+
+      const generator = async function* (this: TIterable) {
+        for await (const value of this) {
+          if ((await value.invoke('==', [delimeter, context]) as KopiBoolean).value) {
+            yield fromIterable(new KopiArray(values));
+
+            values = [];
+          } else {
+            values.push(value);
+          }
+        }
+
+        yield fromIterable(new KopiArray(values));
+      }.apply(this);
+
+      return new ArrayStream(generator);
     }
   }
 

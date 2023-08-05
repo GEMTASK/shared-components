@@ -22,7 +22,7 @@ import('./KopiStream').then((result) => {
   RangeStream = result.KopiStream_T(KopiArray.fromIterable);
 
   import('./KopiIterable').then((result) => {
-    RangeIterable = result.KopiIterable_T(RangeStream);
+    RangeIterable = result.KopiIterable_T(RangeStream, KopiArray.fromIterable);
 
     KopiRange.prototype.toArray = RangeIterable.prototype.toArray;
     KopiRange.prototype.map = RangeIterable.prototype.map;
@@ -39,6 +39,7 @@ import('./KopiStream').then((result) => {
     KopiRange.prototype.find = RangeIterable.prototype.find;
     KopiRange.prototype.count = RangeIterable.prototype.count;
     KopiRange.prototype.includes = RangeIterable.prototype.includes;
+    KopiRange.prototype.splitOn = RangeIterable.prototype.splitOn;
   });
 });
 
