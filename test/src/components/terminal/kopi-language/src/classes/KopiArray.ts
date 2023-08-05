@@ -36,6 +36,7 @@ import('./KopiStream').then((result) => {
     KopiArray.prototype.some = ArrayIterable.prototype.some;
     KopiArray.prototype.every = ArrayIterable.prototype.every;
     KopiArray.prototype.find = ArrayIterable.prototype.find;
+    KopiArray.prototype.count = ArrayIterable.prototype.count;
   });
 });
 

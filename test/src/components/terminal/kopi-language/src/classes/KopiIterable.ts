@@ -22,6 +22,7 @@ interface IKopiIterable<TResult extends KopiValue> {
   some(func: KopiFunction, context: Context): Promise<KopiBoolean>;
   every(func: KopiFunction, context: Context): Promise<KopiBoolean>;
   find(func: KopiFunction, context: Context): Promise<KopiValue | KopiTuple>;
+  count(func: KopiFunction, context: Context): Promise<KopiNumber>;
 }
 
 function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TResult extends KopiValue>(
@@ -195,6 +196,18 @@ function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TR
       }
 
       return KopiTuple.empty;
+    }
+
+    async count(this: TIterable, func: KopiFunction, context: Context) {
+      let count = 0;
+
+      for await (const value of this) {
+        if ((await func.apply(KopiTuple.empty, [value, context]) as KopiBoolean).value) {
+          count += 1;
+        }
+      }
+
+      return new KopiNumber(count);
     }
   }
 
