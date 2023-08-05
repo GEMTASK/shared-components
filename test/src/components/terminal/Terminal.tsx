@@ -248,6 +248,9 @@ const historyItems = [
   `1..10 | splitOn 3`,
   `"aa,b,cc" | splitOn ","`,
   `[1, 1, 0, 2, 0, 3, 3] | splitOn 0`,
+  `1..10 | splitEvery 3`,
+  `"abcdefghij" | splitEvery 3`,
+  `[1, 2, 3] | splitEvery 2`,
 ];
 
 const Value = ({ promise }: any) => {
