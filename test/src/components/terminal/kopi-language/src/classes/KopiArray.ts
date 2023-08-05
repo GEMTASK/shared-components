@@ -35,6 +35,7 @@ import('./KopiStream').then((result) => {
     KopiArray.prototype.combos = ArrayIterable.prototype.combos;
     KopiArray.prototype.some = ArrayIterable.prototype.some;
     KopiArray.prototype.every = ArrayIterable.prototype.every;
+    KopiArray.prototype.find = ArrayIterable.prototype.find;
   });
 });
 

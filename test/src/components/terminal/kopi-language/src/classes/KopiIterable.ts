@@ -21,6 +21,7 @@ interface IKopiIterable<TResult extends KopiValue> {
   combos(): Promise<KopiValue>;
   some(func: KopiFunction, context: Context): Promise<KopiBoolean>;
   every(func: KopiFunction, context: Context): Promise<KopiBoolean>;
+  find(func: KopiFunction, context: Context): Promise<KopiValue | KopiTuple>;
 }
 
 function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TResult extends KopiValue>(
@@ -184,6 +185,16 @@ function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TR
       }
 
       return new KopiBoolean(true);
+    }
+
+    async find(this: TIterable, func: KopiFunction, context: Context) {
+      for await (const value of this) {
+        if ((await func.apply(KopiTuple.empty, [value, context]) as KopiBoolean).value) {
+          return value;
+        }
+      }
+
+      return KopiTuple.empty;
     }
   }
 

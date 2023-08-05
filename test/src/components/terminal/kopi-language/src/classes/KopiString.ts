@@ -14,6 +14,7 @@ interface KopiString extends KopiValue {
   combos(): Promise<KopiValue>;
   some(func: KopiFunction, context: Context): Promise<KopiBoolean>;
   every(func: KopiFunction, context: Context): Promise<KopiBoolean>;
+  find(func: KopiFunction, context: Context): Promise<KopiValue | KopiTuple>;
 };
 
 async function fromIterable(iterable: AsyncIterable<KopiValue>) {
@@ -51,6 +52,7 @@ import('./KopiStream').then((result) => {
     KopiString.prototype.combos = StringIterable.prototype.combos;
     KopiString.prototype.some = StringIterable.prototype.some;
     KopiString.prototype.every = StringIterable.prototype.every;
+    KopiString.prototype.find = StringIterable.prototype.find;
   });
 });
 
