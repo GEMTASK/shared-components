@@ -26,15 +26,16 @@ interface IKopiIterable<TResult extends KopiValue> {
   skip(count: KopiNumber): KopiStream<TResult>;
   repeat(): KopiStream<TResult>;
   join(joiner: KopiValue, context: Context): Promise<KopiValue>;
+  splitOn(delimeter: KopiValue, context: Context): KopiStream<TResult>;
+  splitAt(index: KopiValue, context: Context): KopiStream<TResult>;
+  splitEvery(count: KopiNumber, context: Context): KopiStream<TResult>;
+
   combos(): Promise<KopiValue>;
   some(func: KopiFunction, context: Context): Promise<KopiBoolean>;
   every(func: KopiFunction, context: Context): Promise<KopiBoolean>;
   find(func: KopiFunction, context: Context): Promise<KopiValue | KopiTuple>;
   count(func: KopiFunction, context: Context): Promise<KopiNumber>;
   includes(value: KopiValue, context: Context): Promise<KopiBoolean>;
-  splitOn(delimeter: KopiValue, context: Context): KopiStream<TResult>;
-  splitAt(index: KopiValue, context: Context): KopiStream<TResult>;
-  splitEvery(count: KopiNumber, context: Context): KopiStream<TResult>;
 }
 
 function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TResult extends KopiValue>(

@@ -10,6 +10,7 @@ import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
 
 interface KopiString extends KopiValue {
+  toArray(): Promise<KopiArray>;
   map(func: KopiFunction, context: Context): KopiStream<KopiString>;
   combos(): Promise<KopiValue>;
   some(func: KopiFunction, context: Context): Promise<KopiBoolean>;
@@ -60,6 +61,7 @@ import('./KopiStream').then((result) => {
     StringIterable = result.KopiIterable_T(StringStream, fromIterable);
     ArrayIterable = result.KopiIterable_T(ArrayStream, KopiArray.fromIterable);
 
+    KopiString.prototype.toArray = ArrayIterable.prototype.toArray;
     KopiString.prototype.map = ArrayIterable.prototype.map;
     KopiString.prototype.combos = StringIterable.prototype.combos;
     KopiString.prototype.some = StringIterable.prototype.some;

@@ -2,12 +2,14 @@ import { Context, KopiValue, ReactElement } from '../types';
 
 import KopiFunction from './KopiFunction';
 import KopiNumber from './KopiNumber';
+import KopiArray from './KopiArray';
 
 import type { KopiIterable } from './KopiIterable';
 
 interface KopiStream<TResult extends KopiValue> extends KopiValue, AsyncIterable<KopiValue> {
   [Symbol.asyncIterator](): AsyncIterator<KopiValue>;
 
+  toArray(): Promise<KopiArray>;
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
   flatMap(func: KopiFunction, context: Context): KopiStream<TResult>;
   filter(func: KopiFunction, context: Context): KopiStream<TResult>;
@@ -35,6 +37,7 @@ const KopiStream_T = <TResult extends KopiValue>(
   import('./KopiIterable').then((result) => {
     RangeIterable = result.KopiIterable_T(KopiStream, _fromIterable);
 
+    KopiStream.prototype.toArray = RangeIterable.prototype.toArray;
     KopiStream.prototype.map = RangeIterable.prototype.map;
     KopiStream.prototype.flatMap = RangeIterable.prototype.flatMap;
     KopiStream.prototype.filter = RangeIterable.prototype.filter;

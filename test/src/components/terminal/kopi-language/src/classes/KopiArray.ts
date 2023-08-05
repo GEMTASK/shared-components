@@ -5,6 +5,7 @@ import KopiBoolean from './KopiBoolean';
 
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
+import KopiString from './KopiString';
 
 interface KopiArray extends KopiValue, KopiIterable<KopiArray> { };
 
@@ -85,6 +86,14 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
     return `[${elements.join(', ')}]`;
   }
 
+  async toString() {
+    const elements = await Promise.all(
+      this.elements.map(async element => (await element).inspect())
+    );
+
+    return new KopiString(`[${elements.join(', ')}]`);
+  }
+
   async *[Symbol.asyncIterator]() {
     for (const value of this.elements) {
       yield value;
@@ -97,6 +106,10 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
 
   empty() {
     return new KopiBoolean(this.elements.length === 0);
+  }
+
+  async toArray() {
+    return this;
   }
 
   //
