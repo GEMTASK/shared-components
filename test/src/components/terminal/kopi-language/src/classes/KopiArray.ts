@@ -39,6 +39,7 @@ import('./KopiStream').then((result) => {
     KopiArray.prototype.count = ArrayIterable.prototype.count;
     KopiArray.prototype.includes = ArrayIterable.prototype.includes;
     KopiArray.prototype.splitOn = ArrayIterable.prototype.splitOn;
+    KopiArray.prototype.splitAt = ArrayIterable.prototype.splitAt;
     KopiArray.prototype.splitEvery = ArrayIterable.prototype.splitEvery;
   });
 });

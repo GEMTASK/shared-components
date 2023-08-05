@@ -18,6 +18,7 @@ interface KopiString extends KopiValue {
   count(func: KopiFunction, context: Context): Promise<KopiNumber>;
   includes(value: KopiValue, context: Context): Promise<KopiBoolean>;
   splitOn(delimeter: KopiValue, context: Context): KopiStream<KopiString>;
+  splitAt(index: KopiValue, context: Context): KopiStream<KopiString>;
   splitEvery(count: KopiNumber, context: Context): KopiStream<KopiString>;
 };
 
@@ -67,6 +68,7 @@ import('./KopiStream').then((result) => {
     KopiString.prototype.count = StringIterable.prototype.count;
     KopiString.prototype.includes = StringIterable.prototype.includes;
     KopiString.prototype.splitOn = StringIterable.prototype.splitOn;
+    KopiString.prototype.splitAt = StringIterable.prototype.splitAt;
     KopiString.prototype.splitEvery = StringIterable.prototype.splitEvery;
   });
 });

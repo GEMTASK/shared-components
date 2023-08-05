@@ -40,6 +40,7 @@ import('./KopiStream').then((result) => {
     KopiRange.prototype.count = RangeIterable.prototype.count;
     KopiRange.prototype.includes = RangeIterable.prototype.includes;
     KopiRange.prototype.splitOn = RangeIterable.prototype.splitOn;
+    KopiRange.prototype.splitAt = RangeIterable.prototype.splitAt;
     KopiRange.prototype.splitEvery = RangeIterable.prototype.splitEvery;
   });
 });

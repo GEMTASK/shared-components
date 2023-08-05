@@ -33,6 +33,7 @@ interface IKopiIterable<TResult extends KopiValue> {
   count(func: KopiFunction, context: Context): Promise<KopiNumber>;
   includes(value: KopiValue, context: Context): Promise<KopiBoolean>;
   splitOn(delimeter: KopiValue, context: Context): KopiStream<TResult>;
+  splitAt(index: KopiValue, context: Context): KopiStream<TResult>;
   splitEvery(count: KopiNumber, context: Context): KopiStream<TResult>;
 }
 
@@ -243,6 +244,29 @@ function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TR
             values = [];
           } else {
             values.push(value);
+          }
+        }
+
+        yield fromIterable(new KopiArray(values));
+      }.apply(this);
+
+      return new ArrayStream(generator);
+    }
+
+    splitAt(this: TIterable, _index: KopiNumber, context: Context) {
+      let values: KopiValue[] = [];
+      let index = 0;
+
+      const generator = async function* (this: TIterable) {
+        for await (const value of this) {
+          if (index === _index.value) {
+            yield fromIterable(new KopiArray(values));
+
+            values = [value];
+            ++index;
+          } else {
+            values.push(value);
+            ++index;
           }
         }
 
