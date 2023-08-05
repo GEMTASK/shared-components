@@ -383,7 +383,9 @@ const Terminal = ({ ...props }: any) => {
         <Divider />
         <View ref={historyElementRef} paddingHorizontal="small" style={{ overflowY: 'auto' }}>
           <Spacer size="small" />
-          {history}
+          {history.map((item, index) => (
+            <React.Fragment key={index}>{item}</React.Fragment>
+          ))}
         </View>
         <View horizontal align="left" paddingHorizontal="small" style={{ marginTop: -5 }}>
           <Input ref={inputElementRef} flush icon="angle-right" value={inputValue} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
@@ -397,8 +399,8 @@ const Terminal = ({ ...props }: any) => {
           </View>
           <Divider />
           <View padding="small" style={{ overflow: 'auto' }}>
-            {historyItems.map(item => (
-              <HistoryItem source={item} onItemSelect={(source: string) => interpret(source, setInputValue, setHistory)} />
+            {historyItems.map((item, index) => (
+              <HistoryItem key={index} source={item} onItemSelect={(source: string) => interpret(source, setInputValue, setHistory)} />
             ))}
           </View>
         </View>
