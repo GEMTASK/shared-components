@@ -218,4 +218,5 @@ export default KopiIterable_T;
 
 export {
   type IKopiIterable as KopiIterable,
+  KopiIterable_T,
 };

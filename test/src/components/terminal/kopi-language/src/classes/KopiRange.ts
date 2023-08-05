@@ -19,10 +19,10 @@ let RangeIterable: {
 };
 
 import('./KopiStream').then((result) => {
-  RangeStream = result.default(KopiArray.fromIterable);
+  RangeStream = result.KopiStream_T(KopiArray.fromIterable);
 
   import('./KopiIterable').then((result) => {
-    RangeIterable = result.default(RangeStream);
+    RangeIterable = result.KopiIterable_T(RangeStream);
 
     KopiRange.prototype.toArray = RangeIterable.prototype.toArray;
     KopiRange.prototype.map = RangeIterable.prototype.map;

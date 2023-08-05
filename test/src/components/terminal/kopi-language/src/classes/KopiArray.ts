@@ -19,10 +19,10 @@ let ArrayIterable: {
 };
 
 import('./KopiStream').then((result) => {
-  ArrayStream = result.default(KopiArray.fromIterable);
+  ArrayStream = result.KopiStream_T(KopiArray.fromIterable);
 
   import('./KopiIterable').then((result) => {
-    ArrayIterable = result.default(ArrayStream);
+    ArrayIterable = result.KopiIterable_T(ArrayStream);
 
     KopiArray.prototype.map = ArrayIterable.prototype.map;
     KopiArray.prototype.flatMap = ArrayIterable.prototype.flatMap;

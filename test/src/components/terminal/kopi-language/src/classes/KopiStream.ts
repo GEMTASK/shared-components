@@ -31,7 +31,7 @@ const KopiStream_T = <TResult extends KopiValue>(
   };
 
   import('./KopiIterable').then((result) => {
-    RangeIterable = result.default(KopiStream);
+    RangeIterable = result.KopiIterable_T(KopiStream);
 
     KopiStream.prototype.map = RangeIterable.prototype.map;
     KopiStream.prototype.flatMap = RangeIterable.prototype.flatMap;
@@ -76,4 +76,5 @@ export default KopiStream_T;
 
 export {
   type KopiStream,
+  KopiStream_T,
 };

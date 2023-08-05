@@ -43,11 +43,11 @@ let StringIterable: {
 };
 
 import('./KopiStream').then((result) => {
-  StringStream = result.default(fromIterable);
-  ArrayStream = result.default(KopiArray.fromIterable);
+  StringStream = result.KopiStream_T(fromIterable);
+  ArrayStream = result.KopiStream_T(KopiArray.fromIterable);
 
   import('./KopiIterable').then((result) => {
-    StringIterable = result.default(ArrayStream);
+    StringIterable = result.KopiIterable_T(ArrayStream);
 
     KopiString.prototype.map = StringIterable.prototype.map;
     KopiString.prototype.combos = StringIterable.prototype.combos;
