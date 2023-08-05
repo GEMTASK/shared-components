@@ -17,6 +17,8 @@ interface KopiStream<TResult extends KopiValue> extends KopiValue, AsyncIterable
   repeat(): KopiStream<TResult>;
   join(joiner: KopiValue, context: Context): Promise<KopiValue>;
   splitOn(delimeter: KopiValue, context: Context): KopiStream<TResult>;
+  splitAt(index: KopiValue, context: Context): KopiStream<TResult>;
+  splitEvery(count: KopiNumber, context: Context): KopiStream<TResult>;
 }
 
 const KopiStream_T = <TResult extends KopiValue>(
@@ -39,8 +41,11 @@ const KopiStream_T = <TResult extends KopiValue>(
     KopiStream.prototype.reduce = RangeIterable.prototype.reduce;
     KopiStream.prototype.take = RangeIterable.prototype.take;
     KopiStream.prototype.skip = RangeIterable.prototype.skip;
+    KopiStream.prototype.repeat = RangeIterable.prototype.repeat;
     KopiStream.prototype.join = RangeIterable.prototype.join;
     KopiStream.prototype.splitOn = RangeIterable.prototype.splitOn;
+    KopiStream.prototype.splitAt = RangeIterable.prototype.splitAt;
+    KopiStream.prototype.splitEvery = RangeIterable.prototype.splitEvery;
     // TODO: combos requires creating two iterators from one, so has issues consuming data
     // KopiStream.prototype.combos = RangeIterable.prototype.combos;
   });
