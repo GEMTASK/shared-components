@@ -165,7 +165,7 @@ function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TR
         }
       }.apply(this);
 
-      return new Stream(generator);
+      return new ArrayStream(generator);
 
       // let array = await Promise.all(
       //   (await KopiArray.fromIterable(this)).elements
