@@ -33,15 +33,16 @@ import('./KopiStream').then((result) => {
     KopiArray.prototype.skip = ArrayIterable.prototype.skip;
     KopiArray.prototype.repeat = ArrayIterable.prototype.repeat;
     KopiArray.prototype.join = ArrayIterable.prototype.join;
+    KopiArray.prototype.count = ArrayIterable.prototype.count;
+    KopiArray.prototype.splitOn = ArrayIterable.prototype.splitOn;
+    KopiArray.prototype.splitAt = ArrayIterable.prototype.splitAt;
+    KopiArray.prototype.splitEvery = ArrayIterable.prototype.splitEvery;
+
     KopiArray.prototype.combos = ArrayIterable.prototype.combos;
     KopiArray.prototype.some = ArrayIterable.prototype.some;
     KopiArray.prototype.every = ArrayIterable.prototype.every;
     KopiArray.prototype.find = ArrayIterable.prototype.find;
-    KopiArray.prototype.count = ArrayIterable.prototype.count;
     KopiArray.prototype.includes = ArrayIterable.prototype.includes;
-    KopiArray.prototype.splitOn = ArrayIterable.prototype.splitOn;
-    KopiArray.prototype.splitAt = ArrayIterable.prototype.splitAt;
-    KopiArray.prototype.splitEvery = ArrayIterable.prototype.splitEvery;
   });
 });
 

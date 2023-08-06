@@ -242,6 +242,7 @@ const historyItems = [
   `1..5 | count (n) => 'even n`,
   `[1, 2, 3] | count (n) => 'even n`,
   `"abc" | count (c) => c == "b"`,
+  `1..5 | map '(* 3) | count 'even`,
   `1..3 | includes 2`,
   `"abc" | includes "b"`,
   `[1, 2, 3] | includes 2`,
