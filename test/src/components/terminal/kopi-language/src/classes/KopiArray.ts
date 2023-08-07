@@ -6,6 +6,7 @@ import KopiBoolean from './KopiBoolean';
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
 import KopiString from './KopiString';
+import KopiTuple from './KopiTuple';
 
 interface KopiArray extends KopiValue, KopiIterable<KopiArray> { };
 
@@ -107,6 +108,10 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
 
   empty() {
     return new KopiBoolean(this.elements.length === 0);
+  }
+
+  at(index: KopiNumber) {
+    return this.elements[index.value] ?? KopiTuple.empty;
   }
 
   async toArray() {

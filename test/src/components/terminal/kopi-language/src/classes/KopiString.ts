@@ -85,11 +85,13 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
   }
 
   readonly value: string;
+  readonly codePoints: string[];
 
   constructor(value: string) {
     super();
 
     this.value = value;
+    this.codePoints = [...value];
   }
 
   override async toString() {
@@ -112,6 +114,16 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
 
   size() {
     return new KopiNumber(this.value.length);
+  }
+
+  at(index: KopiNumber) {
+    const string = this.codePoints.at(index.value);
+
+    if (string) {
+      return new KopiString(string);
+    }
+
+    return KopiTuple.empty;
   }
 
   toUpper() {
