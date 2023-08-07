@@ -6,10 +6,11 @@ import Clock from '../clock/Clock';
 
 import * as kopi from './kopi-language';
 import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
-import { Context, Environment, KopiValue } from './kopi-language/src/types';
+import { ASTNode, Bind, Context, Environment, KopiValue } from './kopi-language/src/types';
 import KopiStream_T from './kopi-language/src/classes/KopiStream';
 import KopiRange from './kopi-language/src/classes/KopiRange';
 import Calendar from '../calendar/Calendar';
+import { ApplyExpression, Identifier } from './kopi-language/src/astnodes';
 
 class KopiDate extends KopiValue implements KopiValue {
   override async inspect() {
@@ -118,6 +119,60 @@ class MetricUnit extends KopiValue {
   // }
 }
 
+function sleep() {
+  return new Promise((resolve) =>
+    setTimeout(resolve, 2000));
+}
+
+class Coroutine extends KopiValue {
+  readonly gen: AsyncIterator<KopiValue, KopiValue, KopiValue>;
+  value: KopiValue = KopiTuple.empty;
+  yielder: KopiFunction | null = null;
+
+  constructor(func: KopiFunction, environment: Environment, bind: Bind, context: Context) {
+    super();
+
+    this.gen = this.generator(func, environment, bind, context);
+
+    this.gen.next();
+  }
+
+  async *generator(
+    func: KopiFunction,
+    environment: Environment,
+    bind: Bind,
+    context: Context
+  ): AsyncIterator<KopiValue, KopiValue, KopiValue> {
+    this.value = yield KopiTuple.empty;
+
+    await kopi.evaluate(func.bodyExpression, environment, bind);
+
+    if (this.yielder) {
+      this.value = yield await this.yielder.apply(KopiTuple.empty, [this.value, context]);
+    }
+
+    return KopiTuple.empty;
+  }
+
+  async yield(func: KopiFunction, context: Context) {
+    this.yielder = func;
+  }
+
+  async send(value: KopiValue) {
+    return (await this.gen.next(value)).value;
+  }
+}
+
+class KopiSpawn extends KopiValue {
+  async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
+    const coro = new Coroutine(func, environment, bind, context);
+
+    (func.environment as any).yield = coro.yield.bind(coro);
+
+    return coro;
+  }
+}
+
 //
 
 let environment = new Environment({
@@ -135,6 +190,7 @@ let environment = new Environment({
   random: new KopiRandom(),
   repeat: new KopiRepeat(),
   km: new KopiMeter(),
+  spawn: new KopiSpawn(),
 });
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {

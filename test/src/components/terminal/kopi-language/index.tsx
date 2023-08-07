@@ -161,6 +161,7 @@ async function interpret(source: string, environment: Environment, bind: Bind) {
 }
 
 export {
+  evaluate,
   interpret,
   inspect,
 };
