@@ -1,16 +1,14 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 import Clock from '../clock/Clock';
 
 import * as kopi from './kopi-language';
 import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
-import { ASTNode, Bind, Context, Environment, KopiValue } from './kopi-language/src/types';
+import { Context, Environment, KopiValue } from './kopi-language/src/types';
 import KopiStream_T from './kopi-language/src/classes/KopiStream';
 import KopiRange from './kopi-language/src/classes/KopiRange';
 import Calendar from '../calendar/Calendar';
-import { ApplyExpression, Identifier } from './kopi-language/src/astnodes';
 
 class KopiDate extends KopiValue implements KopiValue {
   override async inspect() {
@@ -129,25 +127,27 @@ class Coroutine extends KopiValue {
   value: KopiValue = KopiTuple.empty;
   yielder: KopiFunction | null = null;
 
-  constructor(func: KopiFunction, environment: Environment, bind: Bind, context: Context) {
+  constructor(func: KopiFunction, context: Context) {
     super();
 
-    this.gen = this.generator(func, environment, bind, context);
+    this.gen = this.generator(func, context);
 
     this.gen.next();
   }
 
   async *generator(
     func: KopiFunction,
-    environment: Environment,
-    bind: Bind,
     context: Context
   ): AsyncIterator<KopiValue, KopiValue, KopiValue> {
+    const { evaluate, environment, bind } = context;
+
     this.value = yield KopiTuple.empty;
 
-    await kopi.evaluate(func.bodyExpression, environment, bind);
+    await evaluate(func.bodyExpression, environment, bind);
 
     if (this.yielder) {
+      await sleep();
+
       this.value = yield await this.yielder.apply(KopiTuple.empty, [this.value, context]);
     }
 
@@ -165,7 +165,7 @@ class Coroutine extends KopiValue {
 
 class KopiSpawn extends KopiValue {
   async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
-    const coro = new Coroutine(func, environment, bind, context);
+    const coro = new Coroutine(func, context);
 
     (func.environment as any).yield = coro.yield.bind(coro);
 
