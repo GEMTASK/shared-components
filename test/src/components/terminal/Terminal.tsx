@@ -122,52 +122,121 @@ function sleep() {
     setTimeout(resolve, 2000));
 }
 
-class Coroutine extends KopiValue {
-  readonly gen: AsyncIterator<KopiValue, KopiValue, KopiValue>;
-  value: KopiValue = KopiTuple.empty;
-  yielder: KopiFunction | null = null;
+// class Coroutine extends KopiValue {
+//   readonly gen: AsyncIterator<KopiValue, KopiValue, KopiValue>;
+//   value: KopiValue = KopiTuple.empty;
+//   yielder: KopiFunction | null = null;
 
-  constructor(func: KopiFunction, context: Context) {
-    super();
+//   constructor(func: KopiFunction, context: Context) {
+//     super();
 
-    this.gen = this.generator(func, context);
+//     this.gen = this.generator(func, context);
 
-    this.gen.next();
+//     this.gen.next();
+//   }
+
+//   async *generator(
+//     func: KopiFunction,
+//     context: Context
+//   ): AsyncIterator<KopiValue, KopiValue, KopiValue> {
+//     const { evaluate, environment, bind } = context;
+
+//     this.value = yield KopiTuple.empty;
+
+//     await evaluate(func.bodyExpression, environment, bind);
+
+//     if (this.yielder) {
+//       await sleep();
+
+//       this.value = yield await this.yielder.apply(KopiTuple.empty, [this.value, context]);
+//     }
+
+//     return KopiTuple.empty;
+//   }
+
+//   async yield(func: KopiFunction, context: Context) {
+//     this.yielder = func;
+//   }
+
+//   async send(value: KopiValue) {
+//     return (await this.gen.next(value)).value;
+//   }
+// }
+
+class Deferred<T> {
+  resolve?: (value: T) => void;
+  reject?: (reason?: any) => void;
+
+  promise: Promise<T>;
+
+  constructor() {
+    this.promise = new Promise<T>((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+    });
   }
+}
 
-  async *generator(
-    func: KopiFunction,
-    context: Context
-  ): AsyncIterator<KopiValue, KopiValue, KopiValue> {
-    const { evaluate, environment, bind } = context;
+class Channel {
+  promiseQueue: Deferred<[KopiValue, Deferred<KopiValue>]>[] = [];
+  valueQueue: [KopiValue, Deferred<KopiValue>][] = [];
 
-    this.value = yield KopiTuple.empty;
+  read() {
+    const envelope = new Deferred<[KopiValue, Deferred<KopiValue>]>();
 
-    await evaluate(func.bodyExpression, environment, bind);
+    if (this.valueQueue.length > 0) {
+      const value = this.valueQueue.shift();
 
-    if (this.yielder) {
-      await sleep();
-
-      this.value = yield await this.yielder.apply(KopiTuple.empty, [this.value, context]);
+      if (value) {
+        return Promise.resolve(value);
+      }
+    } else {
+      this.promiseQueue.push(envelope);
     }
 
-    return KopiTuple.empty;
+    return envelope.promise;
   }
+
+  write(value: KopiValue) {
+    const reply = new Deferred<KopiValue>();
+
+    if (this.promiseQueue.length > 0) {
+      const envelope = this.promiseQueue.shift();
+
+      envelope?.resolve?.([value, reply]);
+    } else {
+      this.valueQueue.push([value, reply]);
+    }
+
+    return reply.promise;
+  }
+}
+
+//
+
+class Coroutine extends KopiValue {
+  channel: Channel = new Channel();
 
   async yield(func: KopiFunction, context: Context) {
-    this.yielder = func;
+    const [value, reply] = await this.channel.read();
+
+    const result = await func.apply(KopiTuple.empty, [value, context]);
+
+    reply.resolve?.(result);
   }
 
-  async send(value: KopiValue) {
-    return (await this.gen.next(value)).value;
+  send(value: KopiValue) {
+    return this.channel.write(value);
   }
 }
 
 class KopiSpawn extends KopiValue {
   async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
-    const coro = new Coroutine(func, context);
+    const coro = new Coroutine();
 
     (func.environment as any).yield = coro.yield.bind(coro);
+
+    func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
 
     return coro;
   }
