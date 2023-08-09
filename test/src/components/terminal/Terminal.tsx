@@ -30,7 +30,32 @@ class KopiSleep extends KopiValue {
 
 class KopiLet extends KopiValue {
   async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
-    return func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+    let result: KopiValue = KopiTuple.empty;
+    let i = 0;
+
+    do {
+      result = result instanceof KopiLoop ? result.value : result;
+
+      result = await func.apply(KopiTuple.empty, [result, context]);
+    } while (result instanceof KopiLoop && ++i < 10);
+
+    return result instanceof KopiLoop ? result.value : result;
+  }
+}
+
+class KopiLoop extends KopiValue {
+  constructor(value: KopiValue) {
+    super();
+
+    this.value = value;
+  }
+
+  value: KopiValue;
+}
+
+class KopiLoopFunction extends KopiValue {
+  async apply(thisArg: this, [value, context]: [KopiValue, Context]) {
+    return new KopiLoop(value);
   }
 }
 
@@ -248,6 +273,7 @@ let environment = new Environment({
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
   let: new KopiLet(),
+  loop: new KopiLoopFunction(),
   apply: new KopiApply(),
   ident: new KopiIdent(),
   date: new KopiDate(),
@@ -293,7 +319,7 @@ const HistoryItem = ({
   onItemSelect
 }: HistoryItemProps) => {
   return (
-    <Text padding="small" onClick={() => onItemSelect(source)}>
+    <Text padding="small" style={{ whiteSpace: 'pre' }} onClick={() => onItemSelect(source)}>
       {source}
     </Text>
   );
@@ -381,7 +407,12 @@ const historyItems = [
   `1..10 | splitEvery 3`,
   `"abcdefghij" | splitEvery 3`,
   `[1, 2, 3] | splitEvery 2`,
-  `coro = spawn () => yield 'succ`,
+  `coro = spawn () => {
+  let (x = 10) => {
+    yield n => n + x
+    yield n => n * x
+  }
+}`,
   `coro | send 5`,
 ];
 

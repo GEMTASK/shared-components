@@ -127,6 +127,7 @@ PrimaryExpression
       };
     }
   / FunctionExpression
+  / BlockExpression
   / NumericLiteral
   / StringLiteral
   / ArrayLiteral
@@ -141,6 +142,11 @@ FunctionExpression
         bodyExpression,
       }
     }
+
+BlockExpression
+  = "{" statements:Block "}" {
+    return statements;
+  }
 
 //
 // Patterns
