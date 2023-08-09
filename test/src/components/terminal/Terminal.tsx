@@ -147,47 +147,6 @@ function sleep() {
     setTimeout(resolve, 2000));
 }
 
-// class Coroutine extends KopiValue {
-//   readonly gen: AsyncIterator<KopiValue, KopiValue, KopiValue>;
-//   value: KopiValue = KopiTuple.empty;
-//   yielder: KopiFunction | null = null;
-
-//   constructor(func: KopiFunction, context: Context) {
-//     super();
-
-//     this.gen = this.generator(func, context);
-
-//     this.gen.next();
-//   }
-
-//   async *generator(
-//     func: KopiFunction,
-//     context: Context
-//   ): AsyncIterator<KopiValue, KopiValue, KopiValue> {
-//     const { evaluate, environment, bind } = context;
-
-//     this.value = yield KopiTuple.empty;
-
-//     await evaluate(func.bodyExpression, environment, bind);
-
-//     if (this.yielder) {
-//       await sleep();
-
-//       this.value = yield await this.yielder.apply(KopiTuple.empty, [this.value, context]);
-//     }
-
-//     return KopiTuple.empty;
-//   }
-
-//   async yield(func: KopiFunction, context: Context) {
-//     this.yielder = func;
-//   }
-
-//   async send(value: KopiValue) {
-//     return (await this.gen.next(value)).value;
-//   }
-// }
-
 class Deferred<T> {
   resolve?: (value: T) => void;
   reject?: (reason?: any) => void;
