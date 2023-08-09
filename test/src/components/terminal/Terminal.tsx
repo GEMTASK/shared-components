@@ -379,6 +379,8 @@ const historyItems = [
   `1..10 | splitEvery 3`,
   `"abcdefghij" | splitEvery 3`,
   `[1, 2, 3] | splitEvery 2`,
+  `coro = spawn () => yield 'succ`,
+  `coro | send 5`,
 ];
 
 const Value = ({ promise }: any) => {
