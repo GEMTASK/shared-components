@@ -382,7 +382,7 @@ const historyItems = [
 ];
 
 const Value = ({ promise }: any) => {
-  const [value, setValue] = useState<React.ReactElement | null>(
+  const [element, setValue] = useState<React.ReactElement | null>(
     <View minHeight={20} align="center">
       <Icon icon="spinner" spin />
     </View>
@@ -390,18 +390,10 @@ const Value = ({ promise }: any) => {
 
   useEffect(() => {
     (async () => {
-      const value = await promise;
+      const element = await promise;
 
-      if (value) {
-        const element = await value.inspect();
-
-        setValue(typeof element === 'string' ? (
-          <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
-            {element}
-          </Text>
-        ) : (
-          element
-        ));
+      if (element) {
+        setValue(element);
       } else {
         setValue(null);
       }
@@ -409,7 +401,7 @@ const Value = ({ promise }: any) => {
   }, [promise]);
 
   return (
-    value
+    element
   );
 };
 
@@ -427,31 +419,37 @@ const interpret = async (
 
   setInputValue('');
 
-  let element: React.ReactElement | null = null;
+  const promise = new Promise(async (resolve, reject) => {
+    try {
+      const value = await kopi.interpret(source, environment, bind);
 
-  try {
-    element = (
-      <Value promise={kopi.interpret(source, environment, bind)} />
-    );
-  } catch (error) {
-    // console.warn((error as any).location);
-    console.warn(error);
+      if (value) {
+        resolve(
+          <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+            {await value?.inspect()}
+          </Text>
+        );
+      } else {
+        resolve(value);
+      }
 
-    element = (
-      <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
-        {(error as Error).toString()}
-      </Text>
-    );
-  }
+    } catch (error) {
+      console.warn(error);
 
-  if (element !== null) {
-    setHistory(history => [
-      ...history,
-      <View horizontal>
-        {element}
-      </View>
-    ]);
-  }
+      resolve(
+        <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+          {(error as Error).toString()}
+        </Text>
+      );
+    }
+  });
+
+  setHistory(history => [
+    ...history,
+    <View horizontal>
+      <Value promise={promise} />
+    </View>
+  ]);
 };
 
 const initialHistory = [
