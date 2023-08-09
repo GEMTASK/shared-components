@@ -476,7 +476,9 @@ const Terminal = ({ ...props }: any) => {
   };
 
   const handleInputKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+
       interpret(inputValue, setInputValue, setHistory);
     }
   };
@@ -519,7 +521,7 @@ const Terminal = ({ ...props }: any) => {
           ))}
         </View>
         <View horizontal align="left" paddingHorizontal="small" style={{ marginTop: -5 }}>
-          <Input ref={inputElementRef} flush icon="angle-right" value={inputValue} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
+          <Input ref={inputElementRef} flush lines={1} icon="angle-right" value={inputValue} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
         </View>
         <Spacer size="small" />
       </View>

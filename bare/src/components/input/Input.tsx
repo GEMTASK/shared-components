@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import OpenColor from 'open-color';
 import { createUseStyles } from 'react-jss';
 import { pick, omit } from 'rambda';
@@ -94,6 +94,7 @@ const Input = ({
   ...props
 }: InputProps, ref: React.Ref<HTMLInputElement>) => {
   const [internalValue, setInternalValue] = useState(value ?? '');
+  const inputRef = useRef<any>(null);
 
   const innerStyles = useInnerStyles();
 
@@ -127,6 +128,20 @@ const Input = ({
 
   const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInternalValue(event.target.value);
+
+    if (onChange) {
+      onChange(event as any);
+    }
+  };
+
+  const handleTextAreaKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (onValueChange && event.key === 'Enter' && internalValue !== value) {
+      onValueChange(internalValue);
+    }
+
+    if (onKeyDown) {
+      onKeyDown(event as any);
+    }
   };
 
   const handleOptionSelect = (value: string) => {
@@ -137,9 +152,16 @@ const Input = ({
     }
   };
 
+  React.useImperativeHandle(ref, () => inputRef.current);
+
   useEffect(() => {
     setInternalValue(value ?? '');
   }, [value]);
+
+  useLayoutEffect(() => {
+    inputRef.current.style.height = 'auto';
+    inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+  }, [internalValue]);
 
   const handleBeforeUnload = (event: any) => {
     if (value !== undefined && value !== internalValue) {
@@ -167,7 +189,6 @@ const Input = ({
     padding: 0,
     border: 'none',
     outline: 'none',
-    // borderRadius: 2.5,
     flex: 1,
     lineHeight: '20px',
     fontSize: 14,
@@ -201,18 +222,19 @@ const Input = ({
           onChange={handleInputChange}
         />
       );
-      default: return lines && lines > 1 ? (
+      default: return lines && lines > 0 ? (
         <textarea
-          value={internalValue}
+          ref={inputRef as any}
           rows={lines}
+          value={internalValue}
           placeholder={placeholder}
-          style={{ ...innerStyles, appearance: 'none' }}
+          style={{ ...inputStyle, appearance: 'none' }}
           onChange={handleTextAreaChange}
+          onKeyDown={handleTextAreaKeyDown}
         />
       ) : (
         <input
-          ref={ref}
-          data-here
+          ref={inputRef}
           type={type}
           value={internalValue}
           placeholder={placeholder}

@@ -2,10 +2,16 @@
 // Expressions
 //
 
-Program
-  = _ expr:Statement? _ {
-    return expr;
-  }
+Block
+  = __ head:Statement? tail:(_ (Newline _)+ Statement)* __ {
+      return tail.length === 0 ? head : {
+        type: 'BlockExpression',
+        statements: tail.reduce(
+          (statements, [, , statement]) => [...statements, statement],
+          head ? [head] : []
+        ),
+      };
+    }
 
 Statement
   = Assignment
@@ -254,8 +260,8 @@ Identifier "identifier"
 _ "space"
   = " "*
 
-// __ "whitespace"
-//   = (" " / Newline)*
+__ "whitespace"
+  = (" " / Newline)*
 
 Comment "comment"
   = "#" (!Newline .)*
