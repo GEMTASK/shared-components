@@ -37,7 +37,7 @@ class KopiLet extends KopiValue {
       result = result instanceof KopiLoop ? result.value : result;
 
       result = await func.apply(KopiTuple.empty, [result, context]);
-    } while (result instanceof KopiLoop && ++i < 10);
+    } while (result instanceof KopiLoop && ++i < 5);
 
     return result instanceof KopiLoop ? result.value : result;
   }
@@ -306,8 +306,8 @@ const historyItems = [
   `'cos (30 * (PI / 180))`,
   `fetch "robots.txt"`,
   `'size (fetch "robots.txt")`,
-  `add1 = n => n + 1`,
-  `add1 5`,
+  `add1 = n => n + 1
+add1 5`,
   `"abc" | map (c) => 'toUpper c`,
   `"🥥🍏🍓" | map 'succ`,
   `"🥥🍏🍓" | at 1`,
@@ -338,11 +338,11 @@ const historyItems = [
   `(1, "a", 'b) == (1, "a", 'b)`,
   `[1, "a", 'b] == [1, "a", 'b]`,
   `[1, 2, 3] == 'toArray 1..3`,
-  `fs = ['(map n => n * n)]`,
-  `fs | reduce (x = 1..5, f) => f x`,
+  `fns = ['(map n => n * n)]
+fns | reduce (x = 1..5, f) => f x`,
   `1..3 | combos`,
-  `square = (a, b) => a * b`,
-  `1..4 | combos | map square`,
+  `square = (a, b) => a * b
+1..4 | combos | map square`,
   `"abc" | combos`,
   `[1, 2, 3] | combos`,
   `1..3 | some n => n == 2`,
@@ -366,6 +366,10 @@ const historyItems = [
   `1..10 | splitEvery 3`,
   `"abcdefghij" | splitEvery 3`,
   `[1, 2, 3] | splitEvery 2`,
+  `fact = n => let (n = n, a = 1) => {
+  loop (n - 1, a * n)
+}
+[fact 5, fact 6, fact 7]`,
   `coro = spawn () => {
   let (x = 10) => {
     yield n => n + x
