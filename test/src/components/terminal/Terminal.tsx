@@ -273,10 +273,12 @@ const HistoryLine = ({
   ...props
 }: ViewProps) => {
   return (
-    <View horizontal align="left" paddingVertical="xsmall" {...props}>
-      <Icon icon="angle-right" />
+    <View horizontal paddingVertical="xsmall" {...props}>
+      <Icon icon="angle-right" style={{ marginTop: 0 }} />
       <Spacer size="xsmall" />
-      {children}
+      <View style={{ marginTop: 1 }}>
+        {children}
+      </View>
     </View>
   );
 };
@@ -500,9 +502,11 @@ const Terminal = ({ ...props }: any) => {
   };
 
   useLayoutEffect(() => {
-    if (historyElementRef.current) {
-      historyElementRef.current.scrollTop = historyElementRef.current.scrollHeight;
-    }
+    setTimeout(() => {
+      if (historyElementRef.current) {
+        historyElementRef.current.scrollTop = historyElementRef.current.scrollHeight;
+      }
+    });
   }, [history]);
 
   return (

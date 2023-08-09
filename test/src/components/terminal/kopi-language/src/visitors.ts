@@ -30,6 +30,31 @@ async function Assignment(
 // Expressions
 //
 
+async function BlockExpression(
+  { statements }: astNodes.BlockExpression,
+  context: Context,
+): Promise<KopiValue> {
+  let { environment, evaluate } = context;
+
+  const newEnvironment = {};
+
+  Object.setPrototypeOf(newEnvironment, environment);
+
+  environment = newEnvironment;
+
+  const bind = (bindings: { [name: string]: KopiValue; }) => {
+    const newEnvironment = { ...environment, ...bindings };
+
+    Object.setPrototypeOf(newEnvironment, Object.getPrototypeOf(environment));
+
+    environment = newEnvironment;
+  };
+
+  return statements.reduce<Promise<KopiValue>>(async (result, statement) => (
+    (await result, await evaluate(statement, environment, bind))
+  ), Promise.resolve(KopiTuple.empty));
+}
+
 async function PipeExpression(
   { expression, methodName, argumentExpression }: astNodes.PipeExpression,
   context: Context,
@@ -186,6 +211,7 @@ export {
   type Visitor,
   Assignment,
   //
+  BlockExpression,
   PipeExpression,
   OperatorExpression,
   ApplyExpression,

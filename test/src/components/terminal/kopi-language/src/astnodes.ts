@@ -21,6 +21,16 @@ class Assignment extends ASTNode {
 // Expressions
 //
 
+class BlockExpression extends ASTNode {
+  readonly statements: ASTNode[];
+
+  constructor({ statements, location }: BlockExpression) {
+    super(location);
+
+    this.statements = statements;
+  }
+}
+
 class PipeExpression extends ASTNode {
   readonly expression: ASTNode;
   readonly methodName: string;
@@ -277,6 +287,7 @@ class Identifier extends ASTNode {
 export {
   Assignment,
   //
+  BlockExpression,
   PipeExpression,
   OperatorExpression,
   ApplyExpression,

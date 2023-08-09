@@ -185,7 +185,7 @@ const Input = ({
   const inputStyle = {
     background: 'none',
     color: OpenColor.gray[7],
-    margin: 0,
+    margin: '6px 0 6px 0',
     padding: 0,
     border: 'none',
     outline: 'none',
@@ -256,9 +256,9 @@ const Input = ({
     <Popup
       flex
       element={
-        <View horizontal align="left" fillColor={!flush ? 'white' : undefined} paddingHorizontal={!flush ? 'medium' : undefined} className={elementClassName} {...props}>
+        <View horizontal fillColor={!flush ? 'white' : undefined} paddingHorizontal={!flush ? 'medium' : undefined} className={elementClassName} {...props}>
           {icon && (
-            <Icon icon={icon} />
+            <Icon icon={icon} style={{ marginTop: 9 }} />
           )}
           {/* {chips && chips.map((chip, index) => (
             <Chip key={index} label={chip} />
