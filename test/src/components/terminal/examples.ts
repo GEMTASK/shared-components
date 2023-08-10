@@ -113,7 +113,7 @@ coro = spawn () => {
     loop (x + 1)
   }
 }
-(coro | send 5, coro | send 5)
+[coro | send 5, coro | send 5]
 `,
 ];
 

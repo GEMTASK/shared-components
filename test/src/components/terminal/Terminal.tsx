@@ -151,6 +151,8 @@ const Terminal = ({ ...props }: any) => {
   const historyElementRef = useRef<HTMLElement>(null);
   const inputElementRef = useRef<HTMLInputElement>(null);
   const firstEventRef = useRef<React.PointerEvent | null>(null);
+  const eventTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const eventCount = useRef(0);
 
   const [inputValue, setInputValue] = useState('');
   const [history, setHistory] = useState<React.ReactElement[]>(initialHistory);
@@ -173,15 +175,28 @@ const Terminal = ({ ...props }: any) => {
   };
 
   const handlePointerUp = (event: React.PointerEvent) => {
-    if (firstEventRef.current) {
+    eventCount.current += 1;
+
+    if (eventCount.current === 2) {
+      clearTimeout(eventTimerRef.current);
+
+      eventCount.current = 0;
+
+      return;
+    }
+
+    eventTimerRef.current = setTimeout(() => {
       if (
         event.button === 0
+        && firstEventRef.current
         && event.clientX === firstEventRef.current.clientX
         && event.clientY === firstEventRef.current.clientY
       ) {
         inputElementRef.current?.focus();
       }
-    }
+
+      eventCount.current = 0;
+    }, 300);
   };
 
   useLayoutEffect(() => {
