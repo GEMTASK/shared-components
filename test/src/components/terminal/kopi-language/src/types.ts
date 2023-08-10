@@ -52,6 +52,8 @@ class ASTNode extends KopiValue {
 }
 
 abstract class ASTPatternNode extends ASTNode {
+  abstract test(value: KopiValue, context: Context): Promise<boolean>;
+
   abstract match(value: KopiValue, context: Context): Promise<{
     [name: string]: KopiValue;
   } | undefined>;

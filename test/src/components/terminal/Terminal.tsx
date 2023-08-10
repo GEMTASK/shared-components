@@ -28,16 +28,29 @@ class KopiSleep extends KopiValue {
   }
 }
 
+class KopiMatch extends KopiValue {
+  async apply(thisArg: this, [value, context]: [KopiValue, Context]) {
+    return async (funcs: KopiTuple) => {
+      for await (const func of funcs.fields) {
+        if (await (func as KopiFunction).parameterPattern.test(value, context)) {
+          return (func as KopiFunction).apply(KopiTuple.empty, [value, context]);
+        }
+      }
+
+      throw new Error('Match failed');
+    };
+  }
+}
+
 class KopiLet extends KopiValue {
   async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
     let result: KopiValue = KopiTuple.empty;
-    let i = 0;
 
     do {
       result = result instanceof KopiLoop ? result.value : result;
 
       result = await func.apply(KopiTuple.empty, [result, context]);
-    } while (result instanceof KopiLoop && ++i < 5);
+    } while (result instanceof KopiLoop);
 
     return result instanceof KopiLoop ? result.value : result;
   }
@@ -233,6 +246,7 @@ let environment = new Environment({
   E: new KopiNumber(Math.E),
   let: new KopiLet(),
   loop: new KopiLoopFunction(),
+  match: new KopiMatch(),
   apply: new KopiApply(),
   ident: new KopiIdent(),
   date: new KopiDate(),
@@ -366,21 +380,34 @@ fns | reduce (x = 1..5, f) => f x`,
   `1..10 | splitEvery 3`,
   `"abcdefghij" | splitEvery 3`,
   `[1, 2, 3] | splitEvery 2`,
-  `(
-  0 => 1
-  n => n * factorial (n - 1)
-)`,
-  `fact = n => let (n = n, a = 1) => {
-  loop (n - 1, a * n)
+  `
+1..15 | map (n) => {
+  match (n % 3, n % 5) (
+    (0, 0) => "FizzBuzz"
+    (0, _) => "Fizz"
+    (_, 0) => "Buzz"
+    _      => n
+  )
 }
-[fact 5, fact 6, fact 7]`,
-  `coro = spawn () => {
+`,
+  `
+fact = n => let (n = n, a = 1) => {
+  match n (
+    0 => a
+    n => loop (n - 1, a * n)
+  )
+}
+[fact 5, fact 6, fact 7]
+`,
+  `
+coro = spawn () => {
   let (x = 1) => {
     yield n => n + x
     loop (x + 1)
   }
-}`,
-  `coro | send 5`,
+}
+(coro | send 5, coro | send 5)
+`,
 ];
 
 const Value = ({ promise }: any) => {
@@ -535,7 +562,9 @@ const Terminal = ({ ...props }: any) => {
           <Divider />
           <View padding="small" style={{ overflow: 'auto' }}>
             {historyItems.map((item, index) => (
-              <HistoryItem key={index} source={item} onItemSelect={(source: string) => interpret(source, setInputValue, setHistory)} />
+              <HistoryItem key={index} source={item.trim()} onItemSelect={(source: string) => (
+                interpret(source, setInputValue, setHistory)
+              )} />
             ))}
           </View>
         </View>

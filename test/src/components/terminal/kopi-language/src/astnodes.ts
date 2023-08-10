@@ -145,11 +145,19 @@ class TuplePattern extends ASTPatternNode {
     this.patterns = patterns;
   }
 
-  override async match(value: KopiValue, context: Context) {
-    // if (!(value instanceof KopiTuple)) {
-    //   throw new Error(`TuplePattern match(): value is not a tuple`);
-    // }
+  async test(value: KopiValue, context: Context) {
+    const tuple = value as KopiTuple;
 
+    for (const [index, pattern] of this.patterns.entries()) {
+      if (!await pattern.test(await tuple.fields[index] ?? KopiTuple.empty, context)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  override async match(value: KopiValue, context: Context) {
     const tuple = value as KopiTuple;
     let bindings = {};
 
@@ -157,7 +165,6 @@ class TuplePattern extends ASTPatternNode {
       let matches = await pattern.match(await tuple.fields[index] ?? KopiTuple.empty, context);
 
       if (matches === undefined) {
-        // return undefined;
         throw new Error(`TuplePattern: match() failed.`);
       }
 
@@ -175,6 +182,14 @@ class NumericLiteralPattern extends ASTPatternNode {
     super(location);
 
     this.value = value;
+  }
+
+  async test(number: KopiValue, context: Context) {
+    if (!(number instanceof KopiNumber && number.value === this.value)) {
+      return false;
+    }
+
+    return true;
   }
 
   override async match(number: KopiValue, context: Context) {
@@ -198,6 +213,18 @@ class IdentifierPattern extends ASTPatternNode {
 
     this.name = name;
     this.defaultExpression = defaultExpression;
+  }
+
+  async test(value: KopiValue, context: Context) {
+    if (value === KopiTuple.empty) {
+      if (this.defaultExpression !== null) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   override async match(value: KopiValue, context: Context) {
