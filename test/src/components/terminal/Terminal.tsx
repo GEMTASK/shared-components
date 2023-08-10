@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createUseStyles } from 'react-jss';
 
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 import Clock from '../clock/Clock';
@@ -31,6 +32,19 @@ let environment = new Environment({
   spawn: new functions.KopiSpawn(),
 });
 
+const useSidebarStyles = createUseStyles({
+  Item: {
+    '&:hover': {
+      background: '#f1f3f5',
+      borderRadius: 2.5,
+    },
+    '&:active': {
+      background: '#dee2e6',
+      borderRadius: 2.5,
+    },
+  }
+});
+
 const bind = (bindings: { [name: string]: KopiValue; }) => {
   const newEnvironment = { ...environment, ...bindings };
 
@@ -58,11 +72,14 @@ type HistoryItemProps = {
 };
 
 const HistoryItem = ({
+
   source,
   onItemSelect
 }: HistoryItemProps) => {
+  const styles = useSidebarStyles();
+
   return (
-    <Text padding="small" style={{ whiteSpace: 'pre' }} onClick={() => onItemSelect(source)}>
+    <Text padding="small" className={styles.Item} style={{ whiteSpace: 'pre' }} onClick={() => onItemSelect(source)}>
       {source}
     </Text>
   );
