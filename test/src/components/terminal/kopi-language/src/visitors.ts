@@ -125,20 +125,23 @@ async function MemberExpression(
   const { environment, evaluate, bind } = context;
 
   const expressionValue = await evaluate(expression, environment, bind);
-  const value = await (expressionValue as any)[member];
 
-  if (value !== undefined) {
-    return value;
+  if (expression.hasOwnProperty(member)) {
+    const value = await (expressionValue as any)[member];
+
+    if (value !== undefined) {
+      return value;
+    }
   }
 
-  throw new Error(`${await expression.inspect()} doesn't have a member '${member}'`);
+  throw new Error(`${await expressionValue.inspect()} doesn't have a member '${member}'`);
 }
 
 async function FunctionExpression(
   { parameterPattern, bodyExpression, name }: astNodes.FunctionExpression,
   context: Context,
 ): Promise<KopiValue> {
-  const { environment, evaluate } = context;
+  const { environment } = context;
 
   return new KopiFunction(
     parameterPattern,
