@@ -49,7 +49,18 @@ PipeExpression
     }
 
 EqualityExpression
-  = head:AddExpression tail:(_ ("==" / "!=") _ AddExpression)* {
+  = head:RelationalExpression tail:(_ ("==" / "!=") _ RelationalExpression)* {
+      return tail.reduce((leftExpression, [, operator, , rightExpression]) => ({
+        type: 'OperatorExpression',
+        operator,
+        leftExpression,
+        rightExpression,
+        location: location(),
+       }), head);
+    }
+
+RelationalExpression
+  = head:AddExpression tail:(_ ("<=" / ">=" / "<" / ">") _ AddExpression)* {
       return tail.reduce((leftExpression, [, operator, , rightExpression]) => ({
         type: 'OperatorExpression',
         operator,
@@ -117,7 +128,7 @@ PrimaryExpression
         fieldNames: [],
       }
     }
-  / "(" _ (Identifier ":" _)? head:Expression tail:(_ "," _ Expression)* _ ")" _ !"=>" {
+  / "(" __ head:Expression tail:(_ ("," /  Newline) _ Expression)* __ ")" _ !"=>" {
       return tail.length === 0 ? head : {
         type: 'TupleExpression',
         fieldExpressions: tail.reduce((expressions, [, , , expression]) => [

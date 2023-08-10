@@ -366,14 +366,18 @@ fns | reduce (x = 1..5, f) => f x`,
   `1..10 | splitEvery 3`,
   `"abcdefghij" | splitEvery 3`,
   `[1, 2, 3] | splitEvery 2`,
+  `(
+  0 => 1
+  n => n * factorial (n - 1)
+)`,
   `fact = n => let (n = n, a = 1) => {
   loop (n - 1, a * n)
 }
 [fact 5, fact 6, fact 7]`,
   `coro = spawn () => {
-  let (x = 10) => {
+  let (x = 1) => {
     yield n => n + x
-    yield n => n * x
+    loop (x + 1)
   }
 }`,
   `coro | send 5`,

@@ -35,6 +35,22 @@ class KopiNumber extends KopiValue {
     return new KopiBoolean(this.value === that.value);
   }
 
+  '>'(that: KopiNumber) {
+    return new KopiBoolean(this.value > that.value);
+  }
+
+  '<'(that: KopiNumber) {
+    return new KopiBoolean(this.value < that.value);
+  }
+
+  '>='(that: KopiNumber) {
+    return new KopiBoolean(this.value >= that.value);
+  }
+
+  '<='(that: KopiNumber) {
+    return new KopiBoolean(this.value <= that.value);
+  }
+
   //
 
   succ(count: KopiNumber | KopiTuple) {

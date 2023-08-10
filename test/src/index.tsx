@@ -15,7 +15,9 @@ const router = createBrowserRouter([
     element: <Desktop />,
   },
 ], {
-  // basename: '/react-desktop2'
+  basename: window.location.hostname !== 'localhost'
+    ? '/react-desktop2'
+    : undefined
 });
 
 const root = ReactDOM.createRoot(
