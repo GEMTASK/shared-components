@@ -30,6 +30,7 @@ let environment = new Environment({
   repeat: new functions.KopiRepeat(),
   km: new functions.KopiMeter(),
   spawn: new functions.KopiSpawn(),
+  context: new functions.KopiContextFunction(),
 });
 
 const useSidebarStyles = createUseStyles({

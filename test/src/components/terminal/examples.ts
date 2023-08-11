@@ -23,7 +23,7 @@ const examples = [
   `
 add1 = n => n + 1
 add1 5
-`,
+  `,
   `"abc" | map (c) => 'toUpper c`,
   `"🥥🍏🍓" | map 'succ`,
   `"🥥🍏🍓" | at 1`,
@@ -57,13 +57,13 @@ add1 5
   `
 fns = ['(map n => n * n)]
 fns | reduce (x = 1..5, f) => f x
-`,
+  `,
   `1..3 | combos`,
   `
 1..4 | combos | map (a, b) => {
   a * b
 }
-`,
+  `,
   `"abc" | combos`,
   `[1, 2, 3] | combos`,
   `1..3 | some n => n == 2`,
@@ -88,6 +88,12 @@ fns | reduce (x = 1..5, f) => f x
   `"abcdefghij" | splitEvery 3`,
   `[1, 2, 3] | splitEvery 2`,
   `
+age = context 30
+age | get
+age | set 10
+age | get
+  `,
+  `
 1..15 | map (n) => {
   match (n % 3, n % 5) (
     (0, 0) => "FizzBuzz"
@@ -96,7 +102,7 @@ fns | reduce (x = 1..5, f) => f x
     _      => n
   )
 }
-`,
+  `,
   `
 fact = n => let (n = n, a = 1) => {
   match n (
@@ -105,7 +111,7 @@ fact = n => let (n = n, a = 1) => {
   )
 }
 [fact 5, fact 6, fact 7]
-`,
+  `,
   `
 coro = spawn () => {
   let (x = 1) => {
@@ -114,7 +120,7 @@ coro = spawn () => {
   }
 }
 [coro | send 5, coro | send 5]
-`,
+  `,
 ];
 
 export default examples;

@@ -1,5 +1,5 @@
 import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
-import { Context, KopiValue } from './kopi-language/src/types';
+import { Bind, Context, KopiValue } from './kopi-language/src/types';
 import KopiStream_T from './kopi-language/src/classes/KopiStream';
 import KopiRange from './kopi-language/src/classes/KopiRange';
 
@@ -236,6 +236,42 @@ class KopiSpawn extends KopiValue {
   }
 }
 
+class KopiContext extends KopiValue {
+  symbol: symbol;
+
+  constructor(value: KopiValue, bind: Bind) {
+    super();
+
+    this.symbol = Symbol();
+
+    bind({
+      [this.symbol]: value,
+    });
+  }
+
+  set(value: KopiValue, context: Context) {
+    const { bind } = context;
+
+    bind({
+      [this.symbol]: value,
+    });
+  }
+
+  get(_: KopiValue, context: Context) {
+    const { environment } = context;
+
+    return environment[this.symbol as keyof typeof environment];
+  }
+}
+
+class KopiContextFunction extends KopiValue {
+  async apply(thisArg: this, [value, context]: [KopiValue, Context]) {
+    const { bind } = context;
+
+    return new KopiContext(value, bind);
+  }
+}
+
 export {
   KopiDate,
   KopiSleep,
@@ -252,4 +288,5 @@ export {
   KopiRepeat,
   KopiMeter,
   KopiSpawn,
+  KopiContextFunction,
 };
