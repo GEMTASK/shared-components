@@ -64,6 +64,11 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         location: rawASTNode.location,
       } as astNodes.FunctionExpression);
     //
+    case 'TuplePattern':
+      return new astNodes.TuplePattern({
+        patterns: rawASTNode.fieldPatterns.map((pattern: ASTPatternNode) => transform(pattern)),
+        location: rawASTNode.location,
+      } as astNodes.TuplePattern);
     case 'NumericLiteralPattern':
       return new astNodes.NumericLiteralPattern({
         value: rawASTNode.value,
@@ -75,11 +80,6 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         location: rawASTNode.location,
         defaultExpression: rawASTNode.defaultExpression && transform(rawASTNode.defaultExpression),
       } as astNodes.IdentifierPattern);
-    case 'TuplePattern':
-      return new astNodes.TuplePattern({
-        patterns: rawASTNode.fieldPatterns.map((pattern: ASTPatternNode) => transform(pattern)),
-        location: rawASTNode.location,
-      } as astNodes.TuplePattern);
     //
     case 'NumericLiteral':
       return new astNodes.NumericLiteral({

@@ -18,7 +18,18 @@ Statement
   / Expression
 
 Assignment
-  = pattern:PrimaryPattern _ "=" _ expression:Expression {
+  = identifierPattern:IdentifierPattern _ parameterPatterns:(_ PrimaryPattern)* _ "=" _ expression:Expression {
+      return {
+        type: 'Assignment',
+        pattern: identifierPattern,
+        expression: parameterPatterns.reduce((bodyExpression, [, parameterPattern]) => ({
+          type: 'FunctionExpression',
+          parameterPattern,
+          bodyExpression
+        }), expression)
+      }
+  }
+  / pattern:PrimaryPattern _ "=" _ expression:Expression {
       return {
         type: 'Assignment',
         pattern,
