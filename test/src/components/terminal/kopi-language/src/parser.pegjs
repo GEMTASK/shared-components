@@ -22,10 +22,11 @@ Assignment
       return {
         type: 'Assignment',
         pattern: identifierPattern,
-        expression: parameterPatterns.reduce((bodyExpression, [, parameterPattern]) => ({
+        expression: parameterPatterns.reduce((bodyExpression, [, parameterPattern], index) => ({
           type: 'FunctionExpression',
           parameterPattern,
-          bodyExpression
+          bodyExpression,
+          name: index === 0 ? identifierPattern.name : undefined
         }), expression)
       }
   }

@@ -61,6 +61,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       return new astNodes.FunctionExpression({
         parameterPattern: transform(rawASTNode.parameterPattern),
         bodyExpression: transform(rawASTNode.bodyExpression),
+        name: rawASTNode.name,
         location: rawASTNode.location,
       } as astNodes.FunctionExpression);
     //

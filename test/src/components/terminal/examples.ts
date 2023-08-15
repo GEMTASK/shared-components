@@ -21,7 +21,7 @@ const examples = [
   `fetch "robots.txt"`,
   `'size (fetch "robots.txt")`,
   `
-add1 = n => n + 1
+add1 (n) = n + 1
 add1 5
   `,
   `"abc" | map (c) => 'toUpper c`,
@@ -104,7 +104,14 @@ age | get
 }
   `,
   `
-fact = n => let (n = n, a = 1) => {
+fact (n) = match n (
+  0 => 1
+  n => n * fact (n - 1)
+)
+fact 5
+  `,
+  `
+fact (n) = let (n = n, a = 1) => {
   match n (
     0 => a
     n => loop (n - 1, a * n)
