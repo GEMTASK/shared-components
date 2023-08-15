@@ -174,7 +174,7 @@ const Terminal = ({ ...props }: any) => {
 
   const [inputValue, setInputValue] = useState('');
   const [history, setHistory] = useState<React.ReactElement[]>(initialHistory);
-  const [isHistoryVisible, setIsHistoryVisible] = useState(false);
+  const [isHistoryVisible, setIsHistoryVisible] = useState(true);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -248,7 +248,7 @@ const Terminal = ({ ...props }: any) => {
       {isHistoryVisible && (
         <View>
           <View fillColor="gray-1" padding="small large" minHeight={48} align="bottom left">
-            <Text fontSize="medium">History</Text>
+            <Text fontSize="medium">Examples</Text>
           </View>
           <Divider />
           <View padding="small" style={{ overflow: 'auto' }}>
