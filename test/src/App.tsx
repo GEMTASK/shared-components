@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { LoremIpsum } from 'lorem-ipsum';
 
-import styles from './App.module.css';
+// import styles from './App.module.css';
 
 import { hues, View, Text, Image, Button, Stack, Spacer, Divider, createLink } from 'bare';
 import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table, Toast, toast } from 'bare';

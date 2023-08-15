@@ -159,8 +159,10 @@ const Input = ({
   }, [value]);
 
   useLayoutEffect(() => {
-    inputRef.current.style.height = 'auto';
-    inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+    if (lines && inputRef.current) {
+      inputRef.current.style.height = 'auto';
+      inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+    }
   }, [internalValue]);
 
   const handleBeforeUnload = (event: any) => {
