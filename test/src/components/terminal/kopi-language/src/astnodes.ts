@@ -137,18 +137,18 @@ class TupleExpression extends ASTNode {
 //
 
 class TuplePattern extends ASTPatternNode {
-  readonly patterns: ASTPatternNode[];
+  readonly fieldPatterns: ASTPatternNode[];
 
-  constructor({ patterns, location }: TuplePattern) {
+  constructor({ fieldPatterns, location }: TuplePattern) {
     super(location);
 
-    this.patterns = patterns;
+    this.fieldPatterns = fieldPatterns;
   }
 
   async test(value: KopiValue, context: Context) {
     const tuple = value as KopiTuple;
 
-    for (const [index, pattern] of this.patterns.entries()) {
+    for (const [index, pattern] of this.fieldPatterns.entries()) {
       if (!await pattern.test(await tuple.fields[index] ?? KopiTuple.empty, context)) {
         return false;
       }
@@ -161,7 +161,7 @@ class TuplePattern extends ASTPatternNode {
     const tuple = value as KopiTuple;
     let bindings = {};
 
-    for (const [index, pattern] of this.patterns.entries()) {
+    for (const [index, pattern] of this.fieldPatterns.entries()) {
       let matches = await pattern.match(await tuple.fields[index] ?? KopiTuple.empty, context);
 
       if (matches === undefined) {

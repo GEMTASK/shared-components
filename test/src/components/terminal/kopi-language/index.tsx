@@ -67,7 +67,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
     //
     case 'TuplePattern':
       return new astNodes.TuplePattern({
-        patterns: rawASTNode.fieldPatterns.map((pattern: ASTPatternNode) => transform(pattern)),
+        fieldPatterns: rawASTNode.fieldPatterns.map((pattern: ASTPatternNode) => transform(pattern)),
         location: rawASTNode.location,
       } as astNodes.TuplePattern);
     case 'NumericLiteralPattern':
