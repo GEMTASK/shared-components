@@ -126,7 +126,7 @@ async function MemberExpression(
 
   const expressionValue = await evaluate(expression, environment, bind);
 
-  if (expression.hasOwnProperty(member)) {
+  if (expressionValue.hasOwnProperty(member)) {
     const value = await (expressionValue as any)[member];
 
     if (value !== undefined) {

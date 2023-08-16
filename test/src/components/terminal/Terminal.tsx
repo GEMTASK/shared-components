@@ -6,13 +6,63 @@ import Clock from '../clock/Clock';
 
 import * as kopi from './kopi-language';
 
-import { KopiNumber } from './kopi-language/src/classes';
+import { KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
 import { Environment, KopiValue } from './kopi-language/src/types';
 
 import historyItems from './examples';
 import * as functions from './functions';
 
+class Point extends KopiValue {
+  x: KopiNumber;
+  y: KopiNumber;
+
+  constructor(x: KopiNumber, y: KopiNumber) {
+    super();
+
+    this.x = x;
+    this.y = y;
+  }
+}
+
+class Point_ extends KopiValue {
+  async apply(thisArg: this, [tuple]: [KopiTuple]) {
+    return new Point(await tuple[0] as KopiNumber, await tuple[1] as KopiNumber);
+  }
+}
+
+class type_ extends KopiValue {
+  async apply(thisArg: this, [tuple]: [KopiTuple]) {
+    const class_ = class extends KopiValue {
+      value: KopiValue;
+
+      constructor(value: KopiValue) {
+        super();
+
+        this.value = value;
+      }
+    };
+
+    Object.defineProperty(class_, 'name', {
+      value: 'Person'
+    });
+
+    const Constructor = new class extends KopiValue {
+      apply(thisArg: this, [value]: [KopiValue]) {
+        return new class_(value);
+      }
+    }();
+
+    Object.defineProperty(Constructor, 'name', {
+      value: new KopiString('Person')
+    });
+
+    return Constructor;
+  }
+}
+
 let environment = new Environment({
+  Point: new Point_(),
+  type: new type_(),
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
   let: new functions.KopiLet(),
