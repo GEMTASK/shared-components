@@ -74,6 +74,14 @@ class KopiTuple extends KopiValue {
     });
   }
 
+  override async toString() {
+    const fields = await Promise.all(
+      this.fields.map(async (element) => `${await (await element).toString()}`)
+    );
+
+    return `(${fields.join(', ')})`;
+  }
+
   override async inspect() {
     const fields = await Promise.all(
       this.fields.map(async (element) => `${await (await element).inspect()}`)

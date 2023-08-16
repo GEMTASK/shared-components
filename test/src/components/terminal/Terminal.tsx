@@ -60,11 +60,18 @@ class type_ extends KopiValue {
   }
 }
 
+class KopiPrint_ extends KopiValue {
+  async apply(thisArg: this, [value]: [KopiValue]) {
+    return new KopiString(await value.toString());
+  }
+}
+
 let environment = new Environment({
   Point: new Point_(),
   type: new type_(),
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
+  print: new KopiPrint_(),
   let: new functions.KopiLet(),
   loop: new functions.KopiLoopFunction(),
   match: new functions.KopiMatch(),

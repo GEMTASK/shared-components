@@ -90,10 +90,10 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
 
   async toString() {
     const elements = await Promise.all(
-      this.elements.map(async element => (await element).inspect())
+      this.elements.map(async element => (await element).toString())
     );
 
-    return new KopiString(`[${elements.join(', ')}]`);
+    return `[${elements.join(', ')}]`;
   }
 
   async *[Symbol.asyncIterator]() {
