@@ -2,11 +2,11 @@ import { Context, KopiValue } from '../types';
 
 import KopiNumber from './KopiNumber';
 import KopiBoolean from './KopiBoolean';
+import KopiTuple from './KopiTuple';
+import KopiRange from './KopiRange';
 
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
-import KopiString from './KopiString';
-import KopiTuple from './KopiTuple';
 
 interface KopiArray extends KopiValue, KopiIterable<KopiArray> { };
 
@@ -110,7 +110,20 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
     return new KopiBoolean(this.elements.length === 0);
   }
 
-  at(index: KopiNumber) {
+  async at(index: KopiNumber | KopiRange) {
+    if (index instanceof KopiRange) {
+      const [from, to] = await Promise.all([
+        index.from,
+        index.to
+      ]);
+
+      if (from instanceof KopiNumber && to instanceof KopiNumber) {
+        return new KopiArray(this.elements.slice(from.value, to.value));
+      }
+
+      throw new Error('Array at range must be numeric.');
+    }
+
     return this.elements[index.value] ?? KopiTuple.empty;
   }
 
