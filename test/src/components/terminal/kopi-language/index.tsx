@@ -75,6 +75,11 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         value: rawASTNode.value,
         location: rawASTNode.location,
       } as astNodes.NumericLiteralPattern);
+    case 'ArrayLiteralPattern':
+      return new astNodes.ArrayLiteralPattern({
+        elementPatterns: rawASTNode.elementPatterns.map((pattern: ASTPatternNode) => transform(pattern)),
+        location: rawASTNode.location,
+      } as astNodes.ArrayLiteralPattern);
     case 'IdentifierPattern':
       return new astNodes.IdentifierPattern({
         name: rawASTNode.name,

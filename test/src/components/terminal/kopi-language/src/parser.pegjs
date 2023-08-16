@@ -203,8 +203,28 @@ PrimaryPattern
         ], [head])
       }
     }
+  / ArrayLiteralPattern
   / NumericLiteralPattern
   / IdentifierPattern
+
+ArrayLiteralPattern
+  = "[" _ "]" {
+    return {
+      type: 'ArrayLiteralPattern',
+      elementPatterns: [],
+    }
+  }
+  / "[" _ head:Pattern? tail:(_ "," _ Pattern)* _ "]" {
+    return {
+      type: 'ArrayLiteralPattern',
+      elementPatterns: tail.reduce((patterns, [, , , pattern]) => [
+        ...patterns,
+        pattern
+      ], [head])
+    }
+  }
+
+//  = "[" _ head:Expression? tail:(_ "," _ Expression)* _ "]" _ !"=>" {
 
 NumericLiteralPattern
   = number:NumericLiteral {
