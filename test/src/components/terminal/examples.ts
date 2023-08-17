@@ -70,7 +70,7 @@ fns | reduce (x = 1..5, f) => f x
   `1..3 | combos`,
   `
 1..4 | combos | map (a, b) => {
-  a * b
+    a * b
 }
   `,
   `"abc" | combos`,
@@ -104,44 +104,50 @@ age | get
   `,
   `
 1..15 | map (n) => {
-  match (n % 3, n % 5) (
-    (0, 0) => "FizzBuzz"
-    (0, _) => "Fizz"
-    (_, 0) => "Buzz"
-    _      => n
-  )
+    match (n % 3, n % 5) (
+        (0, 0) => "FizzBuzz"
+        (0, _) => "Fizz"
+        (_, 0) => "Buzz"
+        _      => n
+    )
 }
   `,
   `
 fact (n) = match n (
-  0 => 1
-  n => n * fact (n - 1)
+    0 => 1
+    n => n * fact (n - 1)
 )
 fact 5
   `,
   `
 fact (n) = let (n = n, a = 1) => {
-  match n (
-    0 => a
-    n => loop (n - 1, a * n)
-  )
+    match n (
+        0 => a
+        n => loop (n - 1, a * n)
+    )
 }
 [fact 5, fact 6, fact 7]
   `,
   `
 coro = spawn () => {
-  let (x = 1) => {
-    yield n => n + x
-    loop (x + 1)
-  }
+    let (x = 1) => {
+        yield n => n + x
+        loop (x + 1)
+    }
 }
 [coro | send 5, coro | send 5]
   `,
   `
-View (fillColor: "gray-1") [
-  View (fillColor: "red-5") []
-  Text (fillColor: "green-5") "Hello"
-  Button (title: "blue-5")
+View (
+    fillColor: "gray-1"
+    padding: "small large"
+) [
+    View (
+        fillColor: "red-5"
+        padding: "small"
+    ) []
+    Text (fillColor: "green-5") "Hello"
+    Button (title: "blue-5")
 ]
   `,
 ];
