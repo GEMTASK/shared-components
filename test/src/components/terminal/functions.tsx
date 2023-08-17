@@ -91,13 +91,13 @@ class KopiFetch extends KopiValue {
 
 class KopiClock extends KopiValue {
   async inspect() {
-    return <Clock style={{ width: 150 }} />;;
+    return <Clock style={{ width: 150 }} />;
   }
 }
 
 class KopiCalendar extends KopiValue {
   async inspect() {
-    return <Calendar style={{ width: 360 }} />;;
+    return <Calendar style={{ width: 360 }} />;
   }
 }
 

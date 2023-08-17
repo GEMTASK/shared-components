@@ -74,8 +74,43 @@ class KopiEval_ extends KopiValue {
   }
 }
 
+class KopiReact_ extends KopiValue {
+  component: React.ComponentType;
+  props: any;
+  children: any;
+
+  constructor(component: React.ComponentType, props: any, children: KopiReact_[]) {
+    super();
+
+    this.component = component;
+    this.props = props;
+    this.children = children;
+  }
+
+  async inspectChildren(children: any): Promise<React.ReactNode> {
+    return Promise.all(
+      children.map(async (child: any) => (
+        React.createElement(this.component, { ...this.props, fillColor: 'gray-3' }, await this.inspectChildren((await child).children.elements))
+      ))
+    );
+  }
+
+  async inspect() {
+    return React.createElement(this.component, this.props, await this.inspectChildren(this.children.elements)) as any;
+  }
+}
+
+class KopiView_ extends KopiValue {
+  async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
+    return (children: any) => {
+      return new KopiReact_(View, { fillColor: 'gray-1', padding: 'large' }, children);
+    };
+  }
+}
+
 let environment = new Environment({
   Point: new Point_(),
+  View: new KopiView_(),
   type: new type_(),
   eval: new KopiEval_(),
   PI: new KopiNumber(Math.PI),

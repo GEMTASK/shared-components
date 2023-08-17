@@ -1580,7 +1580,16 @@ function peg$parse(input, options) {
             if (peg$silentFails === 0) { peg$fail(peg$e18); }
           }
           if (s7 === peg$FAILED) {
-            s7 = peg$parseNewline();
+            s7 = [];
+            s8 = peg$parseNewline();
+            if (s8 !== peg$FAILED) {
+              while (s8 !== peg$FAILED) {
+                s7.push(s8);
+                s8 = peg$parseNewline();
+              }
+            } else {
+              s7 = peg$FAILED;
+            }
           }
           if (s7 !== peg$FAILED) {
             s8 = peg$parse_();
@@ -1608,7 +1617,16 @@ function peg$parse(input, options) {
               if (peg$silentFails === 0) { peg$fail(peg$e18); }
             }
             if (s7 === peg$FAILED) {
-              s7 = peg$parseNewline();
+              s7 = [];
+              s8 = peg$parseNewline();
+              if (s8 !== peg$FAILED) {
+                while (s8 !== peg$FAILED) {
+                  s7.push(s8);
+                  s8 = peg$parseNewline();
+                }
+              } else {
+                s7 = peg$FAILED;
+              }
             }
             if (s7 !== peg$FAILED) {
               s8 = peg$parse_();

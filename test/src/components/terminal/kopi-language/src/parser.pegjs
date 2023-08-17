@@ -140,7 +140,7 @@ PrimaryExpression
         fieldNames: [],
       }
     }
-  / "(" __ head:Expression tail:(_ ("," /  Newline) _ Expression)* __ ")" _ !"=>" {
+  / "(" __ head:Expression tail:(_ ("," /  Newline+) _ Expression)* __ ")" _ !"=>" {
       return tail.length === 0 ? head : {
         type: 'TupleExpression',
         fieldExpressions: tail.reduce((expressions, [, , , expression]) => [
