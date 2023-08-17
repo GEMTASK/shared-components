@@ -113,18 +113,18 @@ const initialState = [
     }
   },
   {
-    id: uuidv4(), title: 'Contacts', element: <Contacts />, rect: {
-      x: 615, y: 360, width: 510, height: 540,
+    id: uuidv4(), title: 'Files', element: <Filesystem />, rect: {
+      x: 15, y: 360, width: 675, height: 540,
     }
   },
+  // {
+  //   id: uuidv4(), title: 'Contacts', element: <Contacts />, rect: {
+  //     x: 615, y: 360, width: 510, height: 540,
+  //   }
+  // },
   {
     id: uuidv4(), title: 'Terminal', element: <Terminal />, rect: {
-      x: 1140, y: 360, width: 525, height: 540,
-    }
-  },
-  {
-    id: uuidv4(), title: 'Files', element: <Filesystem />, rect: {
-      x: 15, y: 360, width: 585, height: 540,
+      x: 975, y: 360, width: 690, height: 540,
     }
   },
 ];
