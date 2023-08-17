@@ -139,15 +139,19 @@ coro = spawn () => {
   `,
   `
 View (
+    horizontal: true
     fillColor: "gray-1"
-    padding: "small large"
+    padding: "large"
 ) [
-    View (
-        fillColor: "red-5"
-        padding: "small"
-    ) []
-    Text (fillColor: "green-5") "Hello"
-    Button (title: "blue-5")
+    Text (
+        fillColor: "green-3"
+        padding: "small large"
+        align: "center"
+    ) "Hello, world"
+    Button (
+        solid: true
+        title: "blue-5"
+    )
 ]
   `,
 ];

@@ -116,14 +116,17 @@ class KopiReact_ extends KopiValue {
 
 class KopiView_ extends KopiValue {
   async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
+    const horizontal = await (props as any).horizontal;
     const fillColor = await (props as any).fillColor;
     const padding = await (props as any).padding;
+    const border = await (props as any).border;
 
     return (children: any) => {
       return new KopiReact_(View, {
-        horizontal: true,
+        horizontal: horizontal?.value,
         fillColor: fillColor?.value,
         padding: padding?.value,
+        border: border?.value,
         style: { gap: 16 }
       }, children);
     };
@@ -134,11 +137,13 @@ class KopiText_ extends KopiValue {
   async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
     const fillColor = await (props as any).fillColor;
     const padding = await (props as any).padding;
+    const align = await (props as any).align;
 
     return (string: any) => {
       return new KopiReact_(Text, {
         fillColor: fillColor?.value,
         padding: padding?.value,
+        align: align?.value
       }, string);
     };
   }
@@ -147,8 +152,10 @@ class KopiText_ extends KopiValue {
 class KopiButton_ extends KopiValue {
   async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
     const title = await (props as any).title;
+    const solid = await (props as any).solid;
 
     return new KopiReact_(Button, {
+      solid: solid?.value,
       primary: true,
       title: title?.value,
     });

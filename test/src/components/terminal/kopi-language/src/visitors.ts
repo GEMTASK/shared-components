@@ -1,6 +1,6 @@
 import * as astNodes from './astnodes';
 import { ASTNode, Context, KopiValue } from './types';
-import { KopiArray, KopiAstLiteral, KopiFunction, KopiNumber, KopiString, KopiTuple } from './classes';
+import { KopiArray, KopiAstLiteral, KopiBoolean, KopiFunction, KopiNumber, KopiString, KopiTuple } from './classes';
 import KopiRange from './classes/KopiRange';
 
 interface Visitor {
@@ -167,6 +167,12 @@ async function TupleExpression(
 // Literals
 //
 
+async function BooleanLiteral(
+  { value }: astNodes.BooleanLiteral
+): Promise<KopiValue> {
+  return new KopiBoolean(value);
+}
+
 async function NumericLiteral(
   { value }: astNodes.NumericLiteral
 ): Promise<KopiValue> {
@@ -224,6 +230,7 @@ export {
   FunctionExpression,
   TupleExpression,
   //
+  BooleanLiteral,
   NumericLiteral,
   StringLiteral,
   ArrayLiteral,

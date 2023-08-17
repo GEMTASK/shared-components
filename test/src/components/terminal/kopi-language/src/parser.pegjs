@@ -155,6 +155,7 @@ PrimaryExpression
     }
   / FunctionExpression
   / BlockExpression
+  / BooleanLiteral
   / NumericLiteral
   / StringLiteral
   / ArrayLiteral
@@ -249,6 +250,15 @@ IdentifierPattern
 //
 // Literals
 //
+
+BooleanLiteral "boolean"
+  = value:("true" / "false") {
+      return {
+        type: 'BooleanLiteral',
+        value: text() === 'true',
+        location: location(),
+      };
+    }
 
 NumericLiteral "number"
   = value:([0-9]+ ("." !"." [0-9]+)?) {

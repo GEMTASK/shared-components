@@ -87,6 +87,11 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         defaultExpression: rawASTNode.defaultExpression && transform(rawASTNode.defaultExpression),
       } as astNodes.IdentifierPattern);
     //
+    case 'BooleanLiteral':
+      return new astNodes.BooleanLiteral({
+        value: rawASTNode.value,
+        location: rawASTNode.location,
+      } as astNodes.BooleanLiteral);
     case 'NumericLiteral':
       return new astNodes.NumericLiteral({
         value: rawASTNode.value,
@@ -147,6 +152,8 @@ function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
     return visitors.FunctionExpression(astNode, context);
   } else if (astNode instanceof astNodes.TupleExpression) {
     return visitors.TupleExpression(astNode, context);
+  } else if (astNode instanceof astNodes.BooleanLiteral) {
+    return visitors.BooleanLiteral(astNode);
   } else if (astNode instanceof astNodes.NumericLiteral) {
     return visitors.NumericLiteral(astNode);
   } else if (astNode instanceof astNodes.StringLiteral) {

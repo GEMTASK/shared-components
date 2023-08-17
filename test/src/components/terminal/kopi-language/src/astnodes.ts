@@ -193,9 +193,6 @@ class NumericLiteralPattern extends ASTPatternNode {
   }
 
   override async match(number: KopiValue, context: Context) {
-    // TODO: Do we want to throw when testing function predicates?
-    // Should we return Error instead?
-
     if (!(number instanceof KopiNumber && number.value === this.value)) {
       throw new TypeError(`Expected ${this.value} but ${await number.inspect()} found.`);
     }
@@ -291,6 +288,16 @@ class IdentifierPattern extends ASTPatternNode {
 // Literals
 //
 
+class BooleanLiteral extends ASTNode {
+  readonly value: boolean;
+
+  constructor({ value, location }: BooleanLiteral) {
+    super(location);
+
+    this.value = value;
+  }
+}
+
 class NumericLiteral extends ASTNode {
   readonly value: number;
 
@@ -369,6 +376,7 @@ export {
   IdentifierPattern,
   TuplePattern,
   //
+  BooleanLiteral,
   NumericLiteral,
   StringLiteral,
   ArrayLiteral,
