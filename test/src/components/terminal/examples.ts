@@ -138,7 +138,11 @@ coro = spawn () => {
 [coro | send 5, coro | send 5]
   `,
   `
-View () [View () []]
+View () [
+  View () []
+  View () []
+  View () []
+]
   `,
 ];
 

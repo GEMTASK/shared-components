@@ -265,7 +265,7 @@ StringLiteral "string"
     }
 
 ArrayLiteral
-  = "[" _ head:Expression? tail:(_ "," _ Expression)* _ "]" _ !"=>" {
+  = "[" __ head:Expression? tail:(_ ("," / Newline+) _ Expression)* __ "]" _ !"=>" {
       return {
         type: 'ArrayLiteral',
         elementExpressions: !head ? [] : tail.reduce((elementExpressions, [, , , elementExpression]) =>

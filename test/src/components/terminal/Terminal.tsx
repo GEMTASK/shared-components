@@ -103,7 +103,7 @@ class KopiReact_ extends KopiValue {
 class KopiView_ extends KopiValue {
   async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
     return (children: any) => {
-      return new KopiReact_(View, { fillColor: 'gray-1', padding: 'large' }, children);
+      return new KopiReact_(View, { horizontal: true, fillColor: 'gray-1', padding: 'large', style: { gap: 16 } }, children);
     };
   }
 }
