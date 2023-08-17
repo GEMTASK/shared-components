@@ -128,11 +128,11 @@ class KopiText_ extends KopiValue {
   async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
     const fillColor = await (props as any).fillColor;
 
-    return (children: any) => {
+    return (string: any) => {
       return new KopiReact_(Text, {
         fillColor: fillColor?.value,
         padding: 'small large',
-      }, children);
+      }, string);
     };
   }
 }
