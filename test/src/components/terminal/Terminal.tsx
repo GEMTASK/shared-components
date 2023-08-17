@@ -6,7 +6,7 @@ import Clock from '../clock/Clock';
 
 import * as kopi from './kopi-language';
 
-import { KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
+import { KopiArray, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
 import { ASTNode, Context, Environment, KopiValue } from './kopi-language/src/types';
 
 import historyItems from './examples';
@@ -77,9 +77,9 @@ class KopiEval_ extends KopiValue {
 class KopiReact_ extends KopiValue {
   component: React.ComponentType;
   props: any;
-  children: any;
+  children?: KopiArray;
 
-  constructor(component: React.ComponentType, props: any, children: KopiReact_[]) {
+  constructor(component: React.ComponentType, props: any, children?: KopiArray) {
     super();
 
     this.component = component;
@@ -89,14 +89,28 @@ class KopiReact_ extends KopiValue {
 
   async inspectChildren(children: any): Promise<React.ReactNode> {
     return Promise.all(
-      children.map(async (child: any) => (
-        React.createElement(this.component, (await child).props, await this.inspectChildren((await child).children.elements))
-      ))
+      children.map(async (child: any) => {
+        const awaitedChild = await child;
+
+        if (awaitedChild.children instanceof KopiString) {
+          return React.createElement(this.component, awaitedChild.props, awaitedChild.children.value) as any;
+        } else if (awaitedChild.children) {
+          return React.createElement(this.component, awaitedChild.props, await this.inspectChildren(awaitedChild.children.elements));
+        }
+
+        return React.createElement(this.component, awaitedChild.props) as any;
+      })
     );
   }
 
   async inspect() {
-    return React.createElement(this.component, this.props, await this.inspectChildren(this.children.elements)) as any;
+    if (this.children instanceof KopiString) {
+      return React.createElement(this.component, this.props, this.children.value) as any;
+    } else if (this.children) {
+      return React.createElement(this.component, this.props, await this.inspectChildren(this.children.elements)) as any;
+    }
+
+    return React.createElement(this.component, this.props) as any;
   }
 }
 
@@ -116,9 +130,23 @@ class KopiView_ extends KopiValue {
   }
 }
 
+class KopiText_ extends KopiValue {
+  async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
+    const fillColor = await (props as any).fillColor;
+
+    return (string: any) => {
+      return new KopiReact_(Text, {
+        fillColor: fillColor?.value,
+        padding: 'small large',
+      }, string);
+    };
+  }
+}
+
 let environment = new Environment({
   Point: new Point_(),
   View: new KopiView_(),
+  Text: new KopiText_(),
   type: new type_(),
   eval: new KopiEval_(),
   PI: new KopiNumber(Math.PI),
