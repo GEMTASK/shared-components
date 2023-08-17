@@ -159,6 +159,7 @@ async function TupleExpression(
 
   return new KopiTuple(
     fieldExpressions.map(expressionField => evaluate(expressionField, environment, bind)),
+    fieldNames
   );
 }
 

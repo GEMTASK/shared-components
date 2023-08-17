@@ -140,13 +140,14 @@ PrimaryExpression
         fieldNames: [],
       }
     }
-  / "(" __ head:Expression tail:(_ ("," /  Newline+) _ Expression)* __ ")" _ !"=>" {
-      return tail.length === 0 ? head : {
+  / "(" __ fieldName:(Identifier ":")? _ head:Expression tail:(_ ("," /  Newline+) _ Expression)* __ ")" _ !"=>" {
+      return !fieldName && tail.length === 0 ? head : {
         type: 'TupleExpression',
         fieldExpressions: tail.reduce((expressions, [, , , expression]) => [
           ...expressions,
           expression
-        ], [head])
+        ], [head]),
+        fieldNames: [fieldName && fieldName[0].name]
       };
     }
   / FunctionExpression

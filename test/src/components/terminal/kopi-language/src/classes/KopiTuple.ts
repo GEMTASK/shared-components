@@ -49,24 +49,28 @@ class KopiTuple extends KopiValue {
   [key: number]: KopiValue | Promise<KopiValue>;
 
   _fields: (KopiValue | Promise<KopiValue>)[];
+  _fieldNames: string[];
 
   override get fields() {
     return this._fields;
   }
 
-  constructor(fields: (KopiValue | Promise<KopiValue>)[]) {
+  constructor(fields: (KopiValue | Promise<KopiValue>)[], fieldNames: string[] = []) {
     super();
 
     if (fields.length === 0 && KopiTuple.empty) {
       this._fields = [];
+      this._fieldNames = fieldNames;
 
       return KopiTuple.empty;
     }
 
     this._fields = fields;
+    this._fieldNames = fieldNames;
 
     fields.forEach((field, index) => {
       this[index] = field;
+      this[(this._fieldNames as any)[index]] = field;
     });
 
     Promise.all(fields).then(resolvedFields => {

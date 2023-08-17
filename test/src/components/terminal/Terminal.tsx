@@ -90,7 +90,7 @@ class KopiReact_ extends KopiValue {
   async inspectChildren(children: any): Promise<React.ReactNode> {
     return Promise.all(
       children.map(async (child: any) => (
-        React.createElement(this.component, { ...this.props, fillColor: 'gray-3' }, await this.inspectChildren((await child).children.elements))
+        React.createElement(this.component, (await child).props, await this.inspectChildren((await child).children.elements))
       ))
     );
   }
@@ -102,8 +102,16 @@ class KopiReact_ extends KopiValue {
 
 class KopiView_ extends KopiValue {
   async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
+
+    const fillColor = await (props as any).fillColor;
+
     return (children: any) => {
-      return new KopiReact_(View, { horizontal: true, fillColor: 'gray-1', padding: 'large', style: { gap: 16 } }, children);
+      return new KopiReact_(View, {
+        horizontal: true,
+        fillColor: fillColor?.value,
+        padding: 'large',
+        style: { gap: 16 }
+      }, children);
     };
   }
 }

@@ -138,10 +138,12 @@ coro = spawn () => {
 [coro | send 5, coro | send 5]
   `,
   `
-View () [
-  View () []
-  View () []
-  View () []
+View (fillColor: "gray-1") [
+  View (fillColor: "red-5") [
+    View (fillColor: "red-9") []
+  ]
+  View (fillColor: "green-5") []
+  View (fillColor: "blue-5") []
 ]
   `,
 ];
