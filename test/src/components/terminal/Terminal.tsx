@@ -7,7 +7,7 @@ import Clock from '../clock/Clock';
 import * as kopi from './kopi-language';
 
 import { KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
-import { Environment, KopiValue } from './kopi-language/src/types';
+import { ASTNode, Context, Environment, KopiValue } from './kopi-language/src/types';
 
 import historyItems from './examples';
 import * as functions from './functions';
@@ -66,9 +66,18 @@ class KopiPrint_ extends KopiValue {
   }
 }
 
+class KopiEval_ extends KopiValue {
+  async apply(thisArg: this, [node, context]: [ASTNode, Context]) {
+    const { evaluate, environment, bind } = context;
+
+    return evaluate(node, environment, bind);
+  }
+}
+
 let environment = new Environment({
   Point: new Point_(),
   type: new type_(),
+  eval: new KopiEval_(),
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
   print: new KopiPrint_(),
