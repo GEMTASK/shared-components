@@ -141,7 +141,7 @@ coro = spawn () => {
 View (fillColor: "gray-1") [
   View (fillColor: "red-5") []
   Text (fillColor: "green-5") "Hello"
-  View (fillColor: "blue-5") []
+  Button (title: "blue-5")
 ]
   `,
 ];

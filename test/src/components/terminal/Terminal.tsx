@@ -95,10 +95,10 @@ class KopiReact_ extends KopiValue {
         if (awaitedChild.children instanceof KopiString) {
           return React.createElement(this.component, awaitedChild.props, awaitedChild.children.value) as any;
         } else if (awaitedChild.children) {
-          return React.createElement(this.component, awaitedChild.props, await this.inspectChildren(awaitedChild.children.elements));
+          return React.createElement(awaitedChild.component, awaitedChild.props, await this.inspectChildren(awaitedChild.children.elements));
         }
 
-        return React.createElement(this.component, awaitedChild.props) as any;
+        return React.createElement(awaitedChild.component, awaitedChild.props) as any;
       })
     );
   }
@@ -143,10 +143,32 @@ class KopiText_ extends KopiValue {
   }
 }
 
+class KopiButton_ extends KopiValue {
+  async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
+    const title = await (props as any).title;
+
+    return new KopiReact_(Button, {
+      primary: true,
+      title: title?.value,
+    });
+  }
+}
+
+class _useState extends KopiValue {
+  async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [value, setValue] = useState(new KopiNumber(0));
+
+    return new KopiTuple([value, setValue as any]);
+  }
+}
+
 let environment = new Environment({
   Point: new Point_(),
   View: new KopiView_(),
   Text: new KopiText_(),
+  Button: new KopiButton_(),
+  useState: new _useState(),
   type: new type_(),
   eval: new KopiEval_(),
   PI: new KopiNumber(Math.PI),
