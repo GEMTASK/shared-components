@@ -2,12 +2,13 @@ const examples = [
   `date`,
   `clock`,
   `calendar`,
-  `1 + 2 * 3`,
-  `(1 + 2) * 3`,
+  `1 + 2 * -3`,
+  `(1 + 2) * -3`,
+  `(!true, !false)`,
   `random 4.5..5.5`,
   `sleep 5 + sleep 5`,
   `("a", "b", "c").1`,
-  `((), 1, 'ast, "3", [])`,
+  `((), true, false, 1, 'ast, "3", [])`,
   `
 (a, b, c) = (1, 2, 3)
 (a == 1, b == 2)

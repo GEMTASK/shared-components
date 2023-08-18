@@ -103,6 +103,10 @@ class KopiNumber extends KopiValue {
   // Arithmetic
   //
 
+  '$-'(that: KopiValue) {
+    return new KopiNumber(-this.value);
+  }
+
   '+'(that: KopiValue) {
     if (!(that instanceof KopiNumber)) {
       throw new TypeError(`Right side of operation is not a number.`);

@@ -33,7 +33,9 @@ abstract class KopiValue {
       return await method.apply(this, [argument, context]);
     }
 
-    throw new Error(`No method named "${methodName}" found in ${await this.inspect()}.`);
+    throw new Error(
+      `No method named "${methodName}" found in ${await this.inspect()} of type ${this.constructor.name}.`
+    );
   }
 }
 

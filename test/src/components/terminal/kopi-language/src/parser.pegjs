@@ -124,12 +124,22 @@ RangeExpression
   / MemberExpression
 
 MemberExpression
-  = head:PrimaryExpression tail:("." (Identifier / NumericLiteral))* {
+  = head:UnaryExpression tail:("." (Identifier / NumericLiteral))* {
       return tail.reduce((expression, [, member]) => ({
         type: 'MemberExpression',
         expression,
         member: member.name ?? member.value,
       }), head);
+    }
+
+UnaryExpression
+  = PrimaryExpression
+  / operator:("-" / "!") argumentExpression:UnaryExpression {
+      return {
+        type: 'UnaryExpression',
+        operator: operator === '-' ? '$-' : operator,
+        argumentExpression,
+      };
     }
 
 PrimaryExpression

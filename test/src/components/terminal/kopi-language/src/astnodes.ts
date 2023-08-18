@@ -106,6 +106,18 @@ class MemberExpression extends ASTNode {
   }
 }
 
+class UnaryExpression extends ASTNode {
+  readonly operator: string;
+  readonly argumentExpression: ASTNode;
+
+  constructor({ operator, argumentExpression, location }: UnaryExpression) {
+    super(location);
+
+    this.operator = operator;
+    this.argumentExpression = argumentExpression;
+  }
+}
+
 class FunctionExpression extends ASTNode {
   readonly parameterPattern: ASTPatternNode;
   readonly bodyExpression: ASTNode;
@@ -368,6 +380,7 @@ export {
   ApplyExpression,
   RangeExpression,
   MemberExpression,
+  UnaryExpression,
   FunctionExpression,
   TupleExpression,
   //

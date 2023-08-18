@@ -137,6 +137,17 @@ async function MemberExpression(
   throw new Error(`${await expressionValue.inspect()} doesn't have a member '${member}'`);
 }
 
+async function UnaryExpression(
+  { operator, argumentExpression }: astNodes.UnaryExpression,
+  context: Context,
+): Promise<KopiValue> {
+  const { environment, evaluate, bind } = context;
+
+  const argumentValue = await evaluate(argumentExpression, environment, bind);
+
+  return argumentValue.invoke(operator, [argumentValue, context]);
+}
+
 async function FunctionExpression(
   { parameterPattern, bodyExpression, name }: astNodes.FunctionExpression,
   context: Context,
@@ -227,6 +238,7 @@ export {
   ApplyExpression,
   RangeExpression,
   MemberExpression,
+  UnaryExpression,
   FunctionExpression,
   TupleExpression,
   //

@@ -26,6 +26,10 @@ class KopiBoolean extends KopiValue {
     return `${this.value ? 'true' : 'false'}`;
   }
 
+  '!'(): KopiBoolean {
+    return new KopiBoolean(!this.value);
+  }
+
   '=='(that: KopiBoolean) {
     return new KopiBoolean(this.value === that.value);
   }
