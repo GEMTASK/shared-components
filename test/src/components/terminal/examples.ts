@@ -9,6 +9,8 @@ const examples = [
   `sleep 5 + sleep 5`,
   `("a", "b", "c").1`,
   `(foo: 1, bar: 2).bar`,
+  `"abc" ++ "def"`,
+  `[1, 2] ++ [3, 4]`,
   `((), true, false, 1, 'ast, "3", [])`,
   `
 (a, b, c) = (1, 2, 3)

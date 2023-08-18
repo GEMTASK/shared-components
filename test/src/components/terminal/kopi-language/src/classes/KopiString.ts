@@ -142,6 +142,10 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
     return KopiTuple.empty;
   }
 
+  '++'(that: KopiString) {
+    return new KopiString(this.value + that.value);
+  }
+
   toUpper() {
     return new KopiString(this.value.toLocaleUpperCase());
   }
