@@ -134,7 +134,7 @@ type WindowsProp = React.ComponentProps<typeof Desktop>['windows'];
 const App = () => {
   // console.log('App()');
 
-  const [windows, setWindows] = useState<WindowsProp>(initialState);
+  const [windows, setWindows] = useState<WindowsProp>(window.innerWidth >= 1440 ? initialState : []);
   const [windowOrder, setWindowOrder] = useState<string[]>(windows.map(({ id }) => id));
 
   const addWindow = (title: string, element: React.ReactElement, rect?: Rect) => {
