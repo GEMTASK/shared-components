@@ -86,9 +86,12 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
       for (let current = from.value; current <= to.value; current += this.stride.value) {
         yield new KopiNumber(current);
       }
+
+      return;
     }
 
-    let context = null as any;
+    const context = null as any;
+
     for (
       let current = from;
       (await current.invoke('<=', [to, context]) as KopiBoolean).value;

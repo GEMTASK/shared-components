@@ -185,7 +185,7 @@ PrimaryExpression
   / Identifier
 
 FunctionExpression
-  = parameterPattern:Pattern _ "=>" _ bodyExpression:EqualityExpression {
+  = parameterPattern:Pattern _ "=>" _ bodyExpression:ConcatExpression {
       return {
         type: "FunctionExpression",
         parameterPattern,
@@ -250,8 +250,6 @@ ArrayLiteralPattern
       ], [head])
     }
   }
-
-//  = "[" _ head:Expression? tail:(_ "," _ Expression)* _ "]" _ !"=>" {
 
 NumericLiteralPattern
   = number:NumericLiteral {
