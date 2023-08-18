@@ -41,7 +41,7 @@ add1 5
   `"a,b,c" | split ","`,
   `("ab", "xy") | map (a, x) => a x`,
   `[(1..5).from, (1..5).to]`,
-  `"a".."e" | map 'toUpper`,
+  `"a".."z" (5) | map 'toUpper`,
   `"a".."e" | count () => true`,
   `1..5 | take 3 | map (n) => n * n`,
   `1..(fetch "robots.txt" | size)`,
