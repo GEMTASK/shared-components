@@ -112,6 +112,22 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
     return new KopiBoolean(this.value === that.value);
   }
 
+  '<'(that: KopiString) {
+    return new KopiBoolean(this.value < that.value);
+  }
+
+  '>'(that: KopiString) {
+    return new KopiBoolean(this.value > that.value);
+  }
+
+  '<='(that: KopiString) {
+    return new KopiBoolean(this.value <= that.value);
+  }
+
+  '>='(that: KopiString) {
+    return new KopiBoolean(this.value >= that.value);
+  }
+
   size() {
     return new KopiNumber(this.value.length);
   }

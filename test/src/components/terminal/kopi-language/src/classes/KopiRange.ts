@@ -5,6 +5,7 @@ import KopiArray from './KopiArray';
 
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
+import KopiBoolean from './KopiBoolean';
 
 interface KopiRange extends KopiValue, KopiIterable<KopiArray> { };
 
@@ -85,11 +86,16 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
       for (let current = from.value; current <= to.value; current += this.stride.value) {
         yield new KopiNumber(current);
       }
-
-      return;
     }
 
-    throw new Error(`Only range over numbers is supported currently.`);
+    let context = null as any;
+    for (
+      let current = from;
+      (await current.invoke('<=', [to, context]) as KopiBoolean).value;
+      current = await current.invoke('succ', [this.stride, context])
+    ) {
+      yield current;
+    }
   }
 
   //

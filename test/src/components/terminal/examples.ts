@@ -8,6 +8,7 @@ const examples = [
   `random 4.5..5.5`,
   `sleep 5 + sleep 5`,
   `("a", "b", "c").1`,
+  `(foo: 1, bar: 2).bar`,
   `((), true, false, 1, 'ast, "3", [])`,
   `
 (a, b, c) = (1, 2, 3)
@@ -40,6 +41,8 @@ add1 5
   `"a,b,c" | split ","`,
   `("ab", "xy") | map (a, x) => a x`,
   `[(1..5).from, (1..5).to]`,
+  `"a".."e" | map 'toUpper`,
+  `"a".."e" | count () => true`,
   `1..5 | take 3 | map (n) => n * n`,
   `1..(fetch "robots.txt" | size)`,
   `1..5 | take 3 | map '(toFixed 2)`,
