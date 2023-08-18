@@ -308,8 +308,7 @@ function peg$parse(input, options) {
       }, head);
     };
   var peg$f4 = function(head, tail) {
-    console.log('here')
-      const [, , ,rightExpression] = tail ? tail : [];
+      const [, , , rightExpression] = tail ? tail : [];
 
       return !tail ? head : {
         type: 'OperatorExpression',

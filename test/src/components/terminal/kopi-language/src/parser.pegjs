@@ -62,8 +62,7 @@ PipeExpression
 
 ConcatExpression
   = head:EqualityExpression tail:(_ "++" _ ConcatExpression)? {
-    console.log('here')
-      const [, , ,rightExpression] = tail ? tail : [];
+      const [, , , rightExpression] = tail ? tail : [];
 
       return !tail ? head : {
         type: 'OperatorExpression',
