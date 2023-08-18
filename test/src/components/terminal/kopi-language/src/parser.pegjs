@@ -42,7 +42,7 @@ Expression
   = PipeExpression
 
 PipeExpression
-  = head:ConcatExpression tail:(_ "|" _ Identifier _ RangeExpression? (_ RangeExpression)*)* {
+  = head:ConcatExpression tail:(_ "|" _ Identifier _ FunctionExpression? (_ FunctionExpression)*)* {
       return tail.reduce((expression, [, , , identifier, , argumentExpression, argumentExpressions]) => {
         const pipelineExpression = {
           type: 'PipeExpression',
@@ -117,12 +117,22 @@ MultiplyExpression
     }
 
 ApplyExpression
-  = expression:RangeExpression _arguments:(_ RangeExpression)* {
+  = expression:FunctionExpression _arguments:(_ FunctionExpression)* {
       return _arguments.reduce((expression, [, argumentExpression]) => ({
         type: 'ApplyExpression',
         expression,
         argumentExpression,
       }), expression);
+    }
+
+FunctionExpression
+  = RangeExpression
+  / parameterPattern:Pattern _ "=>" _ bodyExpression:ConcatExpression {
+      return {
+        type: "FunctionExpression",
+        parameterPattern,
+        bodyExpression,
+      }
     }
 
 RangeExpression
@@ -175,22 +185,18 @@ PrimaryExpression
         ], [fieldName && fieldName[0].name])
       };
     }
-  / FunctionExpression
   / BlockExpression
-  / BooleanLiteral
-  / NumericLiteral
+  / boolean:BooleanLiteral _ !"=>" {
+    return boolean;
+  }
+  / number:NumericLiteral _ !"=>" {
+    return number;
+  }
   / StringLiteral
   / ArrayLiteral
   / AstLiteral
-  / Identifier
-
-FunctionExpression
-  = parameterPattern:Pattern _ "=>" _ bodyExpression:ConcatExpression {
-      return {
-        type: "FunctionExpression",
-        parameterPattern,
-        bodyExpression,
-      }
+  / identifier:Identifier _ !"=>" {
+      return identifier;
     }
 
 BlockExpression
