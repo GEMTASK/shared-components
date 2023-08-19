@@ -34,7 +34,7 @@ class StringType extends KopiValue {
 
 }
 
-class type_ extends KopiValue {
+class struct_ extends KopiValue {
   async apply(thisArg: this, [tuple]: [KopiTuple]) {
     const class_ = class extends KopiTuple {
       constructor(value: KopiTuple) {
@@ -182,7 +182,7 @@ let environment = new Environment({
   Text: new KopiText_(),
   Button: new KopiButton_(),
   useState: new _useState(),
-  type: new type_(),
+  struct: new struct_(),
   eval: new KopiEval_(),
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
