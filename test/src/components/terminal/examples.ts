@@ -145,6 +145,11 @@ coro = spawn () => {
 [coro | send 5, coro | send 5]
   `,
   `
+Person = type (name: 0)
+p = Person (name: "Joe")
+p
+  `,
+  `
 View (
     horizontal: true
     fillColor: "gray-1"

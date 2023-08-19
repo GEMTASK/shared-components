@@ -32,13 +32,13 @@ class Point_ extends KopiValue {
 
 class type_ extends KopiValue {
   async apply(thisArg: this, [tuple]: [KopiTuple]) {
-    const class_ = class extends KopiValue {
-      value: KopiValue;
+    const class_ = class extends KopiTuple {
+      constructor(value: KopiTuple) {
+        super(value.fields, value._fieldNames);
+      }
 
-      constructor(value: KopiValue) {
-        super();
-
-        this.value = value;
+      async inspect() {
+        return `${this.constructor.name} ${await super.inspect()}`;
       }
     };
 
@@ -47,7 +47,7 @@ class type_ extends KopiValue {
     });
 
     const Constructor = new class extends KopiValue {
-      apply(thisArg: this, [value]: [KopiValue]) {
+      apply(thisArg: this, [value]: [KopiTuple]) {
         return new class_(value);
       }
     }();

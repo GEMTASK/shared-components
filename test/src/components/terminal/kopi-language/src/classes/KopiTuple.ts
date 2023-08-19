@@ -88,7 +88,9 @@ class KopiTuple extends KopiValue {
 
   override async inspect() {
     const fields = await Promise.all(
-      this.fields.map(async (element) => `${await (await element).inspect()}`)
+      this._fields.map(async (element, index) =>
+        (this._fieldNames[index] ? `${this._fieldNames[index]}: ` : ``) +
+        `${await (await element).inspect()}`)
     );
 
     return `(${fields.join(', ')})`;
