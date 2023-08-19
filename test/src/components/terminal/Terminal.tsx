@@ -30,6 +30,10 @@ class Point_ extends KopiValue {
   }
 }
 
+class StringType extends KopiValue {
+
+}
+
 class type_ extends KopiValue {
   async apply(thisArg: this, [tuple]: [KopiTuple]) {
     const class_ = class extends KopiTuple {
@@ -172,6 +176,7 @@ class _useState extends KopiValue {
 }
 
 let environment = new Environment({
+  String: new StringType(),
   Point: new Point_(),
   View: new KopiView_(),
   Text: new KopiText_(),
