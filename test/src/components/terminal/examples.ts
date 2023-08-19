@@ -147,7 +147,7 @@ coro = spawn () => {
   `
 Person = type (name: 0)
 p = Person (name: "Joe")
-p
+(p, p.name)
   `,
   `
 View (
