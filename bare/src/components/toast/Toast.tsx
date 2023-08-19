@@ -82,8 +82,6 @@ const List = () => {
           processToasts();
         }
 
-        console.log('here');
-
         return toasts.slice(0, -1);
       });
     }, 3000);

@@ -115,7 +115,6 @@ const Menu = ({ title, items = defaultItems, ...props }: MenuProps) => {
     const item = items[itemIndex];
 
     if (item && typeof item === 'object') {
-      console.log('here');
       item.action?.();
     }
 
