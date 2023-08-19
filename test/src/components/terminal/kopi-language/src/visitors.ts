@@ -88,6 +88,25 @@ async function OperatorExpression(
   throw new Error(`"${await leftValue.inspect()}" of type ${leftValue.constructor.name} doesn't have an operator method "${operator}".`);
 }
 
+async function ConditionalExpression(
+  { expression, consequent, alternate }: astNodes.ConditionalExpression,
+  context: Context
+) {
+  const { evaluate, environment, bind } = context;
+
+  const expressionValue = await evaluate(expression, environment, bind);
+
+  if (expressionValue instanceof KopiBoolean) {
+    if ((expressionValue as KopiBoolean).value) {
+      return evaluate(consequent, environment, bind);
+    }
+
+    return evaluate(alternate, environment, bind);
+  }
+
+  throw new TypeError(`Conditional expression but be of type Boolean.`);
+}
+
 async function ApplyExpression(
   { expression, argumentExpression }: astNodes.ApplyExpression,
   context: Context
@@ -235,6 +254,7 @@ export {
   BlockExpression,
   PipeExpression,
   OperatorExpression,
+  ConditionalExpression,
   ApplyExpression,
   RangeExpression,
   MemberExpression,

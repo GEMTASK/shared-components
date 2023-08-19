@@ -61,7 +61,7 @@ PipeExpression
     }
 
 ConcatExpression
-  = head:EqualityExpression tail:(_ "++" _ ConcatExpression)? {
+  = head:ConditionalExpression tail:(_ "++" _ ConcatExpression)? {
       const [, , , rightExpression] = tail ? tail : [];
 
       return !tail ? head : {
@@ -71,6 +71,17 @@ ConcatExpression
         rightExpression
       };
     }
+
+ConditionalExpression
+  = head:EqualityExpression _ "?" _ consequent:ConcatExpression _ ":" _ alternate:ConcatExpression {
+      return {
+        type: 'ConditionalExpression',
+        expression: head,
+        consequent,
+        alternate
+      }
+    }
+  / EqualityExpression
 
 EqualityExpression
   = head:RelationalExpression tail:(_ ("==" / "!=") _ RelationalExpression)* {

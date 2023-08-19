@@ -59,6 +59,20 @@ class OperatorExpression extends ASTNode {
   }
 }
 
+class ConditionalExpression extends ASTNode {
+  readonly expression: ASTNode;
+  readonly consequent: ASTNode;
+  readonly alternate: ASTNode;
+
+  constructor({ expression, consequent, alternate, location }: ConditionalExpression) {
+    super(location);
+
+    this.expression = expression;
+    this.consequent = consequent;
+    this.alternate = alternate;
+  }
+}
+
 class ApplyExpression extends ASTNode {
   readonly expression: ASTNode;
   readonly argumentExpression: ASTNode;
@@ -377,6 +391,7 @@ export {
   BlockExpression,
   PipeExpression,
   OperatorExpression,
+  ConditionalExpression,
   ApplyExpression,
   RangeExpression,
   MemberExpression,
