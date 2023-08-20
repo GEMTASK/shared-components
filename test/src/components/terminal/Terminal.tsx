@@ -6,34 +6,12 @@ import Clock from '../clock/Clock';
 
 import * as kopi from './kopi-language';
 
-import { KopiArray, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
+import { KopiArray, KopiBoolean, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
 import { ASTNode, Context, Environment, KopiValue } from './kopi-language/src/types';
 
 import historyItems from './examples';
 import * as functions from './functions';
 import { Identifier } from './kopi-language/src/astnodes';
-
-class Point extends KopiValue {
-  x: KopiNumber;
-  y: KopiNumber;
-
-  constructor(x: KopiNumber, y: KopiNumber) {
-    super();
-
-    this.x = x;
-    this.y = y;
-  }
-}
-
-class Point_ extends KopiValue {
-  async apply(thisArg: this, [tuple]: [KopiTuple]) {
-    return new Point(await tuple[0] as KopiNumber, await tuple[1] as KopiNumber);
-  }
-}
-
-class StringType extends KopiValue {
-
-}
 
 class struct_ extends KopiValue {
   async apply(thisArg: this, [identifier, context]: [Identifier, Context]) {
@@ -64,6 +42,31 @@ class struct_ extends KopiValue {
 
       bind({
         [identifier.name]: Constructor
+      });
+    };
+  }
+}
+
+const $extensions = Symbol();
+
+class KopiExtend_ extends KopiValue {
+  async apply(thisArg: this, [constructor, context]: [Function, Context]) {
+    const { environment, bind } = context;
+
+    const extensions = environment[$extensions] as unknown as Map<Function, any> ?? new Map();
+
+    return (methods: KopiTuple) => {
+      const awaitedMethods = Promise.all(methods.fields);
+
+      bind({
+        ...environment,
+        [$extensions]: new Map([
+          ...extensions,
+          [constructor, {
+            ...extensions.get(constructor),
+            ...awaitedMethods
+          }]
+        ])
       });
     };
   }
@@ -181,13 +184,13 @@ class _useState extends KopiValue {
 }
 
 let environment = new Environment({
-  String: new StringType(),
-  Point: new Point_(),
+  String: KopiString as unknown as KopiValue,
   View: new KopiView_(),
   Text: new KopiText_(),
   Button: new KopiButton_(),
   useState: new _useState(),
   struct: new struct_(),
+  extend: new KopiExtend_(),
   eval: new KopiEval_(),
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),

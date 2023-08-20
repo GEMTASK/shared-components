@@ -80,6 +80,14 @@ import('./KopiStream').then((result) => {
 //
 
 class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
+  static async inspect() {
+    return 'String';
+  }
+
+  static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
+    return value;
+  }
+
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {
     return fromIterable(iterable);
   }
