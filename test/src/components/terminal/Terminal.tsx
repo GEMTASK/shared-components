@@ -184,6 +184,8 @@ class _useState extends KopiValue {
 }
 
 let environment = new Environment({
+  PI: new KopiNumber(Math.PI),
+  E: new KopiNumber(Math.E),
   String: KopiString as unknown as KopiValue,
   View: new KopiView_(),
   Text: new KopiText_(),
@@ -192,10 +194,8 @@ let environment = new Environment({
   struct: new struct_(),
   extend: new KopiExtend_(),
   eval: new KopiEval_(),
-  PI: new KopiNumber(Math.PI),
-  E: new KopiNumber(Math.E),
   print: new KopiPrint_(),
-  let: new functions.KopiLet(),
+  let: functions.kopi_let as unknown as KopiValue,
   loop: new functions.KopiLoopFunction(),
   match: new functions.KopiMatch(),
   apply: new functions.KopiApply(),

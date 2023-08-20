@@ -39,18 +39,16 @@ class KopiMatch extends KopiValue {
   }
 }
 
-class KopiLet extends KopiValue {
-  async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
-    let result: KopiValue = KopiTuple.empty;
+async function kopi_let(func: KopiFunction, context: Context) {
+  let result: KopiValue = KopiTuple.empty;
 
-    do {
-      result = result instanceof KopiLoop ? result.value : result;
+  do {
+    result = result instanceof KopiLoop ? result.value : result;
 
-      result = await func.apply(KopiTuple.empty, [result, context]);
-    } while (result instanceof KopiLoop);
+    result = await func.apply(KopiTuple.empty, [result, context]);
+  } while (result instanceof KopiLoop);
 
-    return result instanceof KopiLoop ? result.value : result;
-  }
+  return result instanceof KopiLoop ? result.value : result;
 }
 
 class KopiLoop extends KopiValue {
@@ -276,7 +274,7 @@ export {
   KopiDate,
   KopiSleep,
   KopiMatch,
-  KopiLet,
+  kopi_let,
   KopiLoopFunction,
   KopiApply,
   KopiIdent,
