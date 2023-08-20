@@ -7,7 +7,7 @@ import { Icon } from 'bare';
 import Clock from '../clock/Clock';
 import Calendar from '../calendar/Calendar';
 
-class KopiDate extends KopiValue implements KopiValue {
+class KopiDate extends KopiValue {
   override async inspect() {
     return new Date().toLocaleString();
   }
@@ -17,26 +17,22 @@ class KopiDate extends KopiValue implements KopiValue {
   }
 }
 
-class KopiSleep extends KopiValue {
-  async apply(thisArg: this, [seconds]: [KopiNumber]) {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(seconds), seconds.value * 1000);
-    });
-  }
+async function kopi_sleep(seconds: KopiNumber) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(seconds), seconds.value * 1000);
+  });
 }
 
-class KopiMatch extends KopiValue {
-  async apply(thisArg: this, [value, context]: [KopiValue, Context]) {
-    return async (funcs: KopiTuple) => {
-      for await (const func of funcs.fields) {
-        if (await (func as KopiFunction).parameterPattern.test(value, context)) {
-          return (func as KopiFunction).apply(KopiTuple.empty, [value, context]);
-        }
+async function kopi_match(value: KopiValue, context: Context) {
+  return async (funcs: KopiTuple) => {
+    for await (const func of funcs.fields) {
+      if (await (func as KopiFunction).parameterPattern.test(value, context)) {
+        return (func as KopiFunction).apply(KopiTuple.empty, [value, context]);
       }
+    }
 
-      throw new Error('Match failed');
-    };
-  }
+    throw new Error('Match failed');
+  };
 }
 
 async function kopi_let(func: KopiFunction, context: Context) {
@@ -61,18 +57,14 @@ class KopiLoop extends KopiValue {
   value: KopiValue;
 }
 
-class KopiLoopFunction extends KopiValue {
-  async apply(thisArg: this, [value, context]: [KopiValue, Context]) {
-    return new KopiLoop(value);
-  }
+async function kopi_loop(value: KopiValue, context: Context) {
+  return new KopiLoop(value);
 }
 
-class KopiApply extends KopiValue {
-  async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
-    return (arg: KopiValue) => {
-      return func.apply(KopiTuple.empty, [arg, context]);
-    };
-  }
+async function kopi_apply(func: KopiFunction, context: Context) {
+  return (arg: KopiValue) => {
+    return func.apply(KopiTuple.empty, [arg, context]);
+  };
 }
 
 class KopiIdent extends KopiValue {
@@ -272,11 +264,11 @@ class KopiContextFunction extends KopiValue {
 
 export {
   KopiDate,
-  KopiSleep,
-  KopiMatch,
+  kopi_sleep,
+  kopi_match,
   kopi_let,
-  KopiLoopFunction,
-  KopiApply,
+  kopi_loop,
+  kopi_apply,
   KopiIdent,
   KopiFetch,
   KopiClock,
