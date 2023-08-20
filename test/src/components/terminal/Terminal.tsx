@@ -11,6 +11,7 @@ import { ASTNode, Context, Environment, KopiValue } from './kopi-language/src/ty
 
 import historyItems from './examples';
 import * as functions from './functions';
+import { Identifier } from './kopi-language/src/astnodes';
 
 class Point extends KopiValue {
   x: KopiNumber;
@@ -35,32 +36,36 @@ class StringType extends KopiValue {
 }
 
 class struct_ extends KopiValue {
-  async apply(thisArg: this, [tuple]: [KopiTuple]) {
-    const class_ = class extends KopiTuple {
-      constructor(value: KopiTuple) {
-        super(value.fields, value._fieldNames);
-      }
+  async apply(thisArg: this, [identifier, context]: [Identifier, Context]) {
+    const { bind } = context;
 
-      async inspect() {
-        return `${this.constructor.name} ${await super.inspect()}`;
-      }
+    return (tuple: KopiTuple) => {
+      const class_ = class extends KopiTuple {
+        constructor(value: KopiTuple) {
+          super(value.fields, value._fieldNames);
+        }
+
+        async inspect() {
+          return `${this.constructor.name} ${await super.inspect()}`;
+        }
+      };
+
+      Object.defineProperty(class_, 'name', {
+        value: identifier.name
+      });
+
+      const Constructor = new class extends KopiValue {
+        static nativeConstructor = class_;
+
+        apply(thisArg: this, [value]: [KopiTuple]) {
+          return new class_(value);
+        }
+      }();
+
+      bind({
+        [identifier.name]: Constructor
+      });
     };
-
-    Object.defineProperty(class_, 'name', {
-      value: 'Person'
-    });
-
-    const Constructor = new class extends KopiValue {
-      apply(thisArg: this, [value]: [KopiTuple]) {
-        return new class_(value);
-      }
-    }();
-
-    Object.defineProperty(Constructor, 'name', {
-      value: new KopiString('Person')
-    });
-
-    return Constructor;
   }
 }
 

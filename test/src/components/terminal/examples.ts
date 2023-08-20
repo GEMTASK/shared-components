@@ -145,7 +145,7 @@ coro = spawn () => {
 [coro | send 5, coro | send 5]
   `,
   `
-Person = struct (name: String)
+struct 'Person (name: String)
 p = Person (name: "Joe")
 (p, p.name)
   `,
