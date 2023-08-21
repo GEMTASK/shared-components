@@ -29,9 +29,9 @@ abstract class KopiValue {
     methodName: string,
     [argument, context]: [KopiValue, Context]
   ): Promise<KopiValue> {
-    const { environment } = context;
+    const { environment } = context ?? {};
 
-    const extensions = environment._extensions as unknown as Map<Function, any>;
+    const extensions = environment?._extensions as unknown as Map<Function, any>;
     const method = (this as any)[methodName] ?? extensions?.get(this.constructor)[methodName];
 
     if (method) {

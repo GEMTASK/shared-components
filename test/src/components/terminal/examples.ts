@@ -18,7 +18,7 @@ let (t = true, f = false) => {
   `"abc" ++ "def"`,
   `[1, 2] ++ [3, 4]`,
   `((), true, false, 1, 'ast, "3", [])`,
-  `"ab" ++ 2 < 3 ? "cd" : "ef"`,
+  `"ab" ++ (2 < 3 ? "cd" : "ef")`,
   `
 (a, b, c) = (1, 2, 3)
 (a == 1, b == 2)
@@ -77,10 +77,11 @@ add1 5
   `[1, "a", 'b] == [1, "a", 'b]`,
   `[1, 2, 3] == 'toArray 1..3`,
   `
-fns = ['(map n => n * n)]
-fns | reduce (x = 1..5, f) => f x
+let (fns = ['(map n => n * n)]) => {
+    fns | reduce (x = 1..5, f) => f x
+}
   `,
-  `1..3 | combos`,
+  `1..1000000 | combos | take 3`,
   `
 1..4 | combos | map (a, b) => {
     a * b
