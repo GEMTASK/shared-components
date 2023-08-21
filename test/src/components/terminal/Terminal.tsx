@@ -13,77 +13,69 @@ import historyItems from './examples';
 import * as functions from './functions';
 import { Identifier } from './kopi-language/src/astnodes';
 
-class struct_ extends KopiValue {
-  async apply(thisArg: this, [identifier, context]: [Identifier, Context]) {
-    const { bind } = context;
+async function kopi_struct(identifier: Identifier, context: Context) {
+  const { bind } = context;
 
-    return (tuple: KopiTuple) => {
-      const class_ = class extends KopiTuple {
-        constructor(value: KopiTuple) {
-          super(value.fields, value._fieldNames);
-        }
+  return (tuple: KopiTuple) => {
+    const class_ = class extends KopiTuple {
+      constructor(value: KopiTuple) {
+        super(value.fields, value._fieldNames);
+      }
 
-        async inspect() {
-          return `${this.constructor.name} ${await super.inspect()}`;
-        }
-      };
-
-      Object.defineProperty(class_, 'name', {
-        value: identifier.name
-      });
-
-      const Constructor = new class extends KopiValue {
-        static nativeConstructor = class_;
-
-        apply(thisArg: this, [value]: [KopiTuple]) {
-          return new class_(value);
-        }
-      }();
-
-      bind({
-        [identifier.name]: Constructor
-      });
+      async inspect() {
+        return `${this.constructor.name} ${await super.inspect()}`;
+      }
     };
-  }
+
+    Object.defineProperty(class_, 'name', {
+      value: identifier.name
+    });
+
+    const Constructor = new class extends KopiValue {
+      static nativeConstructor = class_;
+
+      apply(thisArg: this, [value]: [KopiTuple]) {
+        return new class_(value);
+      }
+    }();
+
+    bind({
+      [identifier.name]: Constructor
+    });
+  };
 }
 
 const $extensions = Symbol();
 
-class KopiExtend_ extends KopiValue {
-  async apply(thisArg: this, [constructor, context]: [Function, Context]) {
-    const { environment, bind } = context;
+async function kopi_extend(constructor: Function, context: Context) {
+  const { environment, bind } = context;
 
-    const extensions = environment[$extensions] as unknown as Map<Function, any> ?? new Map();
+  const extensions = environment[$extensions] as unknown as Map<Function, any> ?? new Map();
 
-    return (methods: KopiTuple) => {
-      const awaitedMethods = Promise.all(methods.fields);
+  return (methods: KopiTuple) => {
+    const awaitedMethods = Promise.all(methods.fields);
 
-      bind({
-        ...environment,
-        [$extensions]: new Map([
-          ...extensions,
-          [constructor, {
-            ...extensions.get(constructor),
-            ...awaitedMethods
-          }]
-        ])
-      });
-    };
-  }
+    bind({
+      ...environment,
+      [$extensions]: new Map([
+        ...extensions,
+        [constructor, {
+          ...extensions.get(constructor),
+          ...awaitedMethods
+        }]
+      ])
+    });
+  };
 }
 
-class KopiPrint_ extends KopiValue {
-  async apply(thisArg: this, [value]: [KopiValue]) {
-    return new KopiString(await value.toString());
-  }
+async function kopi_print(value: KopiValue) {
+  return new KopiString(await value.toString());
 }
 
-class KopiEval_ extends KopiValue {
-  async apply(thisArg: this, [node, context]: [ASTNode, Context]) {
-    const { evaluate, environment, bind } = context;
+async function kopi_eval(node: ASTNode, context: Context) {
+  const { evaluate, environment, bind } = context;
 
-    return evaluate(node, environment, bind);
-  }
+  return evaluate(node, environment, bind);
 }
 
 class KopiReact_ extends KopiValue {
@@ -184,33 +176,33 @@ class _useState extends KopiValue {
 }
 
 let environment = new Environment({
+  date: new functions.KopiDate(),
+  clock: new functions.KopiClock(),
+  calendar: new functions.KopiCalendar(),
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
   String: KopiString as unknown as KopiValue,
+  Number: KopiNumber as unknown as KopiValue,
   View: new KopiView_(),
   Text: new KopiText_(),
   Button: new KopiButton_(),
   useState: new _useState(),
-  struct: new struct_(),
-  extend: new KopiExtend_(),
-  eval: new KopiEval_(),
-  print: new KopiPrint_(),
+  struct: kopi_struct as unknown as KopiValue,
+  extend: kopi_extend as unknown as KopiValue,
+  eval: kopi_eval as unknown as KopiValue,
+  print: kopi_print as unknown as KopiValue,
   let: functions.kopi_let as unknown as KopiValue,
   loop: functions.kopi_loop as unknown as KopiValue,
   match: functions.kopi_match as unknown as KopiValue,
   apply: functions.kopi_apply as unknown as KopiValue,
   ident: functions.kopi_ident as unknown as KopiValue,
-  date: new functions.KopiDate(),
   sleep: functions.kopi_sleep as unknown as KopiValue,
-  clock: new functions.KopiClock(),
-  calendar: new functions.KopiCalendar(),
-  icon: new functions.KopiIcon(),
   fetch: functions.kopi_fetch as unknown as KopiValue,
   random: functions.kopi_random as unknown as KopiValue,
-  repeat: new functions.KopiRepeat(),
+  repeat: functions.kopi_repeat as unknown as KopiValue,
   km: functions.kopi_meter as unknown as KopiValue,
-  spawn: new functions.KopiSpawn(),
-  context: new functions.KopiContextFunction(),
+  spawn: functions.kopi_spawn as unknown as KopiValue,
+  context: functions.kopi_context as unknown as KopiValue,
 });
 
 const useSidebarStyles = createUseStyles({

@@ -87,12 +87,6 @@ class KopiCalendar extends KopiValue {
   }
 }
 
-class KopiIcon extends KopiValue {
-  async inspect() {
-    return <Icon icon="house" size="3x" />;
-  }
-}
-
 async function kopi_random(range: KopiRange, context: Context) {
   const from = (await range.from as KopiNumber).value;
   const to = (await range.to as KopiNumber).value;
@@ -100,20 +94,18 @@ async function kopi_random(range: KopiRange, context: Context) {
   return new KopiNumber(Math.random() * (to - from) + from);
 }
 
-class KopiRepeat extends KopiValue {
-  static RepeatStream = KopiStream_T(KopiArray.fromIterable);
+const RepeatStream = KopiStream_T(KopiArray.fromIterable);
 
-  async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
-    const generator = async function* (this: KopiValue) {
-      for (let n = 0; ; ++n) {
-        if (n >= 10) break;
+async function kopi_repeat(func: KopiFunction, context: Context) {
+  const generator = async function* (this: KopiValue) {
+    for (let n = 0; ; ++n) {
+      if (n >= 10) break;
 
-        yield new KopiNumber(n);
-      }
-    }.apply(KopiTuple.empty, []);
+      yield new KopiNumber(n);
+    }
+  }.apply(KopiTuple.empty, []);
 
-    return new KopiRepeat.RepeatStream(generator);
-  }
+  return new RepeatStream(generator);
 }
 
 async function kopi_meter(value: KopiNumber) {
@@ -206,16 +198,14 @@ class Coroutine extends KopiValue {
   }
 }
 
-class KopiSpawn extends KopiValue {
-  async apply(thisArg: this, [func, context]: [KopiFunction, Context]) {
-    const coro = new Coroutine();
+async function kopi_spawn(func: KopiFunction, context: Context) {
+  const coro = new Coroutine();
 
-    (func.environment as any).yield = coro.yield.bind(coro);
+  (func.environment as any).yield = coro.yield.bind(coro);
 
-    func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+  func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
 
-    return coro;
-  }
+  return coro;
 }
 
 class KopiContext extends KopiValue {
@@ -246,16 +236,16 @@ class KopiContext extends KopiValue {
   }
 }
 
-class KopiContextFunction extends KopiValue {
-  async apply(thisArg: this, [value, context]: [KopiValue, Context]) {
-    const { bind } = context;
+async function kopi_context(value: KopiValue, context: Context) {
+  const { bind } = context;
 
-    return new KopiContext(value, bind);
-  }
+  return new KopiContext(value, bind);
 }
 
 export {
   KopiDate,
+  KopiClock,
+  KopiCalendar,
   kopi_sleep,
   kopi_match,
   kopi_let,
@@ -263,12 +253,9 @@ export {
   kopi_apply,
   kopi_ident,
   kopi_fetch,
-  KopiClock,
-  KopiCalendar,
-  KopiIcon,
   kopi_random,
-  KopiRepeat,
+  kopi_repeat,
   kopi_meter,
-  KopiSpawn,
-  KopiContextFunction,
+  kopi_spawn,
+  kopi_context,
 };
