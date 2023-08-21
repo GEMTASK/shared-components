@@ -6,6 +6,7 @@ import KopiRange from './kopi-language/src/classes/KopiRange';
 import Clock from '../clock/Clock';
 import Calendar from '../calendar/Calendar';
 import { Identifier } from './kopi-language/src/astnodes';
+import KopiDate from './kopi-language/src/classes/KopiDate';
 
 async function kopi_let(func: KopiFunction, context: Context) {
   let result: KopiValue = KopiTuple.empty;
@@ -51,7 +52,11 @@ async function kopi_apply(func: KopiFunction, context: Context) {
   };
 }
 
-class KopiDate extends KopiValue {
+class KopiDateFunction extends KopiValue {
+  static now() {
+    return new KopiDate(new Date());
+  }
+
   override async inspect() {
     return new Date().toLocaleString();
   }
@@ -299,7 +304,7 @@ class MetricUnit extends KopiValue {
 }
 
 export {
-  KopiDate,
+  KopiDateFunction,
   KopiClock,
   KopiCalendar,
   kopi_let,

@@ -7,3 +7,4 @@ export { default as KopiArray } from './KopiArray';
 export { default as KopiFunction } from './KopiFunction';
 export { default as KopiAstLiteral } from './KopiAstLiteral';
 export { default as KopiStream_T } from './KopiStream';
+export { default as KopiDate } from './KopiDate';

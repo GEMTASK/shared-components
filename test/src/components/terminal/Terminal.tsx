@@ -6,12 +6,11 @@ import Clock from '../clock/Clock';
 
 import * as kopi from './kopi-language';
 
-import { KopiArray, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
+import { KopiArray, KopiNumber, KopiString, KopiTuple, KopiDate } from './kopi-language/src/classes';
 import { Context, Environment, KopiValue } from './kopi-language/src/types';
 
 import historyItems from './examples';
 import * as functions from './functions';
-import { Identifier } from './kopi-language/src/astnodes';
 
 async function kopi_print(value: KopiValue) {
   return new KopiString(await value.toString());
@@ -117,6 +116,7 @@ let environment = new Environment({
   E: new KopiNumber(Math.E),
   String: KopiString,
   Number: KopiNumber,
+  Date: KopiDate,
   print: kopi_print,
   //
   let: functions.kopi_let,
@@ -135,7 +135,7 @@ let environment = new Environment({
   context: functions.kopi_context,
   km: functions.kopi_meter,
   //
-  date: new functions.KopiDate(),
+  date: new functions.KopiDateFunction(),
   clock: new functions.KopiClock(),
   calendar: new functions.KopiCalendar(),
   //
