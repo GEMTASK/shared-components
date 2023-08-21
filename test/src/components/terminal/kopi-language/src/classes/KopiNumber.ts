@@ -9,7 +9,19 @@ class KopiNumber extends KopiValue {
   static readonly PI: KopiNumber = new KopiNumber(Math.PI);
   static readonly E: KopiNumber = new KopiNumber(Math.E);
 
+  static async inspect() {
+    return 'Number';
+  }
+
+  static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
+    return value;
+  }
+
+  //
+
   readonly value: number;
+
+  //
 
   constructor(value: number) {
     super();

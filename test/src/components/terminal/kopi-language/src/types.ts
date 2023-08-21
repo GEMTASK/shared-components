@@ -1,3 +1,5 @@
+/* eslint-disable no-extend-native */
+
 import { inspect } from './utils';
 
 type ReactElement = {
@@ -38,6 +40,25 @@ abstract class KopiValue {
     );
   }
 }
+
+declare global {
+  interface FunctionConstructor {
+    // traits: KopiTrait[];
+  }
+
+  interface Function {
+    inspect(): Promise<string>;
+    get fields(): Promise<KopiValue>[];
+    invoke(
+      methodName: string,
+      [argument, context]: [KopiValue, Context]
+    ): Promise<KopiValue>;
+  }
+}
+
+Function.prototype.inspect = function () {
+  return Promise.resolve(`<native-function>`);
+};
 
 interface RawASTNode {
   [key: string]: any;
