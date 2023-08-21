@@ -67,16 +67,12 @@ async function kopi_apply(func: KopiFunction, context: Context) {
   };
 }
 
-class KopiIdent extends KopiValue {
-  async apply(thisArg: this, [value, context]: [KopiFunction, Context]) {
-    return value;
-  }
+async function kopi_ident(value: KopiFunction, context: Context) {
+  return value;
 }
 
-class KopiFetch extends KopiValue {
-  async apply(thisArg: this, [url, context]: [KopiString, Context]) {
-    return new KopiString((await (await fetch(url.value)).text()));
-  }
+async function kopi_fetch(url: KopiString, context: Context) {
+  return new KopiString((await (await fetch(url.value)).text()));
 }
 
 class KopiClock extends KopiValue {
@@ -97,13 +93,11 @@ class KopiIcon extends KopiValue {
   }
 }
 
-class KopiRandom extends KopiValue {
-  async apply(thisArg: this, [range, context]: [KopiRange, Context]) {
-    const from = (await range.from as KopiNumber).value;
-    const to = (await range.to as KopiNumber).value;
+async function kopi_random(range: KopiRange, context: Context) {
+  const from = (await range.from as KopiNumber).value;
+  const to = (await range.to as KopiNumber).value;
 
-    return new KopiNumber(Math.random() * (to - from) + from);
-  }
+  return new KopiNumber(Math.random() * (to - from) + from);
 }
 
 class KopiRepeat extends KopiValue {
@@ -122,10 +116,8 @@ class KopiRepeat extends KopiValue {
   }
 }
 
-class KopiMeter extends KopiValue {
-  async apply(thisArg: this, [value]: [KopiNumber]) {
-    return new MetricUnit(value);
-  }
+async function kopi_meter(value: KopiNumber) {
+  return new MetricUnit(value);
 }
 
 class MetricUnit extends KopiValue {
@@ -269,14 +261,14 @@ export {
   kopi_let,
   kopi_loop,
   kopi_apply,
-  KopiIdent,
-  KopiFetch,
+  kopi_ident,
+  kopi_fetch,
   KopiClock,
   KopiCalendar,
   KopiIcon,
-  KopiRandom,
+  kopi_random,
   KopiRepeat,
-  KopiMeter,
+  kopi_meter,
   KopiSpawn,
   KopiContextFunction,
 };
