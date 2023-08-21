@@ -42,8 +42,8 @@ Expression
   = PipeExpression
 
 PipeExpression
-  = head:ConcatExpression tail:(_ "|" _ Identifier _ FunctionExpression? (_ FunctionExpression)*)* {
-      return tail.reduce((expression, [, , , identifier, , argumentExpression, argumentExpressions]) => {
+  = head:ConcatExpression tail:(_ Newline* _ "|" _ Identifier _ FunctionExpression? (_ FunctionExpression)*)* {
+      return tail.reduce((expression, [, , , , , identifier, , argumentExpression, argumentExpressions]) => {
         const pipelineExpression = {
           type: 'PipeExpression',
           expression,

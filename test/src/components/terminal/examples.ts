@@ -76,8 +76,13 @@ add1 5
   `[1, "a", 'b] == [1, "a", 'b]`,
   `[1, 2, 3] == 'toArray 1..3`,
   `
-let (fns = ['(map n => n * n)]) => {
-    fns | reduce (x = 1..5, f) => f x
+let (fns = [
+    '(map n => n * n)
+    '(filter 'even)
+]) => {
+    fns
+        | reduce (x = 1..5, f) => f x
+        | map '(+ 10)
 }
   `,
   `1..1000000 | combos | take 3`,
