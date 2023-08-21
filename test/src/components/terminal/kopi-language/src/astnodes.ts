@@ -73,6 +73,18 @@ class ConditionalExpression extends ASTNode {
   }
 }
 
+class LogicalOrExpression extends ASTNode {
+  readonly leftExpression: ASTNode;
+  readonly rightExpression: ASTNode;
+
+  constructor({ leftExpression, rightExpression, location }: LogicalAndExpression) {
+    super(location);
+
+    this.leftExpression = leftExpression;
+    this.rightExpression = rightExpression;
+  }
+}
+
 class LogicalAndExpression extends ASTNode {
   readonly leftExpression: ASTNode;
   readonly rightExpression: ASTNode;
@@ -404,6 +416,7 @@ export {
   PipeExpression,
   OperatorExpression,
   ConditionalExpression,
+  LogicalOrExpression,
   LogicalAndExpression,
   ApplyExpression,
   RangeExpression,

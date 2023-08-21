@@ -45,6 +45,12 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         consequent: transform(rawASTNode.consequent),
         alternate: transform(rawASTNode.alternate)
       } as astNodes.ConditionalExpression);
+    case 'LogicalOrExpression':
+      return new astNodes.LogicalOrExpression({
+        leftExpression: transform(rawASTNode.leftExpression),
+        rightExpression: transform(rawASTNode.rightExpression),
+        location: rawASTNode.location,
+      } as astNodes.LogicalOrExpression);
     case 'LogicalAndExpression':
       return new astNodes.LogicalAndExpression({
         leftExpression: transform(rawASTNode.leftExpression),
@@ -162,6 +168,8 @@ function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
     return visitors.OperatorExpression(astNode, context);
   } else if (astNode instanceof astNodes.ConditionalExpression) {
     return visitors.ConditionalExpression(astNode, context);
+  } else if (astNode instanceof astNodes.LogicalOrExpression) {
+    return visitors.LogicalOrExpression(astNode, context);
   } else if (astNode instanceof astNodes.LogicalAndExpression) {
     return visitors.LogicalAndExpression(astNode, context);
   } else if (astNode instanceof astNodes.ApplyExpression) {
