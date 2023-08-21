@@ -73,7 +73,7 @@ ConcatExpression
     }
 
 ConditionalExpression
-  = head:EqualityExpression _ "?" _ consequent:ConcatExpression _ ":" _ alternate:ConcatExpression {
+  = head:LogicalAndExpression _ "?" _ consequent:ConcatExpression _ ":" _ alternate:ConcatExpression {
       return {
         type: 'ConditionalExpression',
         expression: head,
@@ -81,7 +81,18 @@ ConditionalExpression
         alternate
       }
     }
-  / EqualityExpression
+  / LogicalAndExpression
+
+LogicalAndExpression
+  = head:EqualityExpression tail:(_ "&&" _ EqualityExpression)* {
+      return tail.reduce((leftExpression, [, operator, , rightExpression]) => ({
+        type: 'LogicalAndExpression',
+        operator,
+        leftExpression,
+        rightExpression,
+        location: location(),
+      }), head);
+    }
 
 EqualityExpression
   = head:RelationalExpression tail:(_ ("==" / "!=") _ RelationalExpression)* {

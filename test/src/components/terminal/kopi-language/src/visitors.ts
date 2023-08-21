@@ -107,6 +107,26 @@ async function ConditionalExpression(
   throw new TypeError(`Conditional expression but be of type Boolean.`);
 }
 
+async function LogicalAndExpression(
+  astNode: astNodes.LogicalAndExpression,
+  context: Context
+) {
+  const { leftExpression, rightExpression } = astNode;
+  const { environment, evaluate, bind } = context;
+
+  const leftValue = await evaluate(leftExpression, environment, bind);
+
+  if ((leftValue as KopiBoolean).value) {
+    const rightValue = await evaluate(rightExpression, environment, bind);
+
+    if ((rightValue as KopiBoolean).value) {
+      return KopiBoolean.true;
+    }
+  }
+
+  return KopiBoolean.false;
+}
+
 async function ApplyExpression(
   { expression, argumentExpression }: astNodes.ApplyExpression,
   context: Context
@@ -255,6 +275,7 @@ export {
   PipeExpression,
   OperatorExpression,
   ConditionalExpression,
+  LogicalAndExpression,
   ApplyExpression,
   RangeExpression,
   MemberExpression,
