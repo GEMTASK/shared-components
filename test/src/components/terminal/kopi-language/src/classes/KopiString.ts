@@ -8,6 +8,7 @@ import KopiBoolean from './KopiBoolean';
 
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
+import KopiRange from './KopiRange';
 
 interface KopiString extends KopiValue {
   toArray(): Promise<KopiArray>;
@@ -140,7 +141,20 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
     return new KopiNumber(this.value.length);
   }
 
-  at(index: KopiNumber) {
+  async at(index: KopiNumber) {
+    if (index instanceof KopiRange) {
+      const [from, to] = await Promise.all([
+        index.from,
+        index.to
+      ]);
+
+      if (from instanceof KopiNumber && to instanceof KopiNumber) {
+        return new KopiString(this.codePoints.slice(from.value, to.value).join(''));
+      }
+
+      throw new Error('String at range must be numeric.');
+    }
+
     const string = this.codePoints.at(index.value);
 
     if (string) {

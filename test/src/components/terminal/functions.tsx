@@ -151,25 +151,26 @@ async function kopi_struct(identifier: Identifier, context: Context) {
   };
 }
 
-const $extensions = Symbol();
-
-async function kopi_extend(constructor: Function, context: Context) {
+function kopi_extend(constructor: Function, context: Context) {
   const { environment, bind } = context;
 
-  const extensions = environment[$extensions] as unknown as Map<Function, any> ?? new Map();
+  const extensions = environment._extensions as unknown as Map<Function, any> ?? new Map();
 
-  return (methods: KopiTuple) => {
-    const awaitedMethods = Promise.all(methods.fields);
+  return async (methods: KopiTuple) => {
+    const awaitedFields = await Promise.all(methods.fields);
 
     bind({
       ...environment,
-      [$extensions]: new Map([
+      _extensions: new Map([
         ...extensions,
         [constructor, {
           ...extensions.get(constructor),
-          ...awaitedMethods
+          ...awaitedFields.reduce((newMethods, field, index) => ({
+            ...newMethods,
+            [methods._fieldNames[index]]: field
+          }), {})
         }]
-      ])
+      ]) as any
     });
   };
 }
