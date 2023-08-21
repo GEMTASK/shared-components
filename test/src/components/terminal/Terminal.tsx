@@ -6,12 +6,16 @@ import Clock from '../clock/Clock';
 
 import * as kopi from './kopi-language';
 
-import { KopiArray, KopiBoolean, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
-import { ASTNode, Context, Environment, KopiValue } from './kopi-language/src/types';
+import { KopiArray, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
+import { Context, Environment, KopiValue } from './kopi-language/src/types';
 
 import historyItems from './examples';
 import * as functions from './functions';
 import { Identifier } from './kopi-language/src/astnodes';
+
+async function kopi_print(value: KopiValue) {
+  return new KopiString(await value.toString());
+}
 
 async function kopi_struct(identifier: Identifier, context: Context) {
   const { bind } = context;
@@ -68,17 +72,7 @@ async function kopi_extend(constructor: Function, context: Context) {
   };
 }
 
-async function kopi_print(value: KopiValue) {
-  return new KopiString(await value.toString());
-}
-
-async function kopi_eval(node: ASTNode, context: Context) {
-  const { evaluate, environment, bind } = context;
-
-  return evaluate(node, environment, bind);
-}
-
-class KopiReact_ extends KopiValue {
+class KopiElement extends KopiValue {
   component: React.ComponentType;
   props: any;
   children?: KopiArray;
@@ -118,83 +112,75 @@ class KopiReact_ extends KopiValue {
   }
 }
 
-class KopiView_ extends KopiValue {
-  async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
-    const horizontal = await (props as any).horizontal;
-    const fillColor = await (props as any).fillColor;
-    const padding = await (props as any).padding;
-    const border = await (props as any).border;
+async function kopi_View(props: KopiTuple) {
+  const [horizontal, fillColor, padding, border] = await Promise.all([
+    (props as any).horizontal,
+    (props as any).fillColor,
+    (props as any).padding,
+    (props as any).border
+  ]);
 
-    return (children: any) => {
-      return new KopiReact_(View, {
-        horizontal: horizontal?.value,
-        fillColor: fillColor?.value,
-        padding: padding?.value,
-        border: border?.value,
-        style: { gap: 16 }
-      }, children);
-    };
-  }
+  return (children: any) => {
+    return new KopiElement(View, {
+      horizontal: horizontal?.value,
+      fillColor: fillColor?.value,
+      padding: padding?.value,
+      border: border?.value,
+      style: { gap: 16 }
+    }, children);
+  };
 }
 
-class KopiText_ extends KopiValue {
-  async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
-    const fillColor = await (props as any).fillColor;
-    const padding = await (props as any).padding;
-    const align = await (props as any).align;
+async function kopi_Text(props: KopiTuple) {
+  const [fillColor, padding, align] = await Promise.all([
+    (props as any).fillColor,
+    (props as any).padding,
+    (props as any).align
+  ]);
 
-    return (string: any) => {
-      return new KopiReact_(Text, {
-        fillColor: fillColor?.value,
-        padding: padding?.value,
-        align: align?.value
-      }, string);
-    };
-  }
+  return (string: any) => {
+    return new KopiElement(Text, {
+      fillColor: fillColor?.value,
+      padding: padding?.value,
+      align: align?.value
+    }, string);
+  };
 }
 
-class KopiButton_ extends KopiValue {
-  async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
-    const title = await (props as any).title;
-    const solid = await (props as any).solid;
+async function kopi_Button(props: KopiTuple, context: Context) {
+  const [title, solid] = await Promise.all([
+    (props as any).title,
+    (props as any).solid
+  ]);
 
-    return new KopiReact_(Button, {
-      solid: solid?.value,
-      primary: true,
-      title: title?.value,
-    });
-  }
+  return new KopiElement(Button, {
+    solid: solid?.value,
+    primary: true,
+    title: title?.value,
+  });
 }
 
-class _useState extends KopiValue {
-  async apply(thisArg: this, [props, context]: [KopiTuple, Context]) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [value, setValue] = useState(new KopiNumber(0));
+async function kopi_useState(initialValue: KopiValue) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [value, setValue] = useState(initialValue);
 
-    return new KopiTuple([value, setValue as any]);
-  }
+  return new KopiTuple([value, setValue as any]);
 }
 
 let environment = new Environment({
-  date: new functions.KopiDate(),
-  clock: new functions.KopiClock(),
-  calendar: new functions.KopiCalendar(),
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
   String: KopiString as unknown as KopiValue,
   Number: KopiNumber as unknown as KopiValue,
-  View: new KopiView_(),
-  Text: new KopiText_(),
-  Button: new KopiButton_(),
-  useState: new _useState(),
-  struct: kopi_struct as unknown as KopiValue,
   extend: kopi_extend as unknown as KopiValue,
-  eval: kopi_eval as unknown as KopiValue,
   print: kopi_print as unknown as KopiValue,
+  struct: kopi_struct as unknown as KopiValue,
+  //
   let: functions.kopi_let as unknown as KopiValue,
   loop: functions.kopi_loop as unknown as KopiValue,
   match: functions.kopi_match as unknown as KopiValue,
   apply: functions.kopi_apply as unknown as KopiValue,
+  eval: functions.kopi_eval as unknown as KopiValue,
   ident: functions.kopi_ident as unknown as KopiValue,
   sleep: functions.kopi_sleep as unknown as KopiValue,
   fetch: functions.kopi_fetch as unknown as KopiValue,
@@ -203,6 +189,15 @@ let environment = new Environment({
   km: functions.kopi_meter as unknown as KopiValue,
   spawn: functions.kopi_spawn as unknown as KopiValue,
   context: functions.kopi_context as unknown as KopiValue,
+  //
+  date: new functions.KopiDate(),
+  clock: new functions.KopiClock(),
+  calendar: new functions.KopiCalendar(),
+  //
+  View: kopi_View as unknown as KopiValue,
+  Text: kopi_Text as unknown as KopiValue,
+  Button: kopi_Button as unknown as KopiValue,
+  useState: kopi_useState as unknown as KopiValue,
 });
 
 const useSidebarStyles = createUseStyles({

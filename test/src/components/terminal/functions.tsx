@@ -1,39 +1,10 @@
 import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
-import { Bind, Context, KopiValue } from './kopi-language/src/types';
+import { ASTNode, Bind, Context, KopiValue } from './kopi-language/src/types';
 import KopiStream_T from './kopi-language/src/classes/KopiStream';
 import KopiRange from './kopi-language/src/classes/KopiRange';
 
-import { Icon } from 'bare';
 import Clock from '../clock/Clock';
 import Calendar from '../calendar/Calendar';
-
-class KopiDate extends KopiValue {
-  override async inspect() {
-    return new Date().toLocaleString();
-  }
-
-  async apply(thisArg: this, [value]: [value: KopiValue]) {
-    return value;
-  }
-}
-
-async function kopi_sleep(seconds: KopiNumber) {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(seconds), seconds.value * 1000);
-  });
-}
-
-async function kopi_match(value: KopiValue, context: Context) {
-  return async (funcs: KopiTuple) => {
-    for await (const func of funcs.fields) {
-      if (await (func as KopiFunction).parameterPattern.test(value, context)) {
-        return (func as KopiFunction).apply(KopiTuple.empty, [value, context]);
-      }
-    }
-
-    throw new Error('Match failed');
-  };
-}
 
 async function kopi_let(func: KopiFunction, context: Context) {
   let result: KopiValue = KopiTuple.empty;
@@ -61,10 +32,44 @@ async function kopi_loop(value: KopiValue, context: Context) {
   return new KopiLoop(value);
 }
 
+async function kopi_match(value: KopiValue, context: Context) {
+  return async (funcs: KopiTuple) => {
+    for await (const func of funcs.fields) {
+      if (await (func as KopiFunction).parameterPattern.test(value, context)) {
+        return (func as KopiFunction).apply(KopiTuple.empty, [value, context]);
+      }
+    }
+
+    throw new Error('Match failed');
+  };
+}
+
 async function kopi_apply(func: KopiFunction, context: Context) {
   return (arg: KopiValue) => {
     return func.apply(KopiTuple.empty, [arg, context]);
   };
+}
+
+class KopiDate extends KopiValue {
+  override async inspect() {
+    return new Date().toLocaleString();
+  }
+
+  async apply(thisArg: this, [value]: [value: KopiValue]) {
+    return value;
+  }
+}
+
+async function kopi_sleep(seconds: KopiNumber) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(seconds), seconds.value * 1000);
+  });
+}
+
+async function kopi_eval(node: ASTNode, context: Context) {
+  const { evaluate, environment, bind } = context;
+
+  return evaluate(node, environment, bind);
 }
 
 async function kopi_ident(value: KopiFunction, context: Context) {
@@ -124,11 +129,6 @@ class MetricUnit extends KopiValue {
   // toImperial() {
   //   return new ImperialUnit(new KopiNumber(this.value.value * 3.28084));
   // }
-}
-
-function sleep() {
-  return new Promise((resolve) =>
-    setTimeout(resolve, 2000));
 }
 
 class Deferred<T> {
@@ -246,11 +246,12 @@ export {
   KopiDate,
   KopiClock,
   KopiCalendar,
-  kopi_sleep,
-  kopi_match,
   kopi_let,
   kopi_loop,
+  kopi_match,
   kopi_apply,
+  kopi_eval,
+  kopi_sleep,
   kopi_ident,
   kopi_fetch,
   kopi_random,
