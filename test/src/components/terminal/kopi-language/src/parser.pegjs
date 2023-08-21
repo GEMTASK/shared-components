@@ -140,7 +140,7 @@ AddExpression
     }
 
 MultiplyExpression
-  = head:ApplyExpression tail:(_ ("*" / "/" / "%") _ ApplyExpression)* {
+  = head:ExponentExpression tail:(_ ("*" / "/" / "%") _ ExponentExpression)* {
       return tail.reduce((leftExpression, [, operator, , rightExpression]) => ({
         type: 'OperatorExpression',
         operator,
@@ -149,6 +149,18 @@ MultiplyExpression
         location: location(),
        }), head);
     }
+
+ExponentExpression
+  = leftExpression:ApplyExpression _ "^" _ rightExpression:ExponentExpression {
+      return {
+        type: 'OperatorExpression',
+        operator: "^",
+        leftExpression,
+        rightExpression,
+        location: location(),
+       }
+    }
+    / ApplyExpression
 
 ApplyExpression
   = expression:FunctionExpression _arguments:(_ FunctionExpression)* {
@@ -348,7 +360,7 @@ ArrayLiteral
     }
 
 AstLiteral "ast-literal"
-  = "'(" _ operator:('+' / '-' / '*' / '/' / '%') _ argumentExpression:ApplyExpression ")" {
+  = "'(" _ operator:("++" / "+" / "-" / "*" / "/" / "%" / "^") _ argumentExpression:ApplyExpression ")" {
       return {
         type: 'AstLiteral',
         value: {

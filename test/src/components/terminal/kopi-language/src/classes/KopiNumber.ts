@@ -95,6 +95,10 @@ class KopiNumber extends KopiValue {
 
   //
 
+  '^'(exponent: KopiNumber) {
+    return new KopiNumber(this.value ** exponent.value);
+  }
+
   abs() {
     return new KopiNumber(Math.abs(this.value));
   }
