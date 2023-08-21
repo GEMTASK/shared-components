@@ -145,24 +145,27 @@ coro = spawn () => {
 [coro | send 5, coro | send 5]
   `,
   `
-struct 'Person (
-    name: String
-)
-p = Person (name: "Joe")
-extend Person (
-    foobar: () => {
-        this.name ++ "bar"
-    }
-)
-p | foobar
-  `,
-  `
 extend String (
     foobar: () => {
         this ++ "bar"
     }
 )
 "foo" | foobar
+  `,
+  `
+struct 'Point (
+    x: Number
+    y: Number
+)
+extend Point (
+    add: (that) => {
+        Point(
+          this.0 + that.0
+          this.1 + that.1
+        )
+    }
+)
+Point (1, 2) | add (Point (2, 3))
   `,
   `
 View (
