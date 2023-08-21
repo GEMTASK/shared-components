@@ -124,6 +124,10 @@ async function kopi_struct(identifier: Identifier, context: Context) {
 
   return (tuple: KopiTuple) => {
     const class_ = class extends KopiTuple {
+      static apply(thisArg: void, [value]: [KopiTuple]) {
+        return new class_(value);
+      }
+
       constructor(value: KopiTuple) {
         super(value.fields, value._fieldNames);
       }
@@ -137,16 +141,8 @@ async function kopi_struct(identifier: Identifier, context: Context) {
       value: identifier.name
     });
 
-    const Constructor = new class extends KopiValue {
-      static nativeConstructor = class_;
-
-      apply(thisArg: this, [value]: [KopiTuple]) {
-        return new class_(value);
-      }
-    }();
-
     bind({
-      [identifier.name]: Constructor
+      [identifier.name]: class_
     });
   };
 }

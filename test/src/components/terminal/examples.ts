@@ -145,9 +145,24 @@ coro = spawn () => {
 [coro | send 5, coro | send 5]
   `,
   `
-struct 'Person (name: String)
+struct 'Person (
+    name: String
+)
 p = Person (name: "Joe")
-(p, p.name)
+extend Person (
+    foobar: () => {
+        this.name ++ "bar"
+    }
+)
+p | foobar
+  `,
+  `
+extend String (
+    foobar: () => {
+        this ++ "bar"
+    }
+)
+"foo" | foobar
   `,
   `
 View (
