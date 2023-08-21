@@ -17,61 +17,6 @@ async function kopi_print(value: KopiValue) {
   return new KopiString(await value.toString());
 }
 
-async function kopi_struct(identifier: Identifier, context: Context) {
-  const { bind } = context;
-
-  return (tuple: KopiTuple) => {
-    const class_ = class extends KopiTuple {
-      constructor(value: KopiTuple) {
-        super(value.fields, value._fieldNames);
-      }
-
-      async inspect() {
-        return `${this.constructor.name} ${await super.inspect()}`;
-      }
-    };
-
-    Object.defineProperty(class_, 'name', {
-      value: identifier.name
-    });
-
-    const Constructor = new class extends KopiValue {
-      static nativeConstructor = class_;
-
-      apply(thisArg: this, [value]: [KopiTuple]) {
-        return new class_(value);
-      }
-    }();
-
-    bind({
-      [identifier.name]: Constructor
-    });
-  };
-}
-
-const $extensions = Symbol();
-
-async function kopi_extend(constructor: Function, context: Context) {
-  const { environment, bind } = context;
-
-  const extensions = environment[$extensions] as unknown as Map<Function, any> ?? new Map();
-
-  return (methods: KopiTuple) => {
-    const awaitedMethods = Promise.all(methods.fields);
-
-    bind({
-      ...environment,
-      [$extensions]: new Map([
-        ...extensions,
-        [constructor, {
-          ...extensions.get(constructor),
-          ...awaitedMethods
-        }]
-      ])
-    });
-  };
-}
-
 class KopiElement extends KopiValue {
   component: React.ComponentType;
   props: any;
@@ -173,8 +118,6 @@ let environment = new Environment({
   String: KopiString,
   Number: KopiNumber,
   print: kopi_print,
-  extend: kopi_extend,
-  struct: kopi_struct,
   //
   let: functions.kopi_let,
   loop: functions.kopi_loop,
@@ -186,9 +129,11 @@ let environment = new Environment({
   fetch: functions.kopi_fetch,
   random: functions.kopi_random,
   repeat: functions.kopi_repeat,
-  km: functions.kopi_meter,
+  struct: functions.kopi_struct,
+  extend: functions.kopi_extend,
   spawn: functions.kopi_spawn,
   context: functions.kopi_context,
+  km: functions.kopi_meter,
   //
   date: new functions.KopiDate(),
   clock: new functions.KopiClock(),

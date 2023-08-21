@@ -5,6 +5,7 @@ import KopiRange from './kopi-language/src/classes/KopiRange';
 
 import Clock from '../clock/Clock';
 import Calendar from '../calendar/Calendar';
+import { Identifier } from './kopi-language/src/astnodes';
 
 async function kopi_let(func: KopiFunction, context: Context) {
   let result: KopiValue = KopiTuple.empty;
@@ -113,22 +114,59 @@ async function kopi_repeat(func: KopiFunction, context: Context) {
   return new RepeatStream(generator);
 }
 
-async function kopi_meter(value: KopiNumber) {
-  return new MetricUnit(value);
+async function kopi_struct(identifier: Identifier, context: Context) {
+  const { bind } = context;
+
+  return (tuple: KopiTuple) => {
+    const class_ = class extends KopiTuple {
+      constructor(value: KopiTuple) {
+        super(value.fields, value._fieldNames);
+      }
+
+      async inspect() {
+        return `${this.constructor.name} ${await super.inspect()}`;
+      }
+    };
+
+    Object.defineProperty(class_, 'name', {
+      value: identifier.name
+    });
+
+    const Constructor = new class extends KopiValue {
+      static nativeConstructor = class_;
+
+      apply(thisArg: this, [value]: [KopiTuple]) {
+        return new class_(value);
+      }
+    }();
+
+    bind({
+      [identifier.name]: Constructor
+    });
+  };
 }
 
-class MetricUnit extends KopiValue {
-  value: KopiNumber;
+const $extensions = Symbol();
 
-  constructor(value: KopiNumber) {
-    super();
+async function kopi_extend(constructor: Function, context: Context) {
+  const { environment, bind } = context;
 
-    this.value = new KopiNumber(value.value * 1000);
-  }
+  const extensions = environment[$extensions] as unknown as Map<Function, any> ?? new Map();
 
-  // toImperial() {
-  //   return new ImperialUnit(new KopiNumber(this.value.value * 3.28084));
-  // }
+  return (methods: KopiTuple) => {
+    const awaitedMethods = Promise.all(methods.fields);
+
+    bind({
+      ...environment,
+      [$extensions]: new Map([
+        ...extensions,
+        [constructor, {
+          ...extensions.get(constructor),
+          ...awaitedMethods
+        }]
+      ])
+    });
+  };
 }
 
 class Deferred<T> {
@@ -242,6 +280,24 @@ async function kopi_context(value: KopiValue, context: Context) {
   return new KopiContext(value, bind);
 }
 
+async function kopi_meter(value: KopiNumber) {
+  return new MetricUnit(value);
+}
+
+class MetricUnit extends KopiValue {
+  value: KopiNumber;
+
+  constructor(value: KopiNumber) {
+    super();
+
+    this.value = new KopiNumber(value.value * 1000);
+  }
+
+  // toImperial() {
+  //   return new ImperialUnit(new KopiNumber(this.value.value * 3.28084));
+  // }
+}
+
 export {
   KopiDate,
   KopiClock,
@@ -256,7 +312,9 @@ export {
   kopi_fetch,
   kopi_random,
   kopi_repeat,
-  kopi_meter,
+  kopi_struct,
+  kopi_extend,
   kopi_spawn,
   kopi_context,
+  kopi_meter,
 };
