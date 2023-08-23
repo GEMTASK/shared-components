@@ -249,11 +249,17 @@ const interpret = async (
       const value = await kopi.interpret(source, { ...environment, print: kopi_print }, bind);
 
       if (value) {
-        resolve(
-          <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
-            {await value?.inspect()}
-          </Text>
-        );
+        const element = await value?.inspect();
+
+        if (typeof element === 'string') {
+          resolve(
+            <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+              {element}
+            </Text>
+          );
+        } else {
+          resolve(element);
+        }
       } else {
         resolve(value);
       }
