@@ -192,7 +192,16 @@ RangeExpression
   / MemberExpression
 
 MemberExpression
-  = head:UnaryExpression tail:("." (Identifier / NumericLiteral))* {
+  = head:UnaryExpression tail:(".(" _ PrimaryExpression _ ")")+ {
+      return tail.reduce((expression, [, , argumentExpression]) => ({
+        type: 'PipeExpression',
+        expression,
+        methodName: 'at',
+        argumentExpression,
+        location: location(),
+      }), head);
+    }
+  / head:UnaryExpression tail:("." (Identifier / NumericLiteral))* {
       return tail.reduce((expression, [, member]) => ({
         type: 'MemberExpression',
         expression,

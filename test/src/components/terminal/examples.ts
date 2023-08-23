@@ -232,7 +232,7 @@ interpret (program) = {
 
     let (index = 0) => {
         reducer = evaluate (
-            lines | at index
+            lines.(index)
         )
         newIndex = reducer index
 
