@@ -62,7 +62,7 @@ PipeExpression
 
 ConcatExpression
   = head:ConditionalExpression tail:(_ "++" _ ConcatExpression)? {
-      const [, , , rightExpression] = tail ? tail : [];
+      const [, , , rightExpression] = tail ?? [];
 
       return !tail ? head : {
         type: 'OperatorExpression',
@@ -73,8 +73,10 @@ ConcatExpression
     }
 
 ConditionalExpression
-  = head:LogicalOrExpression _ "?" _ consequent:ConcatExpression _ ":" _ alternate:ConcatExpression {
-      return {
+  = head:LogicalOrExpression tail:(_ "?" _ consequent:ConcatExpression _ ":" _ alternate:ConcatExpression)? {
+      const [, , , consequent, , , , alternate] = tail ?? [];
+
+      return !tail ? head : {
         type: 'ConditionalExpression',
         expression: head,
         consequent,
@@ -93,7 +95,6 @@ LogicalOrExpression
         location: location(),
       }), head);
     }
-    / LogicalAndExpression
 
 LogicalAndExpression
   = head:EqualityExpression tail:(_ "&&" _ EqualityExpression)* {
@@ -151,8 +152,10 @@ MultiplyExpression
     }
 
 ExponentExpression
-  = leftExpression:ApplyExpression _ "^" _ rightExpression:ExponentExpression {
-      return {
+  = leftExpression:ApplyExpression tail:(_ "^" _ rightExpression:ExponentExpression)? {
+      const [, , , rightExpression] = tail ?? [];
+
+      return !tail ? leftExpression : {
         type: 'OperatorExpression',
         operator: "^",
         leftExpression,
@@ -160,7 +163,6 @@ ExponentExpression
         location: location(),
        }
     }
-    / ApplyExpression
 
 ApplyExpression
   = expression:FunctionExpression _arguments:(_ FunctionExpression)* {
@@ -172,14 +174,14 @@ ApplyExpression
     }
 
 FunctionExpression
-  = RangeExpression
-  / parameterPattern:Pattern _ "=>" _ bodyExpression:ConcatExpression {
+  = parameterPattern:Pattern _ "=>" _ bodyExpression:ConcatExpression {
       return {
         type: "FunctionExpression",
         parameterPattern,
         bodyExpression,
       }
     }
+  / RangeExpression
 
 RangeExpression
   = from:PrimaryExpression _ ".." _ to:PrimaryExpression {
@@ -210,14 +212,14 @@ MemberExpression
     }
 
 UnaryExpression
-  = PrimaryExpression
-  / operator:("-" / "!") argumentExpression:UnaryExpression {
+  = operator:("-" / "!") argumentExpression:UnaryExpression {
       return {
         type: 'UnaryExpression',
         operator: operator === '-' ? '$-' : operator,
         argumentExpression,
       };
     }
+  / PrimaryExpression
 
 PrimaryExpression
   = "(" _ ")" _ !"=>" {

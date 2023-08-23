@@ -30,7 +30,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
-    "peggy": "peggy --format es --output src/components/terminal/kopi-language/lib/parser.js src/components/terminal/kopi-language/src/parser.pegjs",
+    "peggy": "peggy --format es --output src/components/terminal/kopi-language/lib/parser.mjs src/components/terminal/kopi-language/src/parser.pegjs",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

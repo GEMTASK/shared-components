@@ -1,4 +1,4 @@
-import * as parser from './lib/parser.js';
+import * as parser from './lib/parser.mjs';
 
 import { RawASTNode, ASTNode, ASTPatternNode, Environment, Bind } from './src/types';
 
