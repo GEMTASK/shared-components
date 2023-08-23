@@ -251,7 +251,7 @@ const interpret = async (
       if (value) {
         resolve(
           <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
-            {await value?.toString()}
+            {await value?.inspect()}
           </Text>
         );
       } else {
