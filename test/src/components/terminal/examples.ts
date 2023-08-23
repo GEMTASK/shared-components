@@ -195,6 +195,44 @@ View (
     )
 ]
   `,
+  `
+program = "
+  10 print 'hello'
+"
+
+next         = (index) => index + 1
+goto (index) = () => index
+
+eval (line) = match (
+  line | trim | splitOn " " | toArray
+) (
+  [lineNo, "print", value] => {
+    print value
+    next
+  }
+  [lineNo, "goto", index] => {
+    goto index
+  }
+)
+
+interpret (program) = {
+  lines = program
+    | trim
+    | splitOn String.newline
+    | toArray
+
+  let (index = 0) => {
+    reducer = eval (lines | at index)
+    newIndex = reducer index
+
+    newIndex < 'size lines ? {
+      loop (newIndex)
+    } : index
+  }
+}
+
+interpret program
+  `
 ];
 
 export default examples;

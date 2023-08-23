@@ -1,4 +1,4 @@
-import { KopiArray, KopiBoolean, KopiNumber, KopiTuple } from './classes';
+import { KopiArray, KopiBoolean, KopiNumber, KopiString, KopiTuple } from './classes';
 import { ASTNode, ASTPatternNode, Context, KopiValue } from './types';
 
 //
@@ -251,6 +251,32 @@ class NumericLiteralPattern extends ASTPatternNode {
   }
 }
 
+class StringLiteralPattern extends ASTPatternNode {
+  readonly value: string;
+
+  constructor({ value, location }: StringLiteralPattern) {
+    super(location);
+
+    this.value = value;
+  }
+
+  async test(value: KopiValue, context: Context) {
+    if (!(value instanceof KopiString && value.value === this.value)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  override async match(value: KopiValue, context: Context) {
+    if (!(value instanceof KopiString && value.value === this.value)) {
+      throw new TypeError(`Expected ${this.value} but ${await value.inspect()} found.`);
+    }
+
+    return {};
+  }
+}
+
 class ArrayLiteralPattern extends ASTPatternNode {
   readonly elementPatterns: ASTPatternNode[];
 
@@ -426,6 +452,7 @@ export {
   TupleExpression,
   //
   NumericLiteralPattern,
+  StringLiteralPattern,
   ArrayLiteralPattern,
   IdentifierPattern,
   TuplePattern,

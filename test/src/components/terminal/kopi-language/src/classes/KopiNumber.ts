@@ -99,6 +99,10 @@ class KopiNumber extends KopiValue {
     return new KopiNumber(this.value ** exponent.value);
   }
 
+  sqrt() {
+    return new KopiNumber(Math.sqrt(this.value));
+  }
+
   abs() {
     return new KopiNumber(Math.abs(this.value));
   }

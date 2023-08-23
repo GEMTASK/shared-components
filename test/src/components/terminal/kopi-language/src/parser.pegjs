@@ -284,6 +284,7 @@ PrimaryPattern
     }
   / ArrayLiteralPattern
   / NumericLiteralPattern
+  / StringLiteralPattern
   / IdentifierPattern
 
 ArrayLiteralPattern
@@ -308,6 +309,14 @@ NumericLiteralPattern
       return {
         type: 'NumericLiteralPattern',
         value: number.value,
+      }
+    }
+
+StringLiteralPattern
+  = string:StringLiteral {
+      return {
+        type: 'StringLiteralPattern',
+        value: string.value,
       }
     }
 

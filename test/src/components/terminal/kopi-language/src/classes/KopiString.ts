@@ -81,6 +81,8 @@ import('./KopiStream').then((result) => {
 //
 
 class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
+  static newline = new KopiString('\n');
+
   static async inspect() {
     return 'String';
   }
