@@ -197,38 +197,45 @@ View (
   `,
   `
 program = "
-  10 print 'hello'
+    10 print 'hello'
+    20 goto 30
+    30 print 'world'
 "
 
-next         = (index) => index + 1
+next = (index) => index + 1
 goto (index) = () => index
 
-eval (line) = match (
-  line | trim | splitOn " " | toArray
+evaluate (line) = match (
+    line
+        | trim
+        | splitOn " "
+        | toArray
 ) (
-  [lineNo, "print", value] => {
-    print value
-    next
-  }
-  [lineNo, "goto", index] => {
-    goto index
-  }
-)
+    [lineNo, "print", value] => {
+        print value
+        next
+    }
+    [lineNo, "goto", index] => {
+        goto ((Number index) / 10 - 1)
+    }
+  )
 
 interpret (program) = {
-  lines = program
-    | trim
-    | splitOn String.newline
-    | toArray
+    lines = program
+        | trim
+        | splitOn String.newline
+        | toArray
 
-  let (index = 0) => {
-    reducer = eval (lines | at index)
-    newIndex = reducer index
+    let (index = 0) => {
+        reducer = evaluate (
+            lines | at index
+        )
+        newIndex = reducer index
 
-    newIndex < 'size lines ? {
-      loop (newIndex)
-    } : index
-  }
+        newIndex < 'size lines ? {
+            loop (newIndex)
+        } : "Done"
+    }
 }
 
 interpret program

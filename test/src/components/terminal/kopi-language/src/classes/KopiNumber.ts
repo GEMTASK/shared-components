@@ -14,7 +14,7 @@ class KopiNumber extends KopiValue {
   }
 
   static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
-    return value;
+    return new KopiNumber(Number(await value.toString()));
   }
 
   //
