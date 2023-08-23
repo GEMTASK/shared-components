@@ -12,10 +12,6 @@ import { Context, Environment, KopiValue } from './kopi-language/src/types';
 import historyItems from './examples';
 import * as functions from './functions';
 
-async function kopi_print(value: KopiValue) {
-  return new KopiString(await value.toString());
-}
-
 class KopiElement extends KopiValue {
   component: React.ComponentType;
   props: any;
@@ -117,7 +113,6 @@ let environment = new Environment({
   String: KopiString,
   Number: KopiNumber,
   Date: KopiDate,
-  print: kopi_print,
   //
   let: functions.kopi_let,
   loop: functions.kopi_loop,
@@ -238,12 +233,25 @@ const interpret = async (
 
   const promise = new Promise(async (resolve, reject) => {
     try {
-      const value = await kopi.interpret(source, environment, bind);
+      async function kopi_print(value: KopiValue) {
+        const string = await value.toString();
+
+        setHistory(history => [
+          ...history,
+          <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+            {string}
+          </Text>
+        ]);
+
+        // resolve(undefined);
+      }
+
+      const value = await kopi.interpret(source, { ...environment, print: kopi_print }, bind);
 
       if (value) {
         resolve(
           <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
-            {await value?.inspect()}
+            {await value?.toString()}
           </Text>
         );
       } else {

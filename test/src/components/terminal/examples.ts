@@ -202,6 +202,10 @@ program = "
     30 print 'world'
 "
 
+indexOf (lineNo) = {
+  (Number lineNo) / 10 - 1
+}
+
 next = (index) => index + 1
 goto (index) = () => index
 
@@ -215,8 +219,8 @@ evaluate (line) = match (
         print value
         next
     }
-    [lineNo, "goto", index] => {
-        goto ((Number index) / 10 - 1)
+    [lineNo, "goto", gotoNo] => {
+        goto (indexOf gotoNo)
     }
   )
 
@@ -234,7 +238,7 @@ interpret (program) = {
 
         newIndex < 'size lines ? {
             loop (newIndex)
-        } : "Done"
+        } : "Done."
     }
 }
 
