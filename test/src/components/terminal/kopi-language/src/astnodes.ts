@@ -225,6 +225,38 @@ class TuplePattern extends ASTPatternNode {
   }
 }
 
+class ConstructorPattern extends ASTPatternNode {
+  readonly name: string;
+  readonly argumentPattern: ASTPatternNode;
+
+  constructor({ name, argumentPattern, location }: ConstructorPattern) {
+    super(location);
+
+    this.name = name;
+    this.argumentPattern = argumentPattern;
+  }
+
+  async test(value: KopiValue, context: Context) {
+    const { environment } = context;
+
+    if (value instanceof (environment as any)[this.name]) {
+      return true;
+    }
+
+    return false;
+  }
+
+  async match(value: KopiValue, context: Context) {
+    const { environment } = context;
+
+    if (value instanceof (environment as any)[this.name]) {
+      return this.argumentPattern.match(value, context);
+    }
+
+    throw new TypeError(`Match: Expected a ${this.name} but ${await value.constructor.inspect()} found.`);
+  }
+}
+
 class NumericLiteralPattern extends ASTPatternNode {
   readonly value: number;
 
@@ -451,11 +483,12 @@ export {
   FunctionExpression,
   TupleExpression,
   //
+  TuplePattern,
+  ConstructorPattern,
   NumericLiteralPattern,
   StringLiteralPattern,
   ArrayLiteralPattern,
   IdentifierPattern,
-  TuplePattern,
   //
   BooleanLiteral,
   NumericLiteral,

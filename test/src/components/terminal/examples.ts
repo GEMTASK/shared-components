@@ -126,7 +126,7 @@ age | get
         (0, 0) => "FizzBuzz"
         (0, _) => "Fizz"
         (_, 0) => "Buzz"
-        _      => n
+        _       => n
     )
 }
   `,
@@ -243,6 +243,12 @@ interpret (program) = {
 }
 
 interpret program
+  `,
+  `
+match 5 (
+  String s      => "String " ++ s
+  Number n => "Number " ++ String n
+)
   `
 ];
 

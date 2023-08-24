@@ -293,10 +293,20 @@ PrimaryPattern
         ], [head])
       }
     }
+  / ConstructorPattern
   / ArrayLiteralPattern
   / NumericLiteralPattern
   / StringLiteralPattern
   / IdentifierPattern
+
+ConstructorPattern
+  = typename:Typename _ argumentPattern:Pattern {
+      return {
+        type: 'ConstructorPattern',
+        name: typename.name,
+        argumentPattern
+      }
+    }
 
 ArrayLiteralPattern
   = "[" _ "]" {
@@ -404,6 +414,14 @@ Identifier "identifier"
   = name:([_a-zA-Z][_a-zA-Z0-9]*) {
       return ({
         type: 'Identifier',
+        name: name[0] + name[1].join('')
+      });
+    }
+
+Typename "typename"
+  = name:([A-Z][_a-zA-Z0-9]*) {
+      return ({
+        type: 'Typename',
         name: name[0] + name[1].join('')
       });
     }
