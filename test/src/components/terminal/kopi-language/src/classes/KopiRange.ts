@@ -6,6 +6,7 @@ import KopiArray from './KopiArray';
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
 import KopiBoolean from './KopiBoolean';
+import KopiTuple from './KopiTuple';
 
 interface KopiRange extends KopiValue, KopiIterable<KopiArray> { };
 
@@ -76,7 +77,7 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
   }
 
   override async inspect() {
-    return `${await (await this.from).inspect()}..${await (await this.to).inspect()}`;
+    return `${await (await this.from).inspect()}..${await (await this.to).inspect()}${this.stride.value !== 1 ? ` (by: ${this.stride.value})` : ''}`;
   }
 
   async *[Symbol.asyncIterator]() {
@@ -103,8 +104,8 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
 
   //
 
-  apply(thisArg: this, [stride]: [stride: KopiNumber]) {
-    return new KopiRange(this.from, this.to, stride);
+  async apply(thisArg: this, [stride]: [stride: KopiTuple]) {
+    return new KopiRange(this.from, this.to, await stride.fields[0] as KopiNumber);
   }
 }
 
