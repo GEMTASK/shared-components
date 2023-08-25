@@ -273,7 +273,15 @@ match 5 (
   String s      => "String " ++ s
   Number n => "Number " ++ String n
 )
+  `,
   `
+Object.fromJsonString "
+  {
+    \\"name\\": \\"Joe\\",
+    \\"ids\\": [1, 2, 3]
+  }
+"
+  `,
 ];
 
 export default examples;
