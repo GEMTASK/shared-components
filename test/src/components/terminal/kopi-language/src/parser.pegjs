@@ -390,7 +390,7 @@ ArrayLiteral
     }
 
 AstLiteral "ast-literal"
-  = "'(" _ operator:("++" / "+" / "-" / "*" / "/" / "%" / "^") _ argumentExpression:ApplyExpression ")" {
+  = "'(" _ operator:("++" / "<<" / "+" / "-" / "*" / "/" / "%" / "^") _ argumentExpression:ApplyExpression ")" {
       return {
         type: 'AstLiteral',
         value: {

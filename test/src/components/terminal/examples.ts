@@ -286,13 +286,16 @@ Object.fromJsonString "
   `
 a = Dict.fromIterable [
   ("1", 1)
-  ("3", 3)
 ]
 b = Dict.fromIterable [
-  ("2", 2)
-  ("4", 4)
+  ("1", 100)
+  ("2", 200)
+  ("3", 300)
 ]
-a << b
+c = Dict.fromIterable [
+  ("3", 3)
+]
+a << b << c
   `,
 ];
 
