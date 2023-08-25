@@ -241,9 +241,7 @@ class Coroutine extends KopiValue {
 async function kopi_spawn(func: KopiFunction, context: Context) {
   const coro = new Coroutine();
 
-  (func.environment as any).yield = coro.yield.bind(coro);
-
-  func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+  func.apply(KopiTuple.empty, [coro.yield.bind(coro), context]);
 
   return coro;
 }

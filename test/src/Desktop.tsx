@@ -172,7 +172,7 @@ const App = () => {
     { title: 'Music', action: () => addWindow('Music', <Music />, { width: 400, height: 500 }) },
     { title: 'Files', action: () => addWindow('Files', <Filesystem />, { width: 800, height: 600 }) },
     { title: 'Contacts', action: () => addWindow('Contacts', <Contacts />, { width: 800, height: 600 }) },
-    { title: 'Terminal', action: () => addWindow('Terminal', <Terminal />, { width: 800, height: 600 }) },
+    { title: 'Terminal', action: () => addWindow('Terminal', <Terminal />, { width: 800, height: 800 }) },
     null,
     { title: 'Browser', action: () => addWindow('Browser', <Browser />, { width: 1280, height: 800 }) },
     { title: 'Email', action: () => addWindow('Email', <Email />, { width: 1280, height: 800 }) },
