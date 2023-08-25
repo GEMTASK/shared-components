@@ -278,9 +278,16 @@ match 5 (
 Object.fromJsonString "
   {
     \\"name\\": \\"Joe\\",
-    \\"ids\\": [1, 2, 3]
+    \\"ids\\": [1, 2, 3],
+    \\"shared\\": true
   }
 "
+  `,
+  `
+Dict.fromIterable [
+  ("1", 1)
+  ("2", 2)
+]
   `,
 ];
 

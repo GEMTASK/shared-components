@@ -6,7 +6,7 @@ import Clock from '../clock/Clock';
 
 import * as kopi from './kopi-language';
 
-import { KopiArray, KopiNumber, KopiString, KopiTuple, KopiDate } from './kopi-language/src/classes';
+import { KopiArray, KopiNumber, KopiString, KopiTuple, KopiDate, KopiBoolean, KopiDict } from './kopi-language/src/classes';
 import { Context, Environment, KopiValue } from './kopi-language/src/types';
 
 import historyItems from './examples';
@@ -121,6 +121,8 @@ function transform(value: unknown): KopiValue {
     return new KopiString(value);
   } else if (typeof value === 'number') {
     return new KopiNumber(value);
+  } else if (typeof value === 'boolean') {
+    return new KopiBoolean(value);
   }
 
   return KopiTuple.empty;
@@ -140,6 +142,7 @@ let environment = new Environment({
   Object: KopiObject,
   String: KopiString,
   Number: KopiNumber,
+  Dict: KopiDict,
   Date: KopiDate,
   //
   let: functions.kopi_let,

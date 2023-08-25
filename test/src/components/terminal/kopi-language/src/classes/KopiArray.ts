@@ -52,7 +52,7 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   let elements: KopiValue[] = [];
 
   for await (const element of iterable) {
-    elements = [...elements, await element];
+    elements = [...elements, await element]; // TODO: need await?
   }
 
   return new KopiArray(elements);
