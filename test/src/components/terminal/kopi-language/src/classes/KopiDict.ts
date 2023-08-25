@@ -12,6 +12,7 @@ import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
 
 // Dict [(1, "One"), (2, "Two")]
+// {1: "One"} << {2: "Two"}
 
 async function fromIterable(iterable: AsyncIterable<KopiTuple>) {
   let entries: [string, KopiValue][] = [];
@@ -59,6 +60,13 @@ class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
     }
   }
 
+  async merge(that: KopiDict) {
+    return new KopiDict([...this.map, ...that.map]);
+  }
+
+  async '<<'(that: KopiDict) {
+    return this.merge(that);
+  }
 }
 
 export default KopiDict;

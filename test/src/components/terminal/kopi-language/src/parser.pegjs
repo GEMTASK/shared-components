@@ -61,12 +61,12 @@ PipeExpression
     }
 
 ConcatExpression
-  = head:ConditionalExpression tail:(_ "++" _ ConcatExpression)? {
-      const [, , , rightExpression] = tail ?? [];
+  = head:ConditionalExpression tail:(_ ("++" / "<<") _ ConcatExpression)? {
+      const [, operator, , rightExpression] = tail ?? [];
 
       return !tail ? head : {
         type: 'OperatorExpression',
-        operator: '++',
+        operator,
         leftExpression: head,
         rightExpression
       };
