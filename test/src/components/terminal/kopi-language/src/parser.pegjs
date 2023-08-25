@@ -372,10 +372,10 @@ NumericLiteral "number"
     }
 
 StringLiteral "string"
-  = _ "\"" value:[^"]* "\"" _ {
+  = _ "\"" value:("\\\"" / [^"])* "\"" _ {
       return {
         type: 'StringLiteral',
-        value: value.join(''),
+        value: value.join('').replace(/\\"/g, '"'),
         location: location(),
       };
     }
