@@ -4,6 +4,7 @@ import KopiNumber from './KopiNumber';
 import KopiBoolean from './KopiBoolean';
 import KopiTuple from './KopiTuple';
 import KopiRange from './KopiRange';
+import KopiFunction from './KopiFunction';
 
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
@@ -154,6 +155,38 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
 
   '++'(that: KopiArray) {
     return new KopiArray(this.elements.concat(that.elements));
+  }
+
+  zip(func: KopiFunction, context: Context) {
+    const result = (async function* map(this: KopiArray) {
+      const iters = await Promise.all(
+        this.elements.map(async (element) => {
+          const resolvedElement = await element;
+
+          const iterFunc = resolvedElement[Symbol.asyncIterator];
+
+          if (!iterFunc) {
+            throw new TypeError(`Value ${await resolvedElement.inspect()} does not have an asyncIterator.`);
+          }
+
+          return iterFunc.apply(resolvedElement, []);
+        })
+      );
+
+      let results = await Promise.all(
+        iters.map(iter => iter.next())
+      );
+
+      while (results.every(result => !result.done)) {
+        yield func.apply(KopiTuple.empty, [new KopiTuple(results.map(result => result.value)), context]);
+
+        results = await Promise.all(
+          iters.map(iter => iter.next())
+        );
+      }
+    }).apply(this);
+
+    return new ArrayStream(result);
   }
 
 }

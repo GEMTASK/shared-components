@@ -147,13 +147,37 @@ fact (n) = let (n = n, a = 1) => {
 [fact 5, fact 6, fact 7]
   `,
   `
-coro = spawn () => {
-    let (x = 1) => {
-        yield n => n + x
-        loop (x + 1)
+server (yield) = {
+    let (a = 0) => {
+        yield (b) => {
+            sleep (random 0.1..1.0)
+
+            a..b
+        }
+
+        loop (a + 1)
     }
 }
-[coro | send 5, coro | send 5]
+
+coros = [
+    spawn server
+    spawn server
+]
+
+let (n = 1) => {
+    data = coros | map (coro) => {
+        coro | send n
+    } | toArray
+
+    values = data
+        | zip (a, b) => a * b
+        | map '(toFixed 1)
+        | toArray
+
+    print values
+
+    n < 6 ? loop (n + 2) : "Done."
+}
   `,
   `
 extend String (
