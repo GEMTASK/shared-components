@@ -134,20 +134,21 @@ type WindowsProp = React.ComponentProps<typeof Desktop>['windows'];
 const App = () => {
   // console.log('App()');
 
-  const [windows, setWindows] = useState<WindowsProp>(window.innerWidth >= 1440 ? initialState : []);
+  const [windows, setWindows] = useState<WindowsProp>(window.innerWidth < 1440 ? [] : initialState);
   const [windowOrder, setWindowOrder] = useState<string[]>(windows.map(({ id }) => id));
+  const [isSidebarHidden, setIsSidebarHidden] = useState(window.innerWidth < 1440);
 
   const addWindow = (title: string, element: React.ReactElement, rect?: Rect) => {
     const id = uuidv4();
 
-    const width = rect?.width ?? 500;
-    const height = rect?.height ?? 250;
+    const width = Math.min(rect?.width ?? 500, window.innerWidth - (isSidebarHidden ? 15 : 240) - 30);
+    const height = Math.min(rect?.height ?? 250, window.innerHeight - 32 - 30);
 
     setWindows(windows => [
       ...windows,
       {
         id, title, element, rect: {
-          x: (window.innerWidth - width - 240) / 2,
+          x: (window.innerWidth - width - (isSidebarHidden ? 15 : 240)) / 2,
           y: (window.innerHeight - height - 32) / 2,
           width,
           height,
@@ -172,7 +173,7 @@ const App = () => {
     { title: 'Music', action: () => addWindow('Music', <Music />, { width: 400, height: 500 }) },
     { title: 'Files', action: () => addWindow('Files', <Filesystem />, { width: 800, height: 600 }) },
     { title: 'Contacts', action: () => addWindow('Contacts', <Contacts />, { width: 800, height: 600 }) },
-    { title: 'Terminal', action: () => addWindow('Terminal', <Terminal />, { width: 910, height: 760 }) },
+    { title: 'Terminal', action: () => addWindow('Terminal', <Terminal />, { width: 800, height: 600 }) },
     null,
     { title: 'Browser', action: () => addWindow('Browser', <Browser />, { width: 1280, height: 800 }) },
     { title: 'Email', action: () => addWindow('Email', <Email />, { width: 1280, height: 800 }) },
@@ -222,7 +223,7 @@ const App = () => {
         <Spacer flex size="large" />
         <DigitalClock />
       </Stack>
-      <View flex horizontal style={{ zIndex: 0 }}>
+      <View flex horizontal style={{ zIndex: 0, width: '100vw', overflow: 'hidden' }}>
         <Desktop
           wallpaper="images/d1e91a4058a8a1082da711095b4e0163.jpg"
           windows={windows}
@@ -231,9 +232,27 @@ const App = () => {
           onWindowChange={handleWindowChange}
           onWindowClose={handleWindowClose}
         />
-        <Stack absolute fillColor="white-2" spacing="small" minWidth={240} style={{ top: 0, right: 0, bottom: 0, boxShadow: '0 0 16px hsla(0, 0%, 0%, 0.1)', backdropFilter: 'blur(10px)', padding: 15 }}>
-          <Clock style={{ opacity: 1, borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }} />
-          <Calculator style={{ opacity: 1, borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }} />
+        <Stack
+          absolute
+          fillColor="white-2"
+          spacing="large"
+          minWidth={240}
+          style={{
+            zIndex: 1000,
+            top: 0, right: 0, bottom: 0, boxShadow: '0 0 16px hsla(0, 0%, 0%, 0.1)', backdropFilter: 'blur(10px)', padding: 15,
+            transform: isSidebarHidden ? 'translate(225px)' : '',
+            transition: 'transform 0.3s ease-in-out'
+          }}
+          onClick={() => setIsSidebarHidden(isSidebarHidden => !isSidebarHidden)}
+        >
+          <Clock
+            style={{ opacity: 1, borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }}
+            onClick={(event: React.PointerEvent) => event.stopPropagation()}
+          />
+          <Calculator
+            style={{ opacity: 1, borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }}
+            onClick={(event: React.PointerEvent) => event.stopPropagation()}
+          />
         </Stack>
       </View>
     </View>
