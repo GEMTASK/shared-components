@@ -70,7 +70,7 @@ add1 5
   `[1, 2, 3] | take 2 | take 1`,
   `(1..2, 3..4) | map (a, b) => a * b`,
   `1..3 | repeat | take 7`,
-  `0..0.3 (by: 0.1) | map '(toFixed 1)`,
+  `0..0.31 (by: 0.1) | map '(toFixed 1)`,
   `(1 == 1, "a" == "a", 'b == 'b)`,
   `(1, "a", 'b) == (1, "a", 'b)`,
   `[1, "a", 'b] == [1, "a", 'b]`,
@@ -273,7 +273,30 @@ match 5 (
   String s      => "String " ++ s
   Number n => "Number " ++ String n
 )
+  `,
   `
+Object.fromJsonString "
+  {
+    \\"name\\": \\"Joe\\",
+    \\"ids\\": [1, 2, 3],
+    \\"shared\\": true
+  }
+"
+  `,
+  `
+a = Dict.fromIterable [
+  ("1", 1)
+]
+b = Dict.fromIterable [
+  ("1", 100)
+  ("2", 200)
+  ("3", 300)
+]
+c = Dict.fromIterable [
+  ("3", 3)
+]
+a << b << c
+  `,
 ];
 
 export default examples;

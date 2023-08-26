@@ -61,12 +61,12 @@ PipeExpression
     }
 
 ConcatExpression
-  = head:ConditionalExpression tail:(_ "++" _ ConcatExpression)? {
-      const [, , , rightExpression] = tail ?? [];
+  = head:ConditionalExpression tail:(_ ("++" / "<<") _ ConcatExpression)? {
+      const [, operator, , rightExpression] = tail ?? [];
 
       return !tail ? head : {
         type: 'OperatorExpression',
-        operator: '++',
+        operator,
         leftExpression: head,
         rightExpression
       };
@@ -372,10 +372,10 @@ NumericLiteral "number"
     }
 
 StringLiteral "string"
-  = _ "\"" value:[^"]* "\"" _ {
+  = _ "\"" value:("\\\"" / [^"])* "\"" _ {
       return {
         type: 'StringLiteral',
-        value: value.join(''),
+        value: value.join('').replace(/\\"/g, '"'),
         location: location(),
       };
     }
@@ -390,7 +390,7 @@ ArrayLiteral
     }
 
 AstLiteral "ast-literal"
-  = "'(" _ operator:("++" / "+" / "-" / "*" / "/" / "%" / "^") _ argumentExpression:ApplyExpression ")" {
+  = "'(" _ operator:("++" / "<<" / "+" / "-" / "*" / "/" / "%" / "^") _ argumentExpression:ApplyExpression ")" {
       return {
         type: 'AstLiteral',
         value: {
