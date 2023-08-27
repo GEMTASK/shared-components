@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-import { View, Text, Image, Button, Spacer, Divider, Stack, Grid, createLink } from 'bare';
+import { View, Text, Image, Button, Spacer, Divider, Stack, Grid, createLink, Icon } from 'bare';
 import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table, Desktop } from 'bare';
 import { Rect } from 'bare/dist/components/desktop/Desktop';
 
@@ -81,7 +81,7 @@ const DigitalClock = () => {
 
   return (
     <Text fontWeight="semibold" align="center">
-      {date.toLocaleTimeString()}
+      {date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
     </Text>
   );
 };
@@ -135,7 +135,8 @@ const App = () => {
   // console.log('App()');
 
   const [windows, setWindows] = useState<WindowsProp>(window.innerWidth < 1440 ? [] : initialState);
-  const [windowOrder, setWindowOrder] = useState<string[]>(windows.map(({ id }) => id));
+  const [focusedWindowId, setFocusedWindowId] = useState<string>();
+  const [windowIdOrder, setWindowIdOrder] = useState<string[]>(windows.map(({ id }) => id));
   const [isSidebarHidden, setIsSidebarHidden] = useState(window.innerWidth < 1440);
 
   const addWindow = (title: string, element: React.ReactElement, rect?: Rect) => {
@@ -157,7 +158,8 @@ const App = () => {
       }
     ]);
 
-    setWindowOrder(windowOrder => [...windowOrder, id]);
+    setFocusedWindowId(id);
+    setWindowIdOrder(windowIdOrder => [...windowIdOrder, id]);
   };
 
   const desktopMenuItems = [
@@ -201,8 +203,10 @@ const App = () => {
   ];
 
   const handleWindowFocus = (windowId: string) => {
-    setWindowOrder(windowOrder => [
-      ...windowOrder.filter((id) => id !== windowId),
+    setFocusedWindowId(windowId);
+
+    setWindowIdOrder(windowIdOrder => [
+      ...windowIdOrder.filter((id) => id !== windowId),
       windowId,
     ]);
   };
@@ -220,7 +224,7 @@ const App = () => {
   return (
     <View style={{ minHeight: '100vh' }}>
       <Stack horizontal shadow fillColor="white" paddingHorizontal="large" style={{ zIndex: 1, paddingLeft: 8 }}>
-        <Menu hover title="React Desktop" titleFontWeight="bold" rightIcon={undefined} items={desktopMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
+        <Menu hover title="Desktop" titleFontWeight="bold" rightIcon={undefined} items={desktopMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
         <Menu hover title="Utilities" rightIcon={undefined} items={utilitiesMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
         <Menu hover title="Applications" rightIcon={undefined} items={applicationMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
         <Spacer flex size="large" />
@@ -230,15 +234,14 @@ const App = () => {
         <Desktop
           wallpaper="images/d1e91a4058a8a1082da711095b4e0163.jpg"
           windows={windows}
-          windowOrder={windowOrder}
+          windowOrder={windowIdOrder}
           onWindowFocus={handleWindowFocus}
           onWindowChange={handleWindowChange}
           onWindowClose={handleWindowClose}
         />
-        <Stack
+        <View
           absolute
           fillColor="white-2"
-          spacing="large"
           minWidth={240}
           style={{
             zIndex: 1000,
@@ -248,15 +251,27 @@ const App = () => {
           }}
           onClick={() => setIsSidebarHidden(isSidebarHidden => !isSidebarHidden)}
         >
-          <Clock
-            style={{ opacity: 1, borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }}
-            onClick={(event: React.PointerEvent) => event.stopPropagation()}
-          />
-          <Calculator
-            style={{ opacity: 1, borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }}
-            onClick={(event: React.PointerEvent) => event.stopPropagation()}
-          />
-        </Stack>
+          <View fillColor="gray-1" style={{ borderRadius: 2.5, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }}>
+            <Spacer size="small" />
+            <Stack>
+              {windows.map((window, index, _, isFocused = window.id === focusedWindowId) => (
+                <View horizontal align="left" padding="small large" fillColor={isFocused ? 'gray-3' : undefined}>
+                  <Icon icon="calculator" />
+                  <Spacer size="small" />
+                  <Text fontWeight="semibold">{window.title}</Text>
+                </View>
+              ))}
+            </Stack>
+            <Spacer size="small" />
+          </View>
+          <Spacer flex size="large" />
+          <Stack spacing="large">
+            <Calculator
+              style={{ opacity: 1, borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }}
+              onClick={(event: React.PointerEvent) => event.stopPropagation()}
+            />
+          </Stack>
+        </View>
       </View>
     </View>
   );
