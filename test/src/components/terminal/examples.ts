@@ -81,8 +81,7 @@ let (fns = [
     '(filter 'even)
 ]) => {
     fns
-        | reduce (x = 1..5, f) => f x
-        | map '(+ 10)
+        | reduce (x = 1..10, f) => f x
 }
   `,
   `1..1000000 | combos | take 3`,
