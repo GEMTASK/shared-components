@@ -141,8 +141,9 @@ const App = () => {
   const addWindow = (title: string, element: React.ReactElement, rect?: Rect) => {
     const id = uuidv4();
 
-    const width = Math.min(rect?.width ?? 500, window.innerWidth - (isSidebarHidden ? 15 : 240) - 30);
-    const height = Math.min(rect?.height ?? 250, window.innerHeight - 32 - 30);
+    const margin = window.innerWidth < 800 ? 15 : 30;
+    const width = Math.min(rect?.width ?? 500, window.innerWidth - (isSidebarHidden ? 15 : 240) - margin);
+    const height = Math.min(rect?.height ?? 250, window.innerHeight - 32 - margin);
 
     setWindows(windows => [
       ...windows,
@@ -216,10 +217,10 @@ const App = () => {
 
   return (
     <View style={{ minHeight: '100vh' }}>
-      <Stack horizontal shadow paddingHorizontal="large" style={{ zIndex: 1 }}>
-        <Menu hover title="React-Desktop" titleFontWeight="bold" rightIcon={undefined} items={desktopMenuItems} />
-        <Menu hover title="Utilities" rightIcon={undefined} items={utilitiesMenuItems} />
-        <Menu hover title="Applications" rightIcon={undefined} items={applicationMenuItems} />
+      <Stack horizontal shadow paddingHorizontal="large" style={{ zIndex: 1, paddingLeft: 8 }}>
+        <Menu hover title="React-Desktop" titleFontWeight="bold" rightIcon={undefined} items={desktopMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
+        <Menu hover title="Utilities" rightIcon={undefined} items={utilitiesMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
+        <Menu hover title="Applications" rightIcon={undefined} items={applicationMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
         <Spacer flex size="large" />
         <DigitalClock />
       </Stack>
@@ -239,7 +240,7 @@ const App = () => {
           minWidth={240}
           style={{
             zIndex: 1000,
-            top: 0, right: 0, bottom: 0, boxShadow: '0 0 16px hsla(0, 0%, 0%, 0.1)', backdropFilter: 'blur(10px)', padding: 15,
+            top: 0, right: 0, bottom: 0, boxShadow: '0 0 16px hsla(0, 0%, 0%, 0.1)', WebkitBackdropFilter: 'blur(10px)', backdropFilter: 'blur(10px)', padding: 15,
             transform: isSidebarHidden ? 'translate(225px)' : '',
             transition: 'transform 0.3s ease-in-out'
           }}
