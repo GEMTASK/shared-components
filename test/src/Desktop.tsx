@@ -137,7 +137,7 @@ const App = () => {
   const [windows, setWindows] = useState<WindowsProp>(window.innerWidth < 1440 ? [] : initialState);
   const [focusedWindowId, setFocusedWindowId] = useState<string>();
   const [windowIdOrder, setWindowIdOrder] = useState<string[]>(windows.map(({ id }) => id));
-  const [isSidebarHidden, setIsSidebarHidden] = useState(window.innerWidth < 1280);
+  const [isSidebarHidden, setIsSidebarHidden] = useState(window.innerWidth < 1024);
 
   const addWindow = (title: string, element: React.ReactElement, rect?: Rect) => {
     const id = uuidv4();
