@@ -144,9 +144,9 @@ const App = () => {
 
     const [right, bottom] = window.innerWidth >= 640
       ? [isSidebarHidden ? 15 : 240, 0]
-      : [0, 15];
+      : [0, 25];
 
-    let margin = window.innerWidth < 640 ? 15 : 30;
+    let margin = window.innerWidth < 800 ? 15 : 30;
     let width = Math.min(rect?.width ?? 500, window.innerWidth - right - margin);
     let height = Math.min(rect?.height ?? 250, window.innerHeight - 32 - bottom - margin);
 
@@ -253,8 +253,9 @@ const App = () => {
             boxShadow: '0 0 16px hsla(0, 0%, 0%, 0.1)',
             WebkitBackdropFilter: 'blur(10px)',
             backdropFilter: 'blur(10px)',
-            padding: 15,
-            transform: isSidebarHidden ? (window.innerWidth < 650 ? 'translate(0, calc(100% - 15px))' : 'translate(225px, 0)') : '',
+            padding: window.innerWidth < 640 ? 10 : 15,
+            paddingTop: window.innerWidth < 640 ? 25 : 0,
+            transform: isSidebarHidden ? (window.innerWidth < 640 ? 'translate(0, calc(100% - 25px))' : 'translate(225px, 0)') : '',
             transition: 'transform 0.3s ease-in-out'
           }}
           onClick={() => setIsSidebarHidden(isSidebarHidden => !isSidebarHidden)}
@@ -272,8 +273,8 @@ const App = () => {
             </Stack>
             <Spacer size="small" />
           </View>
-          <Spacer flex size="large" />
-          <Stack spacing="large">
+          <Spacer flex size={window.innerWidth < 640 ? 'small' : 'large'} />
+          <Stack spacing={window.innerWidth < 640 ? 'small' : 'large'}>
             <Calculator
               style={{ opacity: 1, borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }}
               onClick={(event: React.PointerEvent) => event.stopPropagation()}
