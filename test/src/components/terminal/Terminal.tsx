@@ -331,7 +331,7 @@ const Terminal = ({ ...props }: any) => {
 
   const [inputValue, setInputValue] = useState('');
   const [history, setHistory] = useState<React.ReactElement[]>(initialHistory);
-  const [isHistoryVisible, setIsHistoryVisible] = useState(true);
+  const [isHistoryVisible, setIsHistoryVisible] = useState(window.innerWidth >= 640);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);

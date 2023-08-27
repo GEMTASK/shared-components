@@ -137,21 +137,25 @@ const App = () => {
   const [windows, setWindows] = useState<WindowsProp>(window.innerWidth < 1440 ? [] : initialState);
   const [focusedWindowId, setFocusedWindowId] = useState<string>();
   const [windowIdOrder, setWindowIdOrder] = useState<string[]>(windows.map(({ id }) => id));
-  const [isSidebarHidden, setIsSidebarHidden] = useState(window.innerWidth < 1440);
+  const [isSidebarHidden, setIsSidebarHidden] = useState(window.innerWidth < 1280);
 
   const addWindow = (title: string, element: React.ReactElement, rect?: Rect) => {
     const id = uuidv4();
 
-    const margin = window.innerWidth < 800 ? 15 : 30;
-    const width = Math.min(rect?.width ?? 500, window.innerWidth - (isSidebarHidden ? 15 : 240) - margin);
-    const height = Math.min(rect?.height ?? 250, window.innerHeight - 32 - margin);
+    const [right, bottom] = window.innerWidth >= 640
+      ? [isSidebarHidden ? 15 : 240, 0]
+      : [0, 15];
+
+    let margin = window.innerWidth < 640 ? 15 : 30;
+    let width = Math.min(rect?.width ?? 500, window.innerWidth - right - margin);
+    let height = Math.min(rect?.height ?? 250, window.innerHeight - 32 - bottom - margin);
 
     setWindows(windows => [
       ...windows,
       {
         id, title, element, rect: {
-          x: (window.innerWidth - width - (isSidebarHidden ? 15 : 240)) / 2,
-          y: (window.innerHeight - height - 32) / 2,
+          x: (window.innerWidth - width - right) / 2,
+          y: (window.innerHeight - height - bottom - 32) / 2,
           width,
           height,
         }
@@ -245,8 +249,12 @@ const App = () => {
           minWidth={240}
           style={{
             zIndex: 1000,
-            top: 0, right: 0, bottom: 0, boxShadow: '0 0 16px hsla(0, 0%, 0%, 0.1)', WebkitBackdropFilter: 'blur(10px)', backdropFilter: 'blur(10px)', padding: 15,
-            transform: isSidebarHidden ? 'translate(225px)' : '',
+            top: window.innerWidth < 640 ? undefined : 0, right: 0, bottom: 0, left: window.innerWidth < 640 ? 0 : undefined,
+            boxShadow: '0 0 16px hsla(0, 0%, 0%, 0.1)',
+            WebkitBackdropFilter: 'blur(10px)',
+            backdropFilter: 'blur(10px)',
+            padding: 15,
+            transform: isSidebarHidden ? (window.innerWidth < 650 ? 'translate(0, calc(100% - 15px))' : 'translate(225px, 0)') : '',
             transition: 'transform 0.3s ease-in-out'
           }}
           onClick={() => setIsSidebarHidden(isSidebarHidden => !isSidebarHidden)}
