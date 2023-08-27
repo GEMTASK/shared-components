@@ -167,6 +167,8 @@ const App = () => {
   ];
 
   const utilitiesMenuItems = [
+    { title: 'Full Screen', action: () => document.body.requestFullscreen() },
+    null,
     { title: 'Calendar', action: () => addWindow('Calendar', <Calendar />, { width: 360, height: 332 }) },
     { title: 'Clock', action: () => addWindow('Clock', <Clock />, { width: 300, height: 332 }) },
     { title: 'Calculator', action: () => addWindow('Calculator', <Calculator />, { width: 255, height: 332 }) },
@@ -217,7 +219,7 @@ const App = () => {
 
   return (
     <View style={{ minHeight: '100vh' }}>
-      <Stack horizontal shadow paddingHorizontal="large" style={{ zIndex: 1, paddingLeft: 8 }}>
+      <Stack horizontal shadow fillColor="white" paddingHorizontal="large" style={{ zIndex: 1, paddingLeft: 8 }}>
         <Menu hover title="React-Desktop" titleFontWeight="bold" rightIcon={undefined} items={desktopMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
         <Menu hover title="Utilities" rightIcon={undefined} items={utilitiesMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
         <Menu hover title="Applications" rightIcon={undefined} items={applicationMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
