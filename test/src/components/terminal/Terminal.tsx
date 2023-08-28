@@ -213,14 +213,18 @@ type HistoryItemProps = {
 };
 
 const HistoryItem = ({
-
   source,
   onItemSelect
 }: HistoryItemProps) => {
   const styles = useSidebarStyles();
 
   return (
-    <Text padding="small" className={styles.Item} style={{ whiteSpace: 'pre' }} onClick={() => onItemSelect(source)}>
+    <Text
+      padding="small"
+      className={styles.Item}
+      style={{ whiteSpace: 'pre', fontFamily: 'Iosevka SS04' }}
+      onClick={() => onItemSelect(source)}
+    >
       {source}
     </Text>
   );
@@ -258,7 +262,9 @@ const interpret = async (
   setHistory(history => [
     ...history,
     <HistoryLine>
-      <Text style={{ whiteSpace: 'pre-wrap' }}>{source}</Text>
+      <Text style={{ whiteSpace: 'pre-wrap', fontFamily: 'Iosevka SS04' }}>
+        {source}
+      </Text>
     </HistoryLine>
   ]);
 
@@ -271,7 +277,11 @@ const interpret = async (
 
         setHistory(history => [
           ...history,
-          <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+          <Text
+            align="left"
+            paddingVertical="xsmall"
+            style={{ whiteSpace: 'pre-wrap', fontFamily: 'Iosevka SS04' }}
+          >
             {string}
           </Text>
         ]);
@@ -286,7 +296,7 @@ const interpret = async (
 
         if (typeof element === 'string') {
           resolve(
-            <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+            <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: 'Iosevka SS04' }}>
               {element}
             </Text>
           );
@@ -301,7 +311,7 @@ const interpret = async (
       console.warn(error);
 
       resolve(
-        <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+        <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: 'Iosevka SS04' }}>
           {(error as Error).toString()}
         </Text>
       );
@@ -317,7 +327,7 @@ const interpret = async (
 };
 
 const initialHistory = [
-  <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap' }}>
+  <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: 'Iosevka SS04' }}>
     Kopi shell – a simple, immutable, async programming langauge.<br />
     Type a command such as "date", "clock", or "calendar".
   </Text>,

@@ -8,7 +8,7 @@ const examples = [
   `2 > 1 || (2 > 3 && false)`,
   `
 let (t = true, f = false) => {
-    (!t && !f) == !(t || f)
+  (!t && !f) == !(t || f)
 }`,
   `random 4.5..5.5`,
   `sleep 5 + sleep 5`,
@@ -77,17 +77,17 @@ add1 5
   `[1, 2, 3] == 'toArray 1..3`,
   `
 let (fns = [
-    '(map n => n * n)
-    '(filter 'even)
+  '(map n => n * n)
+  '(filter 'even)
 ]) => {
-    fns
-        | reduce (x = 1..10, f) => f x
+  fns
+    | reduce (x = 1..10, f) => f x
 }
   `,
   `1..1000000 | combos | take 3`,
   `
 1..4 | combos | map (a, b) => {
-    a * b
+  a * b
 }
   `,
   `"abc" | combos`,
@@ -121,107 +121,107 @@ age | get
   `,
   `
 1..15 | map (n) => {
-    match (n % 3, n % 5) (
-        (0, 0) => "FizzBuzz"
-        (0, _) => "Fizz"
-        (_, 0) => "Buzz"
-        _       => n
-    )
+  match (n % 3, n % 5) (
+    (0, 0) => "FizzBuzz"
+    (0, _) => "Fizz"
+    (_, 0) => "Buzz"
+    _      => n
+  )
 }
   `,
   `
 fact (n) = match n (
-    0 => 1
-    n => n * fact (n - 1)
+  0 => 1
+  n => n * fact (n - 1)
 )
 fact 5
   `,
   `
 fact (n) = let (n = n, a = 1) => {
-    match n (
-        0 => a
-        n => loop (n - 1, a * n)
-    )
+  match n (
+    0 => a
+    n => loop (n - 1, a * n)
+  )
 }
 [fact 5, fact 6, fact 7]
   `,
   `
 server (yield) = {
-    let (a = 0) => {
-        yield (b) => {
-            sleep (random 0.1..1.0)
-            a..b
-        }
-
-        loop (a + 1)
+  let (a = 0) => {
+    yield (b) => {
+      sleep (random 0.1..1.0)
+      a..b
     }
+
+    loop (a + 1)
+  }
 }
 
 coros = [
-    spawn server
-    spawn server
+  spawn server
+  spawn server
 ]
 
 let (n = 1) => {
-    data = coros | map (coro) => {
-        coro | send n
-    } | toArray
+  data = coros | map (coro) => {
+    coro | send n
+  } | toArray
 
-    values = data
-        | zip (a, b) => a * b
-        | map '(toFixed 1)
-        | toArray
+  values = data
+    | zip (a, b) => a * b
+    | map '(toFixed 1)
+    | toArray
 
-    print values
+  print values
 
-    n < 6 ? loop (n + 2) : "Done."
+  n < 6 ? loop (n + 2) : "Done."
 }
   `,
   `
 extend String (
-    foobar: () => {
-        this ++ "bar"
-    }
+  foobar: () => {
+    this ++ "bar"
+  }
 )
 "foo" | foobar
   `,
   `
 struct 'Point (
-    x: Number
-    y: Number
+  x: Number
+  y: Number
 )
 extend Point (
-    add: (that) => {
-        Point(
-          this.0 + that.0
-          this.1 + that.1
-        )
-    }
+  add: (that) => {
+    Point(
+      this.0 + that.0
+      this.1 + that.1
+    )
+  }
 )
 Point (1, 2) | add (Point (2, 3))
   `,
   `
 View (
-    horizontal: true
-    fillColor: "gray-1"
-    padding: "large"
+  horizontal: true
+  fillColor: "gray-1"
+  padding: "large"
 ) [
-    Text (
-        fillColor: "green-3"
-        padding: "small large"
-        align: "center"
-    ) "Hello, world"
-    Button (
-        solid: true
-        title: "blue-5"
-    )
+  Text (
+    fillColor: "green-3"
+    padding: "small large"
+    align: "center"
+  ) "Hello, world"
+  Button (
+    solid: true
+    title: "blue-5"
+  )
 ]
   `,
   `
 program = "
-    10 print 'hello'
-    20 goto 30
-    30 print 'world'
+  10 print 'hello'
+  20 goto 30
+  30 print 'world'
 "
 
 indexOf (lineNo) = {
@@ -232,43 +232,43 @@ next = (index) => index + 1
 goto (index) = () => index
 
 evaluate (line) = match (
-    line
-        | trim
-        | splitOn " "
-        | toArray
+  line
+    | trim
+    | splitOn " "
+    | toArray
 ) (
-    [lineNo, "print", value] => {
-        print value
-        next
-    }
-    [lineNo, "goto", gotoNo] => {
-        goto (indexOf gotoNo)
-    }
-  )
+  [lineNo, "print", value] => {
+    print value
+    next
+  }
+  [lineNo, "goto", gotoNo] => {
+    goto (indexOf gotoNo)
+  }
+)
 
 interpret (program) = {
-    lines = program
-        | trim
-        | splitOn String.newline
-        | toArray
+  lines = program
+    | trim
+    | splitOn String.newline
+    | toArray
 
-    let (index = 0) => {
-        reducer = evaluate (
-            lines.(index)
-        )
-        newIndex = reducer index
+  let (index = 0) => {
+    reducer = evaluate (
+      lines.(index)
+    )
+    newIndex = reducer index
 
-        newIndex < 'size lines ? {
-            loop (newIndex)
-        } : "Done."
-    }
+    newIndex < 'size lines ? {
+      loop (newIndex)
+    } : "Done."
+  }
 }
 
 interpret program
   `,
   `
 match 5 (
-  String s      => "String " ++ s
+  String s => "String " ++ s
   Number n => "Number " ++ String n
 )
   `,
