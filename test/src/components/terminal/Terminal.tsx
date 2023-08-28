@@ -140,6 +140,8 @@ let environment = new Environment({
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
   Object: KopiObject,
+  Tuple: KopiTuple,
+  Array: KopiArray,
   String: KopiString,
   Number: KopiNumber,
   Dict: KopiDict,

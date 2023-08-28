@@ -216,20 +216,30 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
     );
   }
 
+  // async combine(iterable: AsyncIterable<KopiValue>) {
+  //   const generator = async function* (this: KopiString) {
+  //     let index = 0;
+
+  //     for await (const value of iterable) {
+  //       if (index++ > 0) {
+  //         yield this;
+  //       }
+
+  //       yield new KopiString(await value.toString());
+  //     }
+  //   }.apply(this);
+
+  //   return new StringStream(generator);
+  // }
+
   async combine(iterable: AsyncIterable<KopiValue>) {
-    const generator = async function* (this: KopiString) {
-      let index = 0;
+    let array = [];
 
-      for await (const value of iterable) {
-        if (index++ > 0) {
-          yield this;
-        }
+    for await (const value of iterable) {
+      array.push(await value.toString());
+    }
 
-        yield new KopiString(await value.toString());
-      }
-    }.apply(this);
-
-    return new StringStream(generator);
+    return new KopiString(array.join(this.value));
   }
 
   async reduce(func: KopiFunction, context: Context) {

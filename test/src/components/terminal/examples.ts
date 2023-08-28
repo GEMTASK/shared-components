@@ -295,6 +295,19 @@ c = Dict.fromIterable [
 ]
 a << b << c
   `,
+  `
+inspect (object) = match object (
+  Array array => {
+    items = array | map (item) => {
+      inspect item
+    } | toArray
+    "[" ++ (items | join ", ") ++ "]"
+  }
+  Number number => String number
+  String string => "\\"" ++ string ++ "\\""
+)
+inspect [1, "2", 3]
+    `,
 ];
 
 export default examples;
