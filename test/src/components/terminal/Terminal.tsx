@@ -410,7 +410,7 @@ const Terminal = ({ ...props }: any) => {
           ))}
         </View>
         <View horizontal align="left" paddingHorizontal="small" style={{ marginTop: -5 }}>
-          <Input ref={inputElementRef} flush lines={1} icon="angle-right" value={inputValue} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
+          <Input ref={inputElementRef} flush lines={1} icon="angle-right" value={inputValue} style={{ fontFamily: 'Iosevka SS04' }} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
         </View>
         <Spacer size="small" />
       </View>
