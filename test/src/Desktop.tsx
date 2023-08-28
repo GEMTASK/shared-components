@@ -22,6 +22,8 @@ import Email from './Email';
 import GridPage from './Grid';
 import Live from './Live';
 
+import styles from './App.module.css';
+
 const Link = createLink(RouterLink);
 
 const About = () => {
@@ -81,7 +83,7 @@ const DigitalClock = () => {
 
   return (
     <Text fontWeight="semibold" align="center">
-      {date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
+      {date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}
     </Text>
   );
 };
@@ -226,7 +228,7 @@ const App = () => {
   };
 
   return (
-    <View style={{ minHeight: '100vh' }}>
+    <View className={styles.App}>
       <Stack horizontal shadow fillColor="white" paddingHorizontal="large" style={{ zIndex: 1, paddingLeft: 8 }}>
         <Menu hover title="Desktop" titleFontWeight="bold" rightIcon={undefined} items={desktopMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
         <Menu hover title="Utilities" rightIcon={undefined} items={utilitiesMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
@@ -254,7 +256,7 @@ const App = () => {
             WebkitBackdropFilter: 'blur(10px)',
             backdropFilter: 'blur(10px)',
             padding: window.innerWidth < 640 ? 10 : 15,
-            paddingTop: window.innerWidth < 640 ? 25 : 0,
+            paddingTop: window.innerWidth < 640 ? 25 : 15,
             transform: isSidebarHidden ? (window.innerWidth < 640 ? 'translate(0, calc(100% - 25px))' : 'translate(225px, 0)') : '',
             transition: 'transform 0.3s ease-in-out'
           }}
