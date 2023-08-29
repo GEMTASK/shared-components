@@ -15,12 +15,12 @@ import type { KopiIterable } from './KopiIterable';
 // {1: "One"} << {2: "Two"}
 
 async function fromIterable(iterable: AsyncIterable<KopiTuple>) {
-  let entries: [string, KopiValue][] = [];
+  let entries: [string, [KopiValue, KopiValue]][] = [];
 
   for await (const entry of iterable) {
     entries = [
       ...entries,
-      [(await entry.fields[0] as KopiString).value, await entry.fields[1]]
+      [(await entry.fields[0] as KopiString).value, [await entry.fields[0], await entry.fields[1]]]
     ];
   }
 
@@ -32,12 +32,15 @@ class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
     return fromIterable(iterable);
   }
 
-  map: Map<string, KopiValue | Promise<KopiValue>>;
+  map: Map<string, [KopiValue, KopiValue | Promise<KopiValue>]>;
 
-  constructor(entries: [string, (KopiValue | Promise<KopiValue>)][]) {
+  constructor(entries: [string, [KopiValue, (KopiValue | Promise<KopiValue>)]][]) {
     super();
 
-    this.map = new Map(entries);
+    this.map = new Map(entries.map(([key, value]) => [
+      key,
+      value
+    ]));
   }
 
   toString() {
@@ -47,16 +50,16 @@ class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
   override async inspect() {
     const entries: string[] = [];
 
-    for (const [key, value] of this.map) {
-      entries.push(`"${key}": ${await (await value).inspect()}`);
+    for (const [_, [key, value]] of this.map) {
+      entries.push(`${await key.inspect()}: ${await (await value).inspect()}`);
     }
 
     return `{${entries.join(', ')}}`;
   }
 
   async *[Symbol.asyncIterator]() {
-    for (const [key, value] of this.map) {
-      yield new KopiTuple([new KopiString(key), await value]);
+    for (const [_, [key, value]] of this.map) {
+      yield new KopiTuple([key, await value]);
     }
   }
 

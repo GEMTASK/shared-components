@@ -274,13 +274,13 @@ async function DictLiteral(
 ): Promise<KopiValue> {
   const { environment, evaluate, bind } = context;
 
-  return new KopiDict(
-    await Promise.all(
-      entryExpressions.map(async ([key, expression]) => [
-        (await evaluate(key, environment, bind) as KopiString).value,
+  return KopiDict.fromIterable(
+    new KopiArray(
+      entryExpressions.map(([key, expression]) => new KopiTuple([
+        evaluate(key, environment, bind),
         evaluate(expression, environment, bind)
-      ])
-    )
+      ]))
+    ) as AsyncIterable<KopiTuple>
   );
 }
 

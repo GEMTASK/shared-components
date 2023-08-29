@@ -296,6 +296,11 @@ c = Dict.fromIterable [
 a << b << c
   `,
   `
+1..5 | reduce (a = {}, n) => {
+  a << { (n * n): n }
+}
+  `,
+  `
 inspect (object) = match object (
   Array array => {
     items = array | map (item) => {
