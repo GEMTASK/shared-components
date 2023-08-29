@@ -13,7 +13,6 @@ const preventDefault = (event: React.PointerEvent) => {
 
 const useStyles = createUseStyles({
   Item: {
-    margin: '0 1px',
     '&:hover': {
       background: OpenColor.gray[2],
     },
@@ -136,12 +135,12 @@ const Menu = ({ title, items = defaultItems, ...props }: MenuProps) => {
       />
       {isMenuVisible && (
         <List
-          border
-          shadow
+          // border
+          // shadow
           items={items}
           fillColor="white"
           padding="small none"
-          style={{ position: 'absolute', top: '100%', borderRadius: 2.5 }}
+          style={{ position: 'absolute', top: '100%', borderRadius: 2.5, boxShadow: '0 4px 8px rgba(0, 0, 0, 0.25), 0 0 0 1px hsla(0, 0%, 50%, 0.1)' }}
           onPointerDown={preventDefault}
           onItemSelect={handleListItemSelect}
         />
