@@ -194,7 +194,7 @@ RangeExpression
   / MemberExpression
 
 MemberExpression
-  = head:UnaryExpression tail:(".(" _ PrimaryExpression _ ")")+ {
+  = head:UnaryExpression tail:(".(" _ Expression _ ")")+ {
       return tail.reduce((expression, [, , argumentExpression]) => ({
         type: 'PipeExpression',
         expression,
@@ -310,13 +310,13 @@ ConstructorPattern
     }
 
 ArrayLiteralPattern
-  = "[" _ "]" {
+  = "[" _ "]" _ !"=>" {
     return {
       type: 'ArrayLiteralPattern',
       elementPatterns: [],
     }
   }
-  / "[" _ head:Pattern? tail:(_ "," _ Pattern)* _ "]" {
+  / "[" _ head:Pattern? tail:(_ "," _ Pattern)* _ "]" _ !"=>" {
     return {
       type: 'ArrayLiteralPattern',
       elementPatterns: tail.reduce((patterns, [, , , pattern]) => [
