@@ -170,13 +170,12 @@ const App = () => {
 
   const desktopMenuItems = [
     { title: 'Preferences', action: () => addWindow('Preferences', <Preferences />) },
+    { title: 'Enter Full Screen', action: () => document.body.requestFullscreen() },
     null,
     { title: 'About React Desktop', action: () => addWindow('React Desktop', <About />) },
   ];
 
   const utilitiesMenuItems = [
-    { title: 'Full Screen', action: () => document.body.requestFullscreen() },
-    null,
     { title: 'Calendar', action: () => addWindow('Calendar', <Calendar />, { width: 360, height: 332 }) },
     { title: 'Clock', action: () => addWindow('Clock', <Clock />, { width: 300, height: 332 }) },
     { title: 'Calculator', action: () => addWindow('Calculator', <Calculator />, { width: 255, height: 332 }) },
