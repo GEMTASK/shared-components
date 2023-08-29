@@ -436,6 +436,16 @@ class ArrayLiteral extends ASTNode {
   }
 }
 
+class DictLiteral extends ASTNode {
+  readonly entryExpressions: [ASTNode, ASTNode][];
+
+  constructor({ entryExpressions, location }: DictLiteral) {
+    super(location);
+
+    this.entryExpressions = entryExpressions;
+  }
+}
+
 class AstLiteral extends ASTNode {
   readonly value: ASTNode;
 
@@ -494,6 +504,7 @@ export {
   NumericLiteral,
   StringLiteral,
   ArrayLiteral,
+  DictLiteral,
   AstLiteral,
   Identifier,
 };

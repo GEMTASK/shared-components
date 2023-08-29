@@ -242,7 +242,6 @@ PrimaryExpression
         ], [fieldName && fieldName[0].name])
       };
     }
-  / BlockExpression
   / boolean:BooleanLiteral _ !"=>" {
     return boolean;
   }
@@ -251,7 +250,9 @@ PrimaryExpression
   }
   / StringLiteral
   / ArrayLiteral
+  / DictLiteral
   / AstLiteral
+  / BlockExpression
   / identifier:Identifier _ !"=>" {
       return identifier;
     }
@@ -386,6 +387,15 @@ ArrayLiteral
         type: 'ArrayLiteral',
         elementExpressions: !head ? [] : tail.reduce((elementExpressions, [, , , elementExpression]) =>
           [...elementExpressions, elementExpression], [head]),
+      }
+    }
+
+DictLiteral
+  = "{" __ head:(PrimaryExpression ":" _ Expression)? tail:(_ ("," / Newline+) _ PrimaryExpression ":" _ Expression)* __ "}" _ !"=>" {
+      return {
+        type: 'DictLiteral',
+        entryExpressions: !head ? [] : tail.reduce((entryExpressions, [, , , key, , , value]) =>
+          [...entryExpressions, [key.value, value]], [[head[0], head[3]]]),
       }
     }
 

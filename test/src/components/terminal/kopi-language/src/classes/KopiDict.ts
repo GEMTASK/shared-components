@@ -32,9 +32,9 @@ class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
     return fromIterable(iterable);
   }
 
-  map: Map<string, KopiValue>;
+  map: Map<string, KopiValue | Promise<KopiValue>>;
 
-  constructor(entries: [string, KopiValue][]) {
+  constructor(entries: [string, (KopiValue | Promise<KopiValue>)][]) {
     super();
 
     this.map = new Map(entries);
@@ -56,7 +56,7 @@ class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
 
   async *[Symbol.asyncIterator]() {
     for (const [key, value] of this.map) {
-      yield new KopiTuple([new KopiString(key), value]);
+      yield new KopiTuple([new KopiString(key), await value]);
     }
   }
 

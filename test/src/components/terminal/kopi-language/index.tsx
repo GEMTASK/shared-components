@@ -142,6 +142,11 @@ function transform(rawASTNode: RawASTNode): ASTNode {
         elementExpressions: rawASTNode.elementExpressions.map((expression: ASTNode) => transform(expression)),
         location: rawASTNode.location,
       } as astNodes.ArrayLiteral);
+    case 'DictLiteral':
+      return new astNodes.DictLiteral({
+        entryExpressions: rawASTNode.entryExpressions.map(([key, expression]: [ASTNode, ASTNode]) => [transform(key), transform(expression)]),
+        location: rawASTNode.location,
+      } as astNodes.DictLiteral);
     case 'AstLiteral':
       return new astNodes.AstLiteral({
         value: transform(rawASTNode.value),
@@ -155,7 +160,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
     default:
       console.warn('No transform found for', rawASTNode);
 
-      throw new Error(`No transform found for ${rawASTNode.type}.`);
+      throw new Error(`No transform found for ${rawASTNode}.`);
   }
 }
 
@@ -203,6 +208,8 @@ function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
     return visitors.StringLiteral(astNode);
   } else if (astNode instanceof astNodes.ArrayLiteral) {
     return visitors.ArrayLiteral(astNode, context);
+  } else if (astNode instanceof astNodes.DictLiteral) {
+    return visitors.DictLiteral(astNode, context);
   } else if (astNode instanceof astNodes.AstLiteral) {
     return astNode.value;
   } else if (astNode instanceof astNodes.Identifier) {

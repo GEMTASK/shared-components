@@ -1,6 +1,6 @@
 import * as astNodes from './astnodes';
 import { ASTNode, Context, KopiValue } from './types';
-import { KopiArray, KopiAstLiteral, KopiBoolean, KopiFunction, KopiNumber, KopiString, KopiTuple } from './classes';
+import { KopiArray, KopiAstLiteral, KopiBoolean, KopiDict, KopiFunction, KopiNumber, KopiString, KopiTuple } from './classes';
 import KopiRange from './classes/KopiRange';
 
 interface Visitor {
@@ -268,6 +268,22 @@ async function ArrayLiteral(
   );
 }
 
+async function DictLiteral(
+  { entryExpressions }: astNodes.DictLiteral,
+  context: Context,
+): Promise<KopiValue> {
+  const { environment, evaluate, bind } = context;
+
+  return new KopiDict(
+    await Promise.all(
+      entryExpressions.map(async ([key, expression]) => [
+        (await evaluate(key, environment, bind) as KopiString).value,
+        evaluate(expression, environment, bind)
+      ])
+    )
+  );
+}
+
 async function AstLiteral(
   { value }: astNodes.AstLiteral
 ): Promise<KopiValue> {
@@ -310,6 +326,7 @@ export {
   NumericLiteral,
   StringLiteral,
   ArrayLiteral,
+  DictLiteral,
   AstLiteral,
   Identifier,
 };
