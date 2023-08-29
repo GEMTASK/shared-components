@@ -226,6 +226,15 @@ const App = () => {
     setWindows(windows => windows.filter(window => window.id !== id));
   };
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const app = utilitiesMenuItems.find(item => item?.title === params.get('app'));
+
+    if (app) {
+      app.action();
+    }
+  }, []);
+
   return (
     <View className={styles.App}>
       <Stack horizontal shadow fillColor="white" paddingHorizontal="large" style={{ zIndex: 1, paddingLeft: 8 }}>
