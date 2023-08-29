@@ -28,6 +28,7 @@ const useStyles = createUseStyles({
     paddingRight: 4,
     transition: 'height 0.1s 0.1s',
     height: 8,
+    touchAction: 'none',
     '&:hover': {
       height: 32,
     },
