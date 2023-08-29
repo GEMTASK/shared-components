@@ -578,7 +578,7 @@ function peg$parse(input, options) {
       return {
         type: 'DictLiteral',
         entryExpressions: !head ? [] : tail.reduce((entryExpressions, [, , , key, , , value]) =>
-          [...entryExpressions, [key.value, value]], [[head[0], head[3]]]),
+          [...entryExpressions, [key, value]], [[head[0], head[3]]]),
       }
     };
   var peg$f39 = function(operator, argumentExpression) {

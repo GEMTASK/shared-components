@@ -63,6 +63,16 @@ class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
     }
   }
 
+  at(key: KopiString) {
+    const value = this.map.get(key.value);
+
+    if (value) {
+      return value[1];
+    }
+
+    return KopiTuple.empty;
+  }
+
   async merge(that: KopiDict) {
     return new KopiDict([...this.map, ...that.map]);
   }
