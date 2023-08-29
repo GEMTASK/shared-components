@@ -157,7 +157,11 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
     return new KopiArray(this.elements.concat(that.elements));
   }
 
-  zip(func: KopiFunction, context: Context) {
+  zip(_func: Function | KopiTuple, context: Context) {
+    const func = _func instanceof KopiTuple
+      ? function (arg: KopiValue) { return arg; }
+      : _func;
+
     const result = (async function* map(this: KopiArray) {
       const iters = await Promise.all(
         this.elements.map(async (element) => {
