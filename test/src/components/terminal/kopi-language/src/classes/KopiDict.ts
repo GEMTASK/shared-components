@@ -20,7 +20,7 @@ async function fromIterable(iterable: AsyncIterable<KopiTuple>) {
   for await (const entry of iterable) {
     entries = [
       ...entries,
-      [(await entry.fields[0] as KopiString).value, [await entry.fields[0], await entry.fields[1]]]
+      [await (await entry.fields[0]).inspect() as string, [await entry.fields[0], await entry.fields[1]]]
     ];
   }
 
@@ -54,7 +54,7 @@ class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
       entries.push(`${await key.inspect()}: ${await (await value).inspect()}`);
     }
 
-    return `{${entries.join(', ')}}`;
+    return `{ ${entries.join(', ')} }`;
   }
 
   async *[Symbol.asyncIterator]() {
@@ -63,8 +63,8 @@ class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
     }
   }
 
-  at(key: KopiString) {
-    const value = this.map.get(key.value);
+  async at(key: KopiValue) {
+    const value = this.map.get(await key.inspect() as string);
 
     if (value) {
       return value[1];

@@ -296,9 +296,11 @@ c = Dict.fromIterable [
 a << b << c
   `,
   `
-1..5 | reduce (a = {}, n) => {
-  a << { (n * n): n }
-}
+1..3
+  | combos
+  | reduce (z = {}, (a, b)) => {
+    z << { [a, b]: a * b }
+  }
   `,
   `
 inspect (object) = match object (
