@@ -78,7 +78,7 @@ const reducer = (state: State, action: Action): State => {
 
 const CalcButton = ({ title, onClick, ...props }: any) => {
   return (
-    <Button solid title={title} onClick={onClick} {...props} />
+    <Button solid minWidth={0} title={title} onClick={onClick} {...props} />
   );
 };
 

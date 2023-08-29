@@ -311,7 +311,9 @@ inspect (object) = match object (
     "[" ++ (items | join ", ") ++ "]"
   }
   Number number => String number
-  String string => "\\"" ++ string ++ "\\""
+  String string => {
+    "\\"" ++ string ++ "\\""
+  }
 )
 inspect [1, "2", 3]
     `,

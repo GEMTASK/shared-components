@@ -12,6 +12,8 @@ import { Context, Environment, KopiValue } from './kopi-language/src/types';
 import historyItems from './examples';
 import * as functions from './functions';
 
+const MONOSPACE_FONT = 'Iosevka';
+
 class KopiElement extends KopiValue {
   component: React.ComponentType;
   props: any;
@@ -222,7 +224,7 @@ const HistoryItem = ({
     <Text
       padding="small"
       className={styles.Item}
-      style={{ whiteSpace: 'pre', fontFamily: 'Iosevka SS04' }}
+      style={{ whiteSpace: 'pre', fontFamily: MONOSPACE_FONT }}
       onClick={() => onItemSelect(source)}
     >
       {source}
@@ -262,7 +264,7 @@ const interpret = async (
   setHistory(history => [
     ...history,
     <HistoryLine>
-      <Text style={{ whiteSpace: 'pre-wrap', fontFamily: 'Iosevka SS04' }}>
+      <Text style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}>
         {source}
       </Text>
     </HistoryLine>
@@ -280,7 +282,7 @@ const interpret = async (
           <Text
             align="left"
             paddingVertical="xsmall"
-            style={{ whiteSpace: 'pre-wrap', fontFamily: 'Iosevka SS04' }}
+            style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}
           >
             {string}
           </Text>
@@ -296,7 +298,7 @@ const interpret = async (
 
         if (typeof element === 'string') {
           resolve(
-            <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: 'Iosevka SS04' }}>
+            <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}>
               {element}
             </Text>
           );
@@ -311,7 +313,7 @@ const interpret = async (
       console.warn(error);
 
       resolve(
-        <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: 'Iosevka SS04' }}>
+        <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}>
           {(error as Error).toString()}
         </Text>
       );
@@ -327,7 +329,7 @@ const interpret = async (
 };
 
 const initialHistory = [
-  <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: 'Iosevka SS04' }}>
+  <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}>
     Kopi shell – a simple, immutable, async programming langauge.<br />
     Type a command such as "date", "clock", or "calendar".
   </Text>,
@@ -410,7 +412,7 @@ const Terminal = ({ ...props }: any) => {
           ))}
         </View>
         <View horizontal align="left" paddingHorizontal="small" style={{ marginTop: -5 }}>
-          <Input ref={inputElementRef} flush lines={1} icon="angle-right" value={inputValue} style={{ fontFamily: 'Iosevka SS04' }} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
+          <Input ref={inputElementRef} flush lines={1} icon="angle-right" value={inputValue} style={{ fontFamily: MONOSPACE_FONT }} onChange={handleInputChange} onKeyDown={handleInputKeyDown} />
         </View>
         <Spacer size="small" />
       </View>
