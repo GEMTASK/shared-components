@@ -135,8 +135,9 @@ type WindowsProp = React.ComponentProps<typeof Desktop>['windows'];
 
 const App = () => {
   // console.log('App()');
+  const params = new URLSearchParams(window.location.search);
 
-  const [windows, setWindows] = useState<WindowsProp>(window.innerWidth < 1440 ? [] : initialState);
+  const [windows, setWindows] = useState<WindowsProp>(window.innerWidth < 1440 || params.get('app') ? [] : initialState);
   const [focusedWindowId, setFocusedWindowId] = useState<string>();
   const [windowIdOrder, setWindowIdOrder] = useState<string[]>(windows.map(({ id }) => id));
   const [isSidebarHidden, setIsSidebarHidden] = useState(window.innerWidth < 1024);
@@ -228,7 +229,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
     const app = utilitiesMenuItems.find(item => item?.title === params.get('app'));
 
     if (app) {
