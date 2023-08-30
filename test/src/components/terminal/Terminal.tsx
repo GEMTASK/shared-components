@@ -476,7 +476,7 @@ const Terminal = ({ ...props }: any) => {
               <Stack spacing="medium" padding="small">
                 {reference.map(section => (
                   <>
-                    <Text fontWeight="semibold" s>{section.title}</Text>
+                    <Text caps fontSize="xsmall" fontWeight="semibold">{section.title}</Text>
                     <Spacer size="small" />
                     <table style={{ borderSpacing: 0 }}>
                       <tbody>
