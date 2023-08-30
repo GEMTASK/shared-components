@@ -138,7 +138,13 @@ class KopiObject extends KopiValue {
   }
 }
 
-const reference = [
+type Reference = {
+  title: string, content: {
+    code: string, label?: string, extra?: string;
+  }[];
+};
+
+const reference: Reference[] = [
   {
     title: 'Basic Syntax', content: [
       { code: `(1 + 2) ^ 3`, label: 'Basic arithmetic' },
@@ -173,13 +179,12 @@ const reference = [
       { code: `(1, y: "abc")`, label: 'Tuple', extra: `(1, x) => x` },
       { code: `[1, 2, 3, 4]`, label: 'Array', extra: `[2, y] => y` },
       { code: `{ x: 1, y: 2 }`, label: 'Dict', extra: `{x: x} => x` },
-      { code: `(x) => x * x`, label: 'Function' },
     ]
   },
   {
     title: 'Core Functions', content: [
       {
-        code: `sleep 0.5`
+        code: `sleep 0.5`,
       },
       {
         code: `random 0.5..1.5`
@@ -192,7 +197,7 @@ const reference = [
 let (n = 0) => {
   n < 5 ? loop (n + 1) : n
 }
-      `, label: null, extra: null
+      `,
       },
       {
         code: `
@@ -219,7 +224,7 @@ spawn () => {
   },
   {
     title: 'Number Methods', content: [
-      { code: '3 + 2', label: null, extra: '5' },
+      { code: '3 + 2', extra: '5' },
       { code: '3 - 2', extra: '1' },
       { code: '3 * 2', extra: '6' },
       { code: '3 / 2', extra: '1.5' },
@@ -246,8 +251,8 @@ spawn () => {
   },
   {
     title: 'String Methods', content: [
-      { code: '"ab" ++ "bc"', label: null, extra: '"abbc"' },
-      { code: '"ab" == "ab"', label: null, extra: 'true' },
+      { code: '"ab" ++ "bc"', extra: '"abbc"' },
+      { code: '"ab" == "ab"', extra: 'true' },
       { code: '"abc".(1)', extra: '"b"' },
       { code: '"abc" | toUpper', extra: '"ABC"' },
       { code: '" abc " | trim', extra: '"abc"' },
@@ -261,26 +266,26 @@ spawn () => {
   },
   {
     title: 'Boolean Methods', content: [
-      { code: '!true', label: null, extra: 'false' },
+      { code: '!true', extra: 'false' },
       { code: 'true == true', extra: 'true' },
     ]
   },
   {
     title: 'Range Methods', content: [
-      { code: '(1..5).from', label: null, extra: '1' },
-      { code: '(1..5).to', label: null, extra: '5' },
-      { code: '(1..5 (by: 2)).stride', label: null, extra: '2' },
+      { code: '(1..5).from', extra: '1' },
+      { code: '(1..5).to', extra: '5' },
+      { code: '(1..5 (by: 2)).stride', extra: '2' },
       { code: '...Iterable Methods' },
     ]
   },
   {
     title: 'Array Methods', content: [
-      { code: '[1, 2] == [1, 2]', label: null, extra: 'true' },
-      { code: '[1, 2] ++ [3, 4]', label: null, extra: '[1, 2, 3]' },
+      { code: '[1, 2] ++ [3, 4]', extra: '[1, 2, 3]' },
+      { code: '[1, 2] == [1, 2]', extra: 'true' },
       { code: '[1, 2].(1)', extra: '2' },
-      { code: '[1, 2] | size', label: null, extra: '2' },
-      { code: '[] | empty', label: null, extra: 'true' },
-      { code: '[1..1, "a".."z"] | zip', label: null, extra: '[(1, "a")]' },
+      { code: '[1, 2] | size', extra: '2' },
+      { code: '[] | empty', extra: 'true' },
+      { code: '[1..1, "a".."z"] | zip', extra: '[(1, "a")]' },
       { code: '...Iterable Methods' },
     ]
   },
@@ -288,37 +293,56 @@ spawn () => {
     title: 'Iterable Methods', content: [
       {
         code: `2..4 | map (n)
-  => n^2`, label: null, extra: '[4, 9, 16]'
+  => n^2`, extra: '[4, 9, 16]'
       },
       {
         code: `
 2..3 | flatMap (n)
   => [n, n]
 `,
-        label: null, extra: '[2, 2, 3, 3]'
+        extra: '[2, 2, 3, 3]'
       },
       {
         code: `1..5 | filter (n)
-  => n % 2 == 0`, label: null, extra: '[1, 3, 5]'
+  => n % 2 == 0`, extra: '[1, 3, 5]'
       },
       {
         code: `
 1..5 | reduce (a, n)
   => a * n
 `,
-        label: null, extra: '120'
+        extra: '120'
       },
       {
         code: `1..5 | count (n)
-  => n > 2`, label: null, extra: '3'
+  => n > 2`, extra: '3'
       },
-      { code: '1..5 | take 3', label: null, extra: '[1, 2, 3]' },
-      { code: '1..5 | skip 3', label: null, extra: '[4, 5]' },
-      { code: '1..2 | repeat', label: null, extra: '[1, 2, 1...]' },
-      { code: '1..2 | join ", "', label: null, extra: '"1, 2"' },
-      { code: `1..4 | splitOn 2`, label: null, extra: '[[1], [3, 4]]' },
-      { code: `1..3 | splitAt 1`, label: null, extra: '[[1], [2, 3]]' },
-      { code: `1..3 | splitEvery 2`, label: null, extra: '[[1, 2], [3]]' },
+      { code: '1..5 | take 3', extra: '[1, 2, 3]' },
+      { code: '1..5 | skip 3', extra: '[4, 5]' },
+      { code: '1..2 | repeat', extra: '[1, 2, 1...]' },
+      { code: '1..2 | join ", "', extra: '"1, 2"' },
+      { code: `1..4 | splitOn 2`, extra: '[[1], [3, 4]]' },
+      { code: `1..3 | splitAt 1`, extra: '[[1], [2, 3]]' },
+      { code: `1..3 | splitEvery 2`, extra: '[[1, 2], [3]]' },
+    ]
+  },
+  {
+    title: 'User Defined Types', content: [
+      {
+        code: `
+struct 'Point (
+  x: Number
+  y: Number
+)
+extend Point (
+  add: (that) => Point(
+    this.0 + that.0
+    this.1 + that.1
+  )
+)
+Point (1, 2) | add (Point (2, 3))
+        `
+      },
     ]
   },
 ];
