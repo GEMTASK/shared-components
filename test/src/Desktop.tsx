@@ -90,32 +90,32 @@ const DigitalClock = () => {
 
 const initialState = [
   {
-    id: uuidv4(), title: 'Calendar', element: <Calendar minWidth={360} />, rect: {
+    id: uuidv4(), icon: 'calendar', title: 'Calendar', element: <Calendar minWidth={360} />, rect: {
       x: 15, y: 15, width: 360, height: 332,
     }
   },
   {
-    id: uuidv4(), title: 'Clock', element: <Clock />, rect: {
+    id: uuidv4(), icon: 'clock', title: 'Clock', element: <Clock />, rect: {
       x: 390, y: 15, width: 300, height: 332,
     }
   },
   {
-    id: uuidv4(), title: 'Calculator', element: <Calculator />, rect: {
+    id: uuidv4(), icon: 'calculator', title: 'Calculator', element: <Calculator />, rect: {
       x: 705, y: 15, width: 255, height: 332,
     }
   },
   {
-    id: uuidv4(), title: 'Notes', element: <Notes />, rect: {
+    id: uuidv4(), icon: 'note-sticky', title: 'Notes', element: <Notes />, rect: {
       x: 975, y: 15, width: 315, height: 332,
     }
   },
   {
-    id: uuidv4(), title: 'Music', element: <Music />, rect: {
+    id: uuidv4(), icon: 'music', title: 'Music', element: <Music />, rect: {
       x: 1305, y: 15, width: 360, height: 332,
     }
   },
   {
-    id: uuidv4(), title: 'Files', element: <Filesystem />, rect: {
+    id: uuidv4(), icon: 'folder-open', title: 'Files', element: <Filesystem />, rect: {
       x: 15, y: 360, width: 675, height: 540,
     }
   },
@@ -125,7 +125,7 @@ const initialState = [
   //   }
   // },
   {
-    id: uuidv4(), title: 'Terminal', element: <Terminal />, rect: {
+    id: uuidv4(), icon: 'terminal', title: 'Terminal', element: <Terminal />, rect: {
       x: 975, y: 360, width: 690, height: 540,
     }
   },
@@ -156,7 +156,7 @@ const App = () => {
     setWindows(windows => [
       ...windows,
       {
-        id, title, element, rect: {
+        id, icon: 'question', title, element, rect: {
           x: (window.innerWidth - width - right) / 2,
           y: (window.innerHeight - height - bottom - 32) / 2,
           width,
@@ -276,7 +276,7 @@ const App = () => {
             <Stack onClick={(event: React.PointerEvent) => event.stopPropagation()}>
               {windows.map((window, index, _, isFocused = window.id === focusedWindowId) => (
                 <View key={index} horizontal hoverTarget='a' align="left" padding="small large" fillColor={isFocused ? 'gray-3' : undefined}>
-                  <Icon icon="calculator" />
+                  <Icon icon={window?.icon as any} />
                   <Spacer size="small" />
                   <Text fontWeight="semibold">{window.title}</Text>
                   <Spacer flex size="small" />

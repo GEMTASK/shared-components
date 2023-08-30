@@ -202,6 +202,7 @@ const Window = React.memo(({
 type DesktopProps = {
   windows: {
     id: string,
+    icon?: string,
     title: string,
     element: React.ReactElement;
     rect?: Rect,

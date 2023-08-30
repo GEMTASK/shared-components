@@ -620,7 +620,7 @@ const Terminal = ({ ...props }: any) => {
         <View horizontal padding="small large" fillColor="gray-1">
           <Button icon="trash-alt" onClick={() => setElementHistory([])} />
           <Spacer flex size="large" />
-          <Button icon="history" selected={isHistoryVisible} onClick={() => setIsHistoryVisible(isHistoryVisible => !isHistoryVisible)} />
+          <Button icon="table-columns" selected={isHistoryVisible} onClick={() => setIsHistoryVisible(isHistoryVisible => !isHistoryVisible)} />
         </View>
         <Divider />
         <View ref={historyElementRef} paddingHorizontal="small" style={{ overflowY: 'auto' }}>
@@ -700,9 +700,9 @@ const Terminal = ({ ...props }: any) => {
               </Stack>
             )}
             {activeTabIndex === 2 && (
-              <View padding="large">
+              <View padding="small large">
                 {inputHistory.map(item => (
-                  <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}>
+                  <Text align="left" paddingVertical="small" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}>
                     {item}
                   </Text>
                 ))}
