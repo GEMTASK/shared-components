@@ -435,6 +435,47 @@ const Terminal = ({ ...props }: any) => {
         { code: `(x) => x * x`, label: 'Function' },
       ]
     },
+    {
+      title: 'Core Functions', content: [
+        {
+          code: `sleep 0.5`
+        },
+        {
+          code: `random 0.5..1.5`
+        },
+        {
+          code: `fetch "https://google.com"`
+        },
+        {
+          code: `
+let (n = 0) => {
+  n < 5 ? loop (n + 1) : n
+}
+        `, label: null, extra: null
+        },
+        {
+          code: `
+match expr (
+  (1, [a, b]) => a + b
+)
+`
+        },
+        {
+          code: `
+extend String (
+  foo: () => this + "foo"
+)
+`
+        },
+        {
+          code: `
+spawn () => {
+  yield (x) => x + 1
+}
+`
+        },
+      ]
+    },
   ];
 
   return (
@@ -484,7 +525,7 @@ const Terminal = ({ ...props }: any) => {
                           <tr>
                             <td style={{ paddingBottom: 8 }}>
                               <Text fontSize="xsmall" style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>
-                                {item.code}
+                                {item.code.trim()}
                               </Text>
                             </td>
                             <td style={{ paddingBottom: 8, paddingLeft: 16 }}>
