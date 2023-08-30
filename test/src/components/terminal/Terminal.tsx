@@ -168,7 +168,7 @@ const reference = [
       { code: `1  -2.5  3.14`, label: 'Number', extra: `1 => "One"` },
       { code: `"Hello, world"`, label: 'String', extra: `"One" => 1` },
       { code: `true  false`, label: 'Boolean', extra: `true => 2` },
-      { code: `'ident  '(+ 1)`, label: 'ASTree', extra: `'foo => 3'` },
+      { code: `'ident  '(+ 1)`, label: 'ASTree', extra: `'foo => 3` },
       { code: `1..5  "a".."z"`, label: 'Range', extra: `1..5 => "5"` },
       { code: `(1, y: "abc")`, label: 'Tuple', extra: `(1, x) => x` },
       { code: `[1, 2, 3, 4]`, label: 'Array', extra: `[2, y] => y` },
@@ -185,7 +185,7 @@ const reference = [
         code: `random 0.5..1.5`
       },
       {
-        code: `fetch "https://google.com"`
+        code: `fetch "/robots.txt"`
       },
       {
         code: `
@@ -627,7 +627,7 @@ const Terminal = ({ ...props }: any) => {
                       <Divider style={{ marginTop: -1 }} />
                       <View padding="small large">
                         <Spacer size="small" />
-                        <Text caps fontSize="xsmall" fontWeight="semibold" style={{ opacity: 0.6 }}>
+                        <Text caps fontSize="xxsmall" fontWeight="semibold" style={{ opacity: 0.6 }}>
                           {section.title}
                         </Text>
                       </View>
