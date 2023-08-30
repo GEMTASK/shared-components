@@ -190,28 +190,28 @@ const reference = [
       {
         code: `
 let (n = 0) => {
-n < 5 ? loop (n + 1) : n
+  n < 5 ? loop (n + 1) : n
 }
       `, label: null, extra: null
       },
       {
         code: `
 match expr (
-(1, [a, b]) => a + b
+  (1, [a, b]) => a + b
 )
 `
       },
       {
         code: `
 extend String (
-foo: () => this + "foo"
+  foo: () => this + "foo"
 )
 `
       },
       {
         code: `
 spawn () => {
-yield (x) => x + 1
+  yield (x) => x + 1
 }
 `
       },
@@ -236,7 +236,7 @@ yield (x) => x + 1
       { code: '2.5 | ceil', extra: '3' },
       { code: '-2 | abs', extra: '2' },
       { code: '4 | sqrt', extra: '2' },
-      { code: '1 | succ', extra: '2' },
+      { code: '1 | succ 2', extra: '3' },
       { code: '1.5 | toFixed 2', extra: '1.50' },
       { code: '3 | odd', extra: 'true' },
       { code: '3 | even', extra: 'false' },
@@ -247,6 +247,7 @@ yield (x) => x + 1
   {
     title: 'String Methods', content: [
       { code: '"ab" ++ "bc"', label: null, extra: '"abbc"' },
+      { code: '"ab" == "ab"', label: null, extra: 'true' },
       { code: '"abc".(1)', extra: '"b"' },
       { code: '"abc" | toUpper', extra: '"ABC"' },
       { code: '" abc " | trim', extra: '"abc"' },
@@ -257,7 +258,69 @@ yield (x) => x + 1
       { code: '"ab" | splitAt 1', extra: '["a", "b"]' },
       { code: '"abc" | splitEvery 2', extra: '["ab", "c"]' },
     ]
-  }
+  },
+  {
+    title: 'Boolean Methods', content: [
+      { code: '!true', label: null, extra: 'false' },
+      { code: 'true == true', extra: 'true' },
+    ]
+  },
+  {
+    title: 'Range Methods', content: [
+      { code: '(1..5).from', label: null, extra: '1' },
+      { code: '(1..5).to', label: null, extra: '5' },
+      { code: '(1..5 (by: 2)).stride', label: null, extra: '2' },
+      { code: '...Iterable Methods' },
+    ]
+  },
+  {
+    title: 'Array Methods', content: [
+      { code: '[1, 2] == [1, 2]', label: null, extra: 'true' },
+      { code: '[1, 2] ++ [3, 4]', label: null, extra: '[1, 2, 3]' },
+      { code: '[1, 2].(1)', extra: '2' },
+      { code: '[1, 2] | size', label: null, extra: '2' },
+      { code: '[] | empty', label: null, extra: 'true' },
+      { code: '[1..1, "a".."z"] | zip', label: null, extra: '[(1, "a")]' },
+      { code: '...Iterable Methods' },
+    ]
+  },
+  {
+    title: 'Iterable Methods', content: [
+      {
+        code: `2..4 | map (n)
+  => n^2`, label: null, extra: '[4, 9, 16]'
+      },
+      {
+        code: `
+2..3 | flatMap (n)
+  => [n, n]
+`,
+        label: null, extra: '[2, 2, 3, 3]'
+      },
+      {
+        code: `1..5 | filter (n)
+  => n % 2 == 0`, label: null, extra: '[1, 3, 5]'
+      },
+      {
+        code: `
+1..5 | reduce (a, n)
+  => a * n
+`,
+        label: null, extra: '120'
+      },
+      {
+        code: `1..5 | count (n)
+  => n > 2`, label: null, extra: '3'
+      },
+      { code: '1..5 | take 3', label: null, extra: '[1, 2, 3]' },
+      { code: '1..5 | skip 3', label: null, extra: '[4, 5]' },
+      { code: '1..2 | repeat', label: null, extra: '[1, 2, 1...]' },
+      { code: '1..2 | join ", "', label: null, extra: '"1, 2"' },
+      { code: `1..4 | splitOn 2`, label: null, extra: '[[1], [3, 4]]' },
+      { code: `1..3 | splitAt 1`, label: null, extra: '[[1], [2, 3]]' },
+      { code: `1..3 | splitEvery 2`, label: null, extra: '[[1, 2], [3]]' },
+    ]
+  },
 ];
 
 let environment = new Environment({

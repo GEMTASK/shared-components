@@ -1840,25 +1840,39 @@ function peg$parse(input, options) {
   }
 
   function peg$parseFunctionExpression() {
-    var s0, s1, s2, s3, s4, s5;
+    var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9;
 
     s0 = peg$currPos;
     s1 = peg$parsePattern();
     if (s1 !== peg$FAILED) {
       s2 = peg$parse_();
+      s3 = [];
+      s4 = peg$parseNewline();
+      while (s4 !== peg$FAILED) {
+        s3.push(s4);
+        s4 = peg$parseNewline();
+      }
+      s4 = peg$parse_();
       if (input.substr(peg$currPos, 2) === peg$c20) {
-        s3 = peg$c20;
+        s5 = peg$c20;
         peg$currPos += 2;
       } else {
-        s3 = peg$FAILED;
+        s5 = peg$FAILED;
         if (peg$silentFails === 0) { peg$fail(peg$e20); }
       }
-      if (s3 !== peg$FAILED) {
-        s4 = peg$parse_();
-        s5 = peg$parseConcatExpression();
-        if (s5 !== peg$FAILED) {
+      if (s5 !== peg$FAILED) {
+        s6 = peg$parse_();
+        s7 = [];
+        s8 = peg$parseNewline();
+        while (s8 !== peg$FAILED) {
+          s7.push(s8);
+          s8 = peg$parseNewline();
+        }
+        s8 = peg$parse_();
+        s9 = peg$parseConcatExpression();
+        if (s9 !== peg$FAILED) {
           peg$savedPos = s0;
-          s0 = peg$f14(s1, s5);
+          s0 = peg$f14(s1, s9);
         } else {
           peg$currPos = s0;
           s0 = peg$FAILED;

@@ -174,7 +174,7 @@ ApplyExpression
     }
 
 FunctionExpression
-  = parameterPattern:Pattern _ "=>" _ bodyExpression:ConcatExpression {
+  = parameterPattern:Pattern _ Newline* _ "=>" _ Newline* _ bodyExpression:ConcatExpression {
       return {
         type: "FunctionExpression",
         parameterPattern,
