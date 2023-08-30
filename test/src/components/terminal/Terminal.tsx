@@ -605,51 +605,63 @@ const Terminal = ({ ...props }: any) => {
       {isHistoryVisible && (
         <View style={{ width: 300 }}>
           <Stack horizontal spacing="large" paddingHorizontal="large" fillColor="gray-1" >
-            <Text fontSize="medium" padding="small none" minHeight={48} align="bottom left" style={{ opacity: activeTabIndex === 0 ? 1.0 : 0.5 }} onPointerDown={() => setActiveTabIndex(0)}>Examples</Text>
-            <Text fontSize="medium" padding="small none" minHeight={48} align="bottom left" style={{ opacity: activeTabIndex === 1 ? 1.0 : 0.5 }} onPointerDown={() => setActiveTabIndex(1)}>Reference</Text>
+            <Text fontSize="medium" padding="small none" minHeight={48} align="bottom left" style={{ opacity: activeTabIndex === 0 ? 1.0 : 0.4 }} onPointerDown={() => setActiveTabIndex(0)}>Examples</Text>
+            <Text fontSize="medium" padding="small none" minHeight={48} align="bottom left" style={{ opacity: activeTabIndex === 1 ? 1.0 : 0.4 }} onPointerDown={() => setActiveTabIndex(1)}>Reference</Text>
           </Stack>
           <Divider />
-          <View flex padding="small" style={{ overflow: 'auto' }}>
+          <View flex style={{ overflow: 'auto' }}>
             {activeTabIndex === 0 && (
-              historyItems.map((item, index) => (
-                <HistoryItem key={index} source={item.trim()} onItemSelect={(source: string) => (
-                  interpret(source, setInputValue, setHistory)
-                )} />
-              ))
+              <View padding="small">
+                {historyItems.map((item, index) => (
+                  <HistoryItem key={index} source={item.trim()} onItemSelect={(source: string) => (
+                    interpret(source, setInputValue, setHistory)
+                  )} />
+                ))}
+              </View>
             )}
             {activeTabIndex === 1 && (
-              <Stack spacing="medium" padding="small">
+              <Stack>
                 {reference.map(section => (
                   <>
-                    <Text caps fontSize="xsmall" fontWeight="semibold">{section.title}</Text>
-                    <Spacer size="small" />
-                    <table style={{ borderSpacing: 0 }}>
-                      <tbody>
-                        {section.content.map(item => (
-                          <tr>
-                            <td style={{ paddingBottom: 8, verticalAlign: 'top' }}>
-                              <Text style={{ fontFamily: 'Iosevka Fixed', whiteSpace: 'pre' }}>
-                                {item.code.trim()}
-                              </Text>
-                            </td>
-                            {item.label && (
-                              <td style={{ paddingBottom: 8, paddingLeft: 16, verticalAlign: 'top' }}>
-                                <Text>
-                                  {item.label}
-                                </Text>
-                              </td>
-                            )}
-                            {item.extra && (
-                              <td style={{ width: 120, paddingBottom: 8, paddingLeft: 16, verticalAlign: 'top' }}>
+                    <View fillColor="gray-2" style={{ position: 'sticky', top: 0, zIndex: 1 }}>
+                      <Divider style={{ marginTop: -1 }} />
+                      <View padding="small large">
+                        <Spacer size="small" />
+                        <Text caps fontSize="xsmall" fontWeight="semibold" style={{ opacity: 0.6 }}>
+                          {section.title}
+                        </Text>
+                      </View>
+                      <Divider />
+                    </View>
+                    <View fillColor="white" padding="large">
+                      <table style={{ borderSpacing: 0 }}>
+                        <tbody>
+                          {section.content.map(item => (
+                            <tr>
+                              <td style={{ paddingBottom: 8, verticalAlign: 'top' }}>
                                 <Text style={{ fontFamily: 'Iosevka Fixed', whiteSpace: 'pre' }}>
-                                  {item.extra}
+                                  {item.code.trim()}
                                 </Text>
                               </td>
-                            )}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                              {item.label && (
+                                <td style={{ paddingBottom: 8, paddingLeft: 16, verticalAlign: 'top' }}>
+                                  <Text>
+                                    {item.label}
+                                  </Text>
+                                </td>
+                              )}
+                              {item.extra && (
+                                <td style={{ width: 120, paddingBottom: 8, paddingLeft: 16, verticalAlign: 'top' }}>
+                                  <Text style={{ fontFamily: 'Iosevka Fixed', whiteSpace: 'pre' }}>
+                                    {item.extra}
+                                  </Text>
+                                </td>
+                              )}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </View>
                   </>
                 ))}
               </Stack>
