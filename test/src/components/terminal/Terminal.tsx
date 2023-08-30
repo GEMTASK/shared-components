@@ -138,6 +138,128 @@ class KopiObject extends KopiValue {
   }
 }
 
+const reference = [
+  {
+    title: 'Basic Syntax', content: [
+      { code: `(1 + 2) ^ 3`, label: 'Basic arithmetic' },
+      { code: `str = "Hello"`, label: 'Basic assignment' },
+      { code: `[a, b] = "ab"`, label: 'Pattern matching' },
+      { code: `"ab" == "ab"`, label: 'Equality operator' },
+      { code: `"ab" != "ab"`, label: 'Equality operator' },
+      { code: `<  <=  >  >=`, label: 'Relational operators' },
+      { code: `(a && b) || c`, label: 'Logical operators' },
+      { code: `"ab" ++ "cd"`, label: 'Concatenation operator' },
+      { code: `a << { y: 2 }`, label: 'Dict merge operator' },
+      { code: `print "Hello"`, label: 'Function application' },
+      { code: `f (x) = x * x`, label: 'Function definition' },
+      { code: `(x) => x * x`, label: 'Anonymous function' },
+      { code: `5 | toFixed 2`, label: 'Method invocation' },
+      { code: `'(toFixed 2) 5`, label: 'Alternate invocation' },
+      { code: `(1, y: 2).1`, label: 'Tuple index access' },
+      { code: `(1, y: 2).y`, label: 'Tuple field access' },
+      { code: `array.(3)`, label: 'Array index access' },
+      { code: `array.(1..5)`, label: 'Array slice access' },
+      { code: `x < 0 ? -x : x`, label: 'Conditional expression' },
+      { code: `{ a <nl> b }`, label: 'Multiple statements' },
+    ]
+  },
+  {
+    title: 'Basic Types', content: [
+      { code: `1  -2.5  3.14`, label: 'Number', extra: `1 => "One"` },
+      { code: `"Hello, world"`, label: 'String', extra: `"One" => 1` },
+      { code: `true  false`, label: 'Boolean', extra: `true => 2` },
+      { code: `'ident  '(+ 1)`, label: 'ASTree', extra: `'foo => 3'` },
+      { code: `1..5  "a".."z"`, label: 'Range', extra: `1..5 => "5"` },
+      { code: `(1, y: "abc")`, label: 'Tuple', extra: `(1, x) => x` },
+      { code: `[1, 2, 3, 4]`, label: 'Array', extra: `[2, y] => y` },
+      { code: `{ x: 1, y: 2 }`, label: 'Dict', extra: `{x: x} => x` },
+      { code: `(x) => x * x`, label: 'Function' },
+    ]
+  },
+  {
+    title: 'Core Functions', content: [
+      {
+        code: `sleep 0.5`
+      },
+      {
+        code: `random 0.5..1.5`
+      },
+      {
+        code: `fetch "https://google.com"`
+      },
+      {
+        code: `
+let (n = 0) => {
+n < 5 ? loop (n + 1) : n
+}
+      `, label: null, extra: null
+      },
+      {
+        code: `
+match expr (
+(1, [a, b]) => a + b
+)
+`
+      },
+      {
+        code: `
+extend String (
+foo: () => this + "foo"
+)
+`
+      },
+      {
+        code: `
+spawn () => {
+yield (x) => x + 1
+}
+`
+      },
+    ]
+  },
+  {
+    title: 'Number Methods', content: [
+      { code: '3 + 2', label: null, extra: '5' },
+      { code: '3 - 2', extra: '1' },
+      { code: '3 * 2', extra: '6' },
+      { code: '3 / 2', extra: '1.5' },
+      { code: '3 % 2', extra: '1' },
+      { code: '3 ^ 2', extra: '9' },
+      { code: '2 == 2', extra: 'true' },
+      { code: '2 != 2', extra: 'false' },
+      { code: '3 > 2', extra: 'true' },
+      { code: '3 < 2', extra: 'false' },
+      { code: '3 >= 2', extra: 'true' },
+      { code: '3 <= 2', extra: 'false' },
+      { code: '2.5 | floor', extra: '2' },
+      { code: '2.5 | round', extra: '3' },
+      { code: '2.5 | ceil', extra: '3' },
+      { code: '-2 | abs', extra: '2' },
+      { code: '4 | sqrt', extra: '2' },
+      { code: '1 | succ', extra: '2' },
+      { code: '1.5 | toFixed 2', extra: '1.50' },
+      { code: '3 | odd', extra: 'true' },
+      { code: '3 | even', extra: 'false' },
+      { code: '30 | sin', extra: '-0.988' },
+      { code: '30 | cos', extra: '0.154' },
+    ]
+  },
+  {
+    title: 'String Methods', content: [
+      { code: '"ab" ++ "bc"', label: null, extra: '"abbc"' },
+      { code: '"abc".(1)', extra: '"b"' },
+      { code: '"abc" | toUpper', extra: '"ABC"' },
+      { code: '" abc " | trim', extra: '"abc"' },
+      { code: '"abc" | size', extra: '3' },
+      { code: '"" | empty', extra: 'true' },
+      { code: '"a" | succ 2', extra: '"c"' },
+      { code: '"a,b" | splitOn ","', extra: '["a", "b"]' },
+      { code: '"ab" | splitAt 1', extra: '["a", "b"]' },
+      { code: '"abc" | splitEvery 2', extra: '["ab", "c"]' },
+    ]
+  }
+];
+
 let environment = new Environment({
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
@@ -397,87 +519,6 @@ const Terminal = ({ ...props }: any) => {
     });
   }, [history]);
 
-  const reference = [
-    {
-      title: 'Basic Syntax', content: [
-        { code: `(1 + 2) ^ 3`, label: 'Basic arithmetic' },
-        { code: `str = "Hello"`, label: 'Basic assignment' },
-        { code: `[a, b] = "ab"`, label: 'Pattern matching' },
-        { code: `"ab" == "ab"`, label: 'Equality operator' },
-        { code: `"ab" != "ab"`, label: 'Equality operator' },
-        { code: `<  <=  >  >=`, label: 'Relational operators' },
-        { code: `(a && b) || c`, label: 'Logical operators' },
-        { code: `"ab" ++ "cd"`, label: 'Concatenation operator' },
-        { code: `a << { y: 2 }`, label: 'Dict merge operator' },
-        { code: `print "Hello"`, label: 'Function application' },
-        { code: `f (x) = x * x`, label: 'Function definition' },
-        { code: `(x) => x * x`, label: 'Anonymous function' },
-        { code: `5 | toFixed 2`, label: 'Method invocation' },
-        { code: `'(toFixed 2) 5`, label: 'Alternate invocation' },
-        { code: `(1, y: 2).1`, label: 'Tuple index access' },
-        { code: `(1, y: 2).y`, label: 'Tuple field access' },
-        { code: `array.(3)`, label: 'Array index access' },
-        { code: `array.(1..5)`, label: 'Array slice access' },
-        { code: `x < 0 ? -x : x`, label: 'Conditional expression' },
-        { code: `{ a <nl> b }`, label: 'Multiple statements' },
-      ]
-    },
-    {
-      title: 'Basic Types', content: [
-        { code: `1  -2.5  3.14`, label: 'Number', extra: `1 => "One"` },
-        { code: `"Hello, world"`, label: 'String', extra: `"One" => 1` },
-        { code: `true  false`, label: 'Boolean', extra: `true => 2` },
-        { code: `'ident  '(+ 1)`, label: 'ASTree', extra: `'foo => 3'` },
-        { code: `1..5  "a".."z"`, label: 'Range', extra: `1..5 => "5"` },
-        { code: `(1, y: "abc")`, label: 'Tuple', extra: `(1, x) => x` },
-        { code: `[1, 2, 3, 4]`, label: 'Array', extra: `[2, y] => y` },
-        { code: `{ x: 1, y: 2 }`, label: 'Dict', extra: `{x: x} => x` },
-        { code: `(x) => x * x`, label: 'Function' },
-      ]
-    },
-    {
-      title: 'Core Functions', content: [
-        {
-          code: `sleep 0.5`
-        },
-        {
-          code: `random 0.5..1.5`
-        },
-        {
-          code: `fetch "https://google.com"`
-        },
-        {
-          code: `
-let (n = 0) => {
-  n < 5 ? loop (n + 1) : n
-}
-        `, label: null, extra: null
-        },
-        {
-          code: `
-match expr (
-  (1, [a, b]) => a + b
-)
-`
-        },
-        {
-          code: `
-extend String (
-  foo: () => this + "foo"
-)
-`
-        },
-        {
-          code: `
-spawn () => {
-  yield (x) => x + 1
-}
-`
-        },
-      ]
-    },
-  ];
-
   return (
     <Stack horizontal divider {...props} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
       <View flex>
@@ -523,18 +564,20 @@ spawn () => {
                       <tbody>
                         {section.content.map(item => (
                           <tr>
-                            <td style={{ paddingBottom: 8 }}>
+                            <td style={{ paddingBottom: 8, verticalAlign: 'top' }}>
                               <Text fontSize="xsmall" style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>
                                 {item.code.trim()}
                               </Text>
                             </td>
-                            <td style={{ paddingBottom: 8, paddingLeft: 16 }}>
-                              <Text fontSize="xsmall">
-                                {item.label}
-                              </Text>
-                            </td>
+                            {item.label && (
+                              <td style={{ paddingBottom: 8, paddingLeft: 16, verticalAlign: 'top' }}>
+                                <Text fontSize="xsmall">
+                                  {item.label}
+                                </Text>
+                              </td>
+                            )}
                             {item.extra && (
-                              <td style={{ width: 120, paddingBottom: 8, paddingLeft: 16 }}>
+                              <td style={{ width: 120, paddingBottom: 8, paddingLeft: 16, verticalAlign: 'top' }}>
                                 <Text fontSize="xsmall" style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>
                                   {item.extra}
                                 </Text>
