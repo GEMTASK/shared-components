@@ -346,6 +346,7 @@ const Terminal = ({ ...props }: any) => {
   const [inputValue, setInputValue] = useState('');
   const [history, setHistory] = useState<React.ReactElement[]>(initialHistory);
   const [isHistoryVisible, setIsHistoryVisible] = useState(window.innerWidth >= 640);
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -396,6 +397,46 @@ const Terminal = ({ ...props }: any) => {
     });
   }, [history]);
 
+  const reference = [
+    {
+      title: 'Basic Syntax', content: [
+        { code: `(1 + 2) ^ 3`, label: 'Basic arithmetic' },
+        { code: `str = "Hello"`, label: 'Basic assignment' },
+        { code: `[a, b] = "ab"`, label: 'Pattern matching' },
+        { code: `"ab" == "ab"`, label: 'Equality operator' },
+        { code: `"ab" != "ab"`, label: 'Equality operator' },
+        { code: `<  <=  >  >=`, label: 'Relational operators' },
+        { code: `(a && b) || c`, label: 'Logical operators' },
+        { code: `"ab" ++ "cd"`, label: 'Concatenation operator' },
+        { code: `a << { y: 2 }`, label: 'Dict merge operator' },
+        { code: `print "Hello"`, label: 'Function application' },
+        { code: `f (x) = x * x`, label: 'Function definition' },
+        { code: `(x) => x * x`, label: 'Anonymous function' },
+        { code: `5 | toFixed 2`, label: 'Method invocation' },
+        { code: `'(toFixed 2) 5`, label: 'Alternate invocation' },
+        { code: `(1, y: 2).1`, label: 'Tuple index access' },
+        { code: `(1, y: 2).y`, label: 'Tuple field access' },
+        { code: `array.(3)`, label: 'Array index access' },
+        { code: `array.(1..5)`, label: 'Array slice access' },
+        { code: `x < 0 ? -x : x`, label: 'Conditional expression' },
+        { code: `{ a <nl> b }`, label: 'Multiple statements' },
+      ]
+    },
+    {
+      title: 'Basic Types', content: [
+        { code: `1  -2.5  3.14`, label: 'Number', extra: `1 => "One"` },
+        { code: `"Hello, world"`, label: 'String', extra: `"One" => 1` },
+        { code: `true  false`, label: 'Boolean', extra: `true => 2` },
+        { code: `'ident  '(+ 1)`, label: 'ASTree', extra: `'foo => 3'` },
+        { code: `1..5  "a".."z"`, label: 'Range', extra: `1..5 => "5"` },
+        { code: `(1, y: "abc")`, label: 'Tuple', extra: `(1, x) => x` },
+        { code: `[1, 2, 3, 4]`, label: 'Array', extra: `[2, y] => y` },
+        { code: `{ x: 1, y: 2 }`, label: 'Dict', extra: `{x: x} => x` },
+        { code: `(x) => x * x`, label: 'Function' },
+      ]
+    },
+  ];
+
   return (
     <Stack horizontal divider {...props} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
       <View flex>
@@ -417,17 +458,55 @@ const Terminal = ({ ...props }: any) => {
         <Spacer size="small" />
       </View>
       {isHistoryVisible && (
-        <View>
-          <View fillColor="gray-1" padding="small large" minHeight={48} align="bottom left">
-            <Text fontSize="medium">Examples</Text>
-          </View>
+        <View style={{ width: 300 }}>
+          <Stack horizontal spacing="large" paddingHorizontal="large" fillColor="gray-1" >
+            <Text fontSize="medium" padding="small none" minHeight={48} align="bottom left" style={{ opacity: activeTabIndex === 0 ? 1.0 : 0.5 }} onPointerDown={() => setActiveTabIndex(0)}>Examples</Text>
+            <Text fontSize="medium" padding="small none" minHeight={48} align="bottom left" style={{ opacity: activeTabIndex === 1 ? 1.0 : 0.5 }} onPointerDown={() => setActiveTabIndex(1)}>Reference</Text>
+          </Stack>
           <Divider />
-          <View padding="small" style={{ overflow: 'auto' }}>
-            {historyItems.map((item, index) => (
-              <HistoryItem key={index} source={item.trim()} onItemSelect={(source: string) => (
-                interpret(source, setInputValue, setHistory)
-              )} />
-            ))}
+          <View flex padding="small" style={{ overflow: 'auto' }}>
+            {activeTabIndex === 0 && (
+              historyItems.map((item, index) => (
+                <HistoryItem key={index} source={item.trim()} onItemSelect={(source: string) => (
+                  interpret(source, setInputValue, setHistory)
+                )} />
+              ))
+            )}
+            {activeTabIndex === 1 && (
+              <Stack spacing="medium" padding="small">
+                {reference.map(section => (
+                  <>
+                    <Text fontWeight="semibold" s>{section.title}</Text>
+                    <Spacer size="small" />
+                    <table style={{ borderSpacing: 0 }}>
+                      <tbody>
+                        {section.content.map(item => (
+                          <tr>
+                            <td style={{ paddingBottom: 8 }}>
+                              <Text fontSize="xsmall" style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>
+                                {item.code}
+                              </Text>
+                            </td>
+                            <td style={{ paddingBottom: 8, paddingLeft: 16 }}>
+                              <Text fontSize="xsmall">
+                                {item.label}
+                              </Text>
+                            </td>
+                            {item.extra && (
+                              <td style={{ width: 120, paddingBottom: 8, paddingLeft: 16 }}>
+                                <Text fontSize="xsmall" style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>
+                                  {item.extra}
+                                </Text>
+                              </td>
+                            )}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </>
+                ))}
+              </Stack>
+            )}
           </View>
         </View>
       )}
