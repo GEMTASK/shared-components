@@ -16,7 +16,7 @@ const router = createBrowserRouter([
   },
 ], {
   basename: window.location.hostname !== 'localhost'
-    ? '/react-desktop2'
+    ? '/react-desktop'
     : undefined
 });
 
