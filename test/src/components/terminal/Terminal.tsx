@@ -148,7 +148,7 @@ const reference = [
       { code: `"ab" != "ab"`, label: 'Equality operator' },
       { code: `<  <=  >  >=`, label: 'Relational operators' },
       { code: `(a && b) || c`, label: 'Logical operators' },
-      { code: `"ab" ++ "cd"`, label: 'Concatenation operator' },
+      { code: `"ab" ++ "cd"`, label: 'Concat operator' },
       { code: `a << { y: 2 }`, label: 'Dict merge operator' },
       { code: `print "Hello"`, label: 'Function application' },
       { code: `f (x) = x * x`, label: 'Function definition' },
@@ -159,7 +159,7 @@ const reference = [
       { code: `(1, y: 2).y`, label: 'Tuple field access' },
       { code: `array.(3)`, label: 'Array index access' },
       { code: `array.(1..5)`, label: 'Array slice access' },
-      { code: `x < 0 ? -x : x`, label: 'Conditional expression' },
+      { code: `x < 0 ? -x : x`, label: 'Condition expression' },
       { code: `{ a <nl> b }`, label: 'Multiple statements' },
     ]
   },
@@ -628,20 +628,20 @@ const Terminal = ({ ...props }: any) => {
                         {section.content.map(item => (
                           <tr>
                             <td style={{ paddingBottom: 8, verticalAlign: 'top' }}>
-                              <Text fontSize="xsmall" style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>
+                              <Text style={{ fontFamily: 'Iosevka Fixed', whiteSpace: 'pre' }}>
                                 {item.code.trim()}
                               </Text>
                             </td>
                             {item.label && (
                               <td style={{ paddingBottom: 8, paddingLeft: 16, verticalAlign: 'top' }}>
-                                <Text fontSize="xsmall">
+                                <Text>
                                   {item.label}
                                 </Text>
                               </td>
                             )}
                             {item.extra && (
                               <td style={{ width: 120, paddingBottom: 8, paddingLeft: 16, verticalAlign: 'top' }}>
-                                <Text fontSize="xsmall" style={{ fontFamily: 'monospace', whiteSpace: 'pre' }}>
+                                <Text style={{ fontFamily: 'Iosevka Fixed', whiteSpace: 'pre' }}>
                                   {item.extra}
                                 </Text>
                               </td>

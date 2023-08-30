@@ -9,6 +9,14 @@
   src: url(assets/fonts/iosevka-ss04-regular.woff2) format('woff2');
 }
 
+@font-face {
+  font-family: 'Iosevka Fixed';
+  font-style: 'normal';
+  font-weight: 400;
+
+  src: url(assets/fonts/iosevka-fixed-ss04-regular.woff2) format('woff2');
+}
+
 html,
 body {
   overscroll-behavior: none;
