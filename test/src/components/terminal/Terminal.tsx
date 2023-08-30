@@ -468,9 +468,12 @@ const Value = ({ promise }: any) => {
 const interpret = async (
   source: string,
   setInputValue: React.Dispatch<React.SetStateAction<string>>,
-  setHistory: React.Dispatch<React.SetStateAction<React.ReactElement<any, string | React.JSXElementConstructor<any>>[]>>
+  setElementHistory: React.Dispatch<React.SetStateAction<React.ReactElement<any, string | React.JSXElementConstructor<any>>[]>>,
+  setInputHistory: React.Dispatch<React.SetStateAction<string[]>>
 ) => {
-  setHistory(history => [
+  setInputHistory(inputHistory => [source, ...inputHistory]);
+
+  setElementHistory(history => [
     ...history,
     <HistoryLine>
       <Text style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}>
@@ -486,7 +489,7 @@ const interpret = async (
       async function kopi_print(value: KopiValue) {
         const string = await value.toString();
 
-        setHistory(history => [
+        setElementHistory(history => [
           ...history,
           <Text
             align="left"
@@ -529,7 +532,7 @@ const interpret = async (
     }
   });
 
-  setHistory(history => [
+  setElementHistory(history => [
     ...history,
     <View horizontal>
       <Value promise={promise} />
@@ -553,7 +556,8 @@ const Terminal = ({ ...props }: any) => {
   const eventCount = useRef(0);
 
   const [inputValue, setInputValue] = useState('');
-  const [history, setHistory] = useState<React.ReactElement[]>(initialHistory);
+  const [elementHistory, setElementHistory] = useState<React.ReactElement[]>(initialHistory);
+  const [inputHistory, setInputHistory] = useState<string[]>([]);
   const [isHistoryVisible, setIsHistoryVisible] = useState(window.innerWidth >= 640);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
@@ -565,7 +569,11 @@ const Terminal = ({ ...props }: any) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
 
-      interpret(inputValue, setInputValue, setHistory);
+      interpret(inputValue, setInputValue, setElementHistory, setInputHistory);
+    }
+
+    if (event.key === 'ArrowUp') {
+      setInputValue(inputHistory[0]);
     }
   };
 
@@ -604,20 +612,20 @@ const Terminal = ({ ...props }: any) => {
         historyElementRef.current.scrollTop = historyElementRef.current.scrollHeight;
       }
     });
-  }, [history]);
+  }, [elementHistory]);
 
   return (
     <Stack horizontal divider {...props} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
       <View flex>
         <View horizontal padding="small large" fillColor="gray-1">
-          <Button icon="trash-alt" onClick={() => setHistory([])} />
+          <Button icon="trash-alt" onClick={() => setElementHistory([])} />
           <Spacer flex size="large" />
           <Button icon="history" selected={isHistoryVisible} onClick={() => setIsHistoryVisible(isHistoryVisible => !isHistoryVisible)} />
         </View>
         <Divider />
         <View ref={historyElementRef} paddingHorizontal="small" style={{ overflowY: 'auto' }}>
           <Spacer size="small" />
-          {history.map((item, index) => (
+          {elementHistory.map((item, index) => (
             <React.Fragment key={index}>{item}</React.Fragment>
           ))}
         </View>
@@ -631,6 +639,7 @@ const Terminal = ({ ...props }: any) => {
           <Stack horizontal spacing="large" paddingHorizontal="large" fillColor="gray-1" >
             <Text fontSize="medium" padding="small none" minHeight={48} align="bottom left" style={{ opacity: activeTabIndex === 0 ? 1.0 : 0.4 }} onPointerDown={() => setActiveTabIndex(0)}>Examples</Text>
             <Text fontSize="medium" padding="small none" minHeight={48} align="bottom left" style={{ opacity: activeTabIndex === 1 ? 1.0 : 0.4 }} onPointerDown={() => setActiveTabIndex(1)}>Reference</Text>
+            <Text fontSize="medium" padding="small none" minHeight={48} align="bottom left" style={{ opacity: activeTabIndex === 2 ? 1.0 : 0.4 }} onPointerDown={() => setActiveTabIndex(2)}>History</Text>
           </Stack>
           <Divider />
           <View flex style={{ overflow: 'auto' }}>
@@ -638,7 +647,7 @@ const Terminal = ({ ...props }: any) => {
               <View padding="small">
                 {historyItems.map((item, index) => (
                   <HistoryItem key={index} source={item.trim()} onItemSelect={(source: string) => (
-                    interpret(source, setInputValue, setHistory)
+                    interpret(source, setInputValue, setElementHistory, setInputHistory)
                   )} />
                 ))}
               </View>
@@ -689,6 +698,15 @@ const Terminal = ({ ...props }: any) => {
                   </>
                 ))}
               </Stack>
+            )}
+            {activeTabIndex === 2 && (
+              <View padding="large">
+                {inputHistory.map(item => (
+                  <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}>
+                    {item}
+                  </Text>
+                ))}
+              </View>
             )}
           </View>
         </View>
