@@ -147,7 +147,7 @@ const App = () => {
 
     const [right, bottom] = window.innerWidth >= 640
       ? [isSidebarHidden ? 15 : 240, 0]
-      : [0, 25];
+      : [0, 30];
 
     let margin = window.innerWidth < 800 ? 15 : 30;
     let width = Math.min(rect?.width ?? 500, window.innerWidth - right - margin);
@@ -265,8 +265,8 @@ const App = () => {
             WebkitBackdropFilter: 'blur(10px)',
             backdropFilter: 'blur(10px)',
             padding: window.innerWidth < 640 ? 10 : 15,
-            paddingTop: window.innerWidth < 640 ? 25 : 15,
-            transform: isSidebarHidden ? (window.innerWidth < 640 ? 'translate(0, calc(100% - 25px))' : 'translate(225px, 0)') : '',
+            paddingTop: window.innerWidth < 640 ? 30 : 15,
+            transform: isSidebarHidden ? (window.innerWidth < 640 ? 'translate(0, calc(100% - 30px))' : 'translate(225px, 0)') : '',
             transition: 'transform 0.3s ease-in-out'
           }}
           onClick={() => setIsSidebarHidden(isSidebarHidden => !isSidebarHidden)}
