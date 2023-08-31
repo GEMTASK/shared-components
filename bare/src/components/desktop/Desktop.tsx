@@ -45,11 +45,6 @@ const Desktop = ({
   // console.log('Desktop()');
 
   const desktopElementRef = useRef<HTMLElement>(null);
-  const firstEventRef = useRef<React.PointerEvent | null>(null);
-  const leftWindowRectsRef = useRef<DOMRect[]>([]);
-  const leftWindowsRef = useRef<HTMLElement[]>([]);
-  const rightWindowRectsRef = useRef<DOMRect[]>([]);
-  const rightWindowsRef = useRef<HTMLElement[]>([]);
 
   const handleWindowBlur = () => {
     if (onWindowFocus && document.activeElement) {
@@ -62,29 +57,7 @@ const Desktop = ({
   };
 
   const handlePointerDown = useCallback((event: React.PointerEvent) => {
-    if (event.currentTarget !== desktopElementRef.current) {
-      return;
-    }
-
-    // event.preventDefault();
-    // event.currentTarget.setPointerCapture(event.pointerId);
-
-    firstEventRef.current = event;
-
-    if (desktopElementRef.current) {
-      const children = [...desktopElementRef.current.children] as HTMLElement[];
-
-      leftWindowsRef.current = children.filter(
-        ({ offsetLeft, offsetWidth }) => event.clientX - (offsetLeft + offsetWidth) >= 0 && event.clientX - (offsetLeft + offsetWidth) <= 15
-      );
-
-      rightWindowsRef.current = children.filter(
-        ({ offsetLeft }) => offsetLeft - event.clientX >= 0 && offsetLeft - event.clientX <= 15
-      );
-
-      leftWindowRectsRef.current = leftWindowsRef.current.map(window => getOffsetsRect(window));
-      rightWindowRectsRef.current = rightWindowsRef.current.map(window => getOffsetsRect(window));
-    }
+    event.preventDefault();
 
     window.addEventListener('blur', handleWindowBlur);
 
@@ -93,44 +66,12 @@ const Desktop = ({
     };
   }, []);
 
-  const handlePointerMove = useCallback((event: React.PointerEvent) => {
-    if (firstEventRef.current && rightWindowsRef.current && rightWindowRectsRef.current) {
-      const firstEvent = firstEventRef.current;
-
-      leftWindowsRef.current.forEach((window, index) => {
-        window.style.width = `${leftWindowRectsRef.current[index].width - (firstEvent.clientX - event.clientX)}px`;
-      });
-
-      rightWindowsRef.current.forEach((window, index) => {
-        window.style.left = `${rightWindowRectsRef.current[index].x + (event.clientX - firstEvent.clientX)}px`;
-        window.style.width = `${rightWindowRectsRef.current[index].width - (event.clientX - firstEvent.clientX)}px`;
-      });
-    }
-  }, []);
-
-  const handlePointerUp = useCallback(() => {
-    if (firstEventRef.current && rightWindowsRef.current && rightWindowRectsRef.current) {
-      leftWindowsRef.current.forEach((window, index) => {
-        window.style.width = `${Math.round(window.offsetWidth / 15) * 15}px`;
-      });
-
-      rightWindowsRef.current.forEach((window, index) => {
-        window.style.left = `${Math.round(window.offsetLeft / 15) * 15}px`;
-        window.style.width = `${Math.round(window.offsetWidth / 15) * 15}px`;
-      });
-    }
-
-    firstEventRef.current = null;
-  }, []);
-
   return (
     <View
       flex
       ref={desktopElementRef}
       style={{ background: `url(${wallpaper}) center center / cover` }}
       onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
     >
       {windows.map(({ id, title, element, rect }) => (
         <Window

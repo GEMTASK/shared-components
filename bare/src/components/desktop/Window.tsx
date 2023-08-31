@@ -51,6 +51,130 @@ function getOffsetsRect(windowElement: HTMLElement) {
   );
 }
 
+const Sizer = ({ ...props }: any) => {
+  const firstEventRef = useRef<React.PointerEvent | null>(null);
+  const leftWindowRectsRef = useRef<DOMRect[]>([]);
+  const leftWindowsRef = useRef<HTMLElement[]>([]);
+  const rightWindowRectsRef = useRef<DOMRect[]>([]);
+  const rightWindowsRef = useRef<HTMLElement[]>([]);
+
+  const topWindowRectsRef = useRef<DOMRect[]>([]);
+  const topWindowsRef = useRef<HTMLElement[]>([]);
+  const bottomWindowRectsRef = useRef<DOMRect[]>([]);
+  const bottomWindowsRef = useRef<HTMLElement[]>([]);
+
+  const handlePointerDown = useCallback((event: React.PointerEvent) => {
+    event.preventDefault();
+    event.currentTarget.setPointerCapture(event.pointerId);
+
+    firstEventRef.current = event;
+
+    const desktopElement = event.currentTarget.parentElement?.parentElement;
+
+    if (desktopElement) {
+      const children = [...desktopElement.children] as HTMLElement[];
+
+      leftWindowsRef.current = children.filter(
+        ({ offsetLeft, offsetTop, offsetWidth, offsetHeight }) => (
+          event.clientX - (offsetLeft + offsetWidth) >= 0
+          && event.clientX - (offsetLeft + offsetWidth) <= 15
+          && event.clientY >= offsetTop + 32 - 15
+          && event.clientY <= offsetTop + offsetHeight + 32 + 15
+        )
+      );
+
+      rightWindowsRef.current = children.filter(
+        ({ offsetLeft, offsetTop, offsetWidth, offsetHeight }) => (
+          offsetLeft - event.clientX >= 0 && offsetLeft - event.clientX <= 15
+          && event.clientY >= offsetTop + 32 - 15 && event.clientY <= offsetTop + offsetHeight + 32 + 15
+        )
+      );
+
+      leftWindowRectsRef.current = leftWindowsRef.current.map(window => getOffsetsRect(window));
+      rightWindowRectsRef.current = rightWindowsRef.current.map(window => getOffsetsRect(window));
+
+      topWindowsRef.current = children.filter(
+        ({ offsetLeft, offsetTop, offsetWidth, offsetHeight }) => (
+          event.clientY - (offsetTop + offsetHeight + 32) >= 0
+          && event.clientY - (offsetTop + offsetHeight + 32) <= 15
+          && event.clientX >= offsetLeft - 15
+          && event.clientX <= offsetLeft + offsetWidth + 15
+        )
+      );
+
+      bottomWindowsRef.current = children.filter(
+        ({ offsetLeft, offsetTop, offsetWidth, offsetHeight }) => (
+          offsetTop - event.clientY + 32 >= 0 && offsetTop - event.clientY + 32 <= 15
+          && event.clientX >= offsetLeft - 15 && event.clientX <= offsetLeft + offsetWidth + 15
+        )
+      );
+
+      topWindowRectsRef.current = topWindowsRef.current.map(window => getOffsetsRect(window));
+      bottomWindowRectsRef.current = bottomWindowsRef.current.map(window => getOffsetsRect(window));
+    }
+  }, []);
+
+  const handlePointerMove = useCallback((event: React.PointerEvent) => {
+    if (firstEventRef.current && rightWindowsRef.current && rightWindowRectsRef.current) {
+      const firstEvent = firstEventRef.current;
+
+      leftWindowsRef.current.forEach((window, index) => {
+        window.style.width = `${leftWindowRectsRef.current[index].width - (firstEvent.clientX - event.clientX)}px`;
+      });
+
+      rightWindowsRef.current.forEach((window, index) => {
+        window.style.left = `${rightWindowRectsRef.current[index].x + (event.clientX - firstEvent.clientX)}px`;
+        window.style.width = `${rightWindowRectsRef.current[index].width - (event.clientX - firstEvent.clientX)}px`;
+      });
+
+      topWindowsRef.current.forEach((window, index) => {
+        window.style.height = `${topWindowRectsRef.current[index].height - (firstEvent.clientY - event.clientY)}px`;
+      });
+
+      bottomWindowsRef.current.forEach((window, index) => {
+        window.style.top = `${bottomWindowRectsRef.current[index].y + (event.clientY - firstEvent.clientY)}px`;
+        window.style.height = `${bottomWindowRectsRef.current[index].height - (event.clientY - firstEvent.clientY)}px`;
+      });
+    }
+  }, []);
+
+  const handlePointerUp = useCallback(() => {
+    if (firstEventRef.current && rightWindowsRef.current && rightWindowRectsRef.current) {
+      leftWindowsRef.current.forEach((window, index) => {
+        window.style.width = `${Math.round(window.offsetWidth / 15) * 15}px`;
+      });
+
+      rightWindowsRef.current.forEach((window, index) => {
+        window.style.left = `${Math.round(window.offsetLeft / 15) * 15}px`;
+        window.style.width = `${Math.round(window.offsetWidth / 15) * 15}px`;
+      });
+
+      topWindowsRef.current.forEach((window, index) => {
+        window.style.height = `${Math.round(window.offsetHeight / 15) * 15}px`;
+      });
+
+      bottomWindowsRef.current.forEach((window, index) => {
+        window.style.top = `${Math.round(window.offsetTop / 15) * 15}px`;
+        window.style.height = `${Math.round(window.offsetHeight / 15) * 15}px`;
+      });
+    }
+
+    firstEventRef.current = null;
+  }, []);
+
+  return (
+    <View {...props}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+    />
+  );
+};
+
+//
+//
+//
+
 type WindowProps = {
   id: string,
   title: string,
@@ -166,6 +290,7 @@ const Window = React.memo(({
       {...props}
       onPointerDown={handleWindowPointerDown}
     >
+      <Sizer absolute style={{ inset: -15 }} />
       <View fillColor="gray-4" className={styles.Titlebar} {...titleBarEvents}>
         <View absolute className={styles.Extender} />
         <View horizontal alignVertical="middle" style={{ height: 32, flexShrink: 0 }}>
