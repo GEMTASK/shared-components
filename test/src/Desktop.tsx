@@ -88,6 +88,16 @@ const DigitalClock = () => {
   );
 };
 
+const windowConfig = {
+  calendar: {
+    icon: 'calendar',
+    title: 'Calendar',
+    element: <Calendar minWidth={360} />, rect: {
+      x: 15, y: 15, width: 360, height: 332,
+    }
+  }
+};
+
 const initialState = [
   {
     id: uuidv4(), icon: 'calendar', title: 'Calendar', element: <Calendar minWidth={360} />, rect: {
@@ -135,6 +145,7 @@ type WindowsProp = React.ComponentProps<typeof Desktop>['windows'];
 
 const App = () => {
   // console.log('App()');
+
   const params = new URLSearchParams(window.location.search);
 
   const [windows, setWindows] = useState<WindowsProp>(window.innerWidth < 1440 || params.get('app') ? [] : initialState);
@@ -142,7 +153,7 @@ const App = () => {
   const [windowIdOrder, setWindowIdOrder] = useState<string[]>(windows.map(({ id }) => id));
   const [isSidebarHidden, setIsSidebarHidden] = useState(window.innerWidth < 1024);
 
-  const addWindow = (title: string, element: React.ReactElement, rect?: Rect) => {
+  const addWindow = (icon: string, title: string, element: React.ReactElement, rect?: Rect) => {
     const id = uuidv4();
 
     const [right, bottom] = window.innerWidth >= 640
@@ -156,7 +167,7 @@ const App = () => {
     setWindows(windows => [
       ...windows,
       {
-        id, icon: 'question', title, element, rect: {
+        id, icon, title, element, rect: {
           x: (window.innerWidth - width - right) / 2,
           y: (window.innerHeight - height - bottom - 32) / 2,
           width,
@@ -170,43 +181,43 @@ const App = () => {
   };
 
   const desktopMenuItems = [
-    { title: 'Preferences', action: () => addWindow('Preferences', <Preferences />) },
+    { title: 'Preferences', action: () => addWindow('sliders', 'Preferences', <Preferences />) },
     { title: 'Enter Full Screen', action: () => document.body.requestFullscreen() },
     null,
-    { title: 'About React Desktop', action: () => addWindow('React Desktop', <About />) },
+    { title: 'About React Desktop', action: () => addWindow('info-circle', 'React Desktop', <About />) },
   ];
 
   const utilitiesMenuItems = [
-    { title: 'Calendar', action: () => addWindow('Calendar', <Calendar />, { width: 360, height: 332 }) },
-    { title: 'Clock', action: () => addWindow('Clock', <Clock />, { width: 300, height: 332 }) },
-    { title: 'Calculator', action: () => addWindow('Calculator', <Calculator />, { width: 255, height: 332 }) },
-    { title: 'Notes', action: () => addWindow('Notes', <Notes />, { width: 800, height: 600 }) },
-    { title: 'Music', action: () => addWindow('Music', <Music />, { width: 400, height: 500 }) },
-    { title: 'Files', action: () => addWindow('Files', <Filesystem />, { width: 800, height: 600 }) },
-    { title: 'Contacts', action: () => addWindow('Contacts', <Contacts />, { width: 800, height: 600 }) },
-    { title: 'Terminal', action: () => addWindow('Terminal', <Terminal />, { width: 800, height: 600 }) },
+    { title: 'Calendar', action: () => addWindow('calendar', 'Calendar', <Calendar />, { width: 360, height: 332 }) },
+    { title: 'Clock', action: () => addWindow('clock', 'Clock', <Clock />, { width: 300, height: 332 }) },
+    { title: 'Calculator', action: () => addWindow('calculator', 'Calculator', <Calculator />, { width: 255, height: 332 }) },
+    { title: 'Notes', action: () => addWindow('note-sticky', 'Notes', <Notes />, { width: 800, height: 600 }) },
+    { title: 'Music', action: () => addWindow('music', 'Music', <Music />, { width: 400, height: 500 }) },
+    { title: 'Files', action: () => addWindow('folder-open', 'Files', <Filesystem />, { width: 800, height: 600 }) },
+    { title: 'Contacts', action: () => addWindow('address-book', 'Contacts', <Contacts />, { width: 800, height: 600 }) },
+    { title: 'Terminal', action: () => addWindow('terminal', 'Terminal', <Terminal />, { width: 800, height: 600 }) },
     null,
-    { title: 'Browser', action: () => addWindow('Browser', <Browser />, { width: 1280, height: 800 }) },
-    { title: 'Email', action: () => addWindow('Email', <Email />, { width: 1280, height: 800 }) },
-    { title: 'Grid', action: () => addWindow('Grid', <GridPage />, { width: 1280, height: 800 }) },
-    { title: 'Live', action: () => addWindow('Live', <Live />, { width: 1280, height: 800 }) },
+    { title: 'Browser', action: () => addWindow('globe', 'Browser', <Browser />, { width: 1280, height: 800 }) },
+    { title: 'Email', action: () => addWindow('inbox', 'Email', <Email />, { width: 1280, height: 800 }) },
+    { title: 'Grid', action: () => addWindow('question', 'Grid', <GridPage />, { width: 1280, height: 800 }) },
+    { title: 'Live', action: () => addWindow('question', 'Live', <Live />, { width: 1280, height: 800 }) },
     null,
-    { title: 'Styleguide', action: () => addWindow('Styleguide', <Styleguide />, { width: 1280, height: 800 }) },
+    { title: 'Styleguide', action: () => addWindow('palette', 'Styleguide', <Styleguide />, { width: 1280, height: 800 }) },
   ];
 
   const applicationMenuItems = [
     'Programs',
-    { title: 'Grid Draw', action: () => addWindow('Grid Draw', <View as="iframe" frameBorder="0" src="https://mike-austin.com/draw-2" />, { width: 1280, height: 800 }) },
-    { title: 'Bestest Movies Ever', action: () => addWindow('Bestest Movies Ever', <View as="iframe" frameBorder="0" src="https://bestestmoviesever.com" />, { width: 1280, height: 800 }) },
-    { title: 'Kopi Notebook', action: () => addWindow('Kopi Notebook', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/kopi-ide" />, { width: 1280, height: 800 }) },
-    { title: 'UI Builder', action: () => addWindow('UI Builder', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/builder" />, { width: 1280, height: 800 }) },
-    { title: 'Virtual Machine', action: () => addWindow('Virtual Machine', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/vmachine" />, { width: 455, height: 845 }) },
-    { title: 'React Desktop 0.7', action: () => addWindow('React Desktop 0.7', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old" />, { width: 1280, height: 800 }) },
+    { title: 'Grid Draw', action: () => addWindow('draw-polygon', 'Grid Draw', <View as="iframe" frameBorder="0" src="https://mike-austin.com/draw-2" />, { width: 1280, height: 800 }) },
+    { title: 'Bestest Movies Ever', action: () => addWindow('film', 'Bestest Movies Ever', <View as="iframe" frameBorder="0" src="https://bestestmoviesever.com" />, { width: 1280, height: 800 }) },
+    { title: 'Kopi Notebook', action: () => addWindow('book', 'Kopi Notebook', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/kopi-ide" />, { width: 1280, height: 800 }) },
+    { title: 'UI Builder', action: () => addWindow('display', 'UI Builder', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/builder" />, { width: 1280, height: 800 }) },
+    { title: 'Virtual Machine', action: () => addWindow('computer', 'Virtual Machine', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/vmachine" />, { width: 455, height: 845 }) },
+    { title: 'React Desktop 0.7', action: () => addWindow('display', 'React Desktop 0.7', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old" />, { width: 1280, height: 800 }) },
     null,
     'Games',
-    { title: 'React Asteroids', action: () => addWindow('React Asteroids', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/mdpYMym?default-tab=js%2Cresult" />, { width: 1440, height: 800 }) },
-    { title: 'Stetegic Asteroids', action: () => addWindow('Stetegic Asteroids', <View as="iframe" frameBorder="0" src="https://editor.p5js.org/mike_ekim1024/full/q8nWdZV0U" />, { width: 800, height: 873 }) },
-    { title: 'Snakey Snake', action: () => addWindow('Snakey Snake', <View as="iframe" frameBorder="0" src="https://editor.p5js.org/mike_ekim1024/full/8c5ovMThX" />, { width: 400, height: 474 }) },
+    { title: 'React Asteroids', action: () => addWindow('gamepad', 'React Asteroids', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/mdpYMym?default-tab=js%2Cresult" />, { width: 1440, height: 800 }) },
+    { title: 'Stetegic Asteroids', action: () => addWindow('gamepad', 'Stetegic Asteroids', <View as="iframe" frameBorder="0" src="https://editor.p5js.org/mike_ekim1024/full/q8nWdZV0U" />, { width: 800, height: 873 }) },
+    { title: 'Snakey Snake', action: () => addWindow('gamepad', 'Snakey Snake', <View as="iframe" frameBorder="0" src="https://editor.p5js.org/mike_ekim1024/full/8c5ovMThX" />, { width: 400, height: 474 }) },
   ];
 
   const handleWindowFocus = (windowId: string) => {
