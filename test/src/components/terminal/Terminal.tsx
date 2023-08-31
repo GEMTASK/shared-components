@@ -572,7 +572,7 @@ const Terminal = ({ ...props }: any) => {
       interpret(inputValue, setInputValue, setElementHistory, setInputHistory);
     }
 
-    if (event.key === 'ArrowUp') {
+    if (event.key === 'ArrowUp' && inputValue === '') {
       setInputValue(inputHistory[0]);
     }
   };
