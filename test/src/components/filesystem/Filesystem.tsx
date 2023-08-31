@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { LoremIpsum } from 'lorem-ipsum';
 
 import { Button, Divider, Grid, Icon, Spacer, Splitter, Table, Text, View, ViewProps } from 'bare';
@@ -133,13 +133,15 @@ const Filesystem = ({ ...props }: any) => {
   const [selectedDisplay, setSelectedDisplay] = useState<Display>(() => IconDisplay);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
-  const DisplayButton = ({ display, ...props }: { display: Display; } & ButtonProps) => {
-    const handleClick = () => setSelectedDisplay(() => display);
+  const DisplayButton = useMemo(() => ({ display, ...props }: { display: Display; } & ButtonProps) => {
+    const handleClick = () => {
+      setSelectedDisplay(() => display);
+    };
 
     return (
       <Button hover iconSize="lg" selected={selectedDisplay === display} {...props} onClick={handleClick} />
-    );//
-  };
+    );
+  }, [selectedDisplay]);
 
   const handleFileSelect = (filename: string) => {
     setSelectedFile(filename);
