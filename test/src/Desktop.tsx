@@ -181,10 +181,10 @@ const App = () => {
   };
 
   const desktopMenuItems = [
+    { title: 'About React Desktop', action: () => addWindow('info-circle', 'Desktop', <About />) },
+    null,
     { title: 'Preferences', action: () => addWindow('sliders', 'Preferences', <Preferences />) },
     { title: 'Enter Full Screen', action: () => document.body.requestFullscreen() },
-    null,
-    { title: 'About React Desktop', action: () => addWindow('info-circle', 'React Desktop', <About />) },
   ];
 
   const utilitiesMenuItems = [
@@ -287,7 +287,7 @@ const App = () => {
             <Stack onClick={(event: React.PointerEvent) => event.stopPropagation()}>
               {windows.map((window, index, _, isFocused = window.id === focusedWindowId) => (
                 <View key={index} horizontal hoverTarget='a' align="left" padding="small large" fillColor={isFocused ? 'gray-3' : undefined}>
-                  <Icon icon={window?.icon as any} />
+                  <Icon fixedWidth icon={window?.icon as any} />
                   <Spacer size="small" />
                   <Text fontWeight="semibold">{window.title}</Text>
                   <Spacer flex size="small" />

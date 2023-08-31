@@ -78,15 +78,15 @@ const Sizer = ({ ...props }: any) => {
         ({ offsetLeft, offsetTop, offsetWidth, offsetHeight }) => (
           event.clientX - (offsetLeft + offsetWidth) >= 0
           && event.clientX - (offsetLeft + offsetWidth) <= 15
-          && event.clientY >= offsetTop + 32 - 15
-          && event.clientY <= offsetTop + offsetHeight + 32 + 15
+          && (!event.altKey ? event.clientY >= offsetTop + 32 - 15 : true)
+          && (!event.altKey ? event.clientY <= offsetTop + offsetHeight + 32 + 15 : true)
         )
       );
 
       rightWindowsRef.current = children.filter(
         ({ offsetLeft, offsetTop, offsetWidth, offsetHeight }) => (
           offsetLeft - event.clientX >= 0 && offsetLeft - event.clientX <= 15
-          && event.clientY >= offsetTop + 32 - 15 && event.clientY <= offsetTop + offsetHeight + 32 + 15
+          && (!event.altKey ? event.clientY >= offsetTop + 32 - 15 && event.clientY <= offsetTop + offsetHeight + 32 + 15 : true)
         )
       );
 
@@ -97,15 +97,15 @@ const Sizer = ({ ...props }: any) => {
         ({ offsetLeft, offsetTop, offsetWidth, offsetHeight }) => (
           event.clientY - (offsetTop + offsetHeight + 32) >= 0
           && event.clientY - (offsetTop + offsetHeight + 32) <= 15
-          && event.clientX >= offsetLeft - 15
-          && event.clientX <= offsetLeft + offsetWidth + 15
+          && (!event.altKey ? event.clientX >= offsetLeft - 15 : true)
+          && (!event.altKey ? event.clientX <= offsetLeft + offsetWidth + 15 : true)
         )
       );
 
       bottomWindowsRef.current = children.filter(
         ({ offsetLeft, offsetTop, offsetWidth, offsetHeight }) => (
           offsetTop - event.clientY + 32 >= 0 && offsetTop - event.clientY + 32 <= 15
-          && event.clientX >= offsetLeft - 15 && event.clientX <= offsetLeft + offsetWidth + 15
+          && (!event.altKey ? event.clientX >= offsetLeft - 15 && event.clientX <= offsetLeft + offsetWidth + 15 : true)
         )
       );
 
