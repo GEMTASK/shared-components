@@ -78,15 +78,15 @@ const Sizer = ({ ...props }: any) => {
         ({ offsetLeft, offsetTop, offsetWidth, offsetHeight }) => (
           event.clientX - (offsetLeft + offsetWidth) >= 0
           && event.clientX - (offsetLeft + offsetWidth) <= 15
-          && (!event.altKey ? event.clientY >= offsetTop + 32 - 15 : true)
-          && (!event.altKey ? event.clientY <= offsetTop + offsetHeight + 32 + 15 : true)
+          && (event.altKey ? event.clientY >= offsetTop + 32 - 15 : true)
+          && (event.altKey ? event.clientY <= offsetTop + offsetHeight + 32 + 15 : true)
         )
       );
 
       rightWindowsRef.current = children.filter(
         ({ offsetLeft, offsetTop, offsetWidth, offsetHeight }) => (
           offsetLeft - event.clientX >= 0 && offsetLeft - event.clientX <= 15
-          && (!event.altKey ? event.clientY >= offsetTop + 32 - 15 && event.clientY <= offsetTop + offsetHeight + 32 + 15 : true)
+          && (event.altKey ? event.clientY >= offsetTop + 32 - 15 && event.clientY <= offsetTop + offsetHeight + 32 + 15 : true)
         )
       );
 
@@ -97,21 +97,25 @@ const Sizer = ({ ...props }: any) => {
         ({ offsetLeft, offsetTop, offsetWidth, offsetHeight }) => (
           event.clientY - (offsetTop + offsetHeight + 32) >= 0
           && event.clientY - (offsetTop + offsetHeight + 32) <= 15
-          && (!event.altKey ? event.clientX >= offsetLeft - 15 : true)
-          && (!event.altKey ? event.clientX <= offsetLeft + offsetWidth + 15 : true)
+          && (event.altKey ? event.clientX >= offsetLeft - 15 : true)
+          && (event.altKey ? event.clientX <= offsetLeft + offsetWidth + 15 : true)
         )
       );
 
       bottomWindowsRef.current = children.filter(
         ({ offsetLeft, offsetTop, offsetWidth, offsetHeight }) => (
           offsetTop - event.clientY + 32 >= 0 && offsetTop - event.clientY + 32 <= 15
-          && (!event.altKey ? event.clientX >= offsetLeft - 15 && event.clientX <= offsetLeft + offsetWidth + 15 : true)
+          && (event.altKey ? event.clientX >= offsetLeft - 15 && event.clientX <= offsetLeft + offsetWidth + 15 : true)
         )
       );
 
       topWindowRectsRef.current = topWindowsRef.current.map(window => getOffsetsRect(window));
       bottomWindowRectsRef.current = bottomWindowsRef.current.map(window => getOffsetsRect(window));
     }
+
+    // if (leftWindowsRef.current.length > 0 || rightWindowsRef.current.length > 0) {
+    //   (event.currentTarget as HTMLElement).style.cursor = 'ns-reisze';
+    // }
   }, []);
 
   const handlePointerMove = useCallback((event: React.PointerEvent) => {
@@ -167,7 +171,10 @@ const Sizer = ({ ...props }: any) => {
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
-    />
+    >
+      {/* <View style={{ position: 'absolute', left: 0, top: 0, width: 15, height: 15, cursor: 'nwse-resize' }} />
+      <View style={{ position: 'absolute', left: 15, top: 0, right: 15, height: 15, cursor: 'ns-resize' }} /> */}
+    </View>
   );
 };
 

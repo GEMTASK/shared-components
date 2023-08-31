@@ -476,7 +476,7 @@ const interpret = async (
   setElementHistory(history => [
     ...history,
     <HistoryLine>
-      <Text style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}>
+      <Text style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT, userSelect: 'text' }}>
         {source}
       </Text>
     </HistoryLine>
@@ -494,7 +494,7 @@ const interpret = async (
           <Text
             align="left"
             paddingVertical="xsmall"
-            style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}
+            style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT, userSelect: 'text' }}
           >
             {string}
           </Text>
@@ -510,7 +510,7 @@ const interpret = async (
 
         if (typeof element === 'string') {
           resolve(
-            <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}>
+            <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT, userSelect: 'text' }}>
               {element}
             </Text>
           );
@@ -525,7 +525,7 @@ const interpret = async (
       console.warn(error);
 
       resolve(
-        <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}>
+        <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT, userSelect: 'text' }}>
           {(error as Error).toString()}
         </Text>
       );
@@ -541,7 +541,7 @@ const interpret = async (
 };
 
 const initialHistory = [
-  <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT }}>
+  <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT, userSelect: 'text' }}>
     Kopi shell – a simple, immutable, async programming langauge.<br />
     Type a command such as "date", "clock", or "calendar".
   </Text>,
@@ -672,13 +672,13 @@ const Terminal = ({ ...props }: any) => {
                           {section.content.map(item => (
                             <tr>
                               <td style={{ paddingBottom: 8, verticalAlign: 'top' }}>
-                                <Text style={{ fontFamily: 'Iosevka Fixed', whiteSpace: 'pre' }}>
+                                <Text style={{ fontFamily: 'Iosevka Fixed', whiteSpace: 'pre', userSelect: 'text' }}>
                                   {item.code.trim()}
                                 </Text>
                               </td>
                               {item.label && (
                                 <td style={{ paddingBottom: 8, paddingLeft: 16, verticalAlign: 'top' }}>
-                                  <Text>
+                                  <Text style={{}}>
                                     {item.label}
                                   </Text>
                                 </td>

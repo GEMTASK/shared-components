@@ -238,18 +238,18 @@ const MessageDetails = () => {
           </Stack>
         </Stack>
         <Spacer size="large" />
-        <Text fontWeight="semibold" lineClamp={1}>
+        <Text fontWeight="semibold" lineClamp={1} style={{ userSelect: 'text' }}>
           testuser@example.com
         </Text>
         <Spacer size="small" />
-        <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>
+        <Text fontSize="xsmall" textColor="gray-6" lineClamp={1} style={{ userSelect: 'text' }}>
           Marketing Budget Q4: Please review till August, 31
         </Text>
       </View>
       <View paddingHorizontal="large">
         <Divider />
       </View>
-      <Text flex fillColor="white" style={{ overflow: 'auto', padding: 32 }} padding="xxlarge">
+      <Text flex fillColor="white" style={{ overflow: 'auto', padding: 32, userSelect: 'text' }} padding="xxlarge">
         {emailBody}
       </Text>
     </View>
