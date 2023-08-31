@@ -212,6 +212,8 @@ const App = () => {
     { title: 'Kopi Notebook', action: () => addWindow('book', 'Kopi Notebook', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/kopi-ide" />, { width: 1280, height: 800 }) },
     { title: 'UI Builder', action: () => addWindow('display', 'UI Builder', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/builder" />, { width: 1280, height: 800 }) },
     { title: 'Virtual Machine', action: () => addWindow('computer', 'Virtual Machine', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/vmachine" />, { width: 455, height: 845 }) },
+    { title: 'Generator Coroutines', action: () => addWindow('code', 'Generator Coroutines', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/gOQyPVE?default-tab=js%2Cresult&editable=true" />, { width: 1280, height: 800 }) },
+    { title: 'Coroutines using await', action: () => addWindow('code', 'Coroutines using await', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/JjeqdeB?default-tab=js%2Cresult&editable=true" />, { width: 1280, height: 800 }) },
     { title: 'React Desktop 0.7', action: () => addWindow('display', 'React Desktop 0.7', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old" />, { width: 1280, height: 800 }) },
     null,
     'Games',
