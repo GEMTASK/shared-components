@@ -158,13 +158,15 @@ class UnaryExpression extends ASTNode {
 
 class FunctionExpression extends ASTNode {
   readonly parameterPattern: ASTPatternNode;
+  readonly predicateExpression: ASTNode;
   readonly bodyExpression: ASTNode;
   readonly name?: string;
 
-  constructor({ parameterPattern, bodyExpression, name, location }: FunctionExpression) {
+  constructor({ parameterPattern, predicateExpression, bodyExpression, name, location }: FunctionExpression) {
     super(location);
 
     this.parameterPattern = parameterPattern;
+    this.predicateExpression = predicateExpression;
     this.bodyExpression = bodyExpression;
     this.name = name;
   }

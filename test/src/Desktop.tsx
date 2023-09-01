@@ -181,10 +181,10 @@ const App = () => {
   };
 
   const desktopMenuItems = [
+    { title: 'About React Desktop', action: () => addWindow('info-circle', 'Desktop', <About />) },
+    null,
     { title: 'Preferences', action: () => addWindow('sliders', 'Preferences', <Preferences />) },
     { title: 'Enter Full Screen', action: () => document.body.requestFullscreen() },
-    null,
-    { title: 'About React Desktop', action: () => addWindow('info-circle', 'React Desktop', <About />) },
   ];
 
   const utilitiesMenuItems = [
@@ -206,12 +206,14 @@ const App = () => {
   ];
 
   const applicationMenuItems = [
-    'Programs',
+    'Applications',
     { title: 'Grid Draw', action: () => addWindow('draw-polygon', 'Grid Draw', <View as="iframe" frameBorder="0" src="https://mike-austin.com/draw-2" />, { width: 1280, height: 800 }) },
     { title: 'Bestest Movies Ever', action: () => addWindow('film', 'Bestest Movies Ever', <View as="iframe" frameBorder="0" src="https://bestestmoviesever.com" />, { width: 1280, height: 800 }) },
     { title: 'Kopi Notebook', action: () => addWindow('book', 'Kopi Notebook', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/kopi-ide" />, { width: 1280, height: 800 }) },
     { title: 'UI Builder', action: () => addWindow('display', 'UI Builder', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/builder" />, { width: 1280, height: 800 }) },
     { title: 'Virtual Machine', action: () => addWindow('computer', 'Virtual Machine', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/vmachine" />, { width: 455, height: 845 }) },
+    { title: 'Generator Coroutines', action: () => addWindow('code', 'Generator Coroutines', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/gOQyPVE?default-tab=js%2Cresult&editable=true" />, { width: 1280, height: 800 }) },
+    { title: 'Coroutines using await', action: () => addWindow('code', 'Coroutines using await', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/JjeqdeB?default-tab=js%2Cresult&editable=true" />, { width: 1280, height: 800 }) },
     { title: 'React Desktop 0.7', action: () => addWindow('display', 'React Desktop 0.7', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old" />, { width: 1280, height: 800 }) },
     null,
     'Games',
@@ -252,7 +254,7 @@ const App = () => {
       <Stack horizontal shadow fillColor="white" paddingHorizontal="large" style={{ zIndex: 1, paddingLeft: 8 }}>
         <Menu hover title="Desktop" titleFontWeight="bold" rightIcon={undefined} items={desktopMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
         <Menu hover title="Utilities" rightIcon={undefined} items={utilitiesMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
-        <Menu hover title="Applications" rightIcon={undefined} items={applicationMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
+        <Menu hover title="Programs" rightIcon={undefined} items={applicationMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
         <Spacer flex size="large" />
         <DigitalClock />
       </Stack>
@@ -287,7 +289,7 @@ const App = () => {
             <Stack onClick={(event: React.PointerEvent) => event.stopPropagation()}>
               {windows.map((window, index, _, isFocused = window.id === focusedWindowId) => (
                 <View key={index} horizontal hoverTarget='a' align="left" padding="small large" fillColor={isFocused ? 'gray-3' : undefined}>
-                  <Icon icon={window?.icon as any} />
+                  <Icon fixedWidth icon={window?.icon as any} />
                   <Spacer size="small" />
                   <Text fontWeight="semibold">{window.title}</Text>
                   <Spacer flex size="small" />

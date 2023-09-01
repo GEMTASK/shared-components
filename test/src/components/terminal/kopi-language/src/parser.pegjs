@@ -174,10 +174,11 @@ ApplyExpression
     }
 
 FunctionExpression
-  = parameterPattern:Pattern _ Newline* _ "=>" _ Newline* _ bodyExpression:ConcatExpression {
+  = parameterPattern:Pattern _ Newline* _ predicateExpression:("[" _ ConcatExpression _ "]")? _ "=>" _ Newline* _ bodyExpression:ConcatExpression {
       return {
         type: "FunctionExpression",
         parameterPattern,
+        predicateExpression: predicateExpression && predicateExpression[2],
         bodyExpression,
       }
     }

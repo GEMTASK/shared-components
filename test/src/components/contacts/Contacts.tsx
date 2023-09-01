@@ -145,7 +145,7 @@ const Contacts = ({ ...props }) => {
         </View>
         <Divider />
         <View padding="large">
-          <Text fontSize="large">
+          <Text fontSize="large" style={{ userSelect: 'text' }}>
             {selectedContact && (
               <>{selectedContact.firstName} {selectedContact.lastName}</>
             )}

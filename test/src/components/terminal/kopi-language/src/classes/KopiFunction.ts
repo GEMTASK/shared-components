@@ -2,12 +2,14 @@ import { ASTNode, ASTPatternNode, Context, Environment, KopiValue } from '../typ
 
 class KopiFunction extends KopiValue {
   readonly parameterPattern: ASTPatternNode;
+  readonly predicateExpression: ASTNode;
   readonly bodyExpression: ASTNode;
   readonly environment: Environment;
   readonly name?: string;
 
   constructor(
     parameterPattern: ASTPatternNode,
+    predicateExpression: ASTNode,
     bodyExpression: ASTNode,
     environment: Environment,
     name?: string
@@ -15,6 +17,7 @@ class KopiFunction extends KopiValue {
     super();
 
     this.parameterPattern = parameterPattern;
+    this.predicateExpression = predicateExpression;
     this.bodyExpression = bodyExpression;
     this.environment = environment;
     this.name = name;

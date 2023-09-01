@@ -104,7 +104,7 @@ async function ConditionalExpression(
     return evaluate(alternate, environment, bind);
   }
 
-  throw new TypeError(`Conditional expression but be of type Boolean.`);
+  throw new TypeError(`Conditional expression must be of type Boolean.`);
 }
 
 async function LogicalOrExpression(
@@ -210,13 +210,14 @@ async function UnaryExpression(
 }
 
 async function FunctionExpression(
-  { parameterPattern, bodyExpression, name }: astNodes.FunctionExpression,
+  { parameterPattern, predicateExpression, bodyExpression, name }: astNodes.FunctionExpression,
   context: Context,
 ): Promise<KopiValue> {
   const { environment } = context;
 
   return new KopiFunction(
     parameterPattern,
+    predicateExpression,
     bodyExpression,
     environment,
     name,

@@ -84,6 +84,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
     case 'FunctionExpression':
       return new astNodes.FunctionExpression({
         parameterPattern: transform(rawASTNode.parameterPattern),
+        predicateExpression: rawASTNode.predicateExpression && transform(rawASTNode.predicateExpression),
         bodyExpression: transform(rawASTNode.bodyExpression),
         name: rawASTNode.name,
         location: rawASTNode.location,
