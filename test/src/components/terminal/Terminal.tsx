@@ -268,6 +268,7 @@ spawn () => {
     title: 'Boolean Methods', content: [
       { code: '!true', extra: 'false' },
       { code: 'true == true', extra: 'true' },
+      { code: 'true != true', extra: 'false' },
     ]
   },
   {

@@ -33,6 +33,10 @@ class KopiBoolean extends KopiValue {
   '=='(that: KopiBoolean) {
     return new KopiBoolean(this.value === that.value);
   }
+
+  '!='(that: KopiBoolean) {
+    return new KopiBoolean(this.value !== that.value);
+  }
 }
 
 export default KopiBoolean;
