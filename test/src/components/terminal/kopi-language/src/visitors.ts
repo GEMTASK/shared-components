@@ -210,13 +210,14 @@ async function UnaryExpression(
 }
 
 async function FunctionExpression(
-  { parameterPattern, bodyExpression, name }: astNodes.FunctionExpression,
+  { parameterPattern, predicateExpression, bodyExpression, name }: astNodes.FunctionExpression,
   context: Context,
 ): Promise<KopiValue> {
   const { environment } = context;
 
   return new KopiFunction(
     parameterPattern,
+    predicateExpression,
     bodyExpression,
     environment,
     name,

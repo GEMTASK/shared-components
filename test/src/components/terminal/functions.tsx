@@ -1,4 +1,4 @@
-import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
+import { KopiArray, KopiBoolean, KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
 import { ASTNode, Bind, Context, KopiValue } from './kopi-language/src/types';
 import KopiStream_T from './kopi-language/src/classes/KopiStream';
 import KopiRange from './kopi-language/src/classes/KopiRange';
@@ -35,10 +35,23 @@ async function kopi_loop(value: KopiValue, context: Context) {
 }
 
 async function kopi_match(value: KopiValue, context: Context) {
+  const { evaluate, environment, bind } = context;
+
   return async (funcs: KopiTuple) => {
     for await (const func of funcs.fields) {
       if (await (func as KopiFunction).parameterPattern.test(value, context)) {
-        return (func as KopiFunction).apply(KopiTuple.empty, [value, context]);
+        const predicateExpression = (func as KopiFunction).predicateExpression;
+
+        if (predicateExpression) {
+          const matches = await (func as KopiFunction).parameterPattern.match(value, context);
+          const predicateValue = await evaluate(predicateExpression, { ...environment, ...matches }, bind);
+
+          if ((predicateValue as KopiBoolean).value) {
+            return (func as KopiFunction).apply(KopiTuple.empty, [value, context]);
+          }
+        } else {
+          return (func as KopiFunction).apply(KopiTuple.empty, [value, context]);
+        }
       }
     }
 
