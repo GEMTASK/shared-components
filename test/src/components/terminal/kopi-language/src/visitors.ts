@@ -104,7 +104,7 @@ async function ConditionalExpression(
     return evaluate(alternate, environment, bind);
   }
 
-  throw new TypeError(`Conditional expression but be of type Boolean.`);
+  throw new TypeError(`Conditional expression must be of type Boolean.`);
 }
 
 async function LogicalOrExpression(
