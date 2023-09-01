@@ -623,7 +623,7 @@ const Terminal = ({ ...props }: any) => {
           <Button icon="table-columns" selected={isHistoryVisible} onClick={() => setIsHistoryVisible(isHistoryVisible => !isHistoryVisible)} />
         </View>
         <Divider />
-        <View ref={historyElementRef} paddingHorizontal="small" style={{ overflowY: 'auto' }}>
+        <View ref={historyElementRef} paddingHorizontal="small" style={{ overflowY: 'auto', userSelect: 'text' }}>
           <Spacer size="small" />
           {elementHistory.map((item, index) => (
             <React.Fragment key={index}>{item}</React.Fragment>
