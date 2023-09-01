@@ -22,7 +22,7 @@ Assignment
       return {
         type: 'Assignment',
         pattern: identifierPattern,
-        expression: parameterPatterns.reduce((bodyExpression, [, parameterPattern], index) => ({
+        expression: parameterPatterns.reverse().reduce((bodyExpression, [, parameterPattern], index) => ({
           type: 'FunctionExpression',
           parameterPattern,
           bodyExpression,

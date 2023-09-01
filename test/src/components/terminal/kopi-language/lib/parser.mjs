@@ -292,7 +292,7 @@ function peg$parse(input, options) {
       return {
         type: 'Assignment',
         pattern: identifierPattern,
-        expression: parameterPatterns.reduce((bodyExpression, [, parameterPattern], index) => ({
+        expression: parameterPatterns.reverse().reduce((bodyExpression, [, parameterPattern], index) => ({
           type: 'FunctionExpression',
           parameterPattern,
           bodyExpression,
@@ -564,7 +564,7 @@ function peg$parse(input, options) {
   var peg$f36 = function(value) {
       return {
         type: 'StringLiteral',
-        value: value.join('').replace(/\\"/g, '"'),
+        value: value.join('').replace(/(?<!\\)\\"/g, '"'),
         location: location(),
       };
     };
