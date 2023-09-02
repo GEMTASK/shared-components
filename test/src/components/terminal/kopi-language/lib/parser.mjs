@@ -564,7 +564,7 @@ function peg$parse(input, options) {
   var peg$f36 = function(value) {
       return {
         type: 'StringLiteral',
-        value: value.join('').replace(/(?<!\\)\\"/g, '"'),
+        value: value.join('').replace(/\\"/g, '"'),
         location: location(),
       };
     };
@@ -2607,7 +2607,7 @@ function peg$parse(input, options) {
     var s0, s1, s2, s3, s4, s5;
 
     s0 = peg$currPos;
-    s1 = peg$parseIdentifierPattern();
+    s1 = peg$parsePrimaryPattern();
     if (s1 !== peg$FAILED) {
       s2 = peg$parse_();
       if (input.charCodeAt(peg$currPos) === 61) {

@@ -114,13 +114,14 @@ function transform(rawASTNode: RawASTNode): ASTNode {
     case 'ArrayLiteralPattern':
       return new astNodes.ArrayLiteralPattern({
         elementPatterns: rawASTNode.elementPatterns.map((pattern: ASTPatternNode) => transform(pattern)),
+        defaultExpression: rawASTNode.defaultExpression && transform(rawASTNode.defaultExpression),
         location: rawASTNode.location,
       } as astNodes.ArrayLiteralPattern);
     case 'IdentifierPattern':
       return new astNodes.IdentifierPattern({
         name: rawASTNode.name,
-        location: rawASTNode.location,
         defaultExpression: rawASTNode.defaultExpression && transform(rawASTNode.defaultExpression),
+        location: rawASTNode.location,
       } as astNodes.IdentifierPattern);
     //
     case 'BooleanLiteral':

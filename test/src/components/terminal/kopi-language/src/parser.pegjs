@@ -272,7 +272,7 @@ Pattern
   / PrimaryPattern
 
 DefaultExpressionPattern
-  = pattern:IdentifierPattern _ "=" _ defaultExpression:Expression {
+  = pattern:PrimaryPattern _ "=" _ defaultExpression:Expression {
       return {
         ...pattern,
         defaultExpression,

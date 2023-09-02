@@ -313,11 +313,13 @@ class StringLiteralPattern extends ASTPatternNode {
 
 class ArrayLiteralPattern extends ASTPatternNode {
   readonly elementPatterns: ASTPatternNode[];
+  readonly defaultExpression: ASTNode | null;
 
-  constructor({ elementPatterns, location }: ArrayLiteralPattern) {
+  constructor({ elementPatterns, defaultExpression, location }: ArrayLiteralPattern) {
     super(location);
 
     this.elementPatterns = elementPatterns;
+    this.defaultExpression = defaultExpression;
   }
 
   async test(value: KopiValue, context: Context) {
@@ -334,9 +336,20 @@ class ArrayLiteralPattern extends ASTPatternNode {
   }
 
   override async match(value: KopiValue, context: Context) {
-    const array = value as KopiArray;
+    const { evaluate, environment, bind } = context;
+
     let bindings = {};
     let index = 0;
+
+    if (value === KopiTuple.empty) {
+      if (this.defaultExpression !== null) {
+        value = await evaluate(this.defaultExpression, environment, bind);
+      } else {
+        throw new TypeError(`Expected a value but ${value} found.`);
+      }
+    }
+
+    let array = value as KopiArray;
 
     for await (const value of array) {
       let matches = await this.elementPatterns[index++].match(value ?? KopiTuple.empty, context);

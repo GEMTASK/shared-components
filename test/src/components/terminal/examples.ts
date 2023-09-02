@@ -30,6 +30,12 @@ let (t = true, f = false) => {
 f a b = (a, b)
 (f 2 3) == (2, 3)
   `,
+  `
+grayscale (color) = {
+  let ([r, g, b] = color) => (r + g + b) / 3
+}
+grayscale [255, 128, 255]  
+  `,
   `(a => b => a + b) 1 2`,
   `((a, b) => a + b) (1, 2)`,
   `((a, b = 2) => a + b) 1`,
