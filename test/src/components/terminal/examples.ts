@@ -32,7 +32,8 @@ f a b = (a, b)
   `,
   `
 grayscale (color) = {
-  let ([r, g, b] = color) => (r + g + b) / 3
+  let ([r, g, b] = color) =>
+    (r * 0.3 + g * 0.6 + b * 0.1) / 3
 }
 grayscale [255, 128, 255]  
   `,
