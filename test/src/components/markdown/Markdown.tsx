@@ -1,10 +1,40 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
 import { createUseStyles } from 'react-jss';
 
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 
-const useStyles = createUseStyles({
+const useSidebarStyles = createUseStyles({
+  h1: {
+    '&:not(:first-child)': {
+      marginTop: 32,
+    },
+    '&:not(:last-child)': {
+      marginBottom: 24,
+    },
+  },
+  h2: {
+    '&:not(:first-child)': {
+      marginTop: 16,
+    },
+    '&:not(:last-child)': {
+      marginBottom: 16,
+    },
+  },
+  h3: {
+    padding: '0 16px',
+    '&:not(:first-child)': {
+      marginTop: 16,
+    },
+    '&:not(:last-child)': {
+      marginBottom: 16,
+    },
+  },
+});
+
+const useMarkdownStyles = createUseStyles({
   h1: {
     '&:not(:first-child)': {
       marginTop: 32,
@@ -60,7 +90,7 @@ Kopi supports several literal types. Here, we have a tuple containing a Number, 
 
 We'll talk more about functions and expression trees later on.
 
-### Mathematical Operations
+### Math Operations
 
 Infix math operators are supported such as add, subtract, multiply, divide, remainer, and exponent. Operator precedence is similar to other languages where multiplication is more tighly bound that addition for example.
 
@@ -79,20 +109,41 @@ A **Tuple** is a fixed structure with any number of types. You can name tuple fi
 `;
 
 const Markdown = ({ ...props }) => {
-  const styles = useStyles();
+  const [markdownAst, setMarkdownAst] = useState<{}>();
+
+  const sidebarStyles = useSidebarStyles();
+  const markdownStyles = useMarkdownStyles();
+
+  const sidebarComponents = {
+    h1: ({ children }: { children: any; }) => (
+      <Text fontSize="large" fontWeight="thin" className={sidebarStyles.h1}>{children}</Text>
+    ),
+    h2: ({ children }: { children: any; }) => (
+      <Text fontSize="medium" fontWeight="semibold" className={sidebarStyles.h2}>{children}</Text>
+    ),
+    h3: ({ children }: { children: any; }) => (
+      <Text fontWeight="medium" className={sidebarStyles.h3}>{children}</Text>
+    ),
+    p: ({ children }: { children: any; }) => null,
+    strong: ({ children }: { children: any; }) => (
+      <Text fontWeight="bold" textColor="gray-7">{children}</Text>
+    ),
+    code: ({ children }: { children: any; }) => null,
+    pre: () => null,
+  };
 
   const markdownComponents = {
     h1: ({ children }: { children: any; }) => (
-      <Text fontSize="xlarge" fontWeight="bold" className={styles.h1}>{children}</Text>
+      <Text fontSize="xlarge" fontWeight="bold" className={markdownStyles.h1}>{children}</Text>
     ),
     h2: ({ children }: { children: any; }) => (
-      <Text fontSize="large" fontWeight="semibold" className={styles.h2}>{children}</Text>
+      <Text fontSize="large" fontWeight="semibold" className={markdownStyles.h2}>{children}</Text>
     ),
     h3: ({ children }: { children: any; }) => (
-      <Text fontSize="medium" fontWeight="medium" className={styles.h3}>{children}</Text>
+      <Text fontSize="medium" fontWeight="medium" className={markdownStyles.h3}>{children}</Text>
     ),
     p: ({ children }: { children: any; }) => (
-      <Text textColor="gray-7" className={styles.p}>{children}</Text>
+      <Text textColor="gray-7" className={markdownStyles.p}>{children}</Text>
     ),
     strong: ({ children }: { children: any; }) => (
       <Text fontWeight="bold" textColor="gray-7">{children}</Text>
@@ -109,10 +160,24 @@ const Markdown = ({ ...props }) => {
     ),
   };
 
+  useEffect(() => {
+    (async () => {
+      const ast = await unified()
+        .use(remarkParse as any)
+        .parse(markdown);
+
+      console.log(ast);
+
+      setMarkdownAst(ast);
+    })();
+  }, []);
+
   return (
     <Stack horizontal divider {...props} >
-      <View padding="small">
-        <Text>here</Text>
+      <View padding="large" minWidth={224} style={{ display: 'block', overflow: 'auto', userSelect: 'text' }}>
+        <ReactMarkdown components={sidebarComponents}>
+          {markdown}
+        </ReactMarkdown>
       </View>
       <View padding="xxlarge" style={{ display: 'block', overflow: 'auto', userSelect: 'text' }}>
         <ReactMarkdown components={markdownComponents}>
