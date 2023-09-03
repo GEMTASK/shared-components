@@ -67,6 +67,15 @@ Infix math operators are supported such as add, subtract, multiply, divide, rema
 \`\`\`kopi
 1 + 2 * 3 ^ 4
 \`\`\`
+
+### Tuples and Arrays
+
+A **Tuple** is a fixed structure with any number of types. You can name tuple fields to make code easier to read and work with, and mix and match non-named and named fields. There is a special value 0-tuple, which is used to represent "no value".
+
+\`\`\`kopi
+()   (1, "Two", false)   (x: 2, y: 3)
+\`\`\`
+
 `;
 
 const Markdown = ({ ...props }) => {
@@ -85,6 +94,9 @@ const Markdown = ({ ...props }) => {
     p: ({ children }: { children: any; }) => (
       <Text textColor="gray-7" className={styles.p}>{children}</Text>
     ),
+    strong: ({ children }: { children: any; }) => (
+      <Text fontWeight="bold" textColor="gray-7">{children}</Text>
+    ),
     code: ({ children }: { children: any; }) => (
       <View border fillColor="gray-1">
         <Text padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
@@ -98,11 +110,16 @@ const Markdown = ({ ...props }) => {
   };
 
   return (
-    <View {...props} padding="xxlarge" style={{ display: 'block', overflow: 'auto' }}>
-      <ReactMarkdown components={markdownComponents}>
-        {markdown}
-      </ReactMarkdown>
-    </View>
+    <Stack horizontal divider {...props} >
+      <View padding="small">
+        <Text>here</Text>
+      </View>
+      <View padding="xxlarge" style={{ display: 'block', overflow: 'auto', userSelect: 'text' }}>
+        <ReactMarkdown components={markdownComponents}>
+          {markdown}
+        </ReactMarkdown>
+      </View>
+    </Stack>
   );
 };
 
