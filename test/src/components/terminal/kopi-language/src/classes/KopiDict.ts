@@ -104,6 +104,10 @@ class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
       entries.push(`${await key.inspect()}: ${await (await value).inspect()}`);
     }
 
+    if (entries.length === 0) {
+      return `{}`;
+    }
+
     return `{ ${entries.join(', ')} }`;
   }
 

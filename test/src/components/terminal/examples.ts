@@ -3,6 +3,7 @@ const examples = [
   `clock`,
   `calendar`,
   `(1 + 2) * 3 + (4 ^ 2)`,
+  `(1, "3", true, 'ast, (), [], {})`,
   `!true == !!false`,
   `(2 > 1 && 3 > 2) || false`,
   `2 > 1 || (2 > 3 && false)`,
@@ -16,7 +17,6 @@ let (t = true, f = false) => {
   `(foo: 1, bar: 2).bar`,
   `"abc" ++ "def"`,
   `[1, 2] ++ [3, 4]`,
-  `((), true, false, 1, 'ast, "3", [])`,
   `"ab" ++ (2 < 3 ? "cd" : "ef")`,
   `
 (a, b, c) = (1, 2, 3)
@@ -44,9 +44,7 @@ grayscale [255, 128, 255]
   `((a = 1, b = 2) => a + b) ()`,
   `let (a = 1) => a`,
   `let (a = 1, b = 2) => a + b`,
-  `('1, 'sin, '(sin 30))`,
   `'sin (30 * (PI / 180))`,
-  `'cos (30 * (PI / 180))`,
   `fetch "robots.txt"`,
   `'size (fetch "robots.txt")`,
   `
@@ -59,7 +57,7 @@ add1 5
   `"abc" | split | map 'succ`,
   `"a,b,c" | split ","`,
   `("ab", "xy") | map (a, x) => a x`,
-  `[(1..5).from, (1..5).to]`,
+  `let (r = 1..5) => (r.from, r.to)`,
   `"a".."z" (by: 5) | map 'toUpper`,
   `"a".."e" | count () => true`,
   `1..5 | take 3 | map (n) => n * n`,

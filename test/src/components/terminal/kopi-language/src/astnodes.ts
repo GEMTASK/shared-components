@@ -108,6 +108,10 @@ class ApplyExpression extends ASTNode {
     this.argumentExpression = argumentExpression;
   }
 
+  async inspect() {
+    return `'(${(await this.expression as Identifier).name} ${await this.argumentExpression.inspect()})`;
+  }
+
   async apply(
     thisArg: KopiValue,
     [argument, context]: [KopiValue, Context]
@@ -419,6 +423,10 @@ class BooleanLiteral extends ASTNode {
 
     this.value = value;
   }
+
+  async inspect() {
+    return `${this.value ? 'true' : 'false'}`;
+  }
 }
 
 class NumericLiteral extends ASTNode {
@@ -429,6 +437,10 @@ class NumericLiteral extends ASTNode {
 
     this.value = value;
   }
+
+  async inspect() {
+    return `${this.value}`;
+  }
 }
 
 class StringLiteral extends ASTNode {
@@ -438,6 +450,10 @@ class StringLiteral extends ASTNode {
     super(location);
 
     this.value = value;
+  }
+
+  async inspect() {
+    return `"${this.value}"`;
   }
 }
 
@@ -489,6 +505,10 @@ class Identifier extends ASTNode {
 
   '=='(that: Identifier) {
     return new KopiBoolean(this.name === that.name);
+  }
+
+  async inspect() {
+    return `'${this.name}`;
   }
 }
 
