@@ -16,6 +16,7 @@ import Filesystem from './components/filesystem';
 import Contacts from './components/contacts';
 import Terminal from './components/terminal';
 import Preferences from './components/preferences';
+import Markdown from './components/markdown';
 
 import Styleguide from './App';
 import Email from './Email';
@@ -196,6 +197,7 @@ const App = () => {
     { title: 'Files', action: () => addWindow('folder-open', 'Files', <Filesystem />, { width: 800, height: 600 }) },
     { title: 'Contacts', action: () => addWindow('address-book', 'Contacts', <Contacts />, { width: 800, height: 600 }) },
     { title: 'Terminal', action: () => addWindow('terminal', 'Terminal', <Terminal />, { width: 800, height: 600 }) },
+    { title: 'Markdown', action: () => addWindow('marker', 'Markdown', <Markdown />, { width: 800, height: 600 }) },
     null,
     { title: 'Browser', action: () => addWindow('globe', 'Browser', <Browser />, { width: 1280, height: 800 }) },
     { title: 'Email', action: () => addWindow('inbox', 'Email', <Email />, { width: 1280, height: 800 }) },
