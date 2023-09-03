@@ -80,7 +80,9 @@ class KopiTuple extends KopiValue {
 
   override async toString() {
     const fields = await Promise.all(
-      this.fields.map(async (element) => `${await (await element).toString()}`)
+      this._fields.map(async (element, index) =>
+        (this._fieldNames[index] ? `${this._fieldNames[index]}: ` : ``) +
+        `${await (await element).toString()}`)
     );
 
     return `(${fields.join(', ')})`;

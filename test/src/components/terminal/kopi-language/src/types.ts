@@ -85,17 +85,17 @@ abstract class ASTPatternNode extends ASTNode {
   } | undefined>;
 }
 
-class Environment {
+type Environment = {
   [key: string | symbol]: KopiValue;
 
-  constructor(bindings: { [key: string | symbol]: KopiValue; }) {
-    Object.entries(bindings).map(([key, binding]) => this[key] = binding);
-  }
+  // constructor(bindings: { [key: string | symbol]: KopiValue; }) {
+  //   Object.entries(bindings).map(([key, binding]) => this[key] = binding);
+  // }
 
   // bind(bindings: Environment) {
   //   return new Environment({ ...this, ...bindings });
   // }
-}
+};
 
 type Transform = (rawASTNode: RawASTNode) => ASTNode;
 type Evaluate = (astNode: ASTNode, environment: Environment, bind: Bind) => Promise<KopiValue>;
@@ -111,11 +111,11 @@ export {
   type RawASTNode,
   type Transform,
   type Evaluate,
+  type Environment,
   type Bind,
   type Context,
   type ReactElement,
   ASTNode,
   ASTPatternNode,
-  Environment,
   KopiValue,
 };

@@ -7,7 +7,7 @@ import Clock from '../clock/Clock';
 import * as kopi from './kopi-language';
 
 import { KopiArray, KopiNumber, KopiString, KopiTuple, KopiDate, KopiBoolean, KopiDict } from './kopi-language/src/classes';
-import { Context, Environment, KopiValue } from './kopi-language/src/types';
+import { Context, KopiValue } from './kopi-language/src/types';
 
 import historyItems from './examples';
 import * as functions from './functions';
@@ -342,7 +342,7 @@ Point (1, 2) | add (Point (2, 3))
   },
 ];
 
-let environment = new Environment({
+let environment = {
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
   Object: KopiObject,
@@ -377,7 +377,7 @@ let environment = new Environment({
   Text: kopi_Text,
   Button: kopi_Button,
   useState: kopi_useState,
-});
+};
 
 const useSidebarStyles = createUseStyles({
   Item: {
