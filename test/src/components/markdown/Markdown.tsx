@@ -148,9 +148,11 @@ const Code = ({ children }: { children: string[]; }) => {
     };
   }, [children]);
 
+  const innerProps = { ref: textElementRef, contentEditable: true, suppressContentEditableWarning: true };
+
   return (
     <View border fillColor="gray-1">
-      <Text innerProps={{ ref: textElementRef, contentEditable: true }} padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
+      <Text innerProps={innerProps} padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
         {children}
       </Text>
       {typeof value === 'string' ? (

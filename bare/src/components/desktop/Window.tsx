@@ -321,7 +321,7 @@ const Window = React.memo(({
           borderBottomLeftRadius: 4,
           borderBottomRightRadius: 4,
         },
-        isMenuOpen,
+        // isMenuOpen,
       })}
     </View>
   );
