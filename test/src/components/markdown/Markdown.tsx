@@ -128,7 +128,7 @@ const Code = ({ children }: { children: string[]; }) => {
 
   return (
     <View border fillColor="gray-1">
-      <Text contentEditable padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
+      <Text innerProps={{ contentEditable: true }} padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
         {children}
       </Text>
       {typeof value === 'string' ? (
@@ -180,7 +180,7 @@ const Markdown = ({ ...props }) => {
     h3: ({ children }: { children: any; }) => (
       <Text fontSize="medium" fontWeight="medium" className={markdownStyles.h3}>{children}</Text>
     ),
-    p: ({ children }: { children: any; }) => (
+    p: ({ children, ...props }: { children: any; }) => (
       <Text textColor="gray-7" className={markdownStyles.p}>{children}</Text>
     ),
     strong: ({ children }: { children: any; }) => (
@@ -212,13 +212,13 @@ const Markdown = ({ ...props }) => {
   }, []);
 
   return (
-    <Stack horizontal divider {...props} >
-      <View padding="large" minWidth={224} style={{ display: 'block', overflow: 'auto', userSelect: 'text' }}>
+    <Stack horizontal divider {...props} style={{ userSelect: 'text' }}>
+      <View padding="large" minWidth={224} style={{ display: 'block', overflow: 'auto' }}>
         <ReactMarkdown components={sidebarComponents}>
           {markdown}
         </ReactMarkdown>
       </View>
-      <View padding="xxlarge" style={{ display: 'block', overflow: 'auto', userSelect: 'text' }}>
+      <View padding="xxlarge" style={{ display: 'block', overflow: 'auto' }}>
         <ReactMarkdown components={markdownComponents}>
           {markdown}
         </ReactMarkdown>
