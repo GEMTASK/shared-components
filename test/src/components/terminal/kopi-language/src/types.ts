@@ -17,6 +17,10 @@ abstract class KopiValue {
   //   return `${this}`;
   // }
 
+  constructor() {
+    (this as any)[0] = this;
+  }
+
   async inspect(): Promise<string | ReactElement> {
     return inspect(this);
   }
