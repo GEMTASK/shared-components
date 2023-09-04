@@ -86,7 +86,7 @@ Kopi has a handful of syntax rules which can be nested and combined to create la
 
 Kopi supports several literal types. Here, we have a tuple containing a Number, a String, a Boolean, a Range, an Array, and a Dict.
 
-\`\`\`kopi
+\`\`\`
 (1, "Two", false, 1..5, [3, 4], { 5: "Five" })
 \`\`\`
 
@@ -111,12 +111,16 @@ A **Tuple** is a fixed structure with any number of types. You can name tuple fi
 // ()   (1, "Two", false)   (x: 2, y: 3)
 // \`\`\`
 
-const Code = ({ children }: { children: string[]; }) => {
+const Code = ({ children, className }: { children: string[]; className?: string; }) => {
   const textElementRef = useRef(null);
   const observerRef = useRef<MutationObserver>();
   const [value, setValue] = useState<string | React.ReactElement>();
 
   useEffect(() => {
+    if (className !== 'language-kopi') {
+      return;
+    }
+
     (async () => {
       observerRef.current = new MutationObserver(async (mutationList) => {
         if (mutationList[0].target.textContent) {
@@ -146,7 +150,7 @@ const Code = ({ children }: { children: string[]; }) => {
     return () => {
       observerRef.current?.disconnect();
     };
-  }, [children]);
+  }, [children, className]);
 
   const innerProps = { ref: textElementRef, contentEditable: true, suppressContentEditableWarning: true };
 
@@ -155,12 +159,14 @@ const Code = ({ children }: { children: string[]; }) => {
       <Text innerProps={innerProps} padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
         {children}
       </Text>
-      {typeof value === 'string' ? (
-        <Text fillColor="white" padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
-          {value}
-        </Text>
-      ) : (
-        value
+      {className === 'language-kopi' && (
+        typeof value === 'string' ? (
+          <Text fillColor="white" padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
+            {value}
+          </Text>
+        ) : (
+          value
+        )
       )}
     </View>
   );
@@ -171,8 +177,6 @@ const Code = ({ children }: { children: string[]; }) => {
 //
 
 const Markdown = ({ ...props }) => {
-  const [markdownAst, setMarkdownAst] = useState<{}>();
-
   const sidebarStyles = useSidebarStyles();
   const markdownStyles = useMarkdownStyles();
 
@@ -196,7 +200,7 @@ const Markdown = ({ ...props }) => {
 
   const markdownComponents = React.useMemo(() => ({
     h1: ({ children }: { children: any; }) => (
-      <Text fontSize="xlarge" fontWeight="bold" className={markdownStyles.h1}>{children}</Text>
+      <Text fontSize="xlarge" fontWeight="thin" className={markdownStyles.h1}>{children}</Text>
     ),
     h2: ({ children }: { children: any; }) => (
       <Text fontSize="large" fontWeight="semibold" className={markdownStyles.h2}>{children}</Text>
@@ -210,22 +214,10 @@ const Markdown = ({ ...props }) => {
     strong: ({ children }: { children: any; }) => (
       <Text fontWeight="bold" textColor="gray-7">{children}</Text>
     ),
-    code: ({ children }: { children: any; }) => (
-      <Code>{children}</Code>
+    code: ({ children, className }: { children: any; className?: string; }) => (
+      <Code className={className}>{children}</Code>
     ),
   }), [markdownStyles.h1, markdownStyles.h2, markdownStyles.h3, markdownStyles.p]);;
-
-  useEffect(() => {
-    // (async () => {
-    //   const ast = await unified()
-    //     .use(remarkParse as any)
-    //     .parse(markdown);
-
-    //   console.log(ast);
-
-    //   setMarkdownAst(ast);
-    // })();
-  }, []);
 
   return (
     <Stack horizontal divider {...props} style={{ userSelect: 'text' }}>
