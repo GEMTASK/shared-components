@@ -4,6 +4,8 @@ import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import { createUseStyles } from 'react-jss';
 
+import * as kopi from '../terminal/kopi-language';
+
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 
 const useSidebarStyles = createUseStyles({
@@ -102,11 +104,47 @@ Infix math operators are supported such as add, subtract, multiply, divide, rema
 
 A **Tuple** is a fixed structure with any number of types. You can name tuple fields to make code easier to read and work with, and mix and match non-named and named fields. There is a special value 0-tuple, which is used to represent "no value".
 
-\`\`\`kopi
-()   (1, "Two", false)   (x: 2, y: 3)
-\`\`\`
 
 `;
+
+// \`\`\`kopi
+// ()   (1, "Two", false)   (x: 2, y: 3)
+// \`\`\`
+
+const Code = ({ children }: { children: string[]; }) => {
+  const [value, setValue] = useState<string | React.ReactElement>();
+
+  useEffect(() => {
+    (async () => {
+      console.log('>>>', children);
+
+      const value = await kopi.interpret(children[0], {}, () => { });
+
+      if (value) {
+        setValue(await value.inspect());
+      }
+    })();
+  }, [children]);
+
+  return (
+    <View border fillColor="gray-1">
+      <Text contentEditable padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
+        {children}
+      </Text>
+      {typeof value === 'string' ? (
+        <Text fillColor="white" padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
+          {value}
+        </Text>
+      ) : (
+        value
+      )}
+    </View>
+  );
+};
+
+//
+//
+//
 
 const Markdown = ({ ...props }) => {
   const [markdownAst, setMarkdownAst] = useState<{}>();
@@ -149,14 +187,15 @@ const Markdown = ({ ...props }) => {
       <Text fontWeight="bold" textColor="gray-7">{children}</Text>
     ),
     code: ({ children }: { children: any; }) => (
-      <View border fillColor="gray-1">
-        <Text padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
-          {children}
-        </Text>
-        <Text fillColor="white" padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
-          120
-        </Text>
-      </View>
+      <Code>{children}</Code>
+      // <View border fillColor="gray-1">
+      //   <Text padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
+      //     {children}
+      //   </Text>
+      //   <Text fillColor="white" padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
+      //     120
+      //   </Text>
+      // </View>
     ),
   };
 
