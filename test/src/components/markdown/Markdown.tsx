@@ -112,11 +112,29 @@ A **Tuple** is a fixed structure with any number of types. You can name tuple fi
 // \`\`\`
 
 const Code = ({ children }: { children: string[]; }) => {
+  const textElementRef = useRef(null);
+  const observerRef = useRef<MutationObserver>();
   const [value, setValue] = useState<string | React.ReactElement>();
 
   useEffect(() => {
     (async () => {
-      console.log('>>>', children);
+      observerRef.current = new MutationObserver(async (mutationList) => {
+        if (mutationList[0].target.textContent) {
+          try {
+            const value = await kopi.interpret(mutationList[0].target.textContent, {}, () => { });
+
+            if (value) {
+              setValue(await value.inspect());
+            }
+          } catch (error) {
+            setValue((error as Error).toString());
+          }
+        }
+      });
+
+      if (textElementRef.current) {
+        observerRef.current.observe(textElementRef.current, { characterData: true, subtree: true });
+      }
 
       const value = await kopi.interpret(children[0], {}, () => { });
 
@@ -124,11 +142,15 @@ const Code = ({ children }: { children: string[]; }) => {
         setValue(await value.inspect());
       }
     })();
+
+    return () => {
+      observerRef.current?.disconnect();
+    };
   }, [children]);
 
   return (
     <View border fillColor="gray-1">
-      <Text innerProps={{ contentEditable: true }} padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
+      <Text innerProps={{ ref: textElementRef, contentEditable: true }} padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
         {children}
       </Text>
       {typeof value === 'string' ? (
@@ -152,7 +174,7 @@ const Markdown = ({ ...props }) => {
   const sidebarStyles = useSidebarStyles();
   const markdownStyles = useMarkdownStyles();
 
-  const sidebarComponents = {
+  const sidebarComponents = React.useMemo(() => ({
     h1: ({ children }: { children: any; }) => (
       <Text fontSize="large" fontWeight="thin" className={sidebarStyles.h1}>{children}</Text>
     ),
@@ -168,9 +190,9 @@ const Markdown = ({ ...props }) => {
     ),
     code: ({ children }: { children: any; }) => null,
     pre: () => null,
-  };
+  }), [sidebarStyles.h1, sidebarStyles.h2, sidebarStyles.h3]);
 
-  const markdownComponents = {
+  const markdownComponents = React.useMemo(() => ({
     h1: ({ children }: { children: any; }) => (
       <Text fontSize="xlarge" fontWeight="bold" className={markdownStyles.h1}>{children}</Text>
     ),
@@ -188,27 +210,19 @@ const Markdown = ({ ...props }) => {
     ),
     code: ({ children }: { children: any; }) => (
       <Code>{children}</Code>
-      // <View border fillColor="gray-1">
-      //   <Text padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
-      //     {children}
-      //   </Text>
-      //   <Text fillColor="white" padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka' }}>
-      //     120
-      //   </Text>
-      // </View>
     ),
-  };
+  }), [markdownStyles.h1, markdownStyles.h2, markdownStyles.h3, markdownStyles.p]);;
 
   useEffect(() => {
-    (async () => {
-      const ast = await unified()
-        .use(remarkParse as any)
-        .parse(markdown);
+    // (async () => {
+    //   const ast = await unified()
+    //     .use(remarkParse as any)
+    //     .parse(markdown);
 
-      console.log(ast);
+    //   console.log(ast);
 
-      setMarkdownAst(ast);
-    })();
+    //   setMarkdownAst(ast);
+    // })();
   }, []);
 
   return (
