@@ -177,11 +177,11 @@ When a stream inspected in the Terminal or in this Markdown, it is automatically
 
 You can define your own types in Kopi, which look and behave just like native types.
 
-```
-Point = type (x: Number, y: Number)
+```kopi
+Point = struct (x: Number, y: Number)
 
 extend Point (
-  add: (that) => Point (this.x + that.x, this.y + that.y)
+  add: (that) => Point (this.0 + that.0, this.1 + that.1)
 )
 
 Point (1, 2) | add (Point (2, 3))

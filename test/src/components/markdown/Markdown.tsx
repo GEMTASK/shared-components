@@ -6,6 +6,7 @@ import * as kopi from '../terminal/kopi-language';
 import * as functions from '../terminal/functions';
 
 import { KopiValue } from '../terminal/kopi-language/src/types';
+import { KopiBoolean, KopiNumber, KopiString } from '../terminal/kopi-language/src/classes';
 
 import { Stack, Text, View } from 'bare';
 
@@ -90,6 +91,11 @@ let environment = {
   let: functions.kopi_let,
   loop: functions.kopi_loop,
   match: functions.kopi_match,
+  struct: functions.kopi_struct,
+  extend: functions.kopi_extend,
+  Number: KopiNumber,
+  String: KopiString,
+  Boolean: KopiBoolean,
 };
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {
