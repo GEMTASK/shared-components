@@ -17,7 +17,7 @@ const useSidebarStyles = createUseStyles({
       marginTop: 32,
     },
     '&:not(:last-child)': {
-      marginBottom: 24,
+      marginBottom: 16,
     },
   },
   h2: {
@@ -50,7 +50,7 @@ const useMarkdownStyles = createUseStyles({
   },
   h2: {
     '&:not(:first-child)': {
-      marginTop: 32,
+      marginTop: 24,
     },
     '&:not(:last-child)': {
       marginBottom: 16,
