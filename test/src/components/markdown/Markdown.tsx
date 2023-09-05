@@ -1,16 +1,15 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
 import { createUseStyles } from 'react-jss';
 
 import * as kopi from '../terminal/kopi-language';
 import * as functions from '../terminal/functions';
 
-import markdownUrl from '../../assets/kopi.md';
-
-import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 import { KopiValue } from '../terminal/kopi-language/src/types';
+
+import { Stack, Text, View } from 'bare';
+
+import markdownUrl from '../../assets/kopi.md';
 
 const useSidebarStyles = createUseStyles({
   h1: {
@@ -94,20 +93,29 @@ let environment = {
 };
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {
-  console.log('bind');
   environment = {
     ...environment,
     ...bindings
   };
 };
 
-const Code = ({ children, language, className }: { children: string[]; language?: string, className?: string; }) => {
+const Code = ({
+  children,
+  language,
+  inline,
+  className
+}: {
+  children: string[];
+  language?: string,
+  inline?: boolean,
+  className?: string;
+}) => {
   const textElementRef = useRef(null);
   const observerRef = useRef<MutationObserver>();
   const [value, setValue] = useState<string | React.ReactElement>();
 
   useEffect(() => {
-    if (language !== 'language-kopi') {
+    if (inline || language !== 'language-kopi') {
       return;
     }
 
@@ -129,7 +137,7 @@ const Code = ({ children, language, className }: { children: string[]; language?
       if (textElementRef.current) {
         observerRef.current.observe(textElementRef.current, { characterData: true, subtree: true });
       }
-      console.log(environment);
+
       const value = await kopi.interpret(children[0], environment, bind);
 
       if (value) {
@@ -140,16 +148,39 @@ const Code = ({ children, language, className }: { children: string[]; language?
     return () => {
       observerRef.current?.disconnect();
     };
-  }, [children, className, language]);
+  }, [children, className, inline, language]);
 
-  const innerProps = { ref: textElementRef, contentEditable: true, suppressContentEditableWarning: true };
+  const innerProps = {
+    ref: textElementRef,
+    contentEditable: true,
+    suppressContentEditableWarning: true
+  };
+
+  const inlineInnerProps = {
+    style: {
+      background: '#f1f3f5',
+      padding: '0 4px',
+      borderRadius: 2.5,
+      fontFamily: 'Iosevka Fixed',
+      color: '#212529',
+      whiteSpace: 'pre-wrap'
+    }
+  };
+
+  if (inline) {
+    return (
+      <Text border innerProps={inlineInnerProps} >
+        {children}
+      </Text>
+    );
+  }
 
   return (
     <View border fillColor="gray-1" className={className}>
       <Text innerProps={innerProps} padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka', whiteSpace: 'pre-wrap' }}>
         {children}
       </Text>
-      {language === 'language-kopi' && (
+      {(!inline || language === 'language-kopi') && (
         typeof value === 'string' ? (
           <Text fillColor="white" padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka', whiteSpace: 'pre-wrap' }}>
             {value}
@@ -207,8 +238,8 @@ const Markdown = ({ ...props }) => {
       <Text fontWeight="bold" textColor="gray-7">{children}</Text>
     ),
     pre: ({ children }: any) => children,
-    code: ({ children, className }: { children: any; className?: string; }) => (
-      <Code language={className} className={markdownStyles.code}>{children}</Code>
+    code: ({ children, className, inline }: { inline?: boolean; children: any; className?: string; }) => (
+      <Code language={className} inline={inline} className={markdownStyles.code}>{children}</Code>
     ),
   }), [markdownStyles.code, markdownStyles.h1, markdownStyles.h2, markdownStyles.h3, markdownStyles.p]);;
 

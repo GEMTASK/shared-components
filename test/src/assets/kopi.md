@@ -2,29 +2,33 @@
 
 ## Introduction
 
-Kopi is a small, immutable, 100% async programming language. It supports several literal types, pattern matching, lazy streams, and coroutines.
+Kopi is a small, immutable, 100% async programming language. It supports several literal types, and has pattern matching, lazy streams, and coroutines.
+
+Within this document, you can edit any Kopi code that displays a value just below and see the results.
 
 ## Kopi Basics
 
-Kopi has a handful of syntax rules which can be nested and combined to create larger structures. Patterns are used for assignment, destructuring and matching values. In this document, you can edit the Kopi code and see the result just below the code.
+There are only a handfull of rules that make up the syntax of Kopi, which can be nested and combined to create larger structures. In addition to the many literal types, patterns are used for variable assignment, destructuring, and matching values.
 
-### Numbers and Math
+### Operators
 
-Infix math operators are supported such as add, subtract, multiply, divide, remainer, and exponent. Operator precedence is similar to other languages where multiplication is more tighly bound that addition for example.
+Let's start with some basic math. Kopi uses infix syntax for operators, with precedence rules similar to JavaScript and many other languages. Try editing the code to see different values.
 
-```
+```kopi
 1 + 2 * 3 ^ 4
 ```
 
-would be parsed as
+The (unedited) code above will be parsed as:
 
 ```
 1 + (2 * (3 ^ 4))
 ```
 
-### Tuples and Arrays
+There are other operators such as releational (`==` `!=` `>` `<` `<=` `>=`), logical (`&&` `||`), concatenation/merge (`++` `<<`) and conditional (`?:`) we'll cover later.
 
-A **Tuple** is a fixed structure with any number of types.  There is a special value 0-tuple, which is used to represent "no value".
+### Tuples
+
+Tuples, which are values in parenthesis separated by commas or newlines, allow you to group multiple values together, and can be assigned to a variable or passed to functions.
 
 ```
 (1, "Two", false)
@@ -33,96 +37,55 @@ A **Tuple** is a fixed structure with any number of types.  There is a special v
 You can name tuple fields to make code easier to read and work with, and mix and match non-named and named fields.
 
 ```
+("Joe", 30)
 (name: "Joe", age: 30)
+("Joe", age: 30)
 ```
 
-Every type can be represented as a 1-tuple with a .0 field index, which comes in handy when using function default arguments.
+You can access tuple fields by index, or by name if one was provided.
 
 ```kopi
-"foo".0
+ages = (20, 30)
+("Joe", age: ages.1).age
 ```
 
-An **Array** is a 0-based indexed collection of the same or similar types.
+### Assignment
 
-```
-[1, 2, 3]   ["a", "b", "c"]
-```
-
-Tuple fields and array elements can be separated by commas, or by newlines. This comes in handy when defining large structures as we'll see later.
-
-```
-(
-  names: [
-    "Joe"
-    "Sally"
-  ]
-  vertices: [
-    (1, 2)
-    (3, 4)
-  ]
-)
-```
-
-## Patterns
-
-Patterns can be used for simple assignment, or to destructure complex values. They can be used in function parameters, and to match values.
-
-### Basic Assignment
-
-A very simple "identifier" pattern, which assigns the value 1 to variabled "a":
+Assignment is just a simple form of pattern matching, which we'll discuss later. It uses the `=` character to bind a value to a variable (or variables). Unlike scripting languages, each assignment creates a new scope instead of overwriting the variables's value. We'll cover this in a little more details when we get to functions.
 
 ```kopi
-a = 1
-a
+x = 10
+x = x + 1
+x
 ```
 
-A pattern that swaps its arguments:
+You can do multiple assignment by pattern matching a tuple. We'll see more patterns later.
 
 ```kopi
-a = 1
-b = 2
-(a, b) = (b, a)
+(a, b) = (1, 2)
 (a, b)
 ```
 
-### More Complex Patterns
+### Functions
 
-Here's a more complex pattern, where we've destructured the tuple/array values into the variables "a", "b", and "c":
-
-```
-(a, [b, c]) = (1, [2, 3])
-```
-
-You also use patterns to define functions and to match values. Here, match is a function which takes a value and a tuple of functions. Each function parameter pattern is tested with the value, and if a match is found, that function is called.
+Kopi supports defining functions at the top level, and also supports anonymous functions, or closures that can be assigned to variables or passed to functions. Default arguments can be provided to be used when an empty value `()` is passed.
 
 ```kopi
-factorial (n) = match n (
-  0 => 1
-  n => n * factorial (n - 1)
-)
-
-factorial 5
+square x = x * x
+square 5
 ```
-
-## Functions
-
-### Argument Patterns
-### Default Arguments
-
-Default arguments allow you to add expressions to each parameter, which are used if no value (the empty tuple) is given.
 
 ```kopi
-((a, b = 2) => a + b) 5
+square = (x = 10) => x * x
+square ()
 ```
 
-### Function Predicates
+### Loops
 
-## Loops
+Iteration can be either done by recursion, or by using the `let` and `loop` functions. Let is a function which simply applies the empty value `()` to its argument, a function which provides default arguments. `loop` is also just a function, which lets the `let` function know you want to do another iteration.
 
 ```kopi
 let (n = 0) => {
   n < 5 ? loop (n + 1) : n
 }
 ```
-
-## Lazy Streams
