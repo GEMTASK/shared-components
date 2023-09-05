@@ -89,11 +89,9 @@ async function OperatorExpression(
     evaluate(rightExpression, environment, bind),
   ]);
 
-  if (operator in leftValue) {
-    return (leftValue as any)[operator](rightValue);
-  }
+  return leftValue.invoke(operator, [rightValue, context]);
 
-  throw new Error(`"${await leftValue.inspect()}" of type ${leftValue.constructor.name} doesn't have an operator method "${operator}".`);
+  // throw new Error(`"${await leftValue.inspect()}" of type ${leftValue.constructor.name} doesn't have an operator method "${operator}".`);
 }
 
 async function ConditionalExpression(

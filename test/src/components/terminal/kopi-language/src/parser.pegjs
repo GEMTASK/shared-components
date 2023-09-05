@@ -230,7 +230,7 @@ PrimaryExpression
         fieldNames: [],
       }
     }
-  / "(" __ fieldName:(Identifier ":")? _ head:Expression tail:(_ ("," /  Newline+) _ (Identifier ":")? _ Expression)* __ ")" _ !"=>" {
+  / "(" __ fieldName:((Identifier / Operator) ":")? _ head:Expression tail:(_ ("," /  Newline+) _ ((Identifier / Operator) ":")? _ Expression)* __ ")" _ !"=>" {
       return !fieldName && tail.length === 0 ? head : {
         type: 'TupleExpression',
         fieldExpressions: tail.reduce((expressions, [, , , , , expression]) => [
@@ -401,17 +401,26 @@ DictLiteral
     }
 
 AstLiteral "ast-literal"
-  = "'(" _ operator:("++" / "<<" / "+" / "-" / "*" / "/" / "%" / "^") _ argumentExpression:ApplyExpression ")" {
+  = "'(" _ operator:Operator _ argumentExpression:ApplyExpression ")" {
       return {
         type: 'AstLiteral',
         value: {
           type: 'ApplyExpression',
           expression: {
             type: 'Identifier',
-            name: operator
+            name: operator.name
           },
           argumentExpression
         }
+      };
+    }
+  / "'" operator:Operator {
+      return {
+        type: 'AstLiteral',
+        value: {
+          type: 'Identifier',
+          name: operator.name
+        },
       };
     }
   / "'" expression:PrimaryExpression {
@@ -426,6 +435,14 @@ Identifier "identifier"
       return ({
         type: 'Identifier',
         name: name[0] + name[1].join('')
+      });
+    }
+
+Operator "operator"
+  = name:("++" / "<<" / "+" / "-" / "*" / "/" / "%" / "^") {
+      return ({
+        type: 'Identifier',
+        name: name
       });
     }
 

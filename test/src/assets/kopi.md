@@ -181,8 +181,8 @@ You can define your own types in Kopi, which look and behave just like native ty
 Point = struct (x: Number, y: Number)
 
 extend Point (
-  add: (that) => Point (this.0 + that.0, this.1 + that.1)
+  +: (that) => Point (this.0 + that.0, this.1 + that.1)
 )
 
-Point (1, 2) | add (Point (2, 3))
+Point (1, 2) + Point (2, 3)
 ```
