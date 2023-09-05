@@ -22,6 +22,14 @@ async function Assignment(
   const patternMatches = await pattern.match(expressionValue, context);
 
   if (patternMatches) {
+    Object.entries(patternMatches).forEach(([name, value]) => {
+      if (typeof value === 'function') {
+        Object.defineProperty(value, 'name', {
+          value: name
+        });
+      }
+    });
+
     bind(patternMatches);
   }
 }

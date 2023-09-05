@@ -64,7 +64,11 @@ declare global {
 }
 
 Function.prototype.inspect = function () {
-  return Promise.resolve(`<native-function>`);
+  return Promise.resolve(
+    this.constructor === Function
+      ? this.name
+      : '<native-function>'
+  );
 };
 
 interface RawASTNode {

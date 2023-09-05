@@ -132,31 +132,19 @@ async function kopi_repeat(func: KopiFunction, context: Context) {
   return new RepeatStream(generator);
 }
 
-async function kopi_struct(identifier: Identifier, context: Context) {
-  const { bind } = context;
+async function kopi_struct(tuple: KopiTuple, context: Context) {
+  return class class_ extends KopiTuple {
+    static apply(thisArg: void, [value]: [KopiTuple]) {
+      return new class_(value);
+    }
 
-  return (tuple: KopiTuple) => {
-    const class_ = class extends KopiTuple {
-      static apply(thisArg: void, [value]: [KopiTuple]) {
-        return new class_(value);
-      }
+    constructor(value: KopiTuple) {
+      super(value.fields, value._fieldNames);
+    }
 
-      constructor(value: KopiTuple) {
-        super(value.fields, value._fieldNames);
-      }
-
-      async inspect() {
-        return `${this.constructor.name} ${await super.inspect()}`;
-      }
-    };
-
-    Object.defineProperty(class_, 'name', {
-      value: identifier.name
-    });
-
-    bind({
-      [identifier.name]: class_
-    });
+    async inspect() {
+      return `${this.constructor.name} ${await super.inspect()}`;
+    }
   };
 }
 
