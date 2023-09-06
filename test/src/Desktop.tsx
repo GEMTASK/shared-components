@@ -243,12 +243,24 @@ const App = () => {
     setWindows(windows => windows.filter(window => window.id !== id));
   };
 
+  const handleWindowMessage = (event: MessageEvent) => {
+    if (event.data === 'markdown') {
+      addWindow('marker', 'Markdown', <Markdown />, { width: 1024, height: 800 });
+    }
+  };
+
   useEffect(() => {
     const app = utilitiesMenuItems.find(item => item?.title === params.get('app'));
 
     if (app) {
       app.action();
     }
+
+    window.addEventListener('message', handleWindowMessage);
+
+    return () => {
+      window.removeEventListener('message', handleWindowMessage);
+    };
   }, []);
 
   return (

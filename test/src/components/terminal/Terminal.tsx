@@ -16,6 +16,14 @@ import * as functions from './functions';
 
 const MONOSPACE_FONT = 'Iosevka';
 
+const Link = ({ children, ...props }: any) => {
+  return (
+    <Text textColor="blue-5" {...props} innerProps={{ style: { cursor: 'pointer' } }}>
+      {children}
+    </Text>
+  );
+};
+
 class KopiElement extends KopiValue {
   component: React.ComponentType;
   props: any;
@@ -140,6 +148,10 @@ class KopiObject extends KopiValue {
   }
 }
 
+async function kopi_input(message: KopiString) {
+  return new KopiString(prompt(message.value) ?? '');
+}
+
 let environment = {
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
@@ -165,6 +177,7 @@ let environment = {
   extend: functions.kopi_extend,
   spawn: functions.kopi_spawn,
   context: functions.kopi_context,
+  input: kopi_input,
   km: functions.kopi_meter,
   //
   date: new functions.KopiDateFunction(),
@@ -336,7 +349,7 @@ const interpret = async (
 const initialHistory = [
   <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT, userSelect: 'text' }}>
     Kopi shell – a simple, immutable, async programming langauge.<br />
-    Type a command such as "date", "clock", or "calendar".
+    Read <Link onClick={() => window.postMessage('markdown')}>Learning Kopi</Link> for an introduction and to learn more.
   </Text>,
   <Clock style={{ width: 150 }} />
 ];

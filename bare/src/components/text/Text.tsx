@@ -38,6 +38,7 @@ const Text = <T extends React.ElementType = 'span'>({
   textColor,
   lineClamp,
   children,
+  onClick,
   ...props
 }: TextProps<T>) => {
   const isTextParent = useContext(TextContext);
@@ -77,7 +78,7 @@ const Text = <T extends React.ElementType = 'span'>({
 
   if (isTextParent) {
     return (
-      <Component {...innerProps} className={innerClassName}>
+      <Component {...innerProps} className={innerClassName} onClick={onClick}>
         {childrenElement}
       </Component>
     );
@@ -86,7 +87,7 @@ const Text = <T extends React.ElementType = 'span'>({
   return (
     <TextContext.Provider value={true}>
       <View {...props}>
-        <Component {...innerProps} className={clsx(innerStyles.Text, innerClassName)} style={innerStyle}>
+        <Component {...innerProps} className={clsx(innerStyles.Text, innerClassName)} style={innerStyle} onClick={onClick}>
           {childrenElement}
         </Component>
       </View>
