@@ -290,7 +290,7 @@ const App = () => {
             <Spacer size="small" />
             <Stack onClick={(event: React.PointerEvent) => event.stopPropagation()}>
               {windows.map((window, index, _, isFocused = window.id === focusedWindowId) => (
-                <View key={index} horizontal hoverTarget='a' align="left" padding="small large" fillColor={isFocused ? 'gray-3' : undefined}>
+                <View key={index} horizontal hoverTarget='a' align="left" padding="small large" fillColor={isFocused ? 'gray-3' : undefined} onClick={() => handleWindowFocus(window.id)}>
                   <Icon fixedWidth icon={window?.icon as any} />
                   <Spacer size="small" />
                   <Text fontWeight="semibold">{window.title}</Text>
