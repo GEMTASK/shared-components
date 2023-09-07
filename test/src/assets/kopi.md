@@ -226,6 +226,45 @@ Point (1, 2) + Point (2, 3)
 
 ## Examples
 
+### Grayscale Convertion
+
+```kopi
+grayscale (color) = {
+  let ([r, g, b] = color) =>
+    (r * 0.3 + g * 0.6 + b * 0.1) / 3
+}
+
+grayscale [255, 128, 255]
+```
+
+### Building a Dictionary
+
+```kopi
+[1..3, 4..6]
+  | zip
+  | reduce (z = {}, (a, b)) => {
+      z << { [a, b]: a * b }
+    }
+```
+
+```
+# Object.fromJsonString "
+#  {
+#    \"name\": \"Joe\",
+#    \"ids\": [1, 2, 3],
+#    \"shared\": true
+#  }
+# "
+```
+
+### Word Count
+
+```
+# "abcaba" | reduce (counts = {}, letter) => {
+#  counts | update letter (count = 0) => count + 1
+# }
+```
+
 ### FizzBuzz
 
 ```kopi
@@ -237,4 +276,136 @@ Point (1, 2) + Point (2, 3)
     _      => n
   )
 }
+```
+
+### Dynamic Pipelining
+
+```kopi
+let (fns = [
+  '(map n => n * n)
+  '(filter 'even)
+]) => {
+  fns | reduce (x = 1..10, f) => f x
+}
+```
+
+### Various Factorials
+
+```kopi
+factorial (n) = match n (
+  0 => 1
+  n => n * factorial (n - 1)
+)
+
+factorial 5
+```
+
+```kopi
+factorial (n) = let (n = n, a = 1) => {
+  match n (
+    0 => a
+    n => loop (n - 1, a * n)
+  )
+}
+
+factorial 5
+```
+
+### Extending String
+
+```kopi
+extend String (
+  capitalize: () => {
+    'toUpper this.(0..1) ++ this.(1..1000)
+  }
+)
+
+"hello" | capitalize
+```
+
+### Coroutines
+
+```kopi
+server (yield) = {
+  let (a = 0) => {
+    yield (b) => {
+      sleep (random 0.1..1.0)
+      a..b
+    }
+
+    loop (a + 1)
+  }
+}
+
+coros = [
+  spawn server
+  spawn server
+]
+
+let (n = 1) => {
+  data = coros | map (coro) => {
+    coro | send n
+  } | toArray
+
+  values = data
+    | zip (a, b) => a * b
+    | map '(toFixed 1)
+    | toArray
+
+  # print values
+
+  n < 6 ? loop (n + 2) : "Done."
+}
+```
+
+### BASIC Interpreter
+
+```kopi
+program = "
+  10 print 'hello'
+  20 goto 30
+  30 print 'world'
+"
+
+indexOf (lineNo) = {
+  (Number lineNo) / 10 - 1
+}
+
+next = (index) => index + 1
+goto (index) = () => index
+
+evaluate (line) = match (
+  line
+    | trim
+    | splitOn " "
+    | toArray
+) (
+  [lineNo, "print", value] => {
+    # print value
+    next
+  }
+  [lineNo, "goto", gotoNo] => {
+    goto (indexOf gotoNo)
+  }
+)
+
+interpret (program) = {
+  lines = program
+    | trim
+    | splitOn String.newline
+    | toArray
+
+  let (index = 0) => {
+    reducer = evaluate (
+      lines.(index)
+    )
+    newIndex = reducer index
+
+    newIndex < 'size lines ? {
+      loop (newIndex)
+    } : "Done."
+  }
+}
+
+interpret program
 ```

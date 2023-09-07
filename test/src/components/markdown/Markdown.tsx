@@ -96,7 +96,9 @@ let environment = {
   match: functions.kopi_match,
   struct: functions.kopi_struct,
   extend: functions.kopi_extend,
+  sleep: functions.kopi_sleep,
   random: functions.kopi_random,
+  spawn: functions.kopi_spawn,
 };
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {
