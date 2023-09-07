@@ -402,14 +402,14 @@ interpret (program) = {
     | toArray
 
   let (index = 0) => {
-    reducer = evaluate (
-      lines.(index)
-    )
+    reducer = evaluate lines.(index)
     newIndex = reducer index
 
     newIndex < 'size lines ? {
       loop (newIndex)
-    } : "Done."
+    } : {
+      "Done."
+    }
   }
 }
 
