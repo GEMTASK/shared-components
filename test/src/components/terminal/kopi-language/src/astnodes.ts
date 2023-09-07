@@ -363,6 +363,10 @@ class ArrayLiteralPattern extends ASTPatternNode {
       }
 
       bindings = { ...bindings, ...matches };
+
+      if (index === this.elementPatterns.length) {
+        break;
+      }
     }
 
     return bindings;
