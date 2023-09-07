@@ -292,6 +292,12 @@ let (fns = [
 ### Various Factorials
 
 ```kopi
+factorial (n) = 1..n | reduce (a, n) => a * n
+
+factorial 5
+```
+
+```kopi
 factorial (n) = match n (
   0 => 1
   n => n * factorial (n - 1)
@@ -301,8 +307,8 @@ factorial 5
 ```
 
 ```kopi
-factorial (n) = let (n = n, a = 1) => {
-  match n (
+factorial (n) = {
+  let (n = n, a = 1) => match n (
     0 => a
     n => loop (n - 1, a * n)
   )
