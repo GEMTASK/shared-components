@@ -22,6 +22,9 @@ const useSidebarStyles = createUseStyles({
     },
   },
   h2: {
+    '& *': {
+      cursor: 'pointer !important',
+    },
     '&:not(:first-child)': {
       marginTop: 24,
     },
@@ -30,6 +33,9 @@ const useSidebarStyles = createUseStyles({
     },
   },
   h3: {
+    '& *': {
+      cursor: 'pointer !important',
+    },
     padding: '0 16px',
     '&:not(:first-child)': {
       marginTop: 16,
@@ -52,6 +58,7 @@ const useMarkdownStyles = createUseStyles({
   h2: {
     '&:not(:first-child)': {
       marginTop: 32,
+      scrollMarginTop: '24px',
     },
     '&:not(:last-child)': {
       marginBottom: 16,
@@ -60,6 +67,7 @@ const useMarkdownStyles = createUseStyles({
   h3: {
     '&:not(:first-child)': {
       marginTop: 24,
+      scrollMarginTop: '24px',
     },
     '&:not(:last-child)': {
       marginBottom: 16,
@@ -217,10 +225,27 @@ const Markdown = ({ ...props }) => {
       <Text fontSize="large" fontWeight="thin" className={sidebarStyles.h1}>{children}</Text>
     ),
     h2: ({ children }: { children: any; }) => (
-      <Text fontSize="medium" fontWeight="semibold" className={sidebarStyles.h2}>{children}</Text>
+      <Text
+        fontSize="medium"
+        fontWeight="semibold"
+        className={sidebarStyles.h2}
+        onClick={() => document.getElementById(children)?.scrollIntoView({
+          behavior: 'smooth'
+        })}
+      >
+        {children}
+      </Text>
     ),
     h3: ({ children }: { children: any; }) => (
-      <Text fontWeight="medium" className={sidebarStyles.h3}>{children}</Text>
+      <Text
+        fontWeight="medium"
+        className={sidebarStyles.h3}
+        onClick={() => document.getElementById(children)?.scrollIntoView({
+          behavior: 'smooth'
+        })}
+      >
+        {children}
+      </Text>
     ),
     p: ({ children }: { children: any; }) => null,
     strong: ({ children }: { children: any; }) => (
@@ -235,10 +260,10 @@ const Markdown = ({ ...props }) => {
       <Text fontSize="xlarge" fontWeight="thin" className={markdownStyles.h1}>{children}</Text>
     ),
     h2: ({ children }: { children: any; }) => (
-      <Text fontSize="large" fontWeight="semibold" className={markdownStyles.h2}>{children}</Text>
+      <Text id={children} fontSize="large" fontWeight="semibold" className={markdownStyles.h2}>{children}</Text>
     ),
     h3: ({ children }: { children: any; }) => (
-      <Text fontSize="medium" fontWeight="medium" className={markdownStyles.h3}>{children}</Text>
+      <Text id={children} fontSize="medium" fontWeight="medium" className={markdownStyles.h3}>{children}</Text>
     ),
     p: ({ children, ...props }: { children: any; }) => (
       <Text textColor="gray-7" className={markdownStyles.p}>{children}</Text>
