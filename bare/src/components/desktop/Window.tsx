@@ -302,14 +302,12 @@ const Window = React.memo(({
         <View absolute className={styles.Extender} />
         <View horizontal alignVertical="middle" style={{ height: 32, flexShrink: 0 }}>
           <Button hover size="xsmall" icon="close" onPointerDown={handleCloseButtonPointerDown} onClick={handleCloseButtonClick} />
-          <Button hover size="xsmall" icon="bars" onPointerDown={handleCloseButtonPointerDown} onClick={handleMenuButtonClick} />
           <Spacer flex size="small" />
           <Text fontWeight="bold" textColor="gray-7" textAlign="center" padding="small large" style={{ marginBottom: -1 }}>
             {title}
           </Text>
           <Spacer flex size="small" />
-          <Button hover size="xsmall" icon="arrows-left-right" />
-          <Button hover size="xsmall" icon="arrows-up-down" />
+          <Button hover size="xsmall" icon="arrow-up-right-from-square" />
         </View>
       </View>
       {/* <Divider fillColor="gray-4" /> */}
