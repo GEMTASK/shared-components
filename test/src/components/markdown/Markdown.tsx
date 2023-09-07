@@ -15,10 +15,10 @@ import markdownUrl from '../../assets/kopi.md';
 const useSidebarStyles = createUseStyles({
   h1: {
     '&:not(:first-child)': {
-      marginTop: 32,
+      marginTop: 24,
     },
     '&:not(:last-child)': {
-      marginBottom: 16,
+      marginBottom: 24,
     },
   },
   h2: {
@@ -46,7 +46,7 @@ const useMarkdownStyles = createUseStyles({
       marginTop: 32,
     },
     '&:not(:last-child)': {
-      marginBottom: 24,
+      marginBottom: 32,
     },
   },
   h2: {
@@ -88,14 +88,15 @@ const useMarkdownStyles = createUseStyles({
 // \`\`\`
 
 let environment = {
+  Number: KopiNumber,
+  String: KopiString,
+  Boolean: KopiBoolean,
   let: functions.kopi_let,
   loop: functions.kopi_loop,
   match: functions.kopi_match,
   struct: functions.kopi_struct,
   extend: functions.kopi_extend,
-  Number: KopiNumber,
-  String: KopiString,
-  Boolean: KopiBoolean,
+  random: functions.kopi_random,
 };
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {
@@ -257,7 +258,7 @@ const Markdown = ({ ...props }) => {
 
   return (
     <Stack horizontal divider {...props} style={{ userSelect: 'text' }}>
-      <View padding="large" minWidth={224} style={{ display: 'block', overflow: 'auto' }}>
+      <View padding="large" minWidth={256} style={{ display: 'block', overflow: 'auto' }}>
         <ReactMarkdown components={sidebarComponents}>
           {markdown}
         </ReactMarkdown>

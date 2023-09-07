@@ -2,63 +2,67 @@
 
 ## Introduction
 
-Kopi is a small, immutable, 100% async programming language. It supports several literal types, and has pattern matching, lazy streams, and coroutines.
+Kopi is a small, immutable, 100% async programming language. It provides several literal types, uses patterns for destructuring and matching values, and supports lazy streams and coroutines.
 
-Within this document, you can edit any Kopi code that displays a value just below and see the results. Code in this markdown and in Terminal use the font *Iosevka*, which is a narrow, monospace font that support ligatures.
+### Small
+
+Kopi is a small language, meanining it has a minimum of syntax. In fact, there are no keywords, just patterns and functions which take values.
+
+### Immutable
+
+All value are immutable, which makes it much easier to understand what's happening in a program. State can be create using loops and recursion.
+
+### 100% async
+
+Every expression in Kopi is asynchronous, so there's no need for `await` or similar paterns. This allows you to write code that is easy to follow.
 
 ## Kopi Basics
 
-There are only a handfull of rules that make up the syntax of Kopi, which can be nested and combined to create larger structures. In addition to the many literal types, patterns are used for variable assignment, destructuring, and matching values.
-
 ### Literal Types
 
-There are several literal types in Kopi, including Number, String, Boolean, Range, ASTree, Tuple, Array, and Dict. Here are a few example of these types:
+Common to most languages, Kopi has Number, String, and Boolean literal types. They are all represented internally as JavaScript primitives. We'll see later which operations are available on each.
 
 ```
-1  "2"  true  1..5  'foo  (1, "2")  [1, 2]  { 1: 2 }
+1, -2.5, 3.14       Number        A floating point or integer value
+"Hello, world"      String        A string of Unicode characters
+true, false         Boolean       A boolean value true or false
 ```
 
-### Operators
+### Math and Logic
 
-Let's start with some basic math. Kopi uses infix syntax for operators, with precedence rules similar to JavaScript and many other languages. The (unedited) code above will be parsed as `1 + (2 * (3 ^ 4))`.
-
-Try editing the code below to see various results.
+Let's start with some basic math. Kopi uses infix syntax for operators, with precedence rules similar to JavaScript and many other languages. Try changing the values below to see the result change.
 
 ```kopi
-1 + 2 * 3 ^ 4
+7 + 6 * 5 - 4 ^ 3 % 2
 ```
 
-There are other operators such as releational (`==` `!=` `>` `<` `<=` `>=`), logical (`&&` `||`), and concat/merge (`++` `<<`).
+Based on operator precedence, the above will be parsed as:
 
-The conditional `? :` operator is used to test a value, and evaluate the true or false expression, respectively.
-
-```kopi
--1 < 0 ? 1 : -1
+```
+(7 + (6 * 5)) - ((4 ^ 3) % 2)
 ```
 
-### Variables
-
-Assignment is just a simple form of pattern matching, which we'll discuss later. It uses the `=` character to bind a value to a variable (or variables). Unlike scripting languages, each assignment creates a new scope instead of overwriting the variables's value. We'll cover this in a little more detail when we get to functions.
+Operators for equality (`==` `!=`), releational (`>` `<` `<=` `>=`), and logical (`&&` `||`) are similar to JavaScript, except that all values that support equality are comparable by value. There are no reference types.
 
 ```kopi
-x = 10
-x = x + 1
-x
-```
-
-You can do multiple assignment by pattern matching a tuple. We'll see more patterns later.
-
-```kopi
-(a, b) = (1, 2)
-(a, b)
+3 > 2 && "a" < "b" == true
 ```
 
 ### Tuples
 
-Tuples, which are values in parenthesis separated by commas or newlines, allow you to group multiple values together, and can be assigned to variables or passed to functions.
+Tuples allow you to store multiple values in one variable, or to pass multiple values to functions, and are a key concept in Kopi. They are defined by values separated by commas or newlines, surrounded by parenthesis.
 
 ```
-(1, "Two", false)
+(1, "Two", (sleep 3))
+```
+
+Separating tuple fields by newlines allows you to write more complex expressions without having to use parenthesis. You'll see them heavily used in `match` expressions where passing multiple functions in a tuple.
+
+```
+(
+  1
+  "Two"
+)
 ```
 
 You can name tuple fields to make code easier to read and work with, and mix and match non-named and named fields.
@@ -75,114 +79,86 @@ You can access tuple fields by index, or by name if one was provided.
 ("Joe", age: (20, 30).1).age
 ```
 
-### Functions
+### Pattern Matching
 
-Kopi supports defining functions at the top level, and also supports anonymous functions, or closures that can be assigned to variables or passed to functions.
+Patterns are a key concept in Kopi, used for destructurng values in assignment and in function arguments, and for matching values in a `match` expression. The simplest pattern is matching on a single value:
 
 ```kopi
-square x = x * x
-square 5
+x = 1
+x
 ```
 
-The same function defined as an anonymous function:
+You can use tuple patterns to perform multiple assignment, and nest patterns arbitrarily to extract values. Patterns have a duality with literal types, mirroring thier syntax.
 
+```kopi
+(a, [b, c]) = (1, [2, 3])
+(a, b, c)
 ```
-square = x => x * x
+
+Patterns are often use for matching, which also does destructured assignment. The `_` character can be used as a parameter to represent "I don't care what the value is".
+
+```kopi
+match (1, 3) (
+  (1, b) => "1 and " ++ String b
+  _      => "Unknown"
+)
+```
+
+### Functions
+
+Functions are called with a space between the function name and it's argument. Multiple arguments can be either curried, or passed as a tuple, possibly with named fields. Tuples with named fields provides great readability, while curried functions are often used to simulate keywords, such as the `match` function.
+
+```kopi
+random 1.5..3
+```
+
+Functions can be defined using patterns, or or created anonymously to be stored in variables or to be passed to functions.
+
+```kopi
+add (a, b) = a + b
+add (2, 3)
+```
+
+You can use curly braces to introduce a block, which allows you to write multiple statements in a function. The last expression in the block is the return value.
+
+```kopi
+add (a, b) = {
+  a + b
+}
+add (2, 3)
 ```
 
 Default arguments can be provided which are applied when an empty value `()` is passed.
 
 ```kopi
-square (x = 10) = x * x
-square ()
-```
-
-
-### Loops
-
-Iteration can be either done by recursion, or by using the `let` and `loop` functions. Let is a function which simply applies the empty value `()` to its argument, a function which provides default arguments. `loop` is also just a function, which lets the `let` function know you want to do another iteration.
-
-```kopi
-let (n = 0) => {
-  n < 5 ? loop (n + 1) : n
-}
+add (a, b = 3) = a + b
+add 2
 ```
 
 ### Methods
 
-Methods in Kopi are defined externally from types using the `extend` function, and are invoked using the `|` character. Each method invocation with the pipe operator can be on its own line.
+### Conditions and Looping
+
+Iteration can be either done via recursion, or by using the `let` and `loop` functions. `let` is a function which applies the empty value `()` to its argument, a function. `loop` is also a function, which instructs the `let` function to do another iteration.
+
+```
+let (a = 1) => {
+  loop (a + 1)
+}
+```
+
+That code will loop forever, so we need some way to call loop conditionally. That can be done with the `?:` conditional operator similar to JavaScript.
 
 ```kopi
-30 | cos | toFixed 5
-
-30
-  | cos
-  | toFixed 5
+let (a = 1) => {
+  a < 5 ? loop (a + 1) : a
+}
 ```
 
-An alternate way to invoke a method is using an ASTree literal such as `'(toFixed 2)`, which is useful for passing to methods which take a function as an argument.
+### Arrays and Dicts
 
-```kopi
-1..3 | map '(toFixed 2)
-```
+## Advanced Topics
 
-### Ranges
-
-A range is a type that stores `from` and `to` values, and supports all iterable methods such as `map` and `filter`. Any type that supports the `succ` and `<=` methods can be used in a range.
-
-```kopi
-[1..3, "a".."z"] | zip
-```
-
-
-# Reference
-
-## Types
-
-There are several literal types in Kopi, each having a mirror Pattern.
-
-### Number
-
-```
-1   -2.5   3.14
-```
-
-Number methods
-
-```
-30 | sin     -0.988
-```
-
-### String
-### Boolean
-### Tuple
-### Range
-### Array
-### Dict
-### ASTree
-
-## Patterns
-## Functions
-## Streams
-
-Every iterable method such as `map` or `filter` returns a lazy stream, so no intermediate values are created. This allows you to work with large or infinite collections.
-
-When a stream inspected in the Terminal or in this Markdown, it is automatically converted to an array. If you need to convert to an array explicitely, you can use `stream | toArray`.
-
-```kopi
-1..3 | repeat | take 5
-```
-
-## User Types
-
-You can define your own types in Kopi, which look and behave just like native types.
-
-```kopi
-Point = struct (x: Number, y: Number)
-
-extend Point (
-  +: (that) => Point (this.0 + that.0, this.1 + that.1)
-)
-
-Point (1, 2) + Point (2, 3)
-```
+### Asyncronous Code
+### Coroutines
+### User Defined Types
