@@ -152,6 +152,12 @@ async function kopi_input(message: KopiString) {
   return new KopiString(prompt(message.value) ?? '');
 }
 
+class KopiEnv {
+  static async inspect() {
+    return Object.keys(environment).map(key => key.padEnd(12)).join('');
+  }
+}
+
 let environment = {
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
@@ -162,6 +168,7 @@ let environment = {
   Number: KopiNumber,
   Dict: KopiDict,
   Date: KopiDate,
+  env: KopiEnv,
   //
   let: functions.kopi_let,
   loop: functions.kopi_loop,
