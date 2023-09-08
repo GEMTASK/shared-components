@@ -340,7 +340,7 @@ ls
 ls 'l "scripts"
   `,
   `
-print (cat "scripts/hello.kopi")
+cat "scripts/hello.kopi"
   `,
   `
 foo = import "scripts/hello.kopi"

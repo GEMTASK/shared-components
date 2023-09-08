@@ -223,10 +223,16 @@ async function kopi_cat(filename: KopiString) {
   const str = await client.getFileContents('/' + filename.value, { format: 'text' });
 
   if (typeof str === 'string') {
-    return new KopiString(str);
+    return new KopiLog(str);
   }
 
   return '';
+}
+
+class KopiLog extends KopiString {
+  async inspect() {
+    return this.value;
+  }
 }
 
 let environment = {
