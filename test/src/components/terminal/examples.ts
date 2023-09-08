@@ -336,7 +336,13 @@ inspect [1, "2", 3]
   `
 foo = import "scripts/hello.kopi"
 foo.hello "Joe"
-    `,
+  `,
+  `
+ls 'l "folder"
+  `,
+  `
+print (cat "folder/hello.md")
+  `,
 ];
 
 export default examples;

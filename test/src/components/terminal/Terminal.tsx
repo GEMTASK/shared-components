@@ -178,8 +178,11 @@ class KopiLs_ {
   }
 
   async inspect() {
-    const directoryItems = await client.getDirectoryContents("/");
-    const str = await client.getFileContents("/hello.md", { format: "text" });
+    const filename = this.args.at(-1) instanceof KopiString
+      ? '/' + this.args.at(-1).value
+      : '/';
+
+    const directoryItems = await client.getDirectoryContents(filename);
 
     if (Array.isArray(directoryItems)) {
       const max = directoryItems.reduce((max, item) => item.basename.length > max
@@ -187,17 +190,17 @@ class KopiLs_ {
         : max,
         0);
 
-      if (this.args.find(arg => arg.name = 'l')) {
-        const items = directoryItems.map(({ basename, size, lastmod }) =>
-          basename.padEnd(max + 4) +
+      if (this.args.find(arg => arg.name === 'l')) {
+        const items = directoryItems.map(({ basename, type, size, lastmod }) =>
+          (basename + (type === 'directory' ? '/' : '')).padEnd(max + 4) +
           (size.toString() + ' B').padEnd(8) +
           new Date(lastmod).toLocaleDateString());
 
         return items.join('\n');
       }
 
-      const items = directoryItems.map(({ basename, size, lastmod }) =>
-        basename.padEnd(max + 4));
+      const items = directoryItems.map(({ basename, type, size, lastmod }) =>
+        (basename + (type === 'directory' ? '/' : '')).padEnd(max + 4));
 
       return items.join('');
     }
@@ -214,6 +217,16 @@ class KopiLs {
   static async inspect() {
     return new KopiLs_([]).inspect();
   }
+}
+
+async function kopi_cat(filename: KopiString) {
+  const str = await client.getFileContents('/' + filename.value, { format: 'text' });
+
+  if (typeof str === 'string') {
+    return new KopiString(str);
+  }
+
+  return '';
 }
 
 let environment = {
@@ -246,6 +259,7 @@ let environment = {
   input: kopi_input,
   export: kopi_export,
   ls: KopiLs,
+  cat: kopi_cat,
   //
   date: new functions.KopiDateFunction(),
   clock: new functions.KopiClock(),

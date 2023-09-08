@@ -1,4 +1,4 @@
-hello name = "Hello, " ++ name
+hello name = print ("Hello, " ++ name)
 
 export (
   hello: hello
