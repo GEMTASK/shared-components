@@ -158,6 +158,10 @@ class KopiEnv {
   }
 }
 
+async function kopi_export(value: KopiValue) {
+  return value;
+}
+
 let environment = {
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
@@ -185,6 +189,7 @@ let environment = {
   spawn: functions.kopi_spawn,
   context: functions.kopi_context,
   input: kopi_input,
+  export: kopi_export,
   km: functions.kopi_meter,
   //
   date: new functions.KopiDateFunction(),

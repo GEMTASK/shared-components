@@ -1,3 +1,5 @@
 hello name = "Hello, " ++ name
 
-(hello: hello)
+export (
+  hello: hello
+)
