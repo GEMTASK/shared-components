@@ -1,0 +1,18 @@
+DirectoryIndex disabled
+
+Header add Access-Control-Allow-Headers "*"
+Header add Access-Control-Allow-Origin "*"
+Header add Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT,PROPFIND"
+
+RedirectMatch 404 \.picodav\.ini
+
+RewriteEngine On
+RewriteBase /
+
+# Uncomment the following 2 lignes to make things a bit faster for
+# downloading files, AND you don't use PicoDAV users to manage access,
+# but a regular .htpasswd file and config for your web server.
+#RewriteCond %{REQUEST_FILENAME} !-f [OR]
+#RewriteCond %{REQUEST_METHOD} !GET
+
+RewriteRule ^.*$ /index.php [END]

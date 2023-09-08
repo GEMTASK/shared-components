@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
+import { createClient } from 'webdav';
 
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 import Clock from '../clock/Clock';
@@ -15,6 +16,9 @@ import reference from './reference';
 import * as functions from './functions';
 
 const MONOSPACE_FONT = 'Iosevka';
+
+const client = createClient("https://webdav.mike-austin.com", {
+});
 
 const Link = ({ children, ...props }: any) => {
   return (
@@ -162,6 +166,56 @@ async function kopi_export(value: KopiValue) {
   return value;
 }
 
+class KopiLs_ {
+  args: any[];
+
+  constructor(args: any[]) {
+    this.args = args;
+  }
+
+  async apply(thisArg: void, [arg]: [any]) {
+    return new KopiLs_([...this.args, arg]);
+  }
+
+  async inspect() {
+    const directoryItems = await client.getDirectoryContents("/");
+    const str = await client.getFileContents("/hello.md", { format: "text" });
+
+    if (Array.isArray(directoryItems)) {
+      const max = directoryItems.reduce((max, item) => item.basename.length > max
+        ? item.basename.length
+        : max,
+        0);
+
+      if (this.args.find(arg => arg.name = 'l')) {
+        const items = directoryItems.map(({ basename, size, lastmod }) =>
+          basename.padEnd(max + 4) +
+          (size.toString() + ' B').padEnd(8) +
+          new Date(lastmod).toLocaleDateString());
+
+        return items.join('\n');
+      }
+
+      const items = directoryItems.map(({ basename, size, lastmod }) =>
+        basename.padEnd(max + 4));
+
+      return items.join('');
+    }
+
+    return '';
+  }
+}
+
+class KopiLs {
+  static async apply(thisArg: void, [arg]: [KopiValue]) {
+    return new KopiLs_([arg]);
+  }
+
+  static async inspect() {
+    return new KopiLs_([]).inspect();
+  }
+}
+
 let environment = {
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
@@ -188,9 +242,10 @@ let environment = {
   extend: functions.kopi_extend,
   spawn: functions.kopi_spawn,
   context: functions.kopi_context,
+  km: functions.kopi_meter,
   input: kopi_input,
   export: kopi_export,
-  km: functions.kopi_meter,
+  ls: KopiLs,
   //
   date: new functions.KopiDateFunction(),
   clock: new functions.KopiClock(),
