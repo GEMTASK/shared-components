@@ -374,9 +374,12 @@ const interpret = async (
   const promise = new Promise(async (resolve, reject) => {
     try {
       async function kopi_import(url: KopiString) {
-        const source = await (await fetch(url.value)).text();
+        // const source = await (await fetch(url.value)).text();
+        const source = await client.getFileContents('/' + url.value, { format: 'text' });
 
-        return kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import }, () => { });
+        if (typeof source === 'string') {
+          return kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import }, () => { });
+        }
       }
 
       async function kopi_print(value: KopiValue) {

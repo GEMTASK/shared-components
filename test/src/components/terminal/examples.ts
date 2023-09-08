@@ -332,16 +332,16 @@ inspect [1, "2", 3]
   _ [n > 1] => "n > 1"
   _         => "n"
 )
-    `,
+  `,
+  `
+ls 'l "scripts"
+  `,
+  `
+print (cat "scripts/hello.kopi")
+  `,
   `
 foo = import "scripts/hello.kopi"
 foo.hello "Joe"
-  `,
-  `
-ls 'l "folder"
-  `,
-  `
-print (cat "folder/hello.md")
   `,
 ];
 
