@@ -325,13 +325,16 @@ inspect (object) = match object (
   }
 )
 inspect [1, "2", 3]
-    `,
+  `,
   `
 1..5 | map (n) => match n (
   _ [n > 3] => "n > 3"
   _ [n > 1] => "n > 1"
   _         => "n"
 )
+  `,
+  `
+ls
   `,
   `
 ls 'l "scripts"
