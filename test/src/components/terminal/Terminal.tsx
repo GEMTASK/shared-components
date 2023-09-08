@@ -299,6 +299,12 @@ const interpret = async (
 
   const promise = new Promise(async (resolve, reject) => {
     try {
+      async function kopi_import(url: KopiString) {
+        const source = await (await fetch(url.value)).text();
+
+        return kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import }, () => { });
+      }
+
       async function kopi_print(value: KopiValue) {
         const string = await value.toString();
 
@@ -316,7 +322,7 @@ const interpret = async (
         // resolve(undefined);
       }
 
-      const value = await kopi.interpret(source, { ...environment, print: kopi_print }, bind);
+      const value = await kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import }, bind);
 
       if (value) {
         const element = await value?.inspect();

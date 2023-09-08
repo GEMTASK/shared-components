@@ -333,6 +333,10 @@ inspect [1, "2", 3]
   _         => "n"
 )
     `,
+  `
+foo = import "scripts/hello.kopi"
+foo.hello "Joe"
+    `,
 ];
 
 export default examples;
