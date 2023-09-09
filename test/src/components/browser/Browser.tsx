@@ -40,9 +40,10 @@ const Browser = ({ ...props }: any) => {
                 <Divider />
               </View>
               <Stack flex padding="small">
-                <Button hover size="xsmall" align="left" icon="star" title="React | Web and Native UI " onClick={() => setValue('http://react.dev')} />
-                <Button hover size="xsmall" align="left" icon="star" title="8Base | Low-Code Platform" onClick={() => setValue('http://8base.com')} />
-                <Button hover size="xsmall" align="left" icon="star" title="Home | Haiku Project " onClick={() => setValue('http://www.haiku-os.org')} />
+                <Button hover size="xsmall" align="left" icon="bookmark" title="React | Web and Native UI" onClick={() => setValue('http://react.dev')} />
+                <Button hover size="xsmall" align="left" icon="bookmark" title="8Base | Low-Code Platform" onClick={() => setValue('http://8base.com')} />
+                <Button hover size="xsmall" align="left" icon="bookmark" title="Home | Haiku Project" onClick={() => setValue('http://www.haiku-os.org')} />
+                <Button hover size="xsmall" align="left" icon="bookmark" title="io Programming Language" onClick={() => setValue('https://iolanguage.org')} />
               </Stack>
             </View>
           </View>
