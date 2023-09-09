@@ -7,7 +7,7 @@ import Clock from '../clock/Clock';
 
 import * as kopi from './kopi-language';
 
-import { KopiArray, KopiNumber, KopiString, KopiTuple, KopiDate, KopiBoolean, KopiDict } from './kopi-language/src/classes';
+import { KopiArray, KopiNumber, KopiString, KopiTuple, KopiDate, KopiBoolean, KopiDict, KopiFunction } from './kopi-language/src/classes';
 import { Context, KopiValue } from './kopi-language/src/types';
 
 import exampless from './examples';
@@ -66,6 +66,30 @@ class KopiElement extends KopiValue {
 
     return React.createElement(this.component, this.props) as any;
   }
+}
+
+const Component = (component: KopiFunction, context: Context) => function _({ props }: any) {
+  const [value, setValue] = useState<any>(null);
+
+  useEffect(() => {
+    (async () => {
+      const value = await component.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+
+      setValue(await value.inspect());
+    })();
+  }, []);
+
+  return value;
+};
+
+async function kopi_element(tuple: KopiTuple, context: Context) {
+  const [component, props, children] = await Promise.all(tuple.fields) as [KopiFunction, KopiTuple, KopiArray];
+
+  return new KopiElement(
+    Component(component, context),
+    {},
+    children
+  );
 }
 
 async function kopi_View(props: KopiTuple) {
@@ -271,6 +295,7 @@ let environment = {
   clock: new functions.KopiClock(),
   calendar: new functions.KopiCalendar(),
   //
+  element: kopi_element,
   View: kopi_View,
   Text: kopi_Text,
   Button: kopi_Button,
