@@ -227,6 +227,13 @@ View (
 ]
   `,
   `
+Hello () = Text (
+  padding: "small"
+  fillColor: "green-1"
+) "Hello"
+element (Hello, (), [])
+  `,
+  `
 program = "
   10 print 'hello'
   20 goto 30

@@ -68,7 +68,25 @@ class KopiElement extends KopiValue {
   }
 }
 
-const Component = (component: KopiFunction, context: Context) => function _({ props }: any) {
+const Component = (component: KopiFunction, context: Context) => class extends React.PureComponent {
+  state: any;
+
+  constructor(props: any) {
+    super(props);
+
+    (async () => {
+      const value = await component.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+
+      this.setState(await value.inspect());
+    })();
+  }
+
+  render() {
+    return this.state;
+  }
+};
+
+const Component2 = (component: KopiFunction, context: Context) => function _({ props }: any) {
   const [value, setValue] = useState<any>(null);
 
   useEffect(() => {
@@ -140,9 +158,13 @@ async function kopi_Button(props: KopiTuple, context: Context) {
   });
 }
 
-async function kopi_useState(initialValue: KopiValue) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [value, setValue] = useState(initialValue);
+async function useState_kopi_useState(initialValue: KopiValue) {
+  console.log('useState_kopi_useState');
+
+  // const [value, setValue] = useState(initialValue);
+
+  const value = new KopiNumber(5);
+  const setValue = () => { };
 
   return new KopiTuple([value, setValue as any]);
 }
@@ -271,6 +293,7 @@ let environment = {
   Date: KopiDate,
   env: KopiEnv,
   //
+  log: async (value: KopiValue) => console.log(await value.inspect()),
   let: functions.kopi_let,
   loop: functions.kopi_loop,
   match: functions.kopi_match,
@@ -299,7 +322,7 @@ let environment = {
   View: kopi_View,
   Text: kopi_Text,
   Button: kopi_Button,
-  useState: kopi_useState,
+  useState: useState_kopi_useState,
 };
 
 const useSidebarStyles = createUseStyles({
