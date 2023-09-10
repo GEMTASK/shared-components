@@ -230,7 +230,8 @@ View (
 Hello () = Text (
   padding: "small"
   fillColor: "green-1"
-) "Hello"
+  onClick: () => print "onClick"
+) "Click Me"
 element (Hello, (), [])
   `,
   `

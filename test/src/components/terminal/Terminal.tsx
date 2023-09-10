@@ -69,35 +69,29 @@ class KopiElement extends KopiValue {
 }
 
 const Component = (component: KopiFunction, context: Context) => class extends React.PureComponent {
-  state: any;
+  state: any = { _value: null };
 
   constructor(props: any) {
     super(props);
 
     (async () => {
-      const value = await component.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+      const { environment } = context;
 
-      this.setState(await value.inspect());
+      const value = await component.apply(KopiTuple.empty, [KopiTuple.empty, {
+        ...context,
+        environment: {
+          ...environment,
+          // setState: () => this.setState({ count: 1 })
+        }
+      }]);
+
+      this.setState({ _value: await value.inspect() });
     })();
   }
 
   render() {
-    return this.state;
+    return this.state._value;
   }
-};
-
-const Component2 = (component: KopiFunction, context: Context) => function _({ props }: any) {
-  const [value, setValue] = useState<any>(null);
-
-  useEffect(() => {
-    (async () => {
-      const value = await component.apply(KopiTuple.empty, [KopiTuple.empty, context]);
-
-      setValue(await value.inspect());
-    })();
-  }, []);
-
-  return value;
 };
 
 async function kopi_element(tuple: KopiTuple, context: Context) {
@@ -129,18 +123,20 @@ async function kopi_View(props: KopiTuple) {
   };
 }
 
-async function kopi_Text(props: KopiTuple) {
-  const [fillColor, padding, align] = await Promise.all([
+async function kopi_Text(props: KopiTuple, context: Context) {
+  const [fillColor, padding, align, onClick] = await Promise.all([
     (props as any).fillColor,
     (props as any).padding,
-    (props as any).align
+    (props as any).align,
+    (props as any).onClick
   ]);
 
   return (string: any) => {
     return new KopiElement(Text, {
       fillColor: fillColor?.value,
       padding: padding?.value,
-      align: align?.value
+      align: align?.value,
+      onClick: () => onClick?.apply(KopiTuple.empty, [KopiTuple.empty, context])
     }, string);
   };
 }
