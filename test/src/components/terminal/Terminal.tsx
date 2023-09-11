@@ -7,7 +7,7 @@ import Clock from '../clock/Clock';
 
 import * as kopi from './kopi-language';
 
-import { KopiArray, KopiNumber, KopiString, KopiTuple, KopiDate, KopiBoolean, KopiDict, KopiFunction } from './kopi-language/src/classes';
+import { KopiAny, KopiArray, KopiNumber, KopiString, KopiTuple, KopiDate, KopiBoolean, KopiDict, KopiFunction } from './kopi-language/src/classes';
 import { Context, KopiValue } from './kopi-language/src/types';
 
 import exampless from './examples';
@@ -167,35 +167,6 @@ async function kopi_Button(props: KopiTuple, context: Context) {
   });
 }
 
-function transform(value: unknown): KopiValue {
-  if (value === null) {
-    return KopiTuple.empty;
-  } else if (Array.isArray(value)) {
-    return new KopiArray(value.map(value => transform(value)));
-  } else if (typeof value === 'object') {
-    return new KopiTuple(
-      Object.values(value).map(value => transform(value)),
-      Object.keys(value)
-    );
-  } else if (typeof value === 'string') {
-    return new KopiString(value);
-  } else if (typeof value === 'number') {
-    return new KopiNumber(value);
-  } else if (typeof value === 'boolean') {
-    return new KopiBoolean(value);
-  }
-
-  return KopiTuple.empty;
-}
-
-class KopiObject extends KopiValue {
-  static fromJsonString(jsonString: KopiString) {
-    const json = JSON.parse(jsonString.value);
-
-    return transform(json);
-  }
-}
-
 async function kopi_input(message: KopiString) {
   return new KopiString(prompt(message.value) ?? '');
 }
@@ -282,11 +253,12 @@ class KopiLog extends KopiString {
 let environment = {
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
-  Object: KopiObject,
+  Any: KopiAny,
   Tuple: KopiTuple,
   Array: KopiArray,
   String: KopiString,
   Number: KopiNumber,
+  Boolean: KopiBoolean,
   Dict: KopiDict,
   Date: KopiDate,
   env: KopiEnv,

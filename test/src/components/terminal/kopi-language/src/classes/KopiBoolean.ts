@@ -4,6 +4,14 @@ class KopiBoolean extends KopiValue {
   static true = new KopiBoolean(true);
   static false = new KopiBoolean(false);
 
+  static async inspect() {
+    return 'Boolean';
+  }
+
+  static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
+    return new KopiBoolean(await value.toString() === 'true' ? true : false);
+  }
+
   readonly value: boolean;
 
   constructor(value: boolean) {

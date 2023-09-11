@@ -4,6 +4,7 @@ import KopiNumber from './KopiNumber';
 import KopiTuple from './KopiTuple';
 import KopiString from './KopiString';
 import KopiArray from './KopiArray';
+import KopiFunction from './KopiFunction';
 
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
@@ -137,6 +138,28 @@ class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
 
   async '<<'(that: KopiDict) {
     return this.merge(that);
+  }
+
+  update(key: KopiValue) {
+    return async (func: KopiFunction, context: Context) => {
+      const value = this._map.get(await key.inspect() as string);
+
+      if (value) {
+        const updatedValue = func.apply(KopiTuple.empty, [await value[1], context]);
+
+        return new KopiDict([
+          ...this._map,
+          [await key.inspect() as string, [key, updatedValue]]
+        ]);
+      } else {
+        const updatedValue = func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+
+        return new KopiDict([
+          ...this._map,
+          [await key.inspect() as string, [key, updatedValue]]
+        ]);
+      }
+    };
   }
 }
 

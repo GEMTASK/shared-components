@@ -1,3 +1,4 @@
+export { default as KopiAny } from './KopiAny';
 export { default as KopiNumber } from './KopiNumber';
 export { default as KopiString } from './KopiString';
 export { default as KopiBoolean } from './KopiBoolean';

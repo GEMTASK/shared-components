@@ -5,14 +5,15 @@ import KopiArray from './KopiArray';
 import KopiFunction from './KopiFunction';
 import KopiTuple from './KopiTuple';
 import KopiBoolean from './KopiBoolean';
+import KopiRange from './KopiRange';
 
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
-import KopiRange from './KopiRange';
 
 interface KopiString extends KopiValue {
   toArray(): Promise<KopiArray>;
   map(func: KopiFunction, context: Context): KopiStream<KopiString>;
+  reduce(func: KopiFunction, context: Context): Promise<KopiValue>;
   combos(): Promise<KopiValue>;
   some(func: KopiFunction, context: Context): Promise<KopiBoolean>;
   every(func: KopiFunction, context: Context): Promise<KopiBoolean>;
@@ -64,6 +65,7 @@ import('./KopiStream').then((result) => {
 
     KopiString.prototype.toArray = ArrayIterable.prototype.toArray;
     KopiString.prototype.map = ArrayIterable.prototype.map;
+    KopiString.prototype.reduce = ArrayIterable.prototype.reduce;
     KopiString.prototype.combos = StringIterable.prototype.combos;
     KopiString.prototype.some = StringIterable.prototype.some;
     KopiString.prototype.every = StringIterable.prototype.every;
@@ -240,20 +242,6 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
     }
 
     return new KopiString(array.join(this.value));
-  }
-
-  async reduce(func: KopiFunction, context: Context) {
-    let accum: KopiValue = KopiTuple.empty;
-
-    for await (const value of this) {
-      if (accum === KopiTuple.empty) {
-        accum = value;
-      } else {
-        accum = await func.apply(KopiTuple.empty, [new KopiTuple([accum, value]), context]);
-      }
-    }
-
-    return accum;
   }
 
   join(joiner: KopiValue, context: Context) {

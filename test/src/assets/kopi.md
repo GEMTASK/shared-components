@@ -137,7 +137,7 @@ add (a, b) = {
 }
 ```
 
-Default arguments can be provided, which are used when the empty value `()` is given. They are commonly used in the `let` function used for looping, and in collection methods such as `reduce` and `update`. 
+Default arguments can be provided, which are used when the empty value `()` is given. They are commonly used in the `let` function used for looping, and in collection methods such as `reduce` and `update`.
 
 ```kopi
 add (a, b = 3) = a + b
@@ -247,22 +247,24 @@ grayscale [255, 128, 255]
     }
 ```
 
-```
-# Object.fromJsonString "
-#  {
-#    \"name\": \"Joe\",
-#    \"ids\": [1, 2, 3],
-#    \"shared\": true
-#  }
-# "
+### Reading a JSON String
+
+```kopi
+Any.fromJsonString "
+  {
+    \"name\": \"Joe\",
+    \"ids\": [1, 2, 3],
+    \"shared\": true
+  }
+"
 ```
 
 ### Word Count
 
-```
-# "abcaba" | reduce (counts = {}, letter) => {
-#  counts | update letter (count = 0) => count + 1
-# }
+```kopi
+"abcaba" | reduce (counts = {}, letter) => {
+  counts | update letter (count = 0) => count + 1
+}
 ```
 
 ### FizzBuzz

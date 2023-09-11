@@ -6,7 +6,7 @@ import * as kopi from '../terminal/kopi-language';
 import * as functions from '../terminal/functions';
 
 import { KopiValue } from '../terminal/kopi-language/src/types';
-import { KopiBoolean, KopiNumber, KopiString } from '../terminal/kopi-language/src/classes';
+import { KopiAny, KopiBoolean, KopiNumber, KopiString } from '../terminal/kopi-language/src/classes';
 
 import { Stack, Text, View } from 'bare';
 
@@ -96,6 +96,7 @@ const useMarkdownStyles = createUseStyles({
 // \`\`\`
 
 let environment = {
+  Any: KopiAny,
   Number: KopiNumber,
   String: KopiString,
   Boolean: KopiBoolean,
