@@ -227,7 +227,7 @@ View (
 ]
   `,
   `
-Hello (state, setState) = {
+Hello setState state = {
   Text (
     padding: "small"
     fillColor: "green-1"
@@ -239,20 +239,23 @@ Hello (state, setState) = {
 element (Hello, (), [])
   `,
   `
-component func = (props) =>
-  (children) => {
-    element (func, props, children)
+Hello = component (setState) =>
+  (state) => {
+    Text (
+      padding: "small"
+      fillColor: "green-1"
+      onClick: () => {
+        setState (state + 1)
+      }
+    ) ("Counter: " ++ String state)
   }
-Hello = component (state, setState) => {
-  Text (
-    padding: "small"
-    fillColor: "green-1"
-    onClick: () => {
-      setState (state + 1)
-    }
-  ) ("Counter: " ++ String state)
-}
 Hello () []
+  `,
+  `
+Goodbye = component () => (state) => {
+  Text () "Goodbye"
+}
+Goodbye () []
   `,
   `
 program = "

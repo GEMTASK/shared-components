@@ -75,6 +75,8 @@ const reducer = (state: any, action: any) => {
 };
 
 const Component = (component: KopiFunction, context: Context) => function _({ props }: any) {
+  const functionRef = useRef<KopiFunction>();
+
   const [value, setValue] = useState<any>(null);
   const [state, dispatch] = useReducer(reducer, new KopiNumber(0));
 
@@ -82,7 +84,11 @@ const Component = (component: KopiFunction, context: Context) => function _({ pr
 
   useEffect(() => {
     (async () => {
-      const value = await component.apply(KopiTuple.empty, [new KopiTuple([state, setState]), context]);
+      if (!functionRef.current) {
+        functionRef.current = await component.apply(KopiTuple.empty, [setState, context]) as KopiFunction;
+      }
+
+      const value = await functionRef.current.apply(KopiTuple.empty, [state, context]);
 
       setValue(await value.inspect());
     })();
@@ -90,10 +96,21 @@ const Component = (component: KopiFunction, context: Context) => function _({ pr
 
   return value;
 };
+
 async function kopi_element(tuple: KopiTuple, context: Context) {
   const [component, props, children] = await Promise.all(tuple.fields) as [KopiFunction, KopiTuple, KopiArray];
 
   return new KopiElement(
+    Component(component, context),
+    {},
+    children
+  );
+}
+
+async function kopi_component(component: KopiFunction, context: Context) {
+  // const [component, props, children] = await Promise.all(tuple.fields) as [KopiFunction, KopiTuple, KopiArray];
+
+  return (props: any) => (children: any) => new KopiElement(
     Component(component, context),
     {},
     children
@@ -148,17 +165,6 @@ async function kopi_Button(props: KopiTuple, context: Context) {
     primary: true,
     title: title?.value,
   });
-}
-
-async function useState_kopi_useState(initialValue: KopiValue) {
-  console.log('useState_kopi_useState');
-
-  // const [value, setValue] = useState(initialValue);
-
-  const value = new KopiNumber(5);
-  const setValue = () => { };
-
-  return new KopiTuple([value, setValue as any]);
 }
 
 function transform(value: unknown): KopiValue {
@@ -311,10 +317,10 @@ let environment = {
   calendar: new functions.KopiCalendar(),
   //
   element: kopi_element,
+  component: kopi_component,
   View: kopi_View,
   Text: kopi_Text,
   Button: kopi_Button,
-  useState: useState_kopi_useState,
 };
 
 const useSidebarStyles = createUseStyles({
