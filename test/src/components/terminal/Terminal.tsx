@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { createClient } from 'webdav';
 
@@ -68,32 +68,49 @@ class KopiElement extends KopiValue {
   }
 }
 
-const Component = (component: KopiFunction, context: Context) => class extends React.PureComponent {
-  state: any = { _value: null };
+// const Component = (component: KopiFunction, context: Context) => class extends React.PureComponent {
+//   state: any = { _value: null };
 
-  constructor(props: any) {
-    super(props);
+//   constructor(props: any) {
+//     super(props);
 
-    (async () => {
-      const { environment } = context;
+//     (async () => {
+//       const { environment } = context;
 
-      const value = await component.apply(KopiTuple.empty, [KopiTuple.empty, {
-        ...context,
-        environment: {
-          ...environment,
-          // setState: () => this.setState({ count: 1 })
-        }
-      }]);
+//       const value = await component.apply(KopiTuple.empty, [KopiTuple.empty, {
+//         ...context,
+//         environment: {
+//           ...environment,
+//           // setState: () => this.setState({ count: 1 })
+//         }
+//       }]);
 
-      this.setState({ _value: await value.inspect() });
-    })();
-  }
+//       this.setState({ _value: await value.inspect() });
+//     })();
+//   }
 
-  render() {
-    return this.state._value;
-  }
+//   render() {
+//     return this.state._value;
+//   }
+// };
+
+const reducer = (state: any, action: any) => {
+  return ({ ...state, ...action.payload });
 };
 
+const Component = (component: KopiFunction, context: Context) => function _({ props }: any) {
+  const [value, setValue] = useState<any>(null);
+
+  useEffect(() => {
+    (async () => {
+      const value = await component.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+
+      setValue(await value.inspect());
+    })();
+  }, []);
+
+  return value;
+};
 async function kopi_element(tuple: KopiTuple, context: Context) {
   const [component, props, children] = await Promise.all(tuple.fields) as [KopiFunction, KopiTuple, KopiArray];
 

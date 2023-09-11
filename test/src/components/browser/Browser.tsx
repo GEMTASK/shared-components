@@ -16,6 +16,12 @@ const Browser = ({ ...props }: any) => {
     setUrl(value);
   }, [value]);
 
+  const srcDoc = `
+    <a href="https://chrome.google.com/webstore/detail/hiframe-the-hyper-iframe/joibipdfkleencgfgbbncoheaekffdfn" target="_blank">
+      Install the HiFrame Chrome extension to be able to use this browser
+    </a>
+  `;
+
   return (
     <View horizontal {...props} style={{ overflow: 'hidden' }}>
       <Splitter flex horizontal>
@@ -40,9 +46,10 @@ const Browser = ({ ...props }: any) => {
                 <Divider />
               </View>
               <Stack flex padding="small">
-                <Button hover size="xsmall" align="left" icon="bookmark" title="React | Web and Native UI" onClick={() => setValue('http://react.dev')} />
-                <Button hover size="xsmall" align="left" icon="bookmark" title="8Base | Low-Code Platform" onClick={() => setValue('http://8base.com')} />
-                <Button hover size="xsmall" align="left" icon="bookmark" title="Home | Haiku Project" onClick={() => setValue('http://www.haiku-os.org')} />
+                <Button hover size="xsmall" align="left" icon="bookmark" title="Google" onClick={() => setValue('https://google.com')} />
+                <Button hover size="xsmall" align="left" icon="bookmark" title="React | Web and Native UI" onClick={() => setValue('https://react.dev')} />
+                <Button hover size="xsmall" align="left" icon="bookmark" title="8Base | Low-Code Platform" onClick={() => setValue('https://8base.com')} />
+                <Button hover size="xsmall" align="left" icon="bookmark" title="Home | Haiku Project" onClick={() => setValue('https://www.haiku-os.org')} />
                 <Button hover size="xsmall" align="left" icon="bookmark" title="io Programming Language" onClick={() => setValue('https://iolanguage.org')} />
               </Stack>
             </View>
@@ -55,7 +62,7 @@ const Browser = ({ ...props }: any) => {
             <Input flex value={value} onValueChange={setValue} onBlur={handleBlur} />
           </Stack>
           <Divider />
-          <View as="iframe" flex fillColor="white" style={{ border: 'none' }} src={url} />
+          <View as="iframe" flex fillColor="white" style={{ border: 'none' }} srcDoc={url ? undefined : srcDoc} src={url} />
         </View>
       </Splitter>
     </View>
