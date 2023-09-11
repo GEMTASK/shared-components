@@ -346,7 +346,7 @@ class ArrayLiteralPattern extends ASTPatternNode {
     let index = 0;
 
     if (value === KopiTuple.empty) {
-      if (this.defaultExpression !== null) {
+      if (this.defaultExpression) {
         value = await evaluate(this.defaultExpression, environment, bind);
       } else {
         throw new TypeError(`Expected a value but ${value} found.`);
@@ -386,7 +386,7 @@ class IdentifierPattern extends ASTPatternNode {
 
   async test(value: KopiValue, context: Context) {
     if (value === KopiTuple.empty) {
-      if (this.defaultExpression !== null) {
+      if (this.defaultExpression) {
         return true;
       } else {
         return false;
@@ -397,15 +397,17 @@ class IdentifierPattern extends ASTPatternNode {
   }
 
   override async match(value: KopiValue, context: Context) {
+    console.log('IdentifierPattern', this);
+
     const { environment, evaluate, bind } = context;
 
     if (value === KopiTuple.empty) {
-      if (this.defaultExpression !== null) {
+      if (this.defaultExpression) {
         return {
           [this.name]: await evaluate(this.defaultExpression, environment, bind)
         };
       } else {
-        throw new TypeError(`Expected a value but ${value} found.`);
+        // throw new TypeError(`Identifier match: Expected a value but ${await value.inspect()} found.`);
       }
     }
 

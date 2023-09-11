@@ -462,7 +462,6 @@ const interpret = async (
       } else {
         resolve(value);
       }
-
     } catch (error) {
       console.warn(error);
 
