@@ -4,7 +4,7 @@
 
 Kopi is a small, immutable, 100% async programming language. It provides several literal types, uses patterns for destructuring and matching values, and supports lazy streams and coroutines.
 
-Within this document, you can edit any code which has a value just below it, and see the updated results.
+Within this document, you can edit any code which has a value just below it and see the updated result.
 
 ### Small
 
@@ -103,7 +103,7 @@ You can use tuple patterns to perform multiple assignment, and nest patterns arb
 (a, b, c)
 ```
 
-Patterns are often use for matching. The `match` function takes a value as its first curried argument, and a tuple of functions for its second argument. Each function's parameter pattern is tested against the value, and if the match is successfull, that function is called and the return value used as the return value for match.
+Patterns are often used for matching. The `match` function takes a value as its first curried argument, and a tuple of functions for its second argument. Each function's parameter pattern is tested against the value, and if the match is successfull, that function is called and the return value is used as the return value for match.
 
 The `_` character can be used as a parameter to represent "I don't care what the value is".
 
@@ -122,7 +122,7 @@ Functions are called with a space between the function name and it's argument. M
 random 1.5..3
 ```
 
-Functions can be defined using patterns, or or created anonymously, as in `(a, b) => a + b` to be stored in variables or to be passed as arguments to functions. Here, we're using the tuple pattern `(a, b)` to be able to pass multiple values.
+Functions can be defined using patterns, or created anonymously, as in `(a, b) => a + b` to be stored in variables or to be passed as arguments to functions. Here, we're using the tuple pattern `(a, b)` to be able to pass multiple values.
 
 ```kopi
 add (a, b) = a + b
@@ -209,6 +209,7 @@ Matching on an array pattern:
 ## Advanced Topics
 
 ### Asynchronous
+### Function Predicates
 ### Coroutines
 ### User Defined Types
 
