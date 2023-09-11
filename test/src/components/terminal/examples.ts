@@ -231,10 +231,28 @@ Hello (state, setState) = {
   Text (
     padding: "small"
     fillColor: "green-1"
-    onClick: () => setState (state + 1)
+    onClick: () => {
+      setState (state + 1)
+    }
   ) ("Counter: " ++ String state)
 }
 element (Hello, (), [])
+  `,
+  `
+component func = (props) =>
+  (children) => {
+    element (func, props, children)
+  }
+Hello = component (state, setState) => {
+  Text (
+    padding: "small"
+    fillColor: "green-1"
+    onClick: () => {
+      setState (state + 1)
+    }
+  ) ("Counter: " ++ String state)
+}
+Hello () []
   `,
   `
 program = "
