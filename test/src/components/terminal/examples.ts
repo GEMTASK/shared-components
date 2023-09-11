@@ -378,8 +378,8 @@ ls 'l "scripts"
 cat "scripts/hello.kopi"
   `,
   `
-foo = import "scripts/hello.kopi"
-foo.hello "Joe"
+(:hello) = import "scripts/hello.kopi"
+hello "Joe"
   `,
 ];
 

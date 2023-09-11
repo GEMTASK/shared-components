@@ -500,7 +500,7 @@ function peg$parse(input, options) {
       }
     };
   var peg$f27 = function(colon, head, tail) {
-      return tail.length === 0 ? head : {
+      return !colon && tail.length === 0 ? head : {
         type: 'TuplePattern',
         fieldPatterns: tail.reduce((patterns, [, , , , pattern]) => [
           ...patterns,
