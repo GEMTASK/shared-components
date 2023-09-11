@@ -227,11 +227,13 @@ View (
 ]
   `,
   `
-Hello () = Text (
-  padding: "small"
-  fillColor: "green-1"
-  onClick: () => print "onClick"
-) "Click Me"
+Hello (state, setState) = {
+  Text (
+    padding: "small"
+    fillColor: "green-1"
+    onClick: () => setState (state + 1)
+  ) ("Counter: " ++ String state)
+}
 element (Hello, (), [])
   `,
   `

@@ -88,7 +88,7 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
   }
 
   static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
-    return value;
+    return new KopiString(await value.toString());
   }
 
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {

@@ -68,46 +68,25 @@ class KopiElement extends KopiValue {
   }
 }
 
-// const Component = (component: KopiFunction, context: Context) => class extends React.PureComponent {
-//   state: any = { _value: null };
-
-//   constructor(props: any) {
-//     super(props);
-
-//     (async () => {
-//       const { environment } = context;
-
-//       const value = await component.apply(KopiTuple.empty, [KopiTuple.empty, {
-//         ...context,
-//         environment: {
-//           ...environment,
-//           // setState: () => this.setState({ count: 1 })
-//         }
-//       }]);
-
-//       this.setState({ _value: await value.inspect() });
-//     })();
-//   }
-
-//   render() {
-//     return this.state._value;
-//   }
-// };
-
 const reducer = (state: any, action: any) => {
-  return ({ ...state, ...action.payload });
+  console.log(action.payload);
+  // return ({ ...state, ...action.payload });
+  return action.payload;
 };
 
 const Component = (component: KopiFunction, context: Context) => function _({ props }: any) {
   const [value, setValue] = useState<any>(null);
+  const [state, dispatch] = useReducer(reducer, new KopiNumber(0));
+
+  const setState = (payload: any) => dispatch({ type: 'setState', payload });
 
   useEffect(() => {
     (async () => {
-      const value = await component.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+      const value = await component.apply(KopiTuple.empty, [new KopiTuple([state, setState]), context]);
 
       setValue(await value.inspect());
     })();
-  }, []);
+  }, [state]);
 
   return value;
 };
