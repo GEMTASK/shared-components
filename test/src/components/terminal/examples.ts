@@ -39,7 +39,7 @@ grayscale (color) = {
   let ([r, g, b] = color) =>
     (r * 0.3 + g * 0.6 + b * 0.1) / 3
 }
-grayscale [255, 128, 255]  
+grayscale [255, 128, 255]
   `,
   `(a => b => a + b) 1 2`,
   `((a, b) => a + b) (1, 2)`,
@@ -317,7 +317,7 @@ match 5 (
 )
   `,
   `
-Object.fromJsonString "
+Any.fromJsonString "
   {
     \\"name\\": \\"Joe\\",
     \\"ids\\": [1, 2, 3],
