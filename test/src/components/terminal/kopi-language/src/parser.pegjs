@@ -286,13 +286,17 @@ PrimaryPattern
         fieldPatterns: [],
       }
     }
-  / "(" _ head:Pattern tail:(_ "," _ Pattern)* _ ")" {
+  / "(" _ colon:(":")? head:Pattern tail:(_ "," _ (":")? Pattern)* _ ")" {
       return tail.length === 0 ? head : {
         type: 'TuplePattern',
-        fieldPatterns: tail.reduce((patterns, [, , , pattern]) => [
+        fieldPatterns: tail.reduce((patterns, [, , , , pattern]) => [
           ...patterns,
-          pattern
-        ], [head])
+          pattern,
+        ], [head]),
+        fieldNames: tail.reduce((fieldNames, [, , , colon, fieldName]) => [
+          ...fieldNames,
+          colon && fieldName.name,
+        ], [colon && head.name])
       }
     }
   / ConstructorPattern
