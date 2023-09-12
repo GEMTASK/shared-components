@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Button, Divider, Icon, Slider, Spacer, Stack, Text, View } from 'bare';
 
@@ -11,9 +11,33 @@ const songs = [
   { title: 'Dreams', length: '3:30', artist: 'Benjamin Tissot — www.bensound.com', uri: './audio/bensound-dreams.mp3' },
 ];
 
-const Song = ({ index, title, length, artist, selected, favorite, onSongSelect }: any) => {
+const Song = ({
+  index,
+  title,
+  length,
+  artist,
+  selected,
+  favorite,
+  onSongSelect,
+  onSongPlay
+}: any) => {
+  const handlePointerDown = () => {
+    onSongSelect(index);
+  };
+
+  const handleDoubleClick = () => {
+    onSongSelect(index);
+    onSongPlay(index);
+  };
+
   return (
-    <View horizontal padding="small large" fillColor={selected ? 'blue-5' : undefined} onPointerDown={() => onSongSelect(index)}>
+    <View
+      horizontal
+      padding="small large"
+      fillColor={selected ? 'blue-5' : undefined}
+      onPointerDown={handlePointerDown}
+      onDoubleClick={handleDoubleClick}
+    >
       <View flex>
         <Text textColor={selected ? 'white' : undefined}>
           <Text fontWeight="semibold">{title}</Text>
@@ -33,15 +57,52 @@ const Song = ({ index, title, length, artist, selected, favorite, onSongSelect }
 const Music = ({ ...props }: any) => {
   console.log('Music()');
 
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const audioElementRef = useRef<HTMLAudioElement>(null);
+
+  // const [selectedSongIndex, setSelectedSongIndex] = useState<number>(0);
+  // const [activeSongIndex, setActiveSongIndex] = useState<number>(-1);
+
+  const [selectedSongIndex, setSelectedSongIndex] = useState(1);
+  const [activeSongIndex, setActiveSongIndex] = useState<number>(-1);
   const [favoriteIndexes, setFavoriteIndexes] = useState([2, 4]);
 
   const handleSongSelect = (index: number) => {
-    setSelectedIndex(index);
+    setSelectedSongIndex(index);
   };
+
+  const handleSongPlay = (index: number) => {
+    setActiveSongIndex(index);
+  };
+
+  const handlePlayClick = () => {
+    if (activeSongIndex >= 0) {
+      setActiveSongIndex(-1);
+    } else {
+      setActiveSongIndex(selectedSongIndex);
+    }
+  };
+
+  useEffect(() => {
+    if (!audioElementRef.current) {
+      return;
+    }
+
+    if (activeSongIndex >= 0) {
+      audioElementRef.current.play();
+    } else {
+      audioElementRef.current.pause();
+    }
+  }, [activeSongIndex]);
 
   return (
     <View {...props}>
+      <View
+        ref={audioElementRef}
+        as="audio"
+        src={activeSongIndex >= 0 ? songs[activeSongIndex].uri : undefined}
+      // onLoadedMetadata={handleLoadMetaData}
+      // onTimeUpdate={handleTimeUpdate}
+      />
       <Stack flex divider dividerInset={16} style={{ overflowY: 'auto' }}>
         {songs.map(({ title, length, artist }, index) => (
           <Song
@@ -50,9 +111,10 @@ const Music = ({ ...props }: any) => {
             title={title}
             length={length}
             artist={artist}
-            selected={index === selectedIndex}
+            selected={index === selectedSongIndex}
             favorite={favoriteIndexes.includes(index)}
             onSongSelect={handleSongSelect}
+            onSongPlay={handleSongPlay}
           />
         ))}
       </Stack>
@@ -62,7 +124,7 @@ const Music = ({ ...props }: any) => {
         <Spacer size="small" />
         <Stack horizontal spacing="large" align="center">
           <Button text iconSize="2x" icon="backward-step" titleTextColor="gray-6" />
-          <Button text iconSize="4x" icon="play-circle" titleTextColor="gray-6" />
+          <Button text iconSize="4x" icon={activeSongIndex >= 0 ? 'stop-circle' : "play-circle"} titleTextColor="gray-6" onClick={handlePlayClick} />
           <Button text iconSize="2x" icon="forward-step" titleTextColor="gray-6" />
         </Stack>
       </View>
