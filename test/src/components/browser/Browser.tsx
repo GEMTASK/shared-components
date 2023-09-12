@@ -3,6 +3,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Input, Divider, Button, Stack, Splitter, Desktop, Text, Spacer } from 'bare';
 
 const Browser = ({ ...props }: any) => {
+  console.log('Browser()');
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [value, setValue] = useState('');
@@ -69,4 +71,4 @@ const Browser = ({ ...props }: any) => {
   );
 };
 
-export default Browser;
+export default React.memo(Browser);

@@ -83,6 +83,8 @@ const CalcButton = ({ title, onClick, ...props }: any) => {
 };
 
 const Calculator = ({ ...props }: any) => {
+  console.log('Calculator()');
+
   const [{ display }, dispatch] = useReducer(reducer, { op: 'ADD', replace: true, value: 0, display: '0' });
 
   const NumberPress = (number: typeof Buttons[number]) => dispatch({ type: 'NUMBER', payload: number });
@@ -149,4 +151,4 @@ const Calculator = ({ ...props }: any) => {
   );
 };
 
-export default Calculator;
+export default React.memo(Calculator);

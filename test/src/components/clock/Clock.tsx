@@ -93,4 +93,4 @@ const Clock = ({ ...props }: any) => {
   );
 };
 
-export default Clock;
+export default React.memo(Clock);

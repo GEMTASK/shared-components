@@ -11,10 +11,26 @@ const Label = ({ children, ...props }: any) => {
   );
 };
 
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
+
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const Calendar = ({ ...props }: any) => {
+  console.log('Calculator()');
+
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const firstDayInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth());
@@ -80,4 +96,4 @@ const Calendar = ({ ...props }: any) => {
   );
 };
 
-export default Calendar;
+export default React.memo(Calendar);

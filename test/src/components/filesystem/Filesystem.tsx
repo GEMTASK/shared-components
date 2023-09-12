@@ -130,6 +130,8 @@ type Display = React.ElementType<DisplayProps>;
 //
 
 const Filesystem = ({ ...props }: any) => {
+  console.log('Files()');
+
   const [selectedDisplay, setSelectedDisplay] = useState<Display>(() => IconDisplay);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
@@ -191,4 +193,4 @@ const Filesystem = ({ ...props }: any) => {
   );
 };
 
-export default Filesystem;
+export default React.memo(Filesystem);

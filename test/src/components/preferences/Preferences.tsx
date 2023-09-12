@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { Checkbox, Spacer, Tabs, View } from 'bare';
 
 const Preferences = ({ ...props }: any) => {
+  console.log('Preferences()');
+
   const [useCollapsed, setUseCollapsed] = useState(false);
 
   return (
@@ -21,4 +23,4 @@ const Preferences = ({ ...props }: any) => {
   );
 };
 
-export default Preferences;
+export default React.memo(Preferences);

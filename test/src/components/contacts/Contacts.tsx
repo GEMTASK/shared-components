@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Button, Divider, Form, Input, Spacer, Splitter, Stack, Text, View } from 'bare';
 
@@ -11,6 +11,8 @@ type Contact = {
 };
 
 const Contacts = ({ ...props }) => {
+  console.log('Contacts()');
+
   const databaseRef = useRef<IDBDatabase>();
 
   const [contacts, setContacts] = useState<Contact[]>();
@@ -173,4 +175,4 @@ const Contacts = ({ ...props }) => {
   );
 };
 
-export default Contacts;
+export default React.memo(Contacts);

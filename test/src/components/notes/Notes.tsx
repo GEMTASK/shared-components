@@ -1,6 +1,10 @@
+import React from 'react';
+
 import { Text, View } from 'bare';
 
 const Notes = ({ ...props }: any) => {
+  console.log('Notes()');
+
   return (
     <Text
       flex
@@ -17,4 +21,4 @@ const Notes = ({ ...props }: any) => {
   );
 };
 
-export default Notes;
+export default React.memo(Notes);

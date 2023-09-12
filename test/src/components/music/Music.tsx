@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { Button, Divider, Icon, Slider, Spacer, Stack, Text, View } from 'bare';
 
@@ -31,6 +31,8 @@ const Song = ({ index, title, length, artist, selected, favorite, onSongSelect }
 };
 
 const Music = ({ ...props }: any) => {
+  console.log('Music()');
+
   const [selectedIndex, setSelectedIndex] = useState(1);
   const [favoriteIndexes, setFavoriteIndexes] = useState([2, 4]);
 
@@ -68,4 +70,4 @@ const Music = ({ ...props }: any) => {
   );
 };
 
-export default Music;
+export default React.memo(Music);

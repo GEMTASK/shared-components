@@ -468,6 +468,8 @@ const initialHistory = [
 ];
 
 const Terminal = ({ ...props }: any) => {
+  console.log('Termianl()');
+
   const historyElementRef = useRef<HTMLElement>(null);
   const inputElementRef = useRef<HTMLInputElement>(null);
   const firstEventRef = useRef<React.PointerEvent | null>(null);

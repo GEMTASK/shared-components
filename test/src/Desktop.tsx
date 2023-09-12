@@ -142,10 +142,14 @@ const initialState = [
   },
 ];
 
+const sideBarClientStyle = {
+  opacity: 1, borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)'
+};
+
 type WindowsProp = React.ComponentProps<typeof Desktop>['windows'];
 
 const App = () => {
-  // console.log('App()');
+  console.log('App()');
 
   const params = new URLSearchParams(window.location.search);
 
@@ -154,7 +158,7 @@ const App = () => {
   const [windowIdOrder, setWindowIdOrder] = useState<string[]>(windows.map(({ id }) => id));
   const [isSidebarHidden, setIsSidebarHidden] = useState(window.innerWidth < 1024);
 
-  const addWindow = (icon: string, title: string, element: React.ReactElement, rect?: Rect) => {
+  const addWindow = useCallback((icon: string, title: string, element: React.ReactElement, rect?: Rect) => {
     const id = uuidv4();
 
     const [right, bottom] = window.innerWidth >= 640
@@ -179,7 +183,7 @@ const App = () => {
 
     setFocusedWindowId(id);
     setWindowIdOrder(windowIdOrder => [...windowIdOrder, id]);
-  };
+  }, [isSidebarHidden]);
 
   const desktopMenuItems = [
     { title: 'About React Desktop', action: () => addWindow('info-circle', 'Desktop', <About />) },
@@ -211,9 +215,9 @@ const App = () => {
     'Applications',
     { title: 'Grid Draw', action: () => addWindow('draw-polygon', 'Grid Draw', <View as="iframe" frameBorder="0" src="https://mike-austin.com/draw-2" />, { width: 1280, height: 800 }) },
     { title: 'Bestest Movies Ever', action: () => addWindow('film', 'Bestest Movies Ever', <View as="iframe" frameBorder="0" src="https://bestestmoviesever.com" />, { width: 1280, height: 800 }) },
-    { title: 'Kopi Notebook', action: () => addWindow('book', 'Kopi Notebook', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/kopi-ide" />, { width: 1280, height: 800 }) },
-    { title: 'UI Builder', action: () => addWindow('display', 'UI Builder', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/builder" />, { width: 1280, height: 800 }) },
-    { title: 'Virtual Machine', action: () => addWindow('computer', 'Virtual Machine', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop/clients/vmachine" />, { width: 455, height: 845 }) },
+    { title: 'Kopi Notebook', action: () => addWindow('book', 'Kopi Notebook', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/kopi-ide" />, { width: 1280, height: 800 }) },
+    { title: 'UI Builder', action: () => addWindow('display', 'UI Builder', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/builder" />, { width: 1280, height: 800 }) },
+    { title: 'Virtual Machine', action: () => addWindow('computer', 'Virtual Machine', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/vmachine" />, { width: 455, height: 845 }) },
     { title: 'Generator Coroutines', action: () => addWindow('code', 'Generator Coroutines', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/gOQyPVE?default-tab=js%2Cresult&editable=true" />, { width: 1280, height: 800 }) },
     { title: 'Coroutines using await', action: () => addWindow('code', 'Coroutines using await', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/JjeqdeB?default-tab=js%2Cresult&editable=true" />, { width: 1280, height: 800 }) },
     { title: 'React Desktop 0.7', action: () => addWindow('display', 'React Desktop 0.7', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old" />, { width: 1280, height: 800 }) },
@@ -248,6 +252,10 @@ const App = () => {
       addWindow('marker', 'Markdown', <Markdown />, { width: 1024, height: 800 });
     }
   }, [addWindow]);
+
+  const handleSidebarClientClick = useCallback((event: React.PointerEvent) => {
+    event.stopPropagation();
+  }, []);
 
   useEffect(() => {
     const app = utilitiesMenuItems.find(item => item?.title === params.get('app'));
@@ -318,8 +326,8 @@ const App = () => {
           <Spacer flex size={window.innerWidth < 640 ? 'small' : 'large'} />
           <Stack spacing={window.innerWidth < 640 ? 'small' : 'large'}>
             <Calculator
-              style={{ opacity: 1, borderRadius: 4, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }}
-              onClick={(event: React.PointerEvent) => event.stopPropagation()}
+              style={sideBarClientStyle}
+              onClick={handleSidebarClientClick}
             />
           </Stack>
         </View>
