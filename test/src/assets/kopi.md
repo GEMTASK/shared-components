@@ -408,7 +408,7 @@ interpret (program) = {
     reducer = evaluate lines.(index)
     newIndex = reducer index
 
-    newIndex < 'size lines ? {
+    newIndex < lines.size ? {
       loop (newIndex)
     } : {
       "Done."

@@ -50,7 +50,7 @@ grayscale [255, 128, 255]
   `let (a = 1, b = 2) => a + b`,
   `'sin (30 * (PI / 180))`,
   `fetch "robots.txt"`,
-  `'size (fetch "robots.txt")`,
+  `(fetch "robots.txt").size`,
   `
 add1 (n) = n + 1
 add1 5
@@ -302,7 +302,7 @@ interpret (program) = {
     )
     newIndex = reducer index
 
-    newIndex < 'size lines ? {
+    newIndex < lines.size ? {
       loop (newIndex)
     } : "Done."
   }
