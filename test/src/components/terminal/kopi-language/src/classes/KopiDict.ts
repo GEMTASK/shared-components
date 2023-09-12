@@ -79,6 +79,10 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
 //
 
 class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
+  static async inspect() {
+    return `Dict`;
+  }
+
   static async fromIterable(iterable: AsyncIterable<KopiTuple>) {
     return fromIterable(iterable);
   }
@@ -92,6 +96,10 @@ class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
       key,
       value
     ]));
+
+    Object.defineProperty(this, 'size', {
+      get: () => new KopiNumber(this._map.size)
+    });
   }
 
   toString() {

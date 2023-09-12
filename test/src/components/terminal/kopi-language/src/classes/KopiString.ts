@@ -105,6 +105,10 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
 
     this.value = value;
     this.codePoints = [...value];
+
+    Object.defineProperty(this, 'size', {
+      get: () => new KopiNumber(this.value.length)
+    });
   }
 
   override async toString() {

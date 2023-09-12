@@ -6,35 +6,24 @@ import KopiFunction from './KopiFunction';
 
 import type { KopiStream } from './KopiStream';
 
-async function fromIterable(iterable: AsyncIterable<KopiValue>) {
-  let fields: KopiValue[] = [];
-
-  for await (const element of iterable) {
-    fields = [...fields, await element];
-  }
-
-  return new KopiTuple(fields);
-}
-
-let TupleStream: {
-  new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiTuple>;
-};
-
 let ArrayStream: {
   new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiTuple>;
 };
 
 import('./KopiStream').then((result) => {
-  TupleStream = result.default(fromIterable);
   ArrayStream = result.default(KopiArray.fromIterable);
 });
 
 //
-//
+// class KopiTuple
 //
 
 class KopiTuple extends KopiValue {
   static readonly empty = new KopiTuple([]);
+
+  static async inspect() {
+    return `Tuple`;
+  }
 
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {
     let fields: KopiValue[] = [];

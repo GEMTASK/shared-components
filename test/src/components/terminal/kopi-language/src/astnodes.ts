@@ -409,8 +409,6 @@ class IdentifierPattern extends ASTPatternNode {
   }
 
   override async match(value: KopiValue, context: Context) {
-    console.log('IdentifierPattern', this);
-
     const { environment, evaluate, bind } = context;
 
     if (value === KopiTuple.empty) {

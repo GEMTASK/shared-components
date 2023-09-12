@@ -3,6 +3,10 @@ import { KopiValue } from "../types";
 import KopiNumber from "./KopiNumber";
 
 class KopiDate extends KopiValue {
+  static async inspect() {
+    return `Date`;
+  }
+
   readonly _date: Date;
 
   readonly day: KopiNumber;
