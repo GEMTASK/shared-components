@@ -224,14 +224,14 @@ const App = () => {
     { title: 'Snakey Snake', action: () => addWindow('gamepad', 'Snakey Snake', <View as="iframe" frameBorder="0" src="https://editor.p5js.org/mike_ekim1024/full/8c5ovMThX" />, { width: 400, height: 474 }) },
   ];
 
-  const handleWindowFocus = (windowId: string) => {
+  const handleWindowFocus = useCallback((windowId: string) => {
     setFocusedWindowId(windowId);
 
     setWindowIdOrder(windowIdOrder => [
       ...windowIdOrder.filter((id) => id !== windowId),
       windowId,
     ]);
-  };
+  }, []);
 
   const handleWindowChange = useCallback((id: string, rect: DOMRect) => {
     setWindows(windows => windows.map(window => window.id === id
@@ -239,15 +239,15 @@ const App = () => {
       : window));
   }, []);
 
-  const handleWindowClose = (id: string) => {
+  const handleWindowClose = useCallback((id: string) => {
     setWindows(windows => windows.filter(window => window.id !== id));
-  };
+  }, []);
 
-  const handleWindowMessage = (event: MessageEvent) => {
+  const handleWindowMessage = useCallback((event: MessageEvent) => {
     if (event.data === 'markdown') {
       addWindow('marker', 'Markdown', <Markdown />, { width: 1024, height: 800 });
     }
-  };
+  }, [addWindow]);
 
   useEffect(() => {
     const app = utilitiesMenuItems.find(item => item?.title === params.get('app'));

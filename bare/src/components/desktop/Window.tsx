@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import View, { ViewProps } from '../view/index.js';
@@ -178,8 +178,18 @@ const Sizer = ({ ...props }: any) => {
   );
 };
 
+const cloneProps = {
+  fillColor: 'white',
+  flex: true,
+  minHeight: 0,
+  style: {
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+  },
+};
+
 //
-//
+// Window
 //
 
 type WindowProps = {
@@ -192,7 +202,7 @@ type WindowProps = {
   onWindowClose?: (id: string) => void,
 } & ViewProps;
 
-const Window = React.memo(({
+const Window = ({
   id,
   title,
   order,
@@ -203,9 +213,7 @@ const Window = React.memo(({
   onWindowClose,
   ...props
 }: WindowProps) => {
-  // console.log('Window()');
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  console.log('Window()');
 
   const windowElementRef = useRef<HTMLElement>(null);
   const rightWindowRectsRef = useRef<DOMRect>(new DOMRect());
@@ -261,9 +269,9 @@ const Window = React.memo(({
     }
   }, []);
 
-  const handleCloseButtonPointerDown = (event: React.PointerEvent) => {
+  const handleCloseButtonPointerDown = useCallback((event: React.PointerEvent) => {
     event.stopPropagation();
-  };
+  }, []);
 
   const handleCloseButtonClick = useCallback(() => {
     if (onWindowClose) {
@@ -271,13 +279,13 @@ const Window = React.memo(({
     }
   }, []);
 
-  const handleMenuButtonClick = () => {
-    setIsMenuOpen(isMenuOpen => !isMenuOpen);
-  };
-
-  const handleWindowPointerDown = () => {
+  const handleWindowPointerDown = useCallback(() => {
     onWindowFocus?.(id);
-  };
+  }, []);
+
+  const style = useMemo(() => ({
+    zIndex: order
+  } as const), [order]);
 
   const titleBarEvents = {
     onPointerDown: handleTitlePointerDown,
@@ -290,7 +298,7 @@ const Window = React.memo(({
   return (
     <View
       ref={windowElementRef}
-      style={{ zIndex: order }}
+      style={style}
       minWidth={React.isValidElement(client) && client.props.minWidth}
       tabIndex={0}
       className={styles.Window}
@@ -310,19 +318,9 @@ const Window = React.memo(({
           <Button hover size="xsmall" icon="arrow-up-right-from-square" />
         </View>
       </View>
-      {/* <Divider fillColor="gray-4" /> */}
-      {React.cloneElement(client as React.ReactElement, {
-        fillColor: 'white',
-        flex: true,
-        minHeight: 0,
-        style: {
-          borderBottomLeftRadius: 4,
-          borderBottomRightRadius: 4,
-        },
-        // isMenuOpen,
-      })}
+      {React.cloneElement(client as React.ReactElement, cloneProps)}
     </View>
   );
-});
+};
 
-export default Window;
+export default React.memo(Window);

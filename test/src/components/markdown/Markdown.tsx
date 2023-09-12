@@ -216,6 +216,8 @@ const Code = ({
 //
 
 const Markdown = ({ ...props }) => {
+  console.log('Markdown()', props);
+
   const [markdown, setMarkdown] = useState('');
 
   const sidebarStyles = useSidebarStyles();
@@ -300,4 +302,4 @@ const Markdown = ({ ...props }) => {
   );
 };
 
-export default Markdown;
+export default React.memo(Markdown);

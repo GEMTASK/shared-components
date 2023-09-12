@@ -195,7 +195,7 @@ let (a = 1) => {
 Also common to many languages, Kopi has Array and Dictionary literal types, and each has a mirror pattern which can be used to extract and match values.
 
 ```kopi
-[1, 2, 3] | size
+[1, 2, 3].size
 ```
 
 Matching on an array pattern:

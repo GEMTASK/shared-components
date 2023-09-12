@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useRef } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 
 import View from '../view/index.js';
 
@@ -42,7 +42,7 @@ const Desktop = ({
   onWindowChange,
   onWindowClose,
 }: DesktopProps) => {
-  // console.log('Desktop()');
+  console.log('Desktop()');
 
   const desktopElementRef = useRef<HTMLElement>(null);
 
@@ -67,11 +67,15 @@ const Desktop = ({
     };
   }, []);
 
+  const style = useMemo(() => ({
+    background: `url(${wallpaper}) center center / cover`, userSelect: 'none'
+  } as const), [wallpaper]);
+
   return (
     <View
       flex
       ref={desktopElementRef}
-      style={{ background: `url(${wallpaper}) center center / cover`, userSelect: 'none' }}
+      style={style}
       onPointerDown={handlePointerDown}
     >
       {windows.map(({ id, title, element, rect }) => (

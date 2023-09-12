@@ -634,4 +634,4 @@ const Terminal = ({ ...props }: any) => {
   );
 };
 
-export default Terminal;
+export default React.memo(Terminal);
