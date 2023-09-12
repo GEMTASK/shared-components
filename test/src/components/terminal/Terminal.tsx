@@ -49,7 +49,7 @@ class KopiElement extends KopiValue {
         if (awaitedChild.children instanceof KopiString) {
           return React.createElement(this.component, awaitedChild.props, awaitedChild.children.value) as any;
         } else if (awaitedChild.children) {
-          return React.createElement(awaitedChild.component, awaitedChild.props, await this.inspectChildren(awaitedChild.children.elements));
+          return React.createElement(awaitedChild.component, awaitedChild.props, await this.inspectChildren(awaitedChild.children._elements));
         }
 
         return React.createElement(awaitedChild.component, awaitedChild.props) as any;
@@ -61,7 +61,7 @@ class KopiElement extends KopiValue {
     if (this.children instanceof KopiString) {
       return React.createElement(this.component, this.props, this.children.value) as any;
     } else if (this.children) {
-      return React.createElement(this.component, this.props, await this.inspectChildren(this.children.elements)) as any;
+      return React.createElement(this.component, this.props, await this.inspectChildren(this.children._elements)) as any;
     }
 
     return React.createElement(this.component, this.props) as any;

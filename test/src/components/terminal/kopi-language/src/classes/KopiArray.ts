@@ -73,25 +73,25 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
     return fromIterable(iterable);
   }
 
-  elements: (KopiValue | Promise<KopiValue>)[];
+  _elements: (KopiValue | Promise<KopiValue>)[];
 
   constructor(elements: (KopiValue | Promise<KopiValue>)[]) {
     super();
 
-    this.elements = elements;
+    this._elements = elements;
 
     Object.defineProperty(this, 'size', {
-      get: () => new KopiNumber(this.elements.length)
+      get: () => new KopiNumber(this._elements.length)
     });
 
     Promise.all(elements).then(resolvedElements => {
-      this.elements = resolvedElements;
+      this._elements = resolvedElements;
     });
   }
 
   override async inspect() {
     const elements = await Promise.all(
-      this.elements.map(async element => (await element).inspect())
+      this._elements.map(async element => (await element).inspect())
     );
 
     return `[${elements.join(', ')}]`;
@@ -99,24 +99,24 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
 
   async toString() {
     const elements = await Promise.all(
-      this.elements.map(async element => (await element).toString())
+      this._elements.map(async element => (await element).toString())
     );
 
     return `[${elements.join(', ')}]`;
   }
 
   async *[Symbol.asyncIterator]() {
-    for (const value of this.elements) {
+    for (const value of this._elements) {
       yield value;
     }
   }
 
   size() {
-    return new KopiNumber(this.elements.length);
+    return new KopiNumber(this._elements.length);
   }
 
   empty() {
-    return new KopiBoolean(this.elements.length === 0);
+    return new KopiBoolean(this._elements.length === 0);
   }
 
   async at(index: KopiNumber | KopiRange) {
@@ -127,13 +127,13 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
       ]);
 
       if (from instanceof KopiNumber && to instanceof KopiNumber) {
-        return new KopiArray(this.elements.slice(from.value, to.value));
+        return new KopiArray(this._elements.slice(from.value, to.value));
       }
 
       throw new Error('Array at range must be numeric.');
     }
 
-    return this.elements[index.value] ?? KopiTuple.empty;
+    return this._elements[index.value] ?? KopiTuple.empty;
   }
 
   async toArray() {
@@ -143,13 +143,13 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
   //
 
   async '=='(that: KopiArray, context: Context) {
-    if (!(that instanceof KopiArray) || that.elements.length !== this.elements.length) {
+    if (!(that instanceof KopiArray) || that._elements.length !== this._elements.length) {
       return new KopiBoolean(false);
     }
 
-    for (let index = 0; index < this.elements.length; ++index) {
-      const thisValue = await this.elements[index];
-      const thatValue = await that.elements[index];
+    for (let index = 0; index < this._elements.length; ++index) {
+      const thisValue = await this._elements[index];
+      const thatValue = await that._elements[index];
 
       const result = await thisValue.invoke('==', [thatValue, context]);
 
@@ -162,7 +162,7 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
   }
 
   '++'(that: KopiArray) {
-    return new KopiArray(this.elements.concat(that.elements));
+    return new KopiArray(this._elements.concat(that._elements));
   }
 
   zip(_func: Function | KopiTuple, context: Context) {
@@ -172,7 +172,7 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
 
     const result = (async function* map(this: KopiArray) {
       const iters = await Promise.all(
-        this.elements.map(async (element) => {
+        this._elements.map(async (element) => {
           const resolvedElement = await element;
 
           const iterFunc = resolvedElement[Symbol.asyncIterator];
