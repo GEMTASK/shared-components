@@ -154,7 +154,6 @@ const App = () => {
   const params = new URLSearchParams(window.location.search);
 
   const [windows, setWindows] = useState<WindowsProp>(window.innerWidth < 1440 || params.get('app') ? [] : initialState);
-  const [focusedWindowId, setFocusedWindowId] = useState<string>();
   const [windowIdOrder, setWindowIdOrder] = useState<string[]>(windows.map(({ id }) => id));
   const [isSidebarHidden, setIsSidebarHidden] = useState(window.innerWidth < 1024);
 
@@ -181,7 +180,6 @@ const App = () => {
       }
     ]);
 
-    setFocusedWindowId(id);
     setWindowIdOrder(windowIdOrder => [...windowIdOrder, id]);
   }, [isSidebarHidden]);
 
@@ -229,8 +227,6 @@ const App = () => {
   ];
 
   const handleWindowFocus = useCallback((windowId: string) => {
-    setFocusedWindowId(windowId);
-
     setWindowIdOrder(windowIdOrder => [
       ...windowIdOrder.filter((id) => id !== windowId),
       windowId,
@@ -309,7 +305,7 @@ const App = () => {
           <View fillColor="gray-1" style={{ borderRadius: 2.5, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }}>
             <Spacer size="small" />
             <Stack onClick={(event: React.PointerEvent) => event.stopPropagation()}>
-              {windows.map((window, index, _, isFocused = window.id === focusedWindowId) => (
+              {windows.map((window, index, _, isFocused = window.id === windowIdOrder.at(-1)) => (
                 <View key={index} horizontal hoverTarget='a' align="left" padding="small large" fillColor={isFocused ? 'gray-3' : undefined} onClick={() => handleWindowFocus(window.id)}>
                   <Icon fixedWidth icon={window?.icon as any} />
                   <Spacer size="small" />

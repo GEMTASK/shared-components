@@ -15,10 +15,10 @@ const useStyles = createUseStyles({
     borderRadius: 4,
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.25), 0 0 0 1px hsla(0, 0%, 50%, 0.25)',
     transition: 'box-shadow 0.05s',
-    '&:focus, &:focus-within': {
-      boxShadow: '0 16px 32px rgba(0, 0, 0, 0.25), 0 0 0 1px hsla(0, 0%, 50%, 0.25)',
-    },
     willChange: 'left, top',
+  },
+  focused: {
+    boxShadow: '0 16px 32px rgba(0, 0, 0, 0.25), 0 0 0 1px hsla(0, 0%, 50%, 0.25)',
   },
   Titlebar: {
     height: 32,
@@ -196,6 +196,7 @@ type WindowProps = {
   id: string,
   title: string,
   order: number,
+  focused: boolean,
   rect?: Rect,
   onWindowFocus?: (id: string) => void,
   onWindowChange?: (id: string, rect: DOMRect) => void,
@@ -206,6 +207,7 @@ const Window = ({
   id,
   title,
   order,
+  focused,
   rect,
   children,
   onWindowFocus,
@@ -301,7 +303,7 @@ const Window = ({
       style={style}
       minWidth={React.isValidElement(client) && client.props.minWidth}
       tabIndex={0}
-      className={styles.Window}
+      className={styles.Window + (focused ? ' ' + styles.focused : '')}
       {...props}
       onPointerDown={handleWindowPointerDown}
     >
