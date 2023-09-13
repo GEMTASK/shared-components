@@ -15,24 +15,24 @@ const Eyes = ({ ...props }: any) => {
       const rect = svgElementRef.current.getBoundingClientRect();
 
       const leftEyeAngle = Math.atan2(
-        event.clientY - rect.top - 255 / 2,
-        event.clientX - rect.left - 255 / 4
+        event.clientY - rect.top - rect.height / 2,
+        event.clientX - rect.left - rect.width / 4
       );
 
       const leftEyeLength = Math.sqrt(
-        (event.clientX - rect.left - 255 / 4) ** 2 + (event.clientY - rect.top - 255 / 2) ** 2
+        (event.clientX - rect.left - rect.width / 4) ** 2 + (event.clientY - rect.top - rect.height / 2) ** 2
       ) / 2.5;
 
       setLeftEyeAngle(leftEyeAngle - Math.PI / 2);
       setLeftEyeLength(leftEyeLength);
 
       const rightEyeAngle = Math.atan2(
-        event.clientY - rect.top - 255 / 2,
-        event.clientX - rect.left - 255 / 1.5
+        event.clientY - rect.top - rect.height / 2,
+        event.clientX - rect.left - rect.width / 1.5
       );
 
       const rightEyeLength = Math.sqrt(
-        (event.clientX - rect.left - 255 / 1.5) ** 2 + (event.clientY - rect.top - 255 / 2) ** 2
+        (event.clientX - rect.left - rect.width / 1.5) ** 2 + (event.clientY - rect.top - rect.height / 2) ** 2
       ) / 2.5;
 
       setRightEyeAngle(rightEyeAngle - Math.PI / 2);
