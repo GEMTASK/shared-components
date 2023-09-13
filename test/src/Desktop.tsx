@@ -17,6 +17,7 @@ import Contacts from './components/contacts';
 import Terminal from './components/terminal';
 import Preferences from './components/preferences';
 import Markdown from './components/markdown';
+import Eyes from './components/eyes';
 
 import Styleguide from './App';
 import Email from './Email';
@@ -128,6 +129,11 @@ const initialState = [
   {
     id: uuidv4(), icon: 'folder-open', title: 'Files', element: <Filesystem />, rect: {
       x: 15, y: 360, width: 675, height: 540,
+    }
+  },
+  {
+    id: uuidv4(), icon: 'eyes', title: 'Eyes', element: <Eyes />, rect: {
+      x: 705, y: 360, width: 255, height: 255 + 32,
     }
   },
   // {
