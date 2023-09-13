@@ -132,7 +132,7 @@ const initialState = [
     }
   },
   {
-    id: uuidv4(), icon: 'eyes', title: 'Eyes', element: <Eyes />, rect: {
+    id: uuidv4(), icon: 'eye', title: 'Eyes', element: <Eyes />, rect: {
       x: 705, y: 360, width: 255, height: 130 + 32,
     }
   },
@@ -206,6 +206,7 @@ const App = () => {
     { title: 'Contacts', action: () => addWindow('address-book', 'Contacts', <Contacts />, { width: 800, height: 600 }) },
     { title: 'Terminal', action: () => addWindow('terminal', 'Terminal', <Terminal />, { width: 800, height: 600 }) },
     { title: 'Markdown', action: () => addWindow('marker', 'Markdown', <Markdown />, { width: 1024, height: 800 }) },
+    { title: 'Eyes', action: () => addWindow('eye', 'Eyes', <Eyes />, { width: 255, height: 130 + 32 }) },
     null,
     { title: 'Browser', action: () => addWindow('globe', 'Browser', <Browser />, { width: 1440, height: 1024 }) },
     { title: 'Email', action: () => addWindow('inbox', 'Email', <Email />, { width: 1440, height: 1024 }) },
