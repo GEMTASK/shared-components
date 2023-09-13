@@ -36,7 +36,7 @@ abstract class KopiValue {
     const { environment } = context ?? {};
 
     const extensions = environment?._extensions as unknown as Map<Function, any>;
-    const method = Object.getPrototypeOf(this)[methodName] ?? extensions?.get(this.constructor)[methodName];
+    const method = extensions?.get(this.constructor)?.[methodName] ?? Object.getPrototypeOf(this)[methodName];
 
     if (method) {
       return await method.apply(this, [argument, context]);
