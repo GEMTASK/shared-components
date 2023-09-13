@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -189,14 +189,14 @@ const App = () => {
     setWindowIdOrder(windowIdOrder => [...windowIdOrder, id]);
   }, [isSidebarHidden]);
 
-  const desktopMenuItems = [
+  const desktopMenuItems = useMemo(() => [
     { title: 'About React Desktop', action: () => addWindow('info-circle', 'Desktop', <About />) },
     null,
     { title: 'Preferences', action: () => addWindow('sliders', 'Preferences', <Preferences />) },
     { title: 'Enter Full Screen', action: () => document.body.requestFullscreen() },
-  ];
+  ], [addWindow]);
 
-  const utilitiesMenuItems = [
+  const utilitiesMenuItems = useMemo(() => [
     { title: 'Calendar', action: () => addWindow('calendar', 'Calendar', <Calendar />, { width: 360, height: 332 }) },
     { title: 'Clock', action: () => addWindow('clock', 'Clock', <Clock />, { width: 300, height: 332 }) },
     { title: 'Calculator', action: () => addWindow('calculator', 'Calculator', <Calculator />, { width: 255, height: 332 }) },
@@ -214,9 +214,9 @@ const App = () => {
     { title: 'Live', action: () => addWindow('question', 'Live', <Live />, { width: 1280, height: 800 }) },
     null,
     { title: 'Styleguide', action: () => addWindow('palette', 'Styleguide', <Styleguide />, { width: 1280, height: 800 }) },
-  ];
+  ], [addWindow]);
 
-  const applicationMenuItems = [
+  const applicationMenuItems = useMemo(() => [
     'Applications',
     { title: 'Grid Draw', action: () => addWindow('draw-polygon', 'Grid Draw', <View as="iframe" frameBorder="0" src="https://mike-austin.com/draw-2" />, { width: 1280, height: 800 }) },
     { title: 'Bestest Movies Ever', action: () => addWindow('film', 'Bestest Movies Ever', <View as="iframe" frameBorder="0" src="https://bestestmoviesever.com" />, { width: 1280, height: 800 }) },
@@ -231,7 +231,7 @@ const App = () => {
     { title: 'React Asteroids', action: () => addWindow('gamepad', 'React Asteroids', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/mdpYMym?default-tab=js%2Cresult" />, { width: 1440, height: 800 }) },
     { title: 'Stetegic Asteroids', action: () => addWindow('gamepad', 'Stetegic Asteroids', <View as="iframe" frameBorder="0" src="https://editor.p5js.org/mike_ekim1024/full/q8nWdZV0U" />, { width: 800, height: 873 }) },
     { title: 'Snakey Snake', action: () => addWindow('gamepad', 'Snakey Snake', <View as="iframe" frameBorder="0" src="https://editor.p5js.org/mike_ekim1024/full/8c5ovMThX" />, { width: 400, height: 474 }) },
-  ];
+  ], [addWindow]);
 
   const handleWindowFocus = useCallback((windowId: string) => {
     setWindowIdOrder(windowIdOrder => [
@@ -272,7 +272,7 @@ const App = () => {
     return () => {
       window.removeEventListener('message', handleWindowMessage);
     };
-  }, []);
+  }, [handleWindowMessage, params, utilitiesMenuItems]);
 
   return (
     <View className={styles.App}>
