@@ -15,24 +15,24 @@ const Eyes = ({ ...props }: any) => {
       const rect = svgElementRef.current.getBoundingClientRect();
 
       const leftEyeAngle = Math.atan2(
-        event.clientY - rect.top - rect.height / 2,
-        event.clientX - rect.left - rect.width / 4
+        event.clientY - rect.top - rect.height * 0.5,
+        event.clientX - rect.left - rect.width * 0.25
       );
 
       const leftEyeLength = Math.sqrt(
-        (event.clientX - rect.left - rect.width / 4) ** 2 + (event.clientY - rect.top - rect.height / 2) ** 2
+        (event.clientX - rect.left - rect.width * 0.25) ** 2 + (event.clientY - rect.top - rect.height * 0.5) ** 2
       ) / 2.5;
 
       setLeftEyeAngle(leftEyeAngle - Math.PI / 2);
       setLeftEyeLength(leftEyeLength);
 
       const rightEyeAngle = Math.atan2(
-        event.clientY - rect.top - rect.height / 2,
-        event.clientX - rect.left - rect.width / 1.5
+        event.clientY - rect.top - rect.height * 0.5,
+        event.clientX - rect.left - rect.width * 0.75
       );
 
       const rightEyeLength = Math.sqrt(
-        (event.clientX - rect.left - rect.width / 1.5) ** 2 + (event.clientY - rect.top - rect.height / 2) ** 2
+        (event.clientX - rect.left - rect.width * 0.75) ** 2 + (event.clientY - rect.top - rect.height * 0.5) ** 2
       ) / 2.5;
 
       setRightEyeAngle(rightEyeAngle - Math.PI / 2);
@@ -60,10 +60,10 @@ const Eyes = ({ ...props }: any) => {
 
   return (
     <View ref={svgElementRef} fillColor="white" {...props}>
-      <View as="svg" flex viewBox="0 0 100 100">
+      <View as="svg" flex viewBox="0 0 100 50">
         <circle
           cx={25}
-          cy={50}
+          cy={25}
           r={20}
           fill="transparent"
           stroke="#343a40"
@@ -71,7 +71,7 @@ const Eyes = ({ ...props }: any) => {
         />
         <circle
           cx={75}
-          cy={50}
+          cy={25}
           r={20}
           fill="transparent"
           stroke="#343a40"
@@ -79,13 +79,13 @@ const Eyes = ({ ...props }: any) => {
         />
         <circle
           cx={leftEye.x + 25}
-          cy={leftEye.y + 50}
+          cy={leftEye.y + 25}
           r={5}
           fill="#343a40"
         />
         <circle
           cx={rightEye.x + 75}
-          cy={rightEye.y + 50}
+          cy={rightEye.y + 25}
           r={5}
           fill="#343a40"
         />

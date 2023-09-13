@@ -133,7 +133,7 @@ const initialState = [
   },
   {
     id: uuidv4(), icon: 'eyes', title: 'Eyes', element: <Eyes />, rect: {
-      x: 705, y: 360, width: 255, height: 255 + 32,
+      x: 705, y: 360, width: 255, height: 130 + 32,
     }
   },
   // {
