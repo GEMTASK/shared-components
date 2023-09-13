@@ -94,4 +94,4 @@ const Eyes = ({ ...props }: any) => {
   );
 };
 
-export default Eyes;
+export default React.memo(Eyes);

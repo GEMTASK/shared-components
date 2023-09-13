@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-import { View, Text, Image, Button, Spacer, Divider, Stack, Grid, createLink, Icon } from 'bare';
-import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table, Desktop } from 'bare';
+import { View, Text, Button, Spacer, Stack, createLink, Icon } from 'bare';
+import { Menu, Desktop } from 'bare';
 import { Rect } from 'bare/dist/components/desktop/Desktop';
 
 import Calendar from './components/calendar';
@@ -90,16 +90,6 @@ const DigitalClock = () => {
   );
 };
 
-const windowConfig = {
-  calendar: {
-    icon: 'calendar',
-    title: 'Calendar',
-    element: <Calendar minWidth={360} />, rect: {
-      x: 15, y: 15, width: 360, height: 332,
-    }
-  }
-};
-
 const initialState = [
   {
     id: uuidv4(), icon: 'calendar', title: 'Calendar', element: <Calendar minWidth={360} />, rect: {
@@ -157,7 +147,7 @@ type WindowsProp = React.ComponentProps<typeof Desktop>['windows'];
 const App = () => {
   console.log('App()');
 
-  const params = new URLSearchParams(window.location.search);
+  const params = useMemo(() => new URLSearchParams(window.location.search), []);
 
   const [windows, setWindows] = useState<WindowsProp>(window.innerWidth < 1440 || params.get('app') ? [] : initialState);
   const [windowIdOrder, setWindowIdOrder] = useState<string[]>(windows.map(({ id }) => id));

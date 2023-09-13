@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { LoremIpsum } from 'lorem-ipsum';
 
-// import styles from './App.module.css';
-
-import { hues, View, Text, Image, Button, Stack, Spacer, Divider, createLink } from 'bare';
-import { Input, Popup, Menu, Tabs, Modal, Form, Card, Table, Toast, toast } from 'bare';
-
-const Link = createLink(RouterLink);
+import { hues, View, Text, Image, Button, Stack, Spacer, Divider } from 'bare';
+import { Input, Menu, Tabs, Modal, Form, Card, Table, Toast, toast } from 'bare';
 
 const lorem = new LoremIpsum({ wordsPerSentence: { min: 2, max: 8 } });
 
@@ -417,4 +412,4 @@ function App({ ...props }) {
   );
 }
 
-export default App;
+export default React.memo(App);

@@ -9,17 +9,17 @@ const calculateHands = (date: Date) => {
 
   return ({
     hour: {
-      x: Math.cos(hourAngle) * 0 - Math.sin(hourAngle) * 85,
-      y: Math.cos(hourAngle) * 85 + Math.sin(hourAngle) * 0,
+      x: -Math.sin(hourAngle) * 85,
+      y: +Math.cos(hourAngle) * 85,
     },
     minute: {
-      x: Math.cos(minuteAngle) * 0 - Math.sin(minuteAngle) * 85,
-      y: Math.cos(minuteAngle) * 85 + Math.sin(minuteAngle) * 0,
+      x: -Math.sin(minuteAngle) * 85,
+      y: +Math.cos(minuteAngle) * 85,
 
     },
     second: {
-      x: Math.cos(secondAngle) * 0 - Math.sin(secondAngle) * 85,
-      y: Math.cos(secondAngle) * 85 + Math.sin(secondAngle) * 0,
+      x: -Math.sin(secondAngle) * 85,
+      y: +Math.cos(secondAngle) * 85,
     },
   });
 };
@@ -54,8 +54,8 @@ const Clock = ({ ...props }: any) => {
         {Array.from({ length: 12 }, (_, index, angle = (index * 30 + 180) * (Math.PI / 180)) => (
           <circle
             key={index}
-            cx={Math.cos(angle) * 0 - Math.sin(angle) * 85 + 100}
-            cy={Math.cos(angle) * 85 + Math.sin(angle) * 0 + 100}
+            cx={-Math.sin(angle) * 85 + 100}
+            cy={+Math.cos(angle) * 85 + 100}
             r={index % 3 === 0 ? 3 : 1}
             fill="#343a40"
           />
