@@ -177,9 +177,9 @@ const Filesystem = ({ ...props }: any) => {
         <View flex>
           <View horizontal padding="small large" fillColor="gray-1">
             <View>
-              <Text fontSize="xsmall" textColor="gray-6">file://localhost</Text>
+              <Text fontSize="xsmall" textColor="gray-6">webdav.mike-austin.com</Text>
               <Spacer size="small" />
-              <Text fontWeight="semibold">/photos/beach/</Text>
+              <Text fontWeight="semibold">/</Text>
             </View>
             <Spacer flex size="large" />
             <DisplayButton icon="square" displayType={'Icon'} />
