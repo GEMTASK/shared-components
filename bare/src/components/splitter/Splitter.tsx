@@ -80,14 +80,14 @@ const Splitter = ({
 
   return (
     <View {...props} style={{ ...style, scrollSnapType: 'x mandatory' }}>
-      {React.cloneElement(childrenArray[0] as React.ReactElement, {
+      {React.isValidElement(childrenArray[0]) && React.cloneElement(childrenArray[0] as React.ReactElement, {
         ref: elementRef,
         style: {
           scrollSnapAlign: 'start'
         }
       })}
       <Handle onDrag={handleDrag} onDragFinish={handleDragFinish} />
-      {React.cloneElement(childrenArray[1] as React.ReactElement, {
+      {React.isValidElement(childrenArray[1]) && React.cloneElement(childrenArray[1] as React.ReactElement, {
         style: {
           scrollSnapAlign: 'start'
         }
