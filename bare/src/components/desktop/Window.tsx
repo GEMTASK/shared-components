@@ -309,7 +309,7 @@ const Window = ({
       onPointerDown={handleWindowPointerDown}
     >
       <Sizer absolute style={{ inset: -15, touchAction: 'none' }} />
-      <View fillColor="gray-4" className={styles.Titlebar} {...titleBarEvents}>
+      <View fillColor="gray-3" className={styles.Titlebar} {...titleBarEvents}>
         <View absolute className={styles.Extender} />
         <View horizontal alignVertical="middle" style={{ height: 32, flexShrink: 0 }}>
           <Button hover size="xsmall" icon="close" onPointerDown={handleCloseButtonPointerDown} onClick={handleCloseButtonClick} />
@@ -321,6 +321,7 @@ const Window = ({
           <Button hover size="xsmall" icon="arrow-up-right-from-square" />
         </View>
       </View>
+      <Divider fillColor="gray-4" />
       {React.cloneElement(client as React.ReactElement, cloneProps)}
     </View>
   );
