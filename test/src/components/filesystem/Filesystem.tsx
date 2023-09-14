@@ -118,7 +118,7 @@ const DisplayType = {
   Tile: TileDisplay,
   List: ListDisplay,
   Table: TableDisplay,
-};
+} as const;
 
 //
 // Files
