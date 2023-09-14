@@ -83,7 +83,8 @@ const Desktop = ({
           key={id}
           id={id}
           title={title}
-          focused={windowOrder.at(-1) === id}
+          // focused={windowOrder.at(-1) === id}
+          focused={windowOrder[windowOrder.length - 1] === id}
           rect={rect}
           data-id={id}
           order={windowOrder.indexOf(id)}

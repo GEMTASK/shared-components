@@ -36,11 +36,15 @@ const useStyles = createUseStyles({
 
 type SliderProps = {
   value: number,
+  max?: number,
+  onInput?: ViewProps['onInput'],
   onValueChange?: (value: number) => void,
 } & ViewProps;
 
 const Slider = ({
   value,
+  max,
+  onInput,
   onValueChange,
   ...props
 }: SliderProps) => {
@@ -74,7 +78,14 @@ const Slider = ({
     <View flex horizontal align="left" {...props}>
       {/* <Input type="number" value={`${value}`} style={{ width: 60 }} />
       <Spacer size="small" /> */}
-      <input ref={inputElementRef} type="range" className={styles.Inner} />
+      <input
+        ref={inputElementRef}
+        type="range"
+        value={value}
+        max={max}
+        className={styles.Inner}
+        onInput={onInput}
+      />
     </View>
   );
 };

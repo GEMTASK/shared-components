@@ -59,12 +59,11 @@ const Music = ({ ...props }: any) => {
 
   const audioElementRef = useRef<HTMLAudioElement>(null);
 
-  // const [selectedSongIndex, setSelectedSongIndex] = useState<number>(0);
-  // const [activeSongIndex, setActiveSongIndex] = useState<number>(-1);
-
   const [selectedSongIndex, setSelectedSongIndex] = useState(1);
   const [activeSongIndex, setActiveSongIndex] = useState<number>(-1);
-  const [favoriteIndexes, setFavoriteIndexes] = useState([2, 4]);
+  const [favoriteIndexes, setFavoriteIndexes] = useState([1, 4]);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
 
   const handleSongSelect = (index: number) => {
     setSelectedSongIndex(index);
@@ -79,6 +78,24 @@ const Music = ({ ...props }: any) => {
       setActiveSongIndex(-1);
     } else {
       setActiveSongIndex(selectedSongIndex);
+    }
+  };
+
+  const handleLoadMetaData = (event: React.SyntheticEvent<any, MediaStreamTrackEvent>) => {
+    if (audioElementRef.current) {
+      setDuration(audioElementRef.current.duration);
+    }
+  };
+
+  const handleTimeUpdate = (event: React.SyntheticEvent<any, MediaStreamTrackEvent>) => {
+    if (audioElementRef.current) {
+      setCurrentTime(audioElementRef.current.currentTime);
+    }
+  };
+
+  const handleSliderChange = (event: React.SyntheticEvent<any, MediaStreamTrackEvent>) => {
+    if (audioElementRef.current) {
+      audioElementRef.current.currentTime = Number(event.currentTarget.value);
     }
   };
 
@@ -100,8 +117,8 @@ const Music = ({ ...props }: any) => {
         ref={audioElementRef}
         as="audio"
         src={activeSongIndex >= 0 ? songs[activeSongIndex].uri : undefined}
-      // onLoadedMetadata={handleLoadMetaData}
-      // onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadMetaData}
+        onTimeUpdate={handleTimeUpdate}
       />
       <Stack flex divider dividerInset={16} style={{ overflowY: 'auto' }}>
         {songs.map(({ title, length, artist }, index) => (
@@ -120,7 +137,7 @@ const Music = ({ ...props }: any) => {
       </Stack>
       <Divider />
       <View fillColor="gray-1" padding="large" style={{ borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}>
-        <Slider value={0} style={{ marginTop: -4 }} />
+        <Slider value={currentTime} max={duration} style={{ marginTop: -4 }} onInput={handleSliderChange} />
         <Spacer size="small" />
         <Stack horizontal spacing="large" align="center">
           <Button text iconSize="2x" icon="backward-step" titleTextColor="gray-6" />
