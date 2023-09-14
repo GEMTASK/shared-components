@@ -51,6 +51,7 @@ const Handle = ({ onDrag, onDragFinish }: any) => {
 
 const Splitter = ({
   children,
+  style,
   ...props
 }: any) => {
   const elementRef = useRef<HTMLElement>(null);
@@ -78,12 +79,19 @@ const Splitter = ({
   const childrenArray = React.Children.toArray(children);
 
   return (
-    <View {...props}>
+    <View {...props} style={{ ...style, scrollSnapType: 'x mandatory' }}>
       {React.cloneElement(childrenArray[0] as React.ReactElement, {
         ref: elementRef,
+        style: {
+          scrollSnapAlign: 'start'
+        }
       })}
       <Handle onDrag={handleDrag} onDragFinish={handleDragFinish} />
-      {childrenArray[1]}
+      {React.cloneElement(childrenArray[1] as React.ReactElement, {
+        style: {
+          scrollSnapAlign: 'start'
+        }
+      })}
     </View>
   );
 };

@@ -150,6 +150,7 @@ const Files = ({ ...props }: any) => {
   const [currentDirectory, setCurrentDirectory] = useState('/');
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [files, setFiles] = useState<FileStat[] | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const DisplayButton = useMemo(() => ({ displayType, ...props }: { displayType: keyof typeof DisplayType; } & ButtonProps) => {
     const handleClick = () => {
@@ -189,40 +190,51 @@ const Files = ({ ...props }: any) => {
 
   return (
     <View {...props}>
-      <Splitter flex horizontal style={{ minHeight: 0 }}>
-        <View padding="small" minWidth={112} style={{ width: 192 }}>
-          <DisplayItem horizontal align="left" key={0} type="directory" basename={'Foo Bar'} selected={false}>
-            <Icon fixedWidth icon="angle-right" style={{ width: 20 }} />
-            <Icon fixedWidth icon="folder" color="yellow-5" size="lg" style={{ width: 20 }} />
-            <Spacer size="xsmall" />
-            <Text lineClamp={1}>{'Foo Bar'}</Text>
-          </DisplayItem>
-          <DisplayItem horizontal align="left" key={1} type="directory" basename={'Foo Bar'} selected={true}>
-            <Icon fixedWidth icon="angle-right" style={{ width: 20 }} />
-            <Icon fixedWidth icon="folder" color="yellow-5" size="lg" style={{ width: 20 }} />
-            <Spacer size="xsmall" />
-            <Text lineClamp={1}>{'Foo Bar'}</Text>
-          </DisplayItem>
-        </View>
+      <Splitter flex horizontal style={{ minHeight: 0, overflow: 'auto' }}>
+        {isSidebarOpen && (
+          <View padding="small" minWidth={112} style={{ width: 192 }}>
+            <DisplayItem horizontal align="left" key={0} type="directory" basename={'Foo Bar'} selected={false}>
+              <Icon fixedWidth icon="angle-right" style={{ width: 20 }} />
+              <Icon fixedWidth icon="folder" color="yellow-5" size="lg" style={{ width: 20 }} />
+              <Spacer size="xsmall" />
+              <Text lineClamp={1}>{'Foo Bar'}</Text>
+            </DisplayItem>
+            <DisplayItem horizontal align="left" key={1} type="directory" basename={'Foo Bar'} selected={true}>
+              <Icon fixedWidth icon="angle-right" style={{ width: 20 }} />
+              <Icon fixedWidth icon="folder" color="yellow-5" size="lg" style={{ width: 20 }} />
+              <Spacer size="xsmall" />
+              <Text lineClamp={1}>{'Foo Bar'}</Text>
+            </DisplayItem>
+          </View>
+        )}
         <View flex>
-          <View horizontal padding="small large" fillColor="gray-1">
-            <Button icon="home" onClick={handleHomeClick} />
-            <Spacer size="large" />
-            <View>
-              <Text fontSize="xsmall" textColor="gray-6">webdav.mike-austin.com</Text>
+          <View>
+            <View horizontal padding="small large" fillColor="gray-1">
+              <Button
+                hover
+                icon="table-columns"
+                selected={isSidebarOpen}
+                onClick={() => setIsSidebarOpen(isSidebarOpen => !isSidebarOpen)}
+              />
               <Spacer size="small" />
-              <Text fontWeight="semibold">{currentDirectory}</Text>
+              <Button hover icon="home" onClick={handleHomeClick} />
+              {/* <Spacer size="large" /> */}
+              {/* <View>
+                <Text fontSize="xsmall" textColor="gray-6">webdav.mike-austin.com</Text>
+                <Spacer size="small" />
+                <Text fontWeight="semibold">{currentDirectory}</Text>
+              </View> */}
+              <Spacer flex size="large" />
+              <DisplayButton icon="square" displayType={'Icon'} />
+              <DisplayButton icon="table-list" displayType={'Tile'} />
+              <DisplayButton icon="list" displayType={'List'} />
+              <DisplayButton icon="border-all" displayType={'Table'} />
+              <Spacer flex size="large" />
+              <Button title="Action" />
             </View>
-            <Spacer flex size="large" />
-            <DisplayButton icon="square" displayType={'Icon'} />
-            <DisplayButton icon="table-list" displayType={'Tile'} />
-            <DisplayButton icon="list" displayType={'List'} />
-            <DisplayButton icon="border-all" displayType={'Table'} />
-            <Spacer flex size="large" />
-            <Button title="Action" />
           </View>
           <Divider />
-          <View padding="small" style={{ overflow: 'auto' }}>
+          <View flex padding="small" style={{ overflow: 'auto' }}>
             <DisplayComponent
               files={files}
               selectedFile={selectedFile}
@@ -230,6 +242,16 @@ const Files = ({ ...props }: any) => {
               onFolderOpen={handleFolderOpen}
             />
           </View>
+          <Divider />
+          <View padding="small large" fillColor="gray-1">
+            <Text fontSize="xsmall" textColor="gray-6">
+              https://webdav.mike-austin.com
+              <Text fontWeight="bold">{currentDirectory}</Text>
+            </Text>
+            {/* <Spacer size="small" />
+              <Text fontWeight="semibold">{currentDirectory}</Text> */}
+          </View>
+
         </View>
       </Splitter>
     </View>
