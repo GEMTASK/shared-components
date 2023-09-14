@@ -7,25 +7,40 @@ import { ButtonProps } from 'bare/dist/components/button';
 const webdavClient = createClient("https://webdav.mike-austin.com", {});
 
 type DisplayItemProps = {
-  filename: string,
+  basename: string,
+  type: 'file' | 'directory',
   selected: boolean,
-  onFileSelect?: (filename: string) => void,
+  onFileSelect?: (basename: string) => void,
+  onFolderOpen?: (basename: string) => void;
 } & ViewProps;
 
 const DisplayItem = ({
-  filename,
+  basename,
+  type,
   selected,
   children,
   onFileSelect,
+  onFolderOpen,
   ...props
 }: DisplayItemProps) => {
+  const handlePointerDown = () => {
+    onFileSelect?.(basename);
+  };
+
+  const handleDoubleClick = () => {
+    if (type === 'directory') {
+      onFolderOpen?.(basename);
+    }
+  };
+
   return (
     <View
       padding="small"
       border={selected}
       borderColor="alpha-1"
       fillColor={selected ? 'blue-0' : undefined}
-      onPointerDown={() => onFileSelect?.(filename)}
+      onPointerDown={handlePointerDown}
+      onDoubleClick={handleDoubleClick}
       {...props}
     >
       {children}
@@ -40,20 +55,22 @@ const DisplayItem = ({
 type DisplayProps = {
   files: FileStat[] | null,
   selectedFile: string | null;
-  onFileSelect?: (filename: string) => void;
+  onFileSelect?: (basename: string) => void;
+  onFolderOpen?: (basename: string) => void;
 } & ViewProps;
 
 const IconDisplay = ({
   files,
   selectedFile,
   onFileSelect,
+  onFolderOpen,
 }: DisplayProps) => {
-  const itemProps = { align: 'top', onFileSelect } as const;
+  const itemProps = { align: 'top', onFileSelect, onFolderOpen } as const;
 
   return (
-    <Grid align="top left" style={{ rowGap: 8, gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
+    <Grid style={{ rowGap: 8, gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
       {files?.map(({ basename, type }) => (
-        <DisplayItem key={basename} filename={basename} selected={basename === selectedFile} {...itemProps}>
+        <DisplayItem key={basename} type={type} basename={basename} selected={basename === selectedFile} {...itemProps}>
           <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="4x" color={type === 'directory' ? 'yellow-5' : 'gray-5'} />
           <Spacer size="small" />
           <Text lineClamp={2} textAlign="center">{basename}</Text>
@@ -67,13 +84,14 @@ const TileDisplay = ({
   files,
   selectedFile,
   onFileSelect,
+  onFolderOpen,
 }: DisplayProps) => {
-  const itemProps = { horizontal: true, align: 'left', onFileSelect } as const;
+  const itemProps = { horizontal: true, align: 'left', onFileSelect, onFolderOpen } as const;
 
   return (
     <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
       {files?.map(({ basename, type, size }) => (
-        <DisplayItem key={basename} filename={basename} selected={basename === selectedFile} {...itemProps}>
+        <DisplayItem key={basename} type={type} basename={basename} selected={basename === selectedFile} {...itemProps}>
           <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="3x" color={type === 'directory' ? 'yellow-5' : 'gray-5'} />
           <Spacer size="small" />
           <View>
@@ -91,13 +109,14 @@ const ListDisplay = ({
   files,
   selectedFile,
   onFileSelect,
+  onFolderOpen,
 }: DisplayProps) => {
-  const itemProps = { horizontal: true, align: 'left', onFileSelect } as const;
+  const itemProps = { horizontal: true, align: 'left', onFileSelect, onFolderOpen } as const;
 
   return (
     <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
       {files?.map(({ basename, type }) => (
-        <DisplayItem key={basename} filename={basename} selected={basename === selectedFile} {...itemProps}>
+        <DisplayItem key={basename} type={type} basename={basename} selected={basename === selectedFile} {...itemProps}>
           <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="2x" color={type === 'directory' ? 'yellow-5' : 'gray-5'} />
           <Spacer size="small" />
           <Text lineClamp={1}>{basename}</Text>
@@ -124,10 +143,11 @@ const DisplayType = {
 // Files
 //
 
-const Filesystem = ({ ...props }: any) => {
+const Files = ({ ...props }: any) => {
   console.log('Files()');
 
   const [selectedDisplayType, setSelectedDisplayType] = useState<keyof typeof DisplayType>('Icon');
+  const [currentDirectory, setCurrentDirectory] = useState('/');
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [files, setFiles] = useState<FileStat[] | null>(null);
 
@@ -141,19 +161,29 @@ const Filesystem = ({ ...props }: any) => {
     );
   }, [selectedDisplayType]);
 
-  const handleFileSelect = useCallback((filename: string) => {
-    setSelectedFile(filename);
+  const handleHomeClick = useCallback(() => {
+    setCurrentDirectory('/');
+    setSelectedFile(null);
+  }, []);
+
+  const handleFileSelect = useCallback((basename: string) => {
+    setSelectedFile(basename);
+  }, []);
+
+  const handleFolderOpen = useCallback((basename: string) => {
+    setCurrentDirectory(`/${basename}`);
+    setSelectedFile(null);
   }, []);
 
   useEffect(() => {
     (async () => {
-      const directoryItems = await webdavClient.getDirectoryContents('/');
+      const directoryItems = await webdavClient.getDirectoryContents(currentDirectory);
 
       if (Array.isArray(directoryItems)) {
         setFiles(directoryItems);
       }
     })();
-  }, []);
+  }, [currentDirectory]);
 
   const DisplayComponent = DisplayType[selectedDisplayType];
 
@@ -161,13 +191,13 @@ const Filesystem = ({ ...props }: any) => {
     <View {...props}>
       <Splitter flex horizontal style={{ minHeight: 0 }}>
         <View padding="small" minWidth={112} style={{ width: 192 }}>
-          <DisplayItem horizontal align="left" key={0} filename={'Foo Bar'} selected={false}>
+          <DisplayItem horizontal align="left" key={0} type="directory" basename={'Foo Bar'} selected={false}>
             <Icon fixedWidth icon="angle-right" style={{ width: 20 }} />
             <Icon fixedWidth icon="folder" color="yellow-5" size="lg" style={{ width: 20 }} />
             <Spacer size="xsmall" />
             <Text lineClamp={1}>{'Foo Bar'}</Text>
           </DisplayItem>
-          <DisplayItem horizontal align="left" key={1} filename={'Foo Bar'} selected={true}>
+          <DisplayItem horizontal align="left" key={1} type="directory" basename={'Foo Bar'} selected={true}>
             <Icon fixedWidth icon="angle-right" style={{ width: 20 }} />
             <Icon fixedWidth icon="folder" color="yellow-5" size="lg" style={{ width: 20 }} />
             <Spacer size="xsmall" />
@@ -176,10 +206,12 @@ const Filesystem = ({ ...props }: any) => {
         </View>
         <View flex>
           <View horizontal padding="small large" fillColor="gray-1">
+            <Button icon="home" onClick={handleHomeClick} />
+            <Spacer size="large" />
             <View>
               <Text fontSize="xsmall" textColor="gray-6">webdav.mike-austin.com</Text>
               <Spacer size="small" />
-              <Text fontWeight="semibold">/</Text>
+              <Text fontWeight="semibold">{currentDirectory}</Text>
             </View>
             <Spacer flex size="large" />
             <DisplayButton icon="square" displayType={'Icon'} />
@@ -191,7 +223,12 @@ const Filesystem = ({ ...props }: any) => {
           </View>
           <Divider />
           <View padding="small" style={{ overflow: 'auto' }}>
-            <DisplayComponent files={files} selectedFile={selectedFile} onFileSelect={handleFileSelect} />
+            <DisplayComponent
+              files={files}
+              selectedFile={selectedFile}
+              onFileSelect={handleFileSelect}
+              onFolderOpen={handleFolderOpen}
+            />
           </View>
         </View>
       </Splitter>
@@ -199,4 +236,4 @@ const Filesystem = ({ ...props }: any) => {
   );
 };
 
-export default React.memo(Filesystem);
+export default React.memo(Files);
