@@ -4,7 +4,7 @@
 
 Block
   = __ head:Statement? tail:(_ (Newline _)+ Statement)* __ {
-      return tail.length === 0 ? head : {
+      return {
         type: 'BlockExpression',
         statements: tail.reduce(
           (statements, [, , statement]) => [...statements, statement],

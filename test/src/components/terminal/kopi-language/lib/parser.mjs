@@ -281,7 +281,7 @@ function peg$parse(input, options) {
   var peg$e56 = peg$classExpectation(["\r", "?", "\n"], false, false);
 
   var peg$f0 = function(head, tail) {
-      return tail.length === 0 ? head : {
+      return {
         type: 'BlockExpression',
         statements: tail.reduce(
           (statements, [, , statement]) => [...statements, statement],
