@@ -29,7 +29,7 @@ const useStyles = createUseStyles({
       width: 24,
       height: 24,
       borderRadius: 1000,
-      boxShadow: 'inset 0 0 0 1px hsla(0, 0%, 0%, 0.1)',
+      boxShadow: 'inset 0 0 0 1px hsla(0, 0%, 0%, 0.15)',
     }
   }
 });
