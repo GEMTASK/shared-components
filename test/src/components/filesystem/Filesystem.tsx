@@ -1,24 +1,10 @@
-import React, { useMemo, useState } from 'react';
-import { LoremIpsum } from 'lorem-ipsum';
+import React, { useEffect, useMemo, useState } from 'react';
+import { createClient, FileStat } from 'webdav';
 
 import { Button, Divider, Grid, Icon, Spacer, Splitter, Table, Text, View, ViewProps } from 'bare';
 import { ButtonProps } from 'bare/dist/components/button';
 
-const lorem = new LoremIpsum();
-
-const files = Array.from({ length: 31 }, () => ({
-  filename: lorem.generateWords(4)
-    .split(' ')
-    .map(([a, ...rest]) => a.toUpperCase() + rest.join(''))
-    .join(' ') + '.png',
-  size: Math.random() * 100,
-})).sort((a, b) => a.filename < b.filename ? -1 : 1);
-
-// enum Display {
-//   Icon,
-//   List,
-//   Table,
-// }
+const webdavClient = createClient("https://webdav.mike-austin.com", {});
 
 type DisplayItemProps = {
   filename: string,
@@ -52,11 +38,13 @@ const DisplayItem = ({
 //
 
 type DisplayProps = {
+  files: FileStat[] | null,
   selectedFile: string | null;
   onFileSelect?: (filename: string) => void;
 } & ViewProps;
 
 const IconDisplay = ({
+  files,
   selectedFile,
   onFileSelect,
 }: DisplayProps) => {
@@ -64,11 +52,11 @@ const IconDisplay = ({
 
   return (
     <Grid align="top left" style={{ rowGap: 8, gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
-      {files.map(({ filename }) => (
-        <DisplayItem key={filename} filename={filename} selected={filename === selectedFile} {...itemProps}>
-          <View fillColor="gray-3" style={{ width: 64, height: 64, borderRadius: 2.5 }} />
+      {files?.map(({ basename, type }) => (
+        <DisplayItem key={basename} filename={basename} selected={basename === selectedFile} {...itemProps}>
+          <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="4x" color={type === 'directory' ? 'yellow-5' : 'gray-5'} />
           <Spacer size="small" />
-          <Text lineClamp={2} textAlign="center">{filename}</Text>
+          <Text lineClamp={2} textAlign="center">{basename}</Text>
         </DisplayItem>
       ))}
     </Grid>
@@ -76,6 +64,7 @@ const IconDisplay = ({
 };
 
 const TileDisplay = ({
+  files,
   selectedFile,
   onFileSelect,
 }: DisplayProps) => {
@@ -83,14 +72,14 @@ const TileDisplay = ({
 
   return (
     <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
-      {files.map(({ filename, size }) => (
-        <DisplayItem key={filename} filename={filename} selected={filename === selectedFile} {...itemProps}>
-          <View fillColor="gray-3" style={{ width: 40, height: 40, borderRadius: 2.5, flexShrink: 0 }} />
+      {files?.map(({ basename, type, size }) => (
+        <DisplayItem key={basename} filename={basename} selected={basename === selectedFile} {...itemProps}>
+          <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="3x" color={type === 'directory' ? 'yellow-5' : 'gray-5'} />
           <Spacer size="small" />
           <View>
-            <Text lineClamp={1}>{filename}</Text>
+            <Text lineClamp={1}>{basename}</Text>
             <Spacer size="small" />
-            <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>{size.toFixed(2)} KiB</Text>
+            <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>{(size / 1000).toFixed(2)} KiB</Text>
           </View>
         </DisplayItem>
       ))}
@@ -99,6 +88,7 @@ const TileDisplay = ({
 };
 
 const ListDisplay = ({
+  files,
   selectedFile,
   onFileSelect,
 }: DisplayProps) => {
@@ -106,11 +96,11 @@ const ListDisplay = ({
 
   return (
     <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
-      {files.map(({ filename }) => (
-        <DisplayItem key={filename} filename={filename} selected={filename === selectedFile} {...itemProps}>
-          <View fillColor="gray-3" style={{ width: 24, height: 24, borderRadius: 2.5, flexShrink: 0 }} />
+      {files?.map(({ basename, type }) => (
+        <DisplayItem key={basename} filename={basename} selected={basename === selectedFile} {...itemProps}>
+          <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="2x" color={type === 'directory' ? 'yellow-5' : 'gray-5'} />
           <Spacer size="small" />
-          <Text lineClamp={1}>{filename}</Text>
+          <Text lineClamp={1}>{basename}</Text>
         </DisplayItem>
       ))}
     </Grid>
@@ -123,10 +113,17 @@ const TableDisplay = () => {
   );
 };
 
+const DisplayType = {
+  Icon: IconDisplay,
+  Tile: TileDisplay,
+  List: ListDisplay,
+  Table: TableDisplay,
+};
+
 type Display = React.ElementType<DisplayProps>;
 
 //
-//
+// Files
 //
 
 const Filesystem = ({ ...props }: any) => {
@@ -134,6 +131,7 @@ const Filesystem = ({ ...props }: any) => {
 
   const [selectedDisplay, setSelectedDisplay] = useState<Display>(() => IconDisplay);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [files, setFiles] = useState<FileStat[] | null>(null);
 
   const DisplayButton = useMemo(() => ({ display, ...props }: { display: Display; } & ButtonProps) => {
     const handleClick = () => {
@@ -148,6 +146,16 @@ const Filesystem = ({ ...props }: any) => {
   const handleFileSelect = (filename: string) => {
     setSelectedFile(filename);
   };
+
+  useEffect(() => {
+    (async () => {
+      const directoryItems = await webdavClient.getDirectoryContents('/');
+
+      if (Array.isArray(directoryItems)) {
+        setFiles(directoryItems);
+      }
+    })();
+  }, []);
 
   const DisplayComponent = selectedDisplay;
 
@@ -185,7 +193,7 @@ const Filesystem = ({ ...props }: any) => {
           </View>
           <Divider />
           <View padding="small" style={{ overflow: 'auto' }}>
-            <DisplayComponent selectedFile={selectedFile} onFileSelect={handleFileSelect} />
+            <DisplayComponent files={files} selectedFile={selectedFile} onFileSelect={handleFileSelect} />
           </View>
         </View>
       </Splitter>

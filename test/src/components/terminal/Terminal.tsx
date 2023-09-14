@@ -17,8 +17,7 @@ import * as functions from './functions';
 
 const MONOSPACE_FONT = 'Iosevka';
 
-const client = createClient("https://webdav.mike-austin.com", {
-});
+const webdavClient = createClient("https://webdav.mike-austin.com", {});
 
 const Link = ({ children, ...props }: any) => {
   return (
@@ -197,7 +196,7 @@ class KopiLs_ {
       ? '/' + this.args.at(-1).value
       : '/';
 
-    const directoryItems = await client.getDirectoryContents(filename);
+    const directoryItems = await webdavClient.getDirectoryContents(filename);
 
     if (Array.isArray(directoryItems)) {
       const max = directoryItems.reduce((max, item) => item.basename.length > max
@@ -235,7 +234,7 @@ class KopiLs {
 }
 
 async function kopi_cat(filename: KopiString) {
-  const str = await client.getFileContents('/' + filename.value, { format: 'text' });
+  const str = await webdavClient.getFileContents('/' + filename.value, { format: 'text' });
 
   if (typeof str === 'string') {
     return new KopiLog(str);
@@ -399,7 +398,7 @@ const interpret = async (
     try {
       async function kopi_import(url: KopiString) {
         // const source = await (await fetch(url.value)).text();
-        const source = await client.getFileContents('/' + url.value, { format: 'text' });
+        const source = await webdavClient.getFileContents('/' + url.value, { format: 'text' });
 
         if (typeof source === 'string') {
           return kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import }, () => { });
