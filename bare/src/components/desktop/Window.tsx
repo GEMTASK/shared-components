@@ -167,7 +167,8 @@ const Sizer = ({ ...props }: any) => {
   }, []);
 
   return (
-    <View {...props}
+    <View
+      {...props}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -307,7 +308,7 @@ const Window = ({
       {...props}
       onPointerDown={handleWindowPointerDown}
     >
-      <Sizer absolute style={{ inset: -15 }} />
+      <Sizer absolute style={{ inset: -15, touchAction: 'none' }} />
       <View fillColor="gray-4" className={styles.Titlebar} {...titleBarEvents}>
         <View absolute className={styles.Extender} />
         <View horizontal alignVertical="middle" style={{ height: 32, flexShrink: 0 }}>
