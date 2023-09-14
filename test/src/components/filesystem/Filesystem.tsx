@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { createClient, FileStat } from 'webdav';
 
 import { Button, Divider, Grid, Icon, Spacer, Splitter, Table, Text, View, ViewProps } from 'bare';
@@ -120,8 +120,6 @@ const DisplayType = {
   Table: TableDisplay,
 };
 
-type Display = React.ElementType<DisplayProps>;
-
 //
 // Files
 //
@@ -129,23 +127,23 @@ type Display = React.ElementType<DisplayProps>;
 const Filesystem = ({ ...props }: any) => {
   console.log('Files()');
 
-  const [selectedDisplay, setSelectedDisplay] = useState<Display>(() => IconDisplay);
+  const [selectedDisplayType, setSelectedDisplayType] = useState<keyof typeof DisplayType>('Icon');
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [files, setFiles] = useState<FileStat[] | null>(null);
 
-  const DisplayButton = useMemo(() => ({ display, ...props }: { display: Display; } & ButtonProps) => {
+  const DisplayButton = useMemo(() => ({ displayType, ...props }: { displayType: keyof typeof DisplayType; } & ButtonProps) => {
     const handleClick = () => {
-      setSelectedDisplay(() => display);
+      setSelectedDisplayType(displayType);
     };
 
     return (
-      <Button hover iconSize="lg" selected={selectedDisplay === display} {...props} onClick={handleClick} />
+      <Button hover iconSize="lg" selected={selectedDisplayType === displayType} {...props} onClick={handleClick} />
     );
-  }, [selectedDisplay]);
+  }, [selectedDisplayType]);
 
-  const handleFileSelect = (filename: string) => {
+  const handleFileSelect = useCallback((filename: string) => {
     setSelectedFile(filename);
-  };
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -157,7 +155,7 @@ const Filesystem = ({ ...props }: any) => {
     })();
   }, []);
 
-  const DisplayComponent = selectedDisplay;
+  const DisplayComponent = DisplayType[selectedDisplayType];
 
   return (
     <View {...props}>
@@ -184,10 +182,10 @@ const Filesystem = ({ ...props }: any) => {
               <Text fontWeight="semibold">/photos/beach/</Text>
             </View>
             <Spacer flex size="large" />
-            <DisplayButton icon="square" display={IconDisplay} />
-            <DisplayButton icon="table-list" display={TileDisplay} />
-            <DisplayButton icon="list" display={ListDisplay} />
-            <DisplayButton icon="border-all" display={TableDisplay} />
+            <DisplayButton icon="square" displayType={'Icon'} />
+            <DisplayButton icon="table-list" displayType={'Tile'} />
+            <DisplayButton icon="list" displayType={'List'} />
+            <DisplayButton icon="border-all" displayType={'Table'} />
             <Spacer flex size="large" />
             <Button title="Action" />
           </View>
