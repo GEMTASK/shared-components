@@ -112,7 +112,7 @@ const Music = ({ ...props }: any) => {
   }, [activeSongIndex]);
 
   return (
-    <View {...props}>
+    <View {...props} minWidth={160}>
       <View
         ref={audioElementRef}
         as="audio"

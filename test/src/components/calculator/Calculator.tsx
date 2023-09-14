@@ -116,7 +116,7 @@ const Calculator = ({ ...props }: any) => {
   };
 
   return (
-    <View {...props} tabIndex={0} onKeyDown={handleKeyDown}>
+    <View {...props} tabIndex={0} minWidth={180} onKeyDown={handleKeyDown}>
       <Text fontSize="xlarge" textAlign="right" padding="large large" fillColor="white" style={{ borderTopLeftRadius: 4, borderTopRightRadius: 4 }}>
         {display}
       </Text>

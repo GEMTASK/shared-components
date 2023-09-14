@@ -51,7 +51,7 @@ const Calendar = ({ ...props }: any) => {
   const today = new Date();
 
   return (
-    <View {...props}>
+    <View {...props} minWidth={345}>
       <View fillColor="gray-1">
         <View horizontal align="left" padding="large">
           <Text flex fontSize="large">

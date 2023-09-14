@@ -92,7 +92,7 @@ const DigitalClock = () => {
 
 const initialState = [
   {
-    id: uuidv4(), icon: 'calendar', title: 'Calendar', element: <Calendar minWidth={360} />, rect: {
+    id: uuidv4(), icon: 'calendar', title: 'Calendar', element: <Calendar />, rect: {
       x: 15, y: 15, width: 360, height: 332,
     }
   },
