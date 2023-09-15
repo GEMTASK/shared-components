@@ -144,7 +144,7 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
   return (
     <ViewContext.Provider value={{ parentHorizontal: horizontal ?? false, parentFillColor: fillColor ?? context.parentFillColor }}>
       <Component ref={ref} className={viewClassName} style={viewStyle} {...props}>
-        {border || shadow ? (
+        {/* {border || shadow ? (
           React.Children.map(children, (child, index) => React.isValidElement(child) && React.cloneElement(child as React.ReactElement, {
             style: {
               ...(child.props as any).style,
@@ -154,9 +154,9 @@ const View = <T extends React.ElementType = typeof DEFAULT_ELEMENT>({
               borderBottomRightRadius: index === childCount - 1 ? 2.5 : undefined,
             }
           }))
-        ) : (
-          children
-        )}
+        ) : ( */}
+        {children}
+        {/* )} */}
       </Component>
     </ViewContext.Provider>
   );

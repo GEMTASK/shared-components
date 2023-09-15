@@ -381,6 +381,17 @@ cat "scripts/hello.kopi"
 (:hello) = import "scripts/hello.kopi"
 hello "Joe"
   `,
+  `
+{
+  extend String (
+    size: () => {
+      ('size this) + 10
+    }
+  )
+  print ('size "hello" == 15)
+}
+print ('size "hello" == 5)
+  `,
 ];
 
 export default examples;

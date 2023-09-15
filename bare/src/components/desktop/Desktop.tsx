@@ -59,6 +59,8 @@ const Desktop = ({
   const handlePointerDown = useCallback((event: React.PointerEvent) => {
     // event.preventDefault();
 
+    onWindowFocus?.('');
+
     window.removeEventListener('blur', handleWindowBlur);
     window.addEventListener('blur', handleWindowBlur);
 
@@ -76,7 +78,7 @@ const Desktop = ({
       flex
       ref={desktopElementRef}
       style={style}
-      onPointerDown={handlePointerDown}
+      onPointerDownCapture={handlePointerDown}
     >
       {windows.map(({ id, title, element, rect }) => (
         <Window

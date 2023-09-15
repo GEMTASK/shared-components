@@ -183,10 +183,10 @@ const cloneProps = {
   fillColor: 'white',
   flex: true,
   minHeight: 0,
-  style: {
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4,
-  },
+  // style: {
+  //   borderBottomLeftRadius: 4,
+  //   borderBottomRightRadius: 4,
+  // },
 };
 
 //
@@ -309,20 +309,22 @@ const Window = ({
       onPointerDown={handleWindowPointerDown}
     >
       <Sizer absolute style={{ inset: -15, touchAction: 'none' }} />
-      <View fillColor="gray-3" className={styles.Titlebar} {...titleBarEvents}>
-        <View absolute className={styles.Extender} />
-        <View horizontal alignVertical="middle" style={{ height: 32, flexShrink: 0 }}>
-          <Button hover size="xsmall" icon="close" onPointerDown={handleCloseButtonPointerDown} onClick={handleCloseButtonClick} />
-          <Spacer flex size="small" />
-          <Text fontWeight="bold" textColor="gray-7" textAlign="center" padding="small large" style={{ marginBottom: -1 }}>
-            {title}
-          </Text>
-          <Spacer flex size="small" />
-          <Button hover size="xsmall" icon="arrow-up-right-from-square" />
+      <View flex style={{ overflow: 'hidden', borderRadius: 4 }}>
+        <View fillColor="gray-3" className={styles.Titlebar} {...titleBarEvents}>
+          <View absolute className={styles.Extender} />
+          <View horizontal alignVertical="middle" style={{ height: 32, flexShrink: 0 }}>
+            <Button hover size="xsmall" icon="close" onPointerDown={handleCloseButtonPointerDown} onClick={handleCloseButtonClick} />
+            <Spacer flex size="small" />
+            <Text fontWeight="bold" textColor="gray-7" textAlign="center" padding="small large" style={{ marginBottom: -1 }}>
+              {title}
+            </Text>
+            <Spacer flex size="small" />
+            <Button hover size="xsmall" icon="arrow-up-right-from-square" />
+          </View>
         </View>
+        <Divider fillColor="gray-4" />
+        {React.cloneElement(client as React.ReactElement, cloneProps)}
       </View>
-      <Divider fillColor="gray-4" />
-      {React.cloneElement(client as React.ReactElement, cloneProps)}
     </View>
   );
 };
