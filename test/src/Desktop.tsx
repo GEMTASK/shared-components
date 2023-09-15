@@ -115,10 +115,10 @@ const getUtilitiesMenuItems = (addWindow: any) => [
 
 const getApplicationsMenuItems = (addWindow: any) => [
   'Applications',
-  { title: 'Grid Draw', action: () => addWindow('draw-polygon', 'Grid Draw', <View as="iframe" frameBorder="0" src="https://mike-austin.com/draw-2" />, { width: 1280, height: 900 }) },
-  { title: 'Bestest Movies Ever', action: () => addWindow('film', 'Bestest Movies Ever', <View as="iframe" frameBorder="0" src="https://bestestmoviesever.com" />, { width: 1280, height: 900 }) },
-  { title: 'Kopi Notebook', action: () => addWindow('book', 'Kopi Notebook', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/kopi-ide" />, { width: 1280, height: 900 }) },
-  { title: 'UI Builder', action: () => addWindow('display', 'UI Builder', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/builder" />, { width: 1280, height: 900 }) },
+  { title: 'Grid Draw', action: () => addApplication('griddraw', { addWindow }) },
+  { title: 'Bestest Movies Ever', action: () => addApplication('bestestmoviesever', { addWindow }) },
+  { title: 'Kopi Notebook', action: () => addApplication('kopinotebook', { addWindow }) },
+  { title: 'UI Builder', action: () => addApplication('uibuilder', { addWindow }) },
   { title: 'Virtual Machine', action: () => addWindow('computer', 'Virtual Machine', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/vmachine" />, { width: 455, height: 870 }) },
   { title: 'Generator Coroutines', action: () => addWindow('code', 'Generator Coroutines', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/gOQyPVE?default-tab=js%2Cresult&editable=true" />, { width: 1280, height: 900 }) },
   { title: 'Coroutines using await', action: () => addWindow('code', 'Coroutines using await', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/JjeqdeB?default-tab=js%2Cresult&editable=true" />, { width: 1280, height: 900 }) },

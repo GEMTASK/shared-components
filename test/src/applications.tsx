@@ -1,3 +1,5 @@
+import { View } from 'bare';
+
 import Calendar from './components/calendar';
 import Clock from './components/clock';
 import Calculator from './components/calculator';
@@ -65,6 +67,19 @@ const Applications = {
   },
   'styleguide': {
     icon: 'palette', title: 'Styleguide', client: <Styleguide />, rect: { width: 1024, height: 800 }
+  },
+  //
+  'griddraw': {
+    icon: 'draw-polygon', title: 'Grid Draw', client: <View as="iframe" frameBorder="0" src="https://mike-austin.com/draw-2" />, rect: { width: 1280, height: 900 }
+  },
+  'bestestmoviesever': {
+    icon: 'film', title: 'Bestest Movies Ever', client: <View as="iframe" frameBorder="0" src="https://bestestmoviesever.com" />, rect: { width: 1280, height: 900 }
+  },
+  'kopinotebook': {
+    icon: 'book', title: 'Kopi Notebook', client: <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/kopi-ide" />, rect: { width: 1280, height: 900 }
+  },
+  'uibuilder': {
+    icon: 'display', title: 'UI Builder', client: <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/builder" />, rect: { width: 1280, height: 900 }
   },
 } as const;
 
