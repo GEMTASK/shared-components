@@ -77,11 +77,11 @@ class KopiDateFunction extends KopiValue {
     return new KopiDate(new Date());
   }
 
-  override async inspect() {
+  static async inspect() {
     return new Date().toLocaleString();
   }
 
-  async apply(thisArg: this, [value]: [value: KopiValue]) {
+  static async apply(thisArg: void, [value]: [value: KopiValue]) {
     return value;
   }
 }
@@ -107,13 +107,13 @@ async function kopi_fetch(url: KopiString, context: Context) {
 }
 
 class KopiClock extends KopiValue {
-  async inspect() {
+  static async inspect() {
     return <Clock style={{ width: 150 }} />;
   }
 }
 
 class KopiCalendar extends KopiValue {
-  async inspect() {
+  static async inspect() {
     return <Calendar style={{ width: 360 }} />;
   }
 }
@@ -514,11 +514,20 @@ async function kopi_Button(props: KopiTuple, context: Context) {
   });
 }
 
+async function kopi_input(message: KopiString) {
+  return new KopiString(prompt(message.value) ?? '');
+}
+
+async function kopi_export(value: KopiValue) {
+  return value;
+}
+
 export {
   KopiDateFunction,
   KopiClock,
   KopiCalendar,
   KopiLs,
+  //
   kopi_let,
   kopi_loop,
   kopi_match,
@@ -533,11 +542,16 @@ export {
   kopi_extend,
   kopi_spawn,
   kopi_context,
+  //
   kopi_meter,
   kopi_cat,
+  //
   kopi_element,
   kopi_component,
   kopi_View,
   kopi_Text,
   kopi_Button,
+  //
+  kopi_input,
+  kopi_export,
 };

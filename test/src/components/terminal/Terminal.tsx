@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-import { createClient } from 'webdav';
+import * as WebDAV from 'webdav';
 
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 import Clock from '../clock/Clock';
@@ -17,7 +17,7 @@ import * as functions from './functions';
 
 const MONOSPACE_FONT = 'Iosevka';
 
-const webdavClient = createClient("https://webdav.mike-austin.com", {});
+const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
 
 const Link = ({ children, ...props }: any) => {
   return (
@@ -27,24 +27,16 @@ const Link = ({ children, ...props }: any) => {
   );
 };
 
-
-async function kopi_input(message: KopiString) {
-  return new KopiString(prompt(message.value) ?? '');
-}
-
 class KopiEnv {
   static async inspect() {
     return Object.keys(environment).map(key => key.padEnd(12)).join('');
   }
 }
 
-async function kopi_export(value: KopiValue) {
-  return value;
-}
-
 let environment = {
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
+  //
   Any: KopiAny,
   Tuple: KopiTuple,
   Array: KopiArray,
@@ -53,10 +45,12 @@ let environment = {
   Boolean: KopiBoolean,
   Dict: KopiDict,
   Date: KopiDate,
-  env: KopiEnv,
   //
-  log: async (value: KopiValue) => console.log(await value.inspect()),
-  open: async (filename: KopiString) => window.postMessage({ type: 'openFile', payload: `/${filename.value}` }),
+  env: KopiEnv,
+  date: functions.KopiDateFunction,
+  clock: functions.KopiClock,
+  calendar: functions.KopiCalendar,
+  //
   let: functions.kopi_let,
   loop: functions.kopi_loop,
   match: functions.kopi_match,
@@ -71,21 +65,27 @@ let environment = {
   extend: functions.kopi_extend,
   spawn: functions.kopi_spawn,
   context: functions.kopi_context,
+  //
   km: functions.kopi_meter,
-  input: kopi_input,
-  export: kopi_export,
+  input: functions.kopi_input,
+  export: functions.kopi_export,
+  log: async (value: KopiValue) => console.log(await value.inspect()),
+  open: async (filename: KopiString) => window.postMessage({ type: 'openFile', payload: `/${filename.value}` }),
+  //
   ls: functions.KopiLs,
   cat: functions.kopi_cat,
-  //
-  date: new functions.KopiDateFunction(),
-  clock: new functions.KopiClock(),
-  calendar: new functions.KopiCalendar(),
   //
   element: functions.kopi_element,
   component: functions.kopi_component,
   View: functions.kopi_View,
   Text: functions.kopi_Text,
   Button: functions.kopi_Button,
+};
+
+const bind = (bindings: { [name: string]: KopiValue; }) => {
+  const newEnvironment = { ...environment, ...bindings };
+
+  environment = newEnvironment;
 };
 
 const useSidebarStyles = createUseStyles({
@@ -100,12 +100,6 @@ const useSidebarStyles = createUseStyles({
     },
   }
 });
-
-const bind = (bindings: { [name: string]: KopiValue; }) => {
-  const newEnvironment = { ...environment, ...bindings };
-
-  environment = newEnvironment;
-};
 
 const HistoryLine = ({
   children,

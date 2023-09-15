@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { createClient, FileStat } from 'webdav';
+import * as WebDAV from 'webdav';
 
 import { Button, Divider, Grid, Icon, Spacer, Splitter, Table, Text, View, ViewProps } from 'bare';
 import { ButtonProps } from 'bare/dist/components/button';
 
-const webdavClient = createClient("https://webdav.mike-austin.com", {});
+const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
 
 type DisplayItemProps = {
   basename: string,
@@ -59,7 +59,7 @@ const DisplayItem = ({
 //
 
 type DisplayProps = {
-  files: FileStat[] | null,
+  files: WebDAV.FileStat[] | null,
   selectedFile: string | null;
   onFileSelect?: (basename: string) => void;
   onFolderOpen?: (basename: string) => void;
@@ -159,7 +159,7 @@ const Files = ({ ...props }: any) => {
   const [selectedDisplayType, setSelectedDisplayType] = useState<keyof typeof DisplayType>('Icon');
   const [currentDirectory, setCurrentDirectory] = useState('/');
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
-  const [files, setFiles] = useState<FileStat[] | null>(null);
+  const [files, setFiles] = useState<WebDAV.FileStat[] | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const DisplayButton = useMemo(() => ({ displayType, ...props }: { displayType: keyof typeof DisplayType; } & ButtonProps) => {
