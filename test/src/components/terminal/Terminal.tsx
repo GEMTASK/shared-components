@@ -249,7 +249,7 @@ const interpret = async (
 const initialHistory = [
   <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT, userSelect: 'text' }}>
     Kopi shell – a simple, immutable, async programming langauge.<br />
-    Read <Link onClick={() => window.postMessage({ type: 'openFile', payload: '/kopi.md' })}>Learning Kopi</Link> for an introduction and to learn more.
+    Read <Link onClick={() => window.postMessage({ type: 'openFile', payload: '/Learning Kopi.md' })}>Learning Kopi</Link> for an introduction and to learn more.
   </Text>,
   <Clock style={{ width: 150 }} />
 ];
