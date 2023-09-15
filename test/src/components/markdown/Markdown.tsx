@@ -216,7 +216,7 @@ const Code = ({
 //
 //
 
-const Markdown = ({ path, ...props }: any) => {
+const Markdown = ({ args, ...props }: any) => {
   console.log('Markdown()', props);
 
   const [markdown, setMarkdown] = useState('');
@@ -283,13 +283,13 @@ const Markdown = ({ path, ...props }: any) => {
 
   useEffect(() => {
     (async () => {
-      const markdown = await webdavClient.getFileContents(path, { format: 'text' });
+      const markdown = await webdavClient.getFileContents(args, { format: 'text' });
 
       if (typeof markdown === 'string') {
         setMarkdown(markdown);
       }
     })();
-  }, [path]);
+  }, [args]);
 
   return (
     <Stack horizontal divider {...props} style={{ userSelect: 'text' }}>

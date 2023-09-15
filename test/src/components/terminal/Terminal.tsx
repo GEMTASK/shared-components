@@ -263,6 +263,7 @@ let environment = {
   env: KopiEnv,
   //
   log: async (value: KopiValue) => console.log(await value.inspect()),
+  open: async (filename: KopiString) => window.postMessage({ type: 'openFile', payload: `/${filename.value}` }),
   let: functions.kopi_let,
   loop: functions.kopi_loop,
   match: functions.kopi_match,
