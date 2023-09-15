@@ -153,7 +153,7 @@ const Applications = {
     icon: 'music', title: 'Music', client: Music, rect: { width: 400, height: 400 }
   },
   'media': {
-    icon: 'media', title: 'Media', client: Media, rect: undefined,
+    icon: 'image', title: 'Media', client: Media, rect: undefined,
   },
 } as const;
 
