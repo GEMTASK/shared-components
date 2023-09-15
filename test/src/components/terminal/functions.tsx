@@ -1,12 +1,19 @@
+import React, { useEffect, useReducer, useRef, useState } from 'react';
+import * as WebDAV from 'webdav';
+
 import { KopiArray, KopiBoolean, KopiFunction, KopiNumber, KopiString, KopiTuple } from './kopi-language/src/classes';
 import { ASTNode, Bind, Context, KopiValue } from './kopi-language/src/types';
+
 import KopiStream_T from './kopi-language/src/classes/KopiStream';
 import KopiRange from './kopi-language/src/classes/KopiRange';
+import KopiDate from './kopi-language/src/classes/KopiDate';
 
 import Clock from '../clock/Clock';
 import Calendar from '../calendar/Calendar';
-import { Identifier } from './kopi-language/src/astnodes';
-import KopiDate from './kopi-language/src/classes/KopiDate';
+
+import { Button, Text, View } from 'bare';
+
+const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
 
 async function kopi_let(func: KopiFunction, context: Context) {
   let result: KopiValue = KopiTuple.empty;
@@ -299,10 +306,219 @@ class MetricUnit extends KopiValue {
   // }
 }
 
+class KopiLs_ {
+  args: any[];
+
+  constructor(args: any[]) {
+    this.args = args;
+  }
+
+  async apply(thisArg: void, [arg]: [any]) {
+    return new KopiLs_([...this.args, arg]);
+  }
+
+  async inspect() {
+    const filename = this.args.at(-1) instanceof KopiString
+      ? '/' + this.args.at(-1).value
+      : '/';
+
+    const directoryItems = await webdavClient.getDirectoryContents(filename);
+
+    if (Array.isArray(directoryItems)) {
+      const max = directoryItems.reduce((max, item) => item.basename.length > max
+        ? item.basename.length
+        : max,
+        0);
+
+      if (this.args.find(arg => arg.name === 'l')) {
+        const items = directoryItems.map(({ basename, type, size, lastmod }) =>
+          (basename + (type === 'directory' ? '/' : '')).padEnd(max + 4) +
+          (size.toString() + ' B').padEnd(8) +
+          new Date(lastmod).toLocaleDateString());
+
+        return items.join('\n');
+      }
+
+      const items = directoryItems.map(({ basename, type, size, lastmod }) =>
+        (basename + (type === 'directory' ? '/' : '')).padEnd(max + 4));
+
+      return items.join('');
+    }
+
+    return '';
+  }
+}
+
+class KopiLs {
+  static async apply(thisArg: void, [arg]: [KopiValue]) {
+    return new KopiLs_([arg]);
+  }
+
+  static async inspect() {
+    return new KopiLs_([]).inspect();
+  }
+}
+
+class KopiLog extends KopiString {
+  async inspect() {
+    return this.value;
+  }
+}
+
+async function kopi_cat(filename: KopiString) {
+  const str = await webdavClient.getFileContents('/' + filename.value, { format: 'text' });
+
+  if (typeof str === 'string') {
+    return new KopiLog(str);
+  }
+
+  return '';
+}
+
+class KopiElement extends KopiValue {
+  component: React.ComponentType;
+  props: any;
+  children?: KopiArray;
+
+  constructor(component: React.ComponentType, props: any, children?: KopiArray) {
+    super();
+
+    this.component = component;
+    this.props = props;
+    this.children = children;
+  }
+
+  async inspectChildren(children: any): Promise<React.ReactNode> {
+    return Promise.all(
+      children.map(async (child: any) => {
+        const awaitedChild = await child;
+
+        if (awaitedChild.children instanceof KopiString) {
+          return React.createElement(this.component, awaitedChild.props, awaitedChild.children.value) as any;
+        } else if (awaitedChild.children) {
+          return React.createElement(awaitedChild.component, awaitedChild.props, await this.inspectChildren(awaitedChild.children._elements));
+        }
+
+        return React.createElement(awaitedChild.component, awaitedChild.props) as any;
+      })
+    );
+  }
+
+  async inspect() {
+    if (this.children instanceof KopiString) {
+      return React.createElement(this.component, this.props, this.children.value) as any;
+    } else if (this.children) {
+      return React.createElement(this.component, this.props, await this.inspectChildren(this.children._elements)) as any;
+    }
+
+    return React.createElement(this.component, this.props) as any;
+  }
+}
+
+const reducer = (state: any, action: any) => {
+  console.log(action.payload);
+  // return ({ ...state, ...action.payload });
+  return action.payload;
+};
+
+const Component = (component: KopiFunction, context: Context) => function _({ props }: any) {
+  const functionRef = useRef<KopiFunction>();
+
+  const [value, setValue] = useState<any>(null);
+  const [state, dispatch] = useReducer(reducer, new KopiNumber(0));
+
+  const setState = (payload: any) => dispatch({ type: 'setState', payload });
+
+  useEffect(() => {
+    (async () => {
+      if (!functionRef.current) {
+        functionRef.current = await component.apply(KopiTuple.empty, [setState, context]) as KopiFunction;
+      }
+
+      const value = await functionRef.current.apply(KopiTuple.empty, [state, context]);
+
+      setValue(await value.inspect());
+    })();
+  }, [state]);
+
+  return value;
+};
+
+async function kopi_element(tuple: KopiTuple, context: Context) {
+  const [component, props, children] = await Promise.all(tuple.fields) as [KopiFunction, KopiTuple, KopiArray];
+
+  return new KopiElement(
+    Component(component, context),
+    {},
+    children
+  );
+}
+
+async function kopi_component(component: KopiFunction, context: Context) {
+  // const [component, props, children] = await Promise.all(tuple.fields) as [KopiFunction, KopiTuple, KopiArray];
+
+  return (props: any) => (children: any) => new KopiElement(
+    Component(component, context),
+    {},
+    children
+  );
+}
+
+async function kopi_View(props: KopiTuple) {
+  const [horizontal, fillColor, padding, border] = await Promise.all([
+    (props as any).horizontal,
+    (props as any).fillColor,
+    (props as any).padding,
+    (props as any).border
+  ]);
+
+  return (children: any) => {
+    return new KopiElement(View, {
+      horizontal: horizontal?.value,
+      fillColor: fillColor?.value,
+      padding: padding?.value,
+      border: border?.value,
+      style: { gap: 16 }
+    }, children);
+  };
+}
+
+async function kopi_Text(props: KopiTuple, context: Context) {
+  const [fillColor, padding, align, onClick] = await Promise.all([
+    (props as any).fillColor,
+    (props as any).padding,
+    (props as any).align,
+    (props as any).onClick
+  ]);
+
+  return (string: any) => {
+    return new KopiElement(Text, {
+      fillColor: fillColor?.value,
+      padding: padding?.value,
+      align: align?.value,
+      onClick: () => onClick?.apply(KopiTuple.empty, [KopiTuple.empty, context])
+    }, string);
+  };
+}
+
+async function kopi_Button(props: KopiTuple, context: Context) {
+  const [title, solid] = await Promise.all([
+    (props as any).title,
+    (props as any).solid
+  ]);
+
+  return new KopiElement(Button, {
+    solid: solid?.value,
+    primary: true,
+    title: title?.value,
+  });
+}
+
 export {
   KopiDateFunction,
   KopiClock,
   KopiCalendar,
+  KopiLs,
   kopi_let,
   kopi_loop,
   kopi_match,
@@ -318,4 +534,10 @@ export {
   kopi_spawn,
   kopi_context,
   kopi_meter,
+  kopi_cat,
+  kopi_element,
+  kopi_component,
+  kopi_View,
+  kopi_Text,
+  kopi_Button,
 };
