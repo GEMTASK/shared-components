@@ -16,7 +16,7 @@ const Image = ({
   round,
   style,
   ...props
-}: ImageProps) => {
+}: ImageProps, ref: React.ForwardedRef<HTMLImageElement>) => {
   const {
     objectFit,
     objectPosition,
@@ -27,14 +27,15 @@ const Image = ({
     objectPosition,
     width,
     height,
+    minHeight: 0,
     ...(round && { borderRadius: 1000 })
   } as const;
 
   return (
-    <View {...props} style={{ overflow: 'hidden', ...style }}>
-      <View as="img" src={src} style={imageStyle} />
+    <View ref={ref} {...props} style={{ overflow: 'hidden', ...style }}>
+      <View flex as="img" src={src} style={imageStyle} />
     </View>
   );
 };
 
-export default Image;
+export default React.forwardRef(Image);

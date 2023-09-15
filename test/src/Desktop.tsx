@@ -181,8 +181,8 @@ const App = () => {
       : [0, 30];
 
     let margin = window.innerWidth < 800 ? 15 : 30;
-    let width = Math.min(rect?.width ?? 1024, window.innerWidth - right - margin);
-    let height = Math.min(rect?.height ?? 710, window.innerHeight - 32 - bottom - margin);
+    let width = Math.min(rect?.width ?? 800, window.innerWidth - right - margin);
+    let height = Math.min(rect?.height ?? 600, window.innerHeight - 32 - bottom - margin);
 
     setWindows(windows => [
       ...windows,
