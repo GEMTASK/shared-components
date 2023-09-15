@@ -7,7 +7,7 @@ import { Menu, Desktop } from 'bare';
 import { Rect } from 'bare/dist/components/desktop/Desktop';
 
 import Calendar from './components/calendar';
-import Clock from './components/clock';
+import Clock, { DigitalClock } from './components/clock';
 import Calculator from './components/calculator';
 import Notes from './components/notes';
 import Music from './components/music';
@@ -62,35 +62,6 @@ const About = () => {
   );
 };
 
-const DigitalClock = () => {
-  const [date, setDate] = useState(new Date());
-  const timerRef = useRef<number>();
-
-  const updateDate = useCallback(() => {
-    const now = new Date();
-
-    setDate(now);
-
-    timerRef.current = window.setTimeout(() => {
-      updateDate();
-    }, 1000 - now.getMilliseconds());
-  }, []);
-
-  useEffect(() => {
-    updateDate();
-
-    return () => {
-      clearTimeout(timerRef.current);
-    };
-  }, [updateDate]);
-
-  return (
-    <Text fontWeight="semibold" align="center">
-      {date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}
-    </Text>
-  );
-};
-
 const initialState = [
   {
     id: uuidv4(), icon: 'calendar', title: 'Calendar', element: <Calendar />, rect: {
@@ -127,11 +98,6 @@ const initialState = [
       x: 705, y: 360, width: 255, height: 130 + 32,
     }
   },
-  // {
-  //   id: uuidv4(), title: 'Contacts', element: <Contacts />, rect: {
-  //     x: 615, y: 360, width: 510, height: 540,
-  //   }
-  // },
   {
     id: uuidv4(), icon: 'terminal', title: 'Terminal', element: <Terminal />, rect: {
       x: 975, y: 360, width: 690, height: 540,
@@ -146,14 +112,53 @@ const sideBarClientStyle = {
 type WindowsProp = React.ComponentProps<typeof Desktop>['windows'];
 
 const Applications = {
-  'markdown': {
-    icon: 'marker', title: 'Markdown', client: Markdown, rect: { width: 1024, height: 800 }
+  'calendar': {
+    icon: 'calendar', title: 'Calendar', client: <Calendar />, rect: { width: 360, height: 332 }
+  },
+  'clock': {
+    icon: 'clock', title: 'Clock', client: <Clock />, rect: { width: 300, height: 332 }
+  },
+  'calculator': {
+    icon: 'calculator', title: 'Calculator', client: <Calculator />, rect: { width: 255, height: 332 }
+  },
+  'notes': {
+    icon: 'note-sticky', title: 'Notes', client: <Notes />, rect: { width: 800, height: 600 }
   },
   'music': {
-    icon: 'music', title: 'Music', client: Music, rect: { width: 400, height: 400 }
+    icon: 'music', title: 'Music', client: <Music />, rect: { width: 400, height: 400 }
+  },
+  'files': {
+    icon: 'files', title: 'Files', client: <Filesystem />, rect: { width: 800, height: 600 }
+  },
+  'contacts': {
+    icon: 'address-book', title: 'Contacts', client: <Contacts />, rect: { width: 800, height: 600 }
+  },
+  'terminal': {
+    icon: 'terminal', title: 'Terminal', client: <Terminal />, rect: { width: 800, height: 600 }
+  },
+  'markdown': {
+    icon: 'marker', title: 'Markdown', client: <Markdown args="/Learning Kopi.md" />, rect: { width: 1024, height: 800 }
   },
   'media': {
-    icon: 'image', title: 'Media', client: Media, rect: undefined,
+    icon: 'image', title: 'Media', client: <Media />, rect: undefined,
+  },
+  'eyes': {
+    icon: 'eye', title: 'Eyes', client: <Eyes />, rect: { width: 255, height: 162 }
+  },
+  'browser': {
+    icon: 'globe', title: 'Browser', client: <Browser />, rect: { width: 1440, height: 1024 }
+  },
+  'email': {
+    icon: 'inbox', title: 'Email', client: <Email />, rect: { width: 1440, height: 1024 }
+  },
+  'grid': {
+    icon: 'question', title: 'Grid', client: <GridPage />, rect: { width: 1024, height: 800 }
+  },
+  'live': {
+    icon: 'question', title: 'Live', client: <Live />, rect: { width: 1024, height: 800 }
+  },
+  'styleguide': {
+    icon: 'palette', title: 'Styleguide', client: <Styleguide />, rect: { width: 1024, height: 800 }
   },
 } as const;
 
@@ -163,6 +168,60 @@ const FileExtension = {
   'jpg': Applications.media,
   'txt': Applications.media,
 } as const;
+
+const addApplication = (key: keyof typeof Applications, { addWindow }: any) => {
+  const app = Applications[key];
+
+  if (app) {
+    const { icon, title, client, rect } = app;
+
+    addWindow(icon, title, client, rect);
+  }
+};
+
+const getDesktopMenuItems = (addWindow: any) => [
+  { title: 'About React Desktop', action: () => addWindow('info-circle', 'Desktop', <About />, { width: 500, height: 250 }) },
+  null,
+  { title: 'Preferences', action: () => addWindow('sliders', 'Preferences', <Preferences />, { width: 500, height: 250 }) },
+  { title: 'Enter Full Screen', action: () => document.body.requestFullscreen() },
+];
+
+const getUtilitiesMenuItems = (addWindow: any) => [
+  { title: 'Calendar', action: () => addApplication('calendar', { addWindow }) },
+  { title: 'Clock', action: () => addApplication('clock', { addWindow }) },
+  { title: 'Calculator', action: () => addApplication('calculator', { addWindow }) },
+  { title: 'Notes', action: () => addApplication('notes', { addWindow }) },
+  { title: 'Music', action: () => addApplication('music', { addWindow }) },
+  { title: 'Files', action: () => addApplication('files', { addWindow }) },
+  { title: 'Contacts', action: () => addApplication('contacts', { addWindow }) },
+  { title: 'Terminal', action: () => addApplication('terminal', { addWindow }) },
+  { title: 'Markdown', action: () => addApplication('markdown', { addWindow }) },
+  { title: 'Eyes', action: () => addApplication('eyes', { addWindow }) },
+  null,
+  { title: 'Browser', action: () => addApplication('browser', { addWindow }) },
+  { title: 'Email', action: () => addApplication('email', { addWindow }) },
+  { title: 'Grid', action: () => addApplication('grid', { addWindow }) },
+  { title: 'Live', action: () => addApplication('live', { addWindow }) },
+  null,
+  { title: 'Styleguide', action: () => addApplication('styleguide', { addWindow }) },
+];
+
+const getApplicationsMenuItems = (addWindow: any) => [
+  'Applications',
+  { title: 'Grid Draw', action: () => addWindow('draw-polygon', 'Grid Draw', <View as="iframe" frameBorder="0" src="https://mike-austin.com/draw-2" />, { width: 1280, height: 900 }) },
+  { title: 'Bestest Movies Ever', action: () => addWindow('film', 'Bestest Movies Ever', <View as="iframe" frameBorder="0" src="https://bestestmoviesever.com" />, { width: 1280, height: 900 }) },
+  { title: 'Kopi Notebook', action: () => addWindow('book', 'Kopi Notebook', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/kopi-ide" />, { width: 1280, height: 900 }) },
+  { title: 'UI Builder', action: () => addWindow('display', 'UI Builder', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/builder" />, { width: 1280, height: 900 }) },
+  { title: 'Virtual Machine', action: () => addWindow('computer', 'Virtual Machine', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/vmachine" />, { width: 455, height: 870 }) },
+  { title: 'Generator Coroutines', action: () => addWindow('code', 'Generator Coroutines', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/gOQyPVE?default-tab=js%2Cresult&editable=true" />, { width: 1280, height: 900 }) },
+  { title: 'Coroutines using await', action: () => addWindow('code', 'Coroutines using await', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/JjeqdeB?default-tab=js%2Cresult&editable=true" />, { width: 1280, height: 900 }) },
+  { title: 'React Desktop 0.7', action: () => addWindow('display', 'React Desktop 0.7', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old" />, { width: 1280, height: 900 }) },
+  null,
+  'Games',
+  { title: 'React Asteroids', action: () => addWindow('gamepad', 'React Asteroids', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/mdpYMym?default-tab=js%2Cresult" />, { width: 1440, height: 1024 }) },
+  { title: 'Stetegic Asteroids', action: () => addWindow('gamepad', 'Stetegic Asteroids', <View as="iframe" frameBorder="0" src="https://editor.p5js.org/mike_ekim1024/full/q8nWdZV0U" />, { width: 800, height: 873 }) },
+  { title: 'Snakey Snake', action: () => addWindow('gamepad', 'Snakey Snake', <View as="iframe" frameBorder="0" src="https://editor.p5js.org/mike_ekim1024/full/8c5ovMThX" />, { width: 400, height: 474 }) },
+];
 
 const App = () => {
   console.log('App()');
@@ -181,6 +240,7 @@ const App = () => {
       : [0, 30];
 
     let margin = window.innerWidth < 800 ? 15 : 30;
+
     let width = Math.min(rect?.width ?? 800, window.innerWidth - right - margin);
     let height = Math.min(rect?.height ?? 600, window.innerHeight - 32 - bottom - margin);
 
@@ -199,49 +259,9 @@ const App = () => {
     setWindowIdOrder(windowIdOrder => [...windowIdOrder, id]);
   }, [isSidebarHidden]);
 
-  const desktopMenuItems = useMemo(() => [
-    { title: 'About React Desktop', action: () => addWindow('info-circle', 'Desktop', <About />, { width: 500, height: 250 }) },
-    null,
-    { title: 'Preferences', action: () => addWindow('sliders', 'Preferences', <Preferences />, { width: 500, height: 250 }) },
-    { title: 'Enter Full Screen', action: () => document.body.requestFullscreen() },
-  ], [addWindow]);
-
-  const utilitiesMenuItems = useMemo(() => [
-    { title: 'Calendar', action: () => addWindow('calendar', 'Calendar', <Calendar />, { width: 360, height: 332 }) },
-    { title: 'Clock', action: () => addWindow('clock', 'Clock', <Clock />, { width: 300, height: 332 }) },
-    { title: 'Calculator', action: () => addWindow('calculator', 'Calculator', <Calculator />, { width: 255, height: 332 }) },
-    { title: 'Notes', action: () => addWindow('note-sticky', 'Notes', <Notes />, { width: 800, height: 600 }) },
-    { title: 'Music', action: () => addWindow('music', 'Music', <Music />, { width: 400, height: 400 }) },
-    { title: 'Files', action: () => addWindow('folder-open', 'Files', <Filesystem />, { width: 800, height: 600 }) },
-    { title: 'Contacts', action: () => addWindow('address-book', 'Contacts', <Contacts />, { width: 800, height: 600 }) },
-    { title: 'Terminal', action: () => addWindow('terminal', 'Terminal', <Terminal />, { width: 800, height: 600 }) },
-    { title: 'Markdown', action: () => addWindow('marker', 'Markdown', <Markdown />, { width: 1024, height: 800 }) },
-    { title: 'Eyes', action: () => addWindow('eye', 'Eyes', <Eyes />, { width: 255, height: 130 + 32 }) },
-    null,
-    { title: 'Browser', action: () => addWindow('globe', 'Browser', <Browser />, { width: 1440, height: 1024 }) },
-    { title: 'Email', action: () => addWindow('inbox', 'Email', <Email />, { width: 1440, height: 1024 }) },
-    { title: 'Grid', action: () => addWindow('question', 'Grid', <GridPage />, { width: 1024, height: 800 }) },
-    { title: 'Live', action: () => addWindow('question', 'Live', <Live />, { width: 1024, height: 800 }) },
-    null,
-    { title: 'Styleguide', action: () => addWindow('palette', 'Styleguide', <Styleguide />, { width: 1024, height: 800 }) },
-  ], [addWindow]);
-
-  const applicationMenuItems = useMemo(() => [
-    'Applications',
-    { title: 'Grid Draw', action: () => addWindow('draw-polygon', 'Grid Draw', <View as="iframe" frameBorder="0" src="https://mike-austin.com/draw-2" />, { width: 1280, height: 900 }) },
-    { title: 'Bestest Movies Ever', action: () => addWindow('film', 'Bestest Movies Ever', <View as="iframe" frameBorder="0" src="https://bestestmoviesever.com" />, { width: 1280, height: 900 }) },
-    { title: 'Kopi Notebook', action: () => addWindow('book', 'Kopi Notebook', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/kopi-ide" />, { width: 1280, height: 900 }) },
-    { title: 'UI Builder', action: () => addWindow('display', 'UI Builder', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/builder" />, { width: 1280, height: 900 }) },
-    { title: 'Virtual Machine', action: () => addWindow('computer', 'Virtual Machine', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old/clients/vmachine" />, { width: 455, height: 870 }) },
-    { title: 'Generator Coroutines', action: () => addWindow('code', 'Generator Coroutines', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/gOQyPVE?default-tab=js%2Cresult&editable=true" />, { width: 1280, height: 900 }) },
-    { title: 'Coroutines using await', action: () => addWindow('code', 'Coroutines using await', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/JjeqdeB?default-tab=js%2Cresult&editable=true" />, { width: 1280, height: 900 }) },
-    { title: 'React Desktop 0.7', action: () => addWindow('display', 'React Desktop 0.7', <View as="iframe" frameBorder="0" src="https://mike-austin.com/react-desktop-old" />, { width: 1280, height: 900 }) },
-    null,
-    'Games',
-    { title: 'React Asteroids', action: () => addWindow('gamepad', 'React Asteroids', <View as="iframe" frameBorder="0" src="https://codepen.io/mikeaustin/embed/mdpYMym?default-tab=js%2Cresult" />, { width: 1440, height: 1024 }) },
-    { title: 'Stetegic Asteroids', action: () => addWindow('gamepad', 'Stetegic Asteroids', <View as="iframe" frameBorder="0" src="https://editor.p5js.org/mike_ekim1024/full/q8nWdZV0U" />, { width: 800, height: 873 }) },
-    { title: 'Snakey Snake', action: () => addWindow('gamepad', 'Snakey Snake', <View as="iframe" frameBorder="0" src="https://editor.p5js.org/mike_ekim1024/full/8c5ovMThX" />, { width: 400, height: 474 }) },
-  ], [addWindow]);
+  const desktopMenuItems = useMemo(() => getDesktopMenuItems(addWindow), [addWindow]);
+  const utilitiesMenuItems = useMemo(() => getUtilitiesMenuItems(addWindow), [addWindow]);
+  const applicationsMenuItems = useMemo(() => getApplicationsMenuItems(addWindow), [addWindow]);
 
   const handleWindowFocus = useCallback((windowId: string) => {
     setWindowIdOrder(windowIdOrder => [
@@ -269,9 +289,9 @@ const App = () => {
         const mapping = FileExtension[ext as keyof typeof FileExtension];
 
         if (mapping) {
-          const { icon, title, client: Component, rect } = mapping;
+          const { icon, title, client, rect } = mapping;
 
-          addWindow(icon, title, <Component args={event.data.payload} />, rect);
+          addWindow(icon, title, React.cloneElement(client, { args: event.data.payload }), rect);
         }
       }
     }
@@ -282,10 +302,12 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    const app = utilitiesMenuItems.find(item => item?.title === params.get('app'));
+    const app = Applications[params.get('app') as keyof typeof Applications];
 
     if (app) {
-      app.action();
+      const { icon, title, client, rect } = app;
+
+      addWindow(icon, title, client, rect);
     }
 
     window.addEventListener('message', handleWindowMessage);
@@ -293,14 +315,14 @@ const App = () => {
     return () => {
       window.removeEventListener('message', handleWindowMessage);
     };
-  }, [handleWindowMessage, params, utilitiesMenuItems]);
+  }, [addWindow, handleWindowMessage, params]);
 
   return (
     <View className={styles.App}>
       <Stack horizontal shadow fillColor="white" paddingHorizontal="large" style={{ zIndex: 1, paddingLeft: 8 }}>
         <Menu hover title="Desktop" titleFontWeight="bold" rightIcon={undefined} items={desktopMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
         <Menu hover title="Utilities" rightIcon={undefined} items={utilitiesMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
-        <Menu hover title="Programs" rightIcon={undefined} items={applicationMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
+        <Menu hover title="Programs" rightIcon={undefined} items={applicationsMenuItems} style={{ paddingLeft: 8, paddingRight: 8 }} />
         <Spacer flex size="large" />
         <DigitalClock />
       </Stack>
