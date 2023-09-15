@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { createUseStyles } from 'react-jss';
+import * as WebDAV from 'webdav';
 
 import * as kopi from '../terminal/kopi-language';
 import * as functions from '../terminal/functions';
@@ -10,7 +11,7 @@ import { KopiAny, KopiBoolean, KopiNumber, KopiString } from '../terminal/kopi-l
 
 import { Stack, Text, View } from 'bare';
 
-import markdownUrl from '../../assets/kopi.md';
+const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
 
 const useSidebarStyles = createUseStyles({
   h1: {
@@ -215,7 +216,7 @@ const Code = ({
 //
 //
 
-const Markdown = ({ ...props }) => {
+const Markdown = ({ path, ...props }: any) => {
   console.log('Markdown()', props);
 
   const [markdown, setMarkdown] = useState('');
@@ -282,9 +283,13 @@ const Markdown = ({ ...props }) => {
 
   useEffect(() => {
     (async () => {
-      setMarkdown(await (await fetch(markdownUrl)).text());
+      const markdown = await webdavClient.getFileContents(path, { format: 'text' });
+
+      if (typeof markdown === 'string') {
+        setMarkdown(markdown);
+      }
     })();
-  }, []);
+  }, [path]);
 
   return (
     <Stack horizontal divider {...props} style={{ userSelect: 'text' }}>

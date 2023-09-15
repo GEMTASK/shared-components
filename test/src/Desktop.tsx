@@ -241,8 +241,8 @@ const App = () => {
   }, []);
 
   const handleWindowMessage = useCallback((event: MessageEvent) => {
-    if (event.data === 'markdown') {
-      addWindow('marker', 'Markdown', <Markdown />, { width: 1024, height: 800 });
+    if (event.data.type === 'openFile') {
+      addWindow('marker', 'Markdown', <Markdown path={event.data.payload} />, { width: 1024, height: 800 });
     }
   }, [addWindow]);
 
