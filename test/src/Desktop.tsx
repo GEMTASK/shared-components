@@ -144,6 +144,11 @@ const sideBarClientStyle = {
 
 type WindowsProp = React.ComponentProps<typeof Desktop>['windows'];
 
+const FileExtensionMappings = {
+  'md': { icon: 'marker', title: 'Markdown', client: Markdown, rect: { width: 1024, height: 800 } },
+  'mp3': { icon: 'music', title: 'Music', client: Music, rect: { width: 400, height: 400 } },
+} as const;
+
 const App = () => {
   console.log('App()');
 
@@ -242,7 +247,18 @@ const App = () => {
 
   const handleWindowMessage = useCallback((event: MessageEvent) => {
     if (event.data.type === 'openFile') {
-      addWindow('marker', 'Markdown', <Markdown path={event.data.payload} />, { width: 1024, height: 800 });
+      const filename = event.data.payload as string;
+      const ext = filename.slice(filename.lastIndexOf('.') + 1);
+
+      if (ext) {
+        const mapping = FileExtensionMappings[ext as keyof typeof FileExtensionMappings];
+
+        if (mapping) {
+          const { icon, title, client: Component, rect } = mapping;
+
+          addWindow(icon, title, <Component path={event.data.payload} />, rect);
+        }
+      }
     }
   }, [addWindow]);
 
