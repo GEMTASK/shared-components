@@ -3,12 +3,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Divider, Icon, Slider, Spacer, Stack, Text, View } from 'bare';
 
 const songs = [
-  { title: 'Tomorrow', length: '4:54', artist: 'Benjamin Tissot — www.bensound.com', uri: 'https://webdav.mike-austin.com/audio/bensound-tomorrow.mp3' },
-  { title: 'Dubstep', length: '2:04', artist: 'Benjamin Tissot — www.bensound.com', uri: 'https://webdav.mike-austin.com/audio/bensound-dubstep.mp3' },
-  { title: 'Better Days', length: '2:33', artist: 'Benjamin Tissot — www.bensound.com', uri: 'https://webdav.mike-austin.com/audio/bensound-betterdays.mp3' },
-  { title: 'Sunny', length: '2:20', artist: 'Benjamin Tissot — www.bensound.com', uri: 'https://webdav.mike-austin.com/audio/bensound-sunny.mp3' },
-  { title: 'Evolution', length: '2:45', artist: 'Benjamin Tissot — www.bensound.com', uri: 'https://webdav.mike-austin.com/audio/bensound-evolution.mp3' },
-  { title: 'Dreams', length: '3:30', artist: 'Benjamin Tissot — www.bensound.com', uri: 'https://webdav.mike-austin.com/audio/bensound-dreams.mp3' },
+  { title: 'Tomorrow', length: '4:54', artist: 'Benjamin Tissot — www.bensound.com', uri: 'https://webdav.mike-austin.com/music/bensound-tomorrow.mp3' },
+  { title: 'Dubstep', length: '2:04', artist: 'Benjamin Tissot — www.bensound.com', uri: 'https://webdav.mike-austin.com/music/bensound-dubstep.mp3' },
+  { title: 'Better Days', length: '2:33', artist: 'Benjamin Tissot — www.bensound.com', uri: 'https://webdav.mike-austin.com/music/bensound-betterdays.mp3' },
+  { title: 'Sunny', length: '2:20', artist: 'Benjamin Tissot — www.bensound.com', uri: 'https://webdav.mike-austin.com/music/bensound-sunny.mp3' },
+  { title: 'Evolution', length: '2:45', artist: 'Benjamin Tissot — www.bensound.com', uri: 'https://webdav.mike-austin.com/music/bensound-evolution.mp3' },
+  { title: 'Dreams', length: '3:30', artist: 'Benjamin Tissot — www.bensound.com', uri: 'https://webdav.mike-austin.com/music/bensound-dreams.mp3' },
 ];
 
 const Song = ({

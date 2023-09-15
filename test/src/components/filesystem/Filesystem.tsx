@@ -82,7 +82,7 @@ const IconDisplay = ({
         <DisplayItem key={basename} type={type} basename={basename} filename={filename} selected={basename === selectedFile} {...itemProps}>
           <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="4x" color={type === 'directory' ? 'yellow-5' : 'gray-5'} />
           <Spacer size="small" />
-          <Text lineClamp={2} textAlign="center">{basename}</Text>
+          <Text lineClamp={2} textAlign="center" style={{ overflowWrap: 'anywhere' }}>{basename}</Text>
         </DisplayItem>
       ))}
     </Grid>
@@ -105,7 +105,7 @@ const TileDisplay = ({
           <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="3x" color={type === 'directory' ? 'yellow-5' : 'gray-5'} />
           <Spacer size="small" />
           <View>
-            <Text lineClamp={1}>{basename}</Text>
+            <Text lineClamp={1} style={{ overflowWrap: 'anywhere' }}>{basename}</Text>
             <Spacer size="small" />
             <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>{HumanReadable.fromBytes(size, {})}</Text>
           </View>
@@ -130,7 +130,7 @@ const ListDisplay = ({
         <DisplayItem key={basename} type={type} basename={basename} filename={filename} selected={basename === selectedFile} {...itemProps}>
           <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="2x" color={type === 'directory' ? 'yellow-5' : 'gray-5'} />
           <Spacer size="small" />
-          <Text lineClamp={1}>{basename}</Text>
+          <Text lineClamp={1} style={{ overflowWrap: 'anywhere' }}>{basename}</Text>
         </DisplayItem>
       ))}
     </Grid>
