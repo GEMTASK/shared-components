@@ -18,6 +18,7 @@ import Terminal from './components/terminal';
 import Preferences from './components/preferences';
 import Markdown from './components/markdown';
 import Eyes from './components/eyes';
+import Media from './components/media';
 
 import Styleguide from './App';
 import Email from './Email';
@@ -151,11 +152,16 @@ const Applications = {
   'music': {
     icon: 'music', title: 'Music', client: Music, rect: { width: 400, height: 400 }
   },
+  'media': {
+    icon: 'media', title: 'Media', client: Media, rect: undefined,
+  },
 } as const;
 
 const FileExtension = {
   'md': Applications.markdown,
   'mp3': Applications.music,
+  'jpg': Applications.media,
+  'txt': Applications.media,
 } as const;
 
 const App = () => {
@@ -175,8 +181,8 @@ const App = () => {
       : [0, 30];
 
     let margin = window.innerWidth < 800 ? 15 : 30;
-    let width = Math.min(rect?.width ?? 500, window.innerWidth - right - margin);
-    let height = Math.min(rect?.height ?? 250, window.innerHeight - 32 - bottom - margin);
+    let width = Math.min(rect?.width ?? 1024, window.innerWidth - right - margin);
+    let height = Math.min(rect?.height ?? 710, window.innerHeight - 32 - bottom - margin);
 
     setWindows(windows => [
       ...windows,
@@ -194,9 +200,9 @@ const App = () => {
   }, [isSidebarHidden]);
 
   const desktopMenuItems = useMemo(() => [
-    { title: 'About React Desktop', action: () => addWindow('info-circle', 'Desktop', <About />) },
+    { title: 'About React Desktop', action: () => addWindow('info-circle', 'Desktop', <About />, { width: 500, height: 250 }) },
     null,
-    { title: 'Preferences', action: () => addWindow('sliders', 'Preferences', <Preferences />) },
+    { title: 'Preferences', action: () => addWindow('sliders', 'Preferences', <Preferences />, { width: 500, height: 250 }) },
     { title: 'Enter Full Screen', action: () => document.body.requestFullscreen() },
   ], [addWindow]);
 

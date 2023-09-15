@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import * as WebDAV from 'webdav';
+import HumanReadable from '@tsmx/human-readable';
 
 import { Button, Divider, Grid, Icon, Spacer, Splitter, Table, Text, View, ViewProps } from 'bare';
 import { ButtonProps } from 'bare/dist/components/button';
@@ -106,7 +107,7 @@ const TileDisplay = ({
           <View>
             <Text lineClamp={1}>{basename}</Text>
             <Spacer size="small" />
-            <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>{(size / 1000).toFixed(2)} KiB</Text>
+            <Text fontSize="xsmall" textColor="gray-6" lineClamp={1}>{HumanReadable.fromBytes(size, {})}</Text>
           </View>
         </DisplayItem>
       ))}
