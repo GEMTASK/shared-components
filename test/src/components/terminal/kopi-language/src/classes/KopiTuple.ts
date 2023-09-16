@@ -3,6 +3,7 @@ import { Context, KopiValue } from '../types';
 import KopiArray from './KopiArray';
 import KopiBoolean from './KopiBoolean';
 import KopiFunction from './KopiFunction';
+import KopiString from './KopiString';
 
 import type { KopiStream } from './KopiStream';
 
@@ -71,10 +72,10 @@ class KopiTuple extends KopiValue {
     const fields = await Promise.all(
       this._fields.map(async (element, index) =>
         (this._fieldNames[index] ? `${this._fieldNames[index]}: ` : ``) +
-        `${await (await element).toString()}`)
+        `${await (await element).inspect()}`)
     );
 
-    return `(${fields.join(', ')})`;
+    return new KopiString(`(${fields.join(', ')})`);
   }
 
   override async inspect() {

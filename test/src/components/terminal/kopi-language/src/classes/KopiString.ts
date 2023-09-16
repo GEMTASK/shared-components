@@ -29,7 +29,7 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   let values: string = '';
 
   for await (const element of iterable) {
-    values += await element.toString();
+    values += (await element.toString()).value;
   }
 
   return new KopiString(values);
@@ -90,7 +90,7 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
   }
 
   static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
-    return new KopiString(await value.toString());
+    return value;
   }
 
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {
@@ -112,7 +112,7 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
   }
 
   override async toString() {
-    return this.value;
+    return this;
   }
 
   override async inspect() {
@@ -245,7 +245,7 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
       array.push(await value.toString());
     }
 
-    return new KopiString(array.join(this.value));
+    return new KopiString(array.map(string => string.value).join(this.value));
   }
 
   join(joiner: KopiValue, context: Context) {

@@ -7,6 +7,7 @@ import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
 import KopiBoolean from './KopiBoolean';
 import KopiTuple from './KopiTuple';
+import KopiString from './KopiString';
 
 interface KopiRange extends KopiValue, KopiIterable<KopiArray> { };
 
@@ -74,6 +75,10 @@ class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
       this.from = from;
       this.to = to;
     });
+  }
+
+  async toString() {
+    return new KopiString(await this.inspect());
   }
 
   override async inspect() {

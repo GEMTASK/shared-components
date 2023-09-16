@@ -102,8 +102,8 @@ class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
     });
   }
 
-  toString() {
-    return ``;
+  async toString() {
+    return new KopiString(`...`);
   }
 
   override async inspect() {

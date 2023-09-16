@@ -14,7 +14,7 @@ class KopiNumber extends KopiValue {
   }
 
   static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
-    return new KopiNumber(Number(await value.toString()));
+    return new KopiNumber(Number((await value.toString()).value));
   }
 
   //
@@ -30,7 +30,7 @@ class KopiNumber extends KopiValue {
   }
 
   async toString() {
-    return `${this.value}`;
+    return new KopiString(`${this.value}`);
   }
 
   override async inspect() {

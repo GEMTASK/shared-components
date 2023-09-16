@@ -193,7 +193,7 @@ const interpret = async (
       }
 
       async function kopi_print(value: KopiValue) {
-        const string = await value.toString();
+        const string = (await value.toString() as unknown as KopiString).value;
 
         setElementHistory(history => [
           ...history,
