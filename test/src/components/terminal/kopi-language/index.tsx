@@ -2,7 +2,7 @@ import * as parser from './lib/parser.mjs';
 
 import { RawASTNode, ASTNode, ASTPatternNode, Environment, Bind } from './src/types';
 
-import * as astNodes from './src/astnodes';
+import * as astnodes from './src/astnodes';
 import * as visitors from './src/visitors';
 
 import { inspect } from './src/utils';
@@ -10,161 +10,162 @@ import { inspect } from './src/utils';
 function transform(rawASTNode: RawASTNode): ASTNode {
   switch (rawASTNode.type) {
     case 'Assignment':
-      return new astNodes.Assignment({
+      return new astnodes.Assignment({
         pattern: transform(rawASTNode.pattern),
         expression: transform(rawASTNode.expression),
-      } as astNodes.Assignment);
+      } as astnodes.Assignment);
     //
     case 'BlockExpression':
-      return new astNodes.BlockExpression({
+      return new astnodes.BlockExpression({
         statements: rawASTNode.statements.map((statement: ASTNode) => transform(statement)),
-      } as astNodes.BlockExpression);
+      } as astnodes.BlockExpression);
     case 'PipeExpression':
-      return new astNodes.PipeExpression({
+      return new astnodes.PipeExpression({
         expression: transform(rawASTNode.expression),
         methodName: rawASTNode.methodName,
         argumentExpression: rawASTNode.argumentExpression && transform(rawASTNode.argumentExpression),
         location: rawASTNode.location,
-      } as astNodes.PipeExpression);
+      } as astnodes.PipeExpression);
     case 'TupleExpression':
-      return new astNodes.TupleExpression({
+      return new astnodes.TupleExpression({
         fieldExpressions: rawASTNode.fieldExpressions.map((expression: ASTNode) => transform(expression)),
         fieldNames: rawASTNode.fieldNames,
         location: rawASTNode.location,
-      } as astNodes.TupleExpression);
+      } as astnodes.TupleExpression);
     case 'OperatorExpression':
-      return new astNodes.OperatorExpression({
+      return new astnodes.OperatorExpression({
         operator: rawASTNode.operator,
         leftExpression: transform(rawASTNode.leftExpression),
         rightExpression: transform(rawASTNode.rightExpression),
         location: rawASTNode.location,
-      } as astNodes.OperatorExpression);
+      } as astnodes.OperatorExpression);
     case 'ConditionalExpression':
-      return new astNodes.ConditionalExpression({
+      return new astnodes.ConditionalExpression({
         expression: transform(rawASTNode.expression),
         consequent: transform(rawASTNode.consequent),
         alternate: transform(rawASTNode.alternate)
-      } as astNodes.ConditionalExpression);
+      } as astnodes.ConditionalExpression);
     case 'LogicalOrExpression':
-      return new astNodes.LogicalOrExpression({
+      return new astnodes.LogicalOrExpression({
         leftExpression: transform(rawASTNode.leftExpression),
         rightExpression: transform(rawASTNode.rightExpression),
         location: rawASTNode.location,
-      } as astNodes.LogicalOrExpression);
+      } as astnodes.LogicalOrExpression);
     case 'LogicalAndExpression':
-      return new astNodes.LogicalAndExpression({
+      return new astnodes.LogicalAndExpression({
         leftExpression: transform(rawASTNode.leftExpression),
         rightExpression: transform(rawASTNode.rightExpression),
         location: rawASTNode.location,
-      } as astNodes.LogicalAndExpression);
+      } as astnodes.LogicalAndExpression);
     case 'ApplyExpression':
-      return new astNodes.ApplyExpression({
+      return new astnodes.ApplyExpression({
         expression: transform(rawASTNode.expression),
         argumentExpression: transform(rawASTNode.argumentExpression),
         location: rawASTNode.location,
-      } as astNodes.ApplyExpression);
+      } as astnodes.ApplyExpression);
     case 'RangeExpression':
-      return new astNodes.RangeExpression({
+      return new astnodes.RangeExpression({
         from: transform(rawASTNode.from),
         to: transform(rawASTNode.to),
         location: rawASTNode.location,
-      } as astNodes.RangeExpression);
+      } as astnodes.RangeExpression);
     case 'MemberExpression':
-      return new astNodes.MemberExpression({
+      return new astnodes.MemberExpression({
         expression: transform(rawASTNode.expression),
         member: rawASTNode.member,
         location: rawASTNode.location,
-      } as astNodes.MemberExpression);
+      } as astnodes.MemberExpression);
     case 'UnaryExpression':
-      return new astNodes.UnaryExpression({
+      return new astnodes.UnaryExpression({
         operator: rawASTNode.operator,
         argumentExpression: transform(rawASTNode.argumentExpression),
         location: rawASTNode.location,
-      } as astNodes.UnaryExpression);
+      } as astnodes.UnaryExpression);
     case 'FunctionExpression':
-      return new astNodes.FunctionExpression({
+      return new astnodes.FunctionExpression({
         parameterPattern: transform(rawASTNode.parameterPattern),
         predicateExpression: rawASTNode.predicateExpression && transform(rawASTNode.predicateExpression),
         bodyExpression: transform(rawASTNode.bodyExpression),
         name: rawASTNode.name,
         location: rawASTNode.location,
-      } as astNodes.FunctionExpression);
+      } as astnodes.FunctionExpression);
     //
     case 'TuplePattern':
-      return new astNodes.TuplePattern({
+      return new astnodes.TuplePattern({
         fieldPatterns: rawASTNode.fieldPatterns.map((pattern: ASTPatternNode) => transform(pattern)),
         fieldNames: rawASTNode.fieldNames,
         location: rawASTNode.location,
-      } as astNodes.TuplePattern);
+      } as astnodes.TuplePattern);
     case 'ConstructorPattern':
-      return new astNodes.ConstructorPattern({
+      return new astnodes.ConstructorPattern({
         name: rawASTNode.name,
         argumentPattern: transform(rawASTNode.argumentPattern),
         location: rawASTNode.location,
-      } as astNodes.ConstructorPattern);
+      } as astnodes.ConstructorPattern);
     case 'NumericLiteralPattern':
-      return new astNodes.NumericLiteralPattern({
+      return new astnodes.NumericLiteralPattern({
         value: rawASTNode.value,
         location: rawASTNode.location,
-      } as astNodes.NumericLiteralPattern);
+      } as astnodes.NumericLiteralPattern);
     case 'StringLiteralPattern':
-      return new astNodes.StringLiteralPattern({
+      return new astnodes.StringLiteralPattern({
         value: rawASTNode.value,
         location: rawASTNode.location,
-      } as astNodes.StringLiteralPattern);
+      } as astnodes.StringLiteralPattern);
     case 'BooleanLiteralPattern':
-      return new astNodes.BooleanLiteralPattern({
+      return new astnodes.BooleanLiteralPattern({
         value: rawASTNode.value,
         location: rawASTNode.location,
-      } as astNodes.BooleanLiteralPattern);
+      } as astnodes.BooleanLiteralPattern);
     case 'ArrayLiteralPattern':
-      return new astNodes.ArrayLiteralPattern({
+      return new astnodes.ArrayLiteralPattern({
         elementPatterns: rawASTNode.elementPatterns.map((pattern: ASTPatternNode) => transform(pattern)),
         defaultExpression: rawASTNode.defaultExpression && transform(rawASTNode.defaultExpression),
         location: rawASTNode.location,
-      } as astNodes.ArrayLiteralPattern);
+      } as astnodes.ArrayLiteralPattern);
     case 'IdentifierPattern':
-      return new astNodes.IdentifierPattern({
+      return new astnodes.IdentifierPattern({
         name: rawASTNode.name,
         defaultExpression: rawASTNode.defaultExpression && transform(rawASTNode.defaultExpression),
         location: rawASTNode.location,
-      } as astNodes.IdentifierPattern);
+      } as astnodes.IdentifierPattern);
     //
     case 'BooleanLiteral':
-      return new astNodes.BooleanLiteral({
+      return new astnodes.BooleanLiteral({
         value: rawASTNode.value,
         location: rawASTNode.location,
-      } as astNodes.BooleanLiteral);
+      } as astnodes.BooleanLiteral);
     case 'NumericLiteral':
-      return new astNodes.NumericLiteral({
+      return new astnodes.NumericLiteral({
         value: rawASTNode.value,
         location: rawASTNode.location,
-      } as astNodes.NumericLiteral);
+      } as astnodes.NumericLiteral);
     case 'StringLiteral':
-      return new astNodes.StringLiteral({
+      return new astnodes.StringLiteral({
         value: rawASTNode.value,
         location: rawASTNode.location,
-      } as astNodes.StringLiteral);
+      } as astnodes.StringLiteral);
     case 'ArrayLiteral':
-      return new astNodes.ArrayLiteral({
+      return new astnodes.ArrayLiteral({
         elementExpressions: rawASTNode.elementExpressions.map((expression: ASTNode) => transform(expression)),
         location: rawASTNode.location,
-      } as astNodes.ArrayLiteral);
+      } as astnodes.ArrayLiteral);
     case 'DictLiteral':
-      return new astNodes.DictLiteral({
-        entryExpressions: rawASTNode.entryExpressions.map(([key, expression]: [ASTNode, ASTNode]) => [transform(key), transform(expression)]),
+      return new astnodes.DictLiteral({
+        entryExpressions: rawASTNode.entryExpressions
+          .map(([key, expression]: [ASTNode, ASTNode]) => [transform(key), transform(expression)]),
         location: rawASTNode.location,
-      } as astNodes.DictLiteral);
+      } as astnodes.DictLiteral);
     case 'AstLiteral':
-      return new astNodes.AstLiteral({
+      return new astnodes.AstLiteral({
         value: transform(rawASTNode.value),
         location: rawASTNode.location,
-      } as astNodes.AstLiteral);
+      } as astnodes.AstLiteral);
     case 'Identifier':
-      return new astNodes.Identifier({
+      return new astnodes.Identifier({
         name: rawASTNode.name,
         location: rawASTNode.location,
-      } as astNodes.Identifier);
+      } as astnodes.Identifier);
     default:
       console.warn('No transform found for', rawASTNode);
 
@@ -172,55 +173,48 @@ function transform(rawASTNode: RawASTNode): ASTNode {
   }
 }
 
-// const visitorMap = {
-//   OperatorExpression: { astNode: astNodes.OperatorExpression, visitor: visitors.OperatorExpression },
-//   ApplyExpression: { astNode: astNodes.ApplyExpression, visitor: visitors.ApplyExpression },
-// } as const;
-
 function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
-  // const foo = visitorMap[astNode.constructor.name as keyof typeof visitorMap];
-
   const context = { environment, evaluate, bind };
 
-  if (astNode instanceof astNodes.Assignment) {
+  if (astNode instanceof astnodes.Assignment) {
     return visitors.Assignment(astNode, context);
-  } else if (astNode instanceof astNodes.BlockExpression) {
+  } else if (astNode instanceof astnodes.BlockExpression) {
     return visitors.BlockExpression(astNode, context);
-  } else if (astNode instanceof astNodes.PipeExpression) {
+  } else if (astNode instanceof astnodes.PipeExpression) {
     return visitors.PipeExpression(astNode, context);
-  } else if (astNode instanceof astNodes.OperatorExpression) {
+  } else if (astNode instanceof astnodes.OperatorExpression) {
     return visitors.OperatorExpression(astNode, context);
-  } else if (astNode instanceof astNodes.ConditionalExpression) {
+  } else if (astNode instanceof astnodes.ConditionalExpression) {
     return visitors.ConditionalExpression(astNode, context);
-  } else if (astNode instanceof astNodes.LogicalOrExpression) {
+  } else if (astNode instanceof astnodes.LogicalOrExpression) {
     return visitors.LogicalOrExpression(astNode, context);
-  } else if (astNode instanceof astNodes.LogicalAndExpression) {
+  } else if (astNode instanceof astnodes.LogicalAndExpression) {
     return visitors.LogicalAndExpression(astNode, context);
-  } else if (astNode instanceof astNodes.ApplyExpression) {
+  } else if (astNode instanceof astnodes.ApplyExpression) {
     return visitors.ApplyExpression(astNode, context);
-  } else if (astNode instanceof astNodes.RangeExpression) {
+  } else if (astNode instanceof astnodes.RangeExpression) {
     return visitors.RangeExpression(astNode, context);
-  } else if (astNode instanceof astNodes.MemberExpression) {
+  } else if (astNode instanceof astnodes.MemberExpression) {
     return visitors.MemberExpression(astNode, context);
-  } else if (astNode instanceof astNodes.UnaryExpression) {
+  } else if (astNode instanceof astnodes.UnaryExpression) {
     return visitors.UnaryExpression(astNode, context);
-  } else if (astNode instanceof astNodes.FunctionExpression) {
+  } else if (astNode instanceof astnodes.FunctionExpression) {
     return visitors.FunctionExpression(astNode, context);
-  } else if (astNode instanceof astNodes.TupleExpression) {
+  } else if (astNode instanceof astnodes.TupleExpression) {
     return visitors.TupleExpression(astNode, context);
-  } else if (astNode instanceof astNodes.BooleanLiteral) {
+  } else if (astNode instanceof astnodes.BooleanLiteral) {
     return visitors.BooleanLiteral(astNode);
-  } else if (astNode instanceof astNodes.NumericLiteral) {
+  } else if (astNode instanceof astnodes.NumericLiteral) {
     return visitors.NumericLiteral(astNode);
-  } else if (astNode instanceof astNodes.StringLiteral) {
+  } else if (astNode instanceof astnodes.StringLiteral) {
     return visitors.StringLiteral(astNode);
-  } else if (astNode instanceof astNodes.ArrayLiteral) {
+  } else if (astNode instanceof astnodes.ArrayLiteral) {
     return visitors.ArrayLiteral(astNode, context);
-  } else if (astNode instanceof astNodes.DictLiteral) {
+  } else if (astNode instanceof astnodes.DictLiteral) {
     return visitors.DictLiteral(astNode, context);
-  } else if (astNode instanceof astNodes.AstLiteral) {
+  } else if (astNode instanceof astnodes.AstLiteral) {
     return astNode.value;
-  } else if (astNode instanceof astNodes.Identifier) {
+  } else if (astNode instanceof astnodes.Identifier) {
     return visitors.Identifier(astNode, context);
   } else {
     console.warn('No visitor found for', astNode);

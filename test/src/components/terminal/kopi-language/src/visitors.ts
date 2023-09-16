@@ -1,7 +1,16 @@
-import * as astNodes from './astnodes';
+import * as astnodes from './astnodes';
 import { ASTNode, Context, KopiValue } from './types';
-import { KopiArray, KopiAstLiteral, KopiBoolean, KopiDict, KopiFunction, KopiNumber, KopiString, KopiTuple } from './classes';
-import KopiRange from './classes/KopiRange';
+import {
+  KopiArray,
+  KopiAstLiteral,
+  KopiBoolean,
+  KopiDict,
+  KopiFunction,
+  KopiNumber,
+  KopiString,
+  KopiTuple,
+  KopiRange
+} from './classes';
 
 interface Visitor {
   astNode: ASTNode,
@@ -13,7 +22,7 @@ interface Visitor {
 //
 
 async function Assignment(
-  { pattern, expression }: astNodes.Assignment,
+  { pattern, expression }: astnodes.Assignment,
   context: Context,
 ) {
   const { environment, evaluate, bind } = context;
@@ -39,7 +48,7 @@ async function Assignment(
 //
 
 async function BlockExpression(
-  { statements }: astNodes.BlockExpression,
+  { statements }: astnodes.BlockExpression,
   context: Context,
 ): Promise<KopiValue> {
   let { environment, evaluate } = context;
@@ -64,7 +73,7 @@ async function BlockExpression(
 }
 
 async function PipeExpression(
-  { expression, methodName, argumentExpression }: astNodes.PipeExpression,
+  { expression, methodName, argumentExpression }: astnodes.PipeExpression,
   context: Context,
 ): Promise<KopiValue> {
   const { environment, evaluate, bind } = context;
@@ -78,10 +87,9 @@ async function PipeExpression(
 }
 
 async function OperatorExpression(
-  astNode: astNodes.OperatorExpression,
+  { operator, leftExpression, rightExpression }: astnodes.OperatorExpression,
   context: Context
 ): Promise<KopiValue> {
-  const { operator, leftExpression, rightExpression } = astNode;
   const { environment, evaluate, bind } = context;
 
   const [leftValue, rightValue] = await Promise.all([
@@ -95,7 +103,7 @@ async function OperatorExpression(
 }
 
 async function ConditionalExpression(
-  { expression, consequent, alternate }: astNodes.ConditionalExpression,
+  { expression, consequent, alternate }: astnodes.ConditionalExpression,
   context: Context
 ) {
   const { evaluate, environment, bind } = context;
@@ -114,10 +122,9 @@ async function ConditionalExpression(
 }
 
 async function LogicalOrExpression(
-  astNode: astNodes.LogicalOrExpression,
+  { leftExpression, rightExpression }: astnodes.LogicalOrExpression,
   context: Context
 ) {
-  const { leftExpression, rightExpression } = astNode;
   const { environment, evaluate, bind } = context;
 
   const leftValue = await evaluate(leftExpression, environment, bind);
@@ -136,10 +143,9 @@ async function LogicalOrExpression(
 }
 
 async function LogicalAndExpression(
-  astNode: astNodes.LogicalAndExpression,
+  { leftExpression, rightExpression }: astnodes.LogicalAndExpression,
   context: Context
 ) {
-  const { leftExpression, rightExpression } = astNode;
   const { environment, evaluate, bind } = context;
 
   const leftValue = await evaluate(leftExpression, environment, bind);
@@ -156,7 +162,7 @@ async function LogicalAndExpression(
 }
 
 async function ApplyExpression(
-  { expression, argumentExpression }: astNodes.ApplyExpression,
+  { expression, argumentExpression }: astnodes.ApplyExpression,
   context: Context
 ): Promise<KopiValue> {
   const { environment, evaluate, bind } = context;
@@ -174,7 +180,7 @@ async function ApplyExpression(
 }
 
 async function RangeExpression(
-  { from, to }: astNodes.RangeExpression,
+  { from, to }: astnodes.RangeExpression,
   context: Context,
 ): Promise<KopiValue> {
   const { environment, evaluate, bind } = context;
@@ -186,7 +192,7 @@ async function RangeExpression(
 }
 
 async function MemberExpression(
-  { expression, member }: astNodes.MemberExpression,
+  { expression, member }: astnodes.MemberExpression,
   context: Context,
 ): Promise<KopiValue> {
   const { environment, evaluate, bind } = context;
@@ -205,7 +211,7 @@ async function MemberExpression(
 }
 
 async function UnaryExpression(
-  { operator, argumentExpression }: astNodes.UnaryExpression,
+  { operator, argumentExpression }: astnodes.UnaryExpression,
   context: Context,
 ): Promise<KopiValue> {
   const { environment, evaluate, bind } = context;
@@ -216,7 +222,7 @@ async function UnaryExpression(
 }
 
 async function FunctionExpression(
-  { parameterPattern, predicateExpression, bodyExpression, name }: astNodes.FunctionExpression,
+  { parameterPattern, predicateExpression, bodyExpression, name }: astnodes.FunctionExpression,
   context: Context,
 ): Promise<KopiValue> {
   const { environment } = context;
@@ -231,7 +237,7 @@ async function FunctionExpression(
 }
 
 async function TupleExpression(
-  { fieldExpressions, fieldNames }: astNodes.TupleExpression,
+  { fieldExpressions, fieldNames }: astnodes.TupleExpression,
   context: Context
 ): Promise<KopiValue> {
   const { environment, evaluate, bind } = context;
@@ -247,25 +253,25 @@ async function TupleExpression(
 //
 
 async function BooleanLiteral(
-  { value }: astNodes.BooleanLiteral
+  { value }: astnodes.BooleanLiteral
 ): Promise<KopiValue> {
   return new KopiBoolean(value);
 }
 
 async function NumericLiteral(
-  { value }: astNodes.NumericLiteral
+  { value }: astnodes.NumericLiteral
 ): Promise<KopiValue> {
   return new KopiNumber(value);
 }
 
 async function StringLiteral(
-  { value }: astNodes.StringLiteral,
+  { value }: astnodes.StringLiteral,
 ): Promise<KopiValue> {
   return new KopiString(value);
 }
 
 async function ArrayLiteral(
-  { elementExpressions }: astNodes.ArrayLiteral,
+  { elementExpressions }: astnodes.ArrayLiteral,
   context: Context,
 ): Promise<KopiValue> {
   const { environment, evaluate, bind } = context;
@@ -276,7 +282,7 @@ async function ArrayLiteral(
 }
 
 async function DictLiteral(
-  { entryExpressions }: astNodes.DictLiteral,
+  { entryExpressions }: astnodes.DictLiteral,
   context: Context,
 ): Promise<KopiValue> {
   const { environment, evaluate, bind } = context;
@@ -292,24 +298,24 @@ async function DictLiteral(
 }
 
 async function AstLiteral(
-  { value }: astNodes.AstLiteral
+  { value }: astnodes.AstLiteral
 ): Promise<KopiValue> {
   return new KopiAstLiteral(value);
 }
 
 async function Identifier(
-  astNode: astNodes.Identifier,
+  { name }: astnodes.Identifier,
   context: Context,
 ): Promise<KopiValue> {
   const { environment } = context;
 
-  const value = environment[astNode.name];
+  const value = environment[name];
 
-  if (astNode.name in environment) {
+  if (name in environment) {
     return value;
   }
 
-  throw new ReferenceError(`Variable "${astNode.name}" not found in current scope.`);
+  throw new ReferenceError(`Variable "${name}" not found in current scope.`);
 }
 
 export {
