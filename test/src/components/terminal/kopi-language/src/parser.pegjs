@@ -230,17 +230,17 @@ PrimaryExpression
         fieldNames: [],
       }
     }
-  / "(" __ fieldName:((Identifier / Operator) ":")? _ head:Expression tail:(_ ("," /  Newline+) _ ((Identifier / Operator) ":")? _ Expression)* __ ")" _ !"=>" {
-      return !fieldName && tail.length === 0 ? head : {
+  / "(" __ head:TupleField tail:(_ ("," /  Newline+) _ TupleField)* __ ")" _ !"=>" {
+      return !head.name && tail.length === 0 ? head.expression : {
         type: 'TupleExpression',
-        fieldExpressions: tail.reduce((expressions, [, , , , , expression]) => [
+        fieldExpressions: tail.reduce((expressions, [, , , field]) => [
           ...expressions,
-          expression
-        ], [head]),
-        fieldNames: tail.reduce((fieldNames, [, , , fieldName]) => [
+          field.expression
+        ], [head.expression]),
+        fieldNames: tail.reduce((fieldNames, [, , , field]) => [
           ...fieldNames,
-          fieldName && fieldName[0].name
-        ], [fieldName && fieldName[0].name])
+          field.name
+        ], [head.name])
       };
     }
   / boolean:BooleanLiteral _ !"=>" {
@@ -256,6 +256,14 @@ PrimaryExpression
   / BlockExpression
   / identifier:Identifier _ !"=>" {
       return identifier;
+    }
+
+TupleField
+  = name: ((Identifier / Operator) ":")? _ expression:Expression {
+      return {
+        name: name && name[0].name,
+        expression
+      }
     }
 
 BlockExpression
