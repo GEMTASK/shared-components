@@ -327,6 +327,32 @@ class StringLiteralPattern extends ASTPatternNode {
   }
 }
 
+class BooleanLiteralPattern extends ASTPatternNode {
+  readonly value: boolean;
+
+  constructor({ value, location }: BooleanLiteralPattern) {
+    super(location);
+
+    this.value = value;
+  }
+
+  async test(value: KopiValue, context: Context) {
+    if (!(value instanceof KopiBoolean && value.value === this.value)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  override async match(value: KopiValue, context: Context) {
+    if (!(value instanceof KopiBoolean && value.value === this.value)) {
+      throw new TypeError(`Expected ${this.value} but ${await value.inspect()} found.`);
+    }
+
+    return {};
+  }
+}
+
 class ArrayLiteralPattern extends ASTPatternNode {
   readonly elementPatterns: ASTPatternNode[];
   readonly defaultExpression: ASTNode | null;
@@ -548,6 +574,7 @@ export {
   ConstructorPattern,
   NumericLiteralPattern,
   StringLiteralPattern,
+  BooleanLiteralPattern,
   ArrayLiteralPattern,
   IdentifierPattern,
   //

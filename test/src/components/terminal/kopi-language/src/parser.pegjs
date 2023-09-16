@@ -2,9 +2,9 @@
 // Expressions
 //
 
-Block
+Program
   = __ head:Statement? tail:(_ (Newline _)+ Statement)* __ {
-      return {
+      return tail.length === 0 ? head : {
         type: 'BlockExpression',
         statements: tail.reduce(
           (statements, [, , statement]) => [...statements, statement],
@@ -271,6 +271,17 @@ BlockExpression
     return statements;
   }
 
+Block
+  = __ head:Statement? tail:(_ (Newline _)+ Statement)* __ {
+      return {
+        type: 'BlockExpression',
+        statements: tail.reduce(
+          (statements, [, , statement]) => [...statements, statement],
+          head ? [head] : []
+        ),
+      };
+    }
+
 //
 // Patterns
 //
@@ -311,6 +322,7 @@ PrimaryPattern
   / ArrayLiteralPattern
   / NumericLiteralPattern
   / StringLiteralPattern
+  / BooleanLiteralPattern
   / IdentifierPattern
 
 ConstructorPattern
@@ -352,6 +364,14 @@ StringLiteralPattern
       return {
         type: 'StringLiteralPattern',
         value: string.value,
+      }
+    }
+
+BooleanLiteralPattern
+  = boolean:BooleanLiteral {
+      return {
+        type: 'BooleanLiteralPattern',
+        value: boolean.value,
       }
     }
 
