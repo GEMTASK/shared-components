@@ -184,8 +184,8 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
     return new KopiString(this.value.trim());
   }
 
-  apply(thisArg: this, [that]: [that: this]) {
-    return new KopiString(this.value.concat(that.value));
+  async apply(thisArg: this, [that]: [that: KopiValue]) {
+    return new KopiString(this.value.toString().concat((await that.toString()).value));
   }
 
   succ(count: KopiNumber | KopiTuple): KopiString {
