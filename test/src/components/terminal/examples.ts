@@ -23,8 +23,8 @@ let (t = true, f = false) => {
 (a == 1, b == 2)
   `,
   `
-[a, b, c] = "abc"
-(a == "a", b == "b")
+[a, b, ...c] = "abcd"
+(a, b, c) == ("a", "b", ["c", "d"])
   `,
   `
 f a b = (a, b)

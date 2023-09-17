@@ -120,6 +120,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
     case 'ArrayLiteralPattern':
       return new astNodes.ArrayLiteralPattern({
         elementPatterns: rawASTNode.elementPatterns.map((pattern: ASTPatternNode) => transform(pattern)),
+        restPattern: rawASTNode.restPattern && transform(rawASTNode.restPattern),
         defaultExpression: rawASTNode.defaultExpression && transform(rawASTNode.defaultExpression),
         location: rawASTNode.location,
       } as astNodes.ArrayLiteralPattern);
