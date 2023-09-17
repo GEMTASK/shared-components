@@ -341,14 +341,14 @@ ArrayLiteralPattern
       elementPatterns: [],
     }
   }
-  / "[" _ head:Pattern? tail:(_ "," _ Pattern)* rest:(_ "," _ "..." IdentifierPattern)? _ "]" {
+  / "[" _ head:Pattern? tail:(_ "," _ Pattern)* _ "]" rest:(_ "++" _ IdentifierPattern)? {
     return {
       type: 'ArrayLiteralPattern',
       elementPatterns: tail.reduce((patterns, [, , , pattern]) => [
         ...patterns,
         pattern
       ], [head]),
-      restPattern: rest && rest[4]
+      restPattern: rest && rest[3]
     }
   }
 
