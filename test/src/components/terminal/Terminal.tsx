@@ -185,7 +185,6 @@ const interpret = async (
   const promise = new Promise(async (resolve, reject) => {
     try {
       async function kopi_import(url: KopiString) {
-        // const source = await (await fetch(url.value)).text();
         const source = await webdavClient.getFileContents('/' + url.value, { format: 'text' });
 
         if (typeof source === 'string') {
@@ -194,7 +193,7 @@ const interpret = async (
       }
 
       async function kopi_print(value: KopiValue) {
-        const string = await value.toString();
+        const string = (await value.toString() as unknown as KopiString).value;
 
         setElementHistory(history => [
           ...history,
@@ -206,8 +205,6 @@ const interpret = async (
             {string}
           </Text>
         ]);
-
-        // resolve(undefined);
       }
 
       const value = await kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import }, bind);

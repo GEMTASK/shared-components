@@ -1,5 +1,6 @@
 /* eslint-disable no-extend-native */
 
+import { KopiString } from './classes';
 import { inspect } from './utils';
 
 type ReactElement = {
@@ -19,6 +20,10 @@ abstract class KopiValue {
 
   constructor() {
     (this as any)[0] = this;
+  }
+
+  async toString() {
+    return new KopiString(Object.prototype.toString.apply(this));
   }
 
   async inspect(): Promise<string | ReactElement> {
@@ -56,6 +61,7 @@ declare global {
   interface Function {
     inspect(): Promise<string>;
     get fields(): Promise<KopiValue>[];
+    toString(): Promise<KopiString>;
     invoke(
       methodName: string,
       [argument, context]: [KopiValue, Context]

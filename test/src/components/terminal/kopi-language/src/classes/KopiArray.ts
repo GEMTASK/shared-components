@@ -4,7 +4,7 @@ import KopiNumber from './KopiNumber';
 import KopiBoolean from './KopiBoolean';
 import KopiTuple from './KopiTuple';
 import KopiRange from './KopiRange';
-import KopiFunction from './KopiFunction';
+import KopiString from './KopiString';
 
 import type { KopiStream } from './KopiStream';
 import type { KopiIterable } from './KopiIterable';
@@ -99,10 +99,10 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
 
   async toString() {
     const elements = await Promise.all(
-      this._elements.map(async element => (await element).toString())
+      this._elements.map(async element => (await element).inspect())
     );
 
-    return `[${elements.join(', ')}]`;
+    return new KopiString(`[${elements.map(element => element).join(', ')}]`);
   }
 
   async *[Symbol.asyncIterator]() {

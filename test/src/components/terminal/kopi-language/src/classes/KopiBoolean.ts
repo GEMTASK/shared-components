@@ -1,5 +1,7 @@
 import { Context, KopiValue } from '../types';
 
+import KopiString from './KopiString';
+
 class KopiBoolean extends KopiValue {
   static true = new KopiBoolean(true);
   static false = new KopiBoolean(false);
@@ -9,7 +11,7 @@ class KopiBoolean extends KopiValue {
   }
 
   static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
-    return new KopiBoolean(await value.toString() === 'true' ? true : false);
+    return new KopiBoolean((await value.toString()).value === 'true' ? true : false);
   }
 
   readonly value: boolean;
@@ -27,7 +29,7 @@ class KopiBoolean extends KopiValue {
   }
 
   async toString() {
-    return `${this.value ? 'true' : 'false'}`;
+    return new KopiString(`${this.value ? 'true' : 'false'}`);
   }
 
   override async inspect() {

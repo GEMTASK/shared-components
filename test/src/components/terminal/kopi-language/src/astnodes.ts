@@ -112,10 +112,7 @@ class ApplyExpression extends ASTNode {
     return `'(${(await this.expression as Identifier).name} ${await this.argumentExpression.inspect()})`;
   }
 
-  async apply(
-    thisArg: KopiValue,
-    [argument, context]: [KopiValue, Context]
-  ): Promise<KopiValue> {
+  async apply(thisArg: KopiValue, [argument, context]: [KopiValue, Context]): Promise<KopiValue> {
     const { environment, evaluate, bind } = context;
 
     const arg = await evaluate(this.argumentExpression, environment, bind);
@@ -551,10 +548,7 @@ class Identifier extends ASTNode {
     this.name = name;
   }
 
-  async apply(
-    thisArg: KopiValue,
-    [argument, context]: [KopiValue, Context]
-  ): Promise<KopiValue> {
+  async apply(thisArg: KopiValue, [argument, context]: [KopiValue, Context]): Promise<KopiValue> {
     return argument.invoke(this.name, [KopiTuple.empty, context]);
   }
 
