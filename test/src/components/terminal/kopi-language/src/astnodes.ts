@@ -352,13 +352,15 @@ class BooleanLiteralPattern extends ASTPatternNode {
 
 class ArrayLiteralPattern extends ASTPatternNode {
   readonly elementPatterns: ASTPatternNode[];
+  readonly initPattern: ASTPatternNode;
   readonly restPattern: ASTPatternNode;
   readonly defaultExpression: ASTNode | null;
 
-  constructor({ elementPatterns, restPattern, defaultExpression, location }: ArrayLiteralPattern) {
+  constructor({ elementPatterns, initPattern, restPattern, defaultExpression, location }: ArrayLiteralPattern) {
     super(location);
 
     this.elementPatterns = elementPatterns;
+    this.initPattern = initPattern;
     this.restPattern = restPattern;
     this.defaultExpression = defaultExpression;
   }
@@ -381,6 +383,7 @@ class ArrayLiteralPattern extends ASTPatternNode {
 
     let bindings = {};
     let index = 0;
+    let init = [];
     let rest = [];
 
     if (value === KopiTuple.empty) {
@@ -397,7 +400,7 @@ class ArrayLiteralPattern extends ASTPatternNode {
       if (this.restPattern && index > this.elementPatterns.length - 1) {
         rest.push(value);
       } else {
-        let matches = await this.elementPatterns[index++].match(value ?? KopiTuple.empty, context);
+        let matches = await this.elementPatterns[index].match(value ?? KopiTuple.empty, context);
 
         if (matches === undefined) {
           throw new Error(`ArrayPattern: match() failed.`);
@@ -405,10 +408,12 @@ class ArrayLiteralPattern extends ASTPatternNode {
 
         bindings = { ...bindings, ...matches };
 
-        if (!this.restPattern && index === this.elementPatterns.length) {
+        if (!this.restPattern && index === this.elementPatterns.length - 1) {
           break;
         }
       }
+
+      index += 1;
     }
 
     if (this.restPattern) {
