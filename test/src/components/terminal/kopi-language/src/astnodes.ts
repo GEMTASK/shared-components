@@ -268,7 +268,7 @@ class ConstructorPattern extends ASTPatternNode {
       return this.argumentPattern.match(value, context);
     }
 
-    throw new TypeError(`Match: Expected a ${this.name} but ${await value.constructor.inspect()} found.`);
+    throw new TypeError(`Match expected a ${this.name} but ${await value.constructor.inspect()} found.`);
   }
 }
 
@@ -291,7 +291,7 @@ class NumericLiteralPattern extends ASTPatternNode {
 
   override async match(number: KopiValue, context: Context) {
     if (!(number instanceof KopiNumber && number.value === this.value)) {
-      throw new TypeError(`Expected ${this.value} but ${await number.inspect()} found.`);
+      throw new TypeError(`Match expected ${this.value} but ${await number.inspect()} found.`);
     }
 
     return {};
@@ -317,7 +317,7 @@ class StringLiteralPattern extends ASTPatternNode {
 
   override async match(value: KopiValue, context: Context) {
     if (!(value instanceof KopiString && value.value === this.value)) {
-      throw new TypeError(`Expected ${this.value} but ${await value.inspect()} found.`);
+      throw new TypeError(`Match expected "${this.value}" but ${await value.inspect()} found.`);
     }
 
     return {};
@@ -343,7 +343,7 @@ class BooleanLiteralPattern extends ASTPatternNode {
 
   override async match(value: KopiValue, context: Context) {
     if (!(value instanceof KopiBoolean && value.value === this.value)) {
-      throw new TypeError(`Expected ${this.value} but ${await value.inspect()} found.`);
+      throw new TypeError(`Match expected ${this.value} but ${await value.inspect()} found.`);
     }
 
     return {};
@@ -390,7 +390,7 @@ class ArrayLiteralPattern extends ASTPatternNode {
       if (this.defaultExpression) {
         value = await evaluate(this.defaultExpression, environment, bind);
       } else {
-        throw new TypeError(`Expected a value but ${value} found.`);
+        throw new TypeError(`Match expected a value but ${value} found.`);
       }
     }
 

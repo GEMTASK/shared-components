@@ -171,7 +171,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
     default:
       console.warn('No transform found for', rawASTNode);
 
-      throw new Error(`No transform found for ${rawASTNode}.`);
+      throw new Error(`No transform found for ${rawASTNode.type}.`);
   }
 }
 

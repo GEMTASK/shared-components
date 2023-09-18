@@ -62,7 +62,7 @@ async function kopi_match(value: KopiValue, context: Context) {
       }
     }
 
-    throw new Error('Match failed');
+    throw new Error(`Match failed for value ${await value.inspect()}.`);
   };
 }
 

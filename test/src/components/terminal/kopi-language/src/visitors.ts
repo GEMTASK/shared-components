@@ -207,7 +207,7 @@ async function MemberExpression(
     }
   }
 
-  throw new Error(`${await expressionValue.inspect()} doesn't have a member '${member}'`);
+  throw new ReferenceError(`${await expressionValue.inspect()} doesn't have a member "${member}".`);
 }
 
 async function UnaryExpression(
