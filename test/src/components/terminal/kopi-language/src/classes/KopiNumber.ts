@@ -7,6 +7,25 @@ import KopiBoolean from './KopiBoolean';
 import KopiTuple from './KopiTuple';
 import KopiFunction from './KopiFunction';
 
+
+function kopiOperator(argumentType: () => Function) {
+  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+    const original = descriptor.value;
+
+    descriptor.value = async function (that: KopiValue) {
+      if (!(that instanceof argumentType())) {
+        throw error('number-operator-argument-type', {
+          operator: propertyKey,
+          value: await that.inspect(),
+          type: await that.constructor.inspect()
+        });
+      }
+
+      return original.call(this, that);
+    };
+  };
+}
+
 class KopiNumber extends KopiValue {
   static readonly PI: KopiNumber = new KopiNumber(Math.PI);
   static readonly E: KopiNumber = new KopiNumber(Math.E);
@@ -45,11 +64,8 @@ class KopiNumber extends KopiValue {
 
   //
 
-  '=='(that: KopiValue) {
-    if (!(that instanceof KopiNumber)) {
-      throw error('number-operator-argument-type', { operator: '+' });
-    }
-
+  @kopiOperator(() => KopiNumber)
+  '=='(that: KopiNumber) {
     return new KopiBoolean(this.value === that.value);
   }
 
