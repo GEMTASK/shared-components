@@ -1,5 +1,7 @@
 import { Context, KopiValue } from '../types';
 
+import { error } from '../utils';
+
 import KopiString from './KopiString';
 import KopiBoolean from './KopiBoolean';
 import KopiTuple from './KopiTuple';
@@ -43,29 +45,49 @@ class KopiNumber extends KopiValue {
 
   //
 
-  '=='(that: KopiNumber) {
+  '=='(that: KopiValue) {
+    if (!(that instanceof KopiNumber)) {
+      throw error('number-operator-argument-type', { operator: '+' });
+    }
+
     return new KopiBoolean(this.value === that.value);
   }
 
-  '>'(that: KopiNumber) {
+  '>'(that: KopiValue) {
+    if (!(that instanceof KopiNumber)) {
+      throw error('number-operator-argument-type', { operator: '+' });
+    }
+
     return new KopiBoolean(this.value > that.value);
   }
 
-  '<'(that: KopiNumber) {
+  '<'(that: KopiValue) {
+    if (!(that instanceof KopiNumber)) {
+      throw error('number-operator-argument-type', { operator: '+' });
+    }
+
     return new KopiBoolean(this.value < that.value);
   }
 
-  '>='(that: KopiNumber) {
+  '>='(that: KopiValue) {
+    if (!(that instanceof KopiNumber)) {
+      throw error('number-operator-argument-type', { operator: '+' });
+    }
+
     return new KopiBoolean(this.value >= that.value);
   }
 
-  '<='(that: KopiNumber) {
+  '<='(that: KopiValue) {
+    if (!(that instanceof KopiNumber)) {
+      throw error('number-operator-argument-type', { operator: '+' });
+    }
+
     return new KopiBoolean(this.value <= that.value);
   }
 
   //
 
-  succ(count: KopiNumber | KopiTuple) {
+  succ(count: KopiValue) {
     if (count === KopiTuple.empty) {
       count = new KopiNumber(1);
     }
@@ -73,9 +95,11 @@ class KopiNumber extends KopiValue {
     if (count instanceof KopiNumber) {
       return new KopiNumber(this.value + count.value);
     }
+
+    throw error('number-method-argument-type', { method: 'succ' });
   }
 
-  toFixed(digits: KopiNumber | KopiTuple) {
+  toFixed(digits: KopiValue) {
     if (digits === KopiTuple.empty) {
       return new KopiString(this.value.toFixed());
     }
@@ -83,6 +107,8 @@ class KopiNumber extends KopiValue {
     if (digits instanceof KopiNumber) {
       return new KopiString(this.value.toFixed(digits.value));
     }
+
+    throw error('number-method-argument-type', { method: 'toFixed' });
   }
 
   even() {
@@ -95,7 +121,11 @@ class KopiNumber extends KopiValue {
 
   //
 
-  '^'(exponent: KopiNumber) {
+  '^'(exponent: KopiValue) {
+    if (!(exponent instanceof KopiNumber)) {
+      throw error('number-operator-argument-type', { operator: '+' });
+    }
+
     return new KopiNumber(this.value ** exponent.value);
   }
 
@@ -123,13 +153,17 @@ class KopiNumber extends KopiValue {
   // Arithmetic
   //
 
-  '$-'(that: KopiValue) {
+  '$-'() {
     return new KopiNumber(-this.value);
   }
 
-  '+'(that: KopiValue) {
+  async '+'(that: KopiValue) {
     if (!(that instanceof KopiNumber)) {
-      throw new TypeError(`Right side of operation is not a number.`);
+      throw error('number-operator-argument-type', {
+        operator: '+',
+        value: await that.inspect(),
+        type: await that.constructor.inspect()
+      });
     }
 
     return new KopiNumber(this.value + that.value);
@@ -137,7 +171,7 @@ class KopiNumber extends KopiValue {
 
   '-'(that: KopiValue) {
     if (!(that instanceof KopiNumber)) {
-      throw new TypeError(`Right side of operation is not a number.`);
+      throw error('number-operator-argument-type', { operator: '+' });
     }
 
     return new KopiNumber(this.value - that.value);
@@ -145,7 +179,7 @@ class KopiNumber extends KopiValue {
 
   '*'(that: KopiValue) {
     if (!(that instanceof KopiNumber)) {
-      throw new TypeError(`Right side of operation is not a number.`);
+      throw error('number-operator-argument-type', { operator: '+' });
     }
 
     return new KopiNumber(this.value * that.value);
@@ -153,7 +187,7 @@ class KopiNumber extends KopiValue {
 
   '/'(that: KopiValue) {
     if (!(that instanceof KopiNumber)) {
-      throw new TypeError(`Right side of operation is not a number.`);
+      throw error('number-operator-argument-type', { operator: '+' });
     }
 
     return new KopiNumber(this.value / that.value);
@@ -161,7 +195,7 @@ class KopiNumber extends KopiValue {
 
   '%'(that: KopiValue) {
     if (!(that instanceof KopiNumber)) {
-      throw new TypeError(`Right side of operation is not a number.`);
+      throw error('number-operator-argument-type', { operator: '+' });
     }
 
     return new KopiNumber(this.value % that.value);

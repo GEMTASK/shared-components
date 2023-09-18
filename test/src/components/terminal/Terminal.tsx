@@ -225,11 +225,11 @@ const interpret = async (
         resolve(value);
       }
     } catch (error) {
-      console.warn(error);
+      console.warn((error as Error).message);
 
       resolve(
         <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT, userSelect: 'text' }}>
-          {(error as Error).toString()}
+          {(error as Error).message}
         </Text>
       );
     }
