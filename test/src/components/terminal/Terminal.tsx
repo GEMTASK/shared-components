@@ -14,6 +14,7 @@ import exampless from './examples';
 import reference from './reference';
 
 import * as functions from './functions';
+import * as core from './kopi-language/src/functions/core';
 
 declare global {
   var environment: { [key: string | symbol]: any; };
@@ -56,20 +57,20 @@ globalThis.environment = {
   clock: functions.KopiClock,
   calendar: functions.KopiCalendar,
   //
-  let: functions.kopi_let,
-  loop: functions.kopi_loop,
-  match: functions.kopi_match,
-  apply: functions.kopi_apply,
-  eval: functions.kopi_eval,
-  ident: functions.kopi_ident,
-  sleep: functions.kopi_sleep,
-  fetch: functions.kopi_fetch,
-  random: functions.kopi_random,
-  repeat: functions.kopi_repeat,
-  struct: functions.kopi_struct,
-  extend: functions.kopi_extend,
-  spawn: functions.kopi_spawn,
-  context: functions.kopi_context,
+  let: core.kopi_let,
+  loop: core.kopi_loop,
+  match: core.kopi_match,
+  apply: core.kopi_apply,
+  eval: core.kopi_eval,
+  ident: core.kopi_ident,
+  sleep: core.kopi_sleep,
+  fetch: core.kopi_fetch,
+  random: core.kopi_random,
+  repeat: core.kopi_repeat,
+  struct: core.kopi_struct,
+  extend: core.kopi_extend,
+  spawn: core.kopi_spawn,
+  context: core.kopi_context,
   //
   km: functions.kopi_meter,
   input: functions.kopi_input,

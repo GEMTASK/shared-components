@@ -5,6 +5,7 @@ import * as WebDAV from 'webdav';
 
 import * as kopi from '../terminal/kopi-language';
 import * as functions from '../terminal/functions';
+import * as core from '../terminal/kopi-language/src/functions/core';
 
 import { KopiValue } from '../terminal/kopi-language/src/types';
 import { KopiAny, KopiBoolean, KopiNumber, KopiString } from '../terminal/kopi-language/src/classes';
@@ -101,14 +102,14 @@ let environment = {
   Number: KopiNumber,
   String: KopiString,
   Boolean: KopiBoolean,
-  let: functions.kopi_let,
-  loop: functions.kopi_loop,
-  match: functions.kopi_match,
-  struct: functions.kopi_struct,
-  extend: functions.kopi_extend,
-  sleep: functions.kopi_sleep,
-  random: functions.kopi_random,
-  spawn: functions.kopi_spawn,
+  let: core.kopi_let,
+  loop: core.kopi_loop,
+  match: core.kopi_match,
+  sleep: core.kopi_sleep,
+  struct: core.kopi_struct,
+  extend: core.kopi_extend,
+  random: core.kopi_random,
+  spawn: core.kopi_spawn,
 };
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {
