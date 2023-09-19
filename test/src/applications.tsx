@@ -6,7 +6,7 @@ import Calculator from './components/calculator';
 import Notes from './components/notes';
 import Music from './components/music';
 import Browser from './components/browser';
-import Filesystem from './components/filesystem';
+import Files from './components/files';
 import Contacts from './components/contacts';
 import Terminal from './components/terminal';
 import Preferences from './components/preferences';
@@ -36,7 +36,7 @@ const Applications = {
     icon: 'music', title: 'Music', client: <Music />, rect: { width: 400, height: 400 }
   },
   'files': {
-    icon: 'files', title: 'Files', client: <Filesystem />, rect: { width: 800, height: 600 }
+    icon: 'files', title: 'Files', client: <Files />, rect: { width: 800, height: 600 }
   },
   'contacts': {
     icon: 'address-book', title: 'Contacts', client: <Contacts />, rect: { width: 800, height: 600 }

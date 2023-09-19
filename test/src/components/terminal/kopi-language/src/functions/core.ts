@@ -1,3 +1,5 @@
+/* eslint-disable import/no-anonymous-default-export */
+
 import { KopiArray, KopiBoolean, KopiFunction, KopiNumber, KopiString, KopiTuple } from '../classes';
 import { ASTNode, Bind, Context, KopiValue } from '../types';
 
@@ -250,6 +252,23 @@ async function kopi_context(value: KopiValue, context: Context) {
 
   return new KopiContext(value, bind);
 }
+
+export default {
+  kopi_let,
+  kopi_loop,
+  kopi_match,
+  kopi_apply,
+  kopi_sleep,
+  kopi_eval,
+  kopi_ident,
+  kopi_fetch,
+  kopi_random,
+  kopi_repeat,
+  kopi_struct,
+  kopi_extend,
+  kopi_spawn,
+  kopi_context,
+};
 
 export {
   kopi_let,

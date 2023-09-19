@@ -1,3 +1,5 @@
+/* eslint-disable import/no-anonymous-default-export */
+
 import * as parser from './lib/parser.mjs';
 
 import { RawASTNode, ASTNode, ASTPatternNode, Environment, Bind } from './src/types';
@@ -232,6 +234,12 @@ async function interpret(source: string, environment: Environment, bind: Bind) {
     return evaluate(transform(rootAst), environment, bind);
   }
 }
+
+export default {
+  evaluate,
+  interpret,
+  inspect,
+};
 
 export {
   evaluate,

@@ -1,18 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { createUseStyles } from 'react-jss';
-import * as WebDAV from 'webdav';
 
-import * as kopi from '../terminal/kopi-language';
-import * as functions from '../terminal/functions';
-import * as core from '../terminal/kopi-language/src/functions/core';
+import kopi from '../terminal/kopi-language';
+import core from '../terminal/kopi-language/src/functions/core';
 
 import { KopiValue } from '../terminal/kopi-language/src/types';
 import { KopiAny, KopiBoolean, KopiNumber, KopiString } from '../terminal/kopi-language/src/classes';
 
 import { Stack, Text, View } from 'bare';
-
-const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
 
 const useSidebarStyles = createUseStyles({
   h1: {
@@ -92,10 +88,6 @@ const useMarkdownStyles = createUseStyles({
     },
   },
 });
-
-// \`\`\`kopi
-// ()   (1, "Two", false)   (x: 2, y: 3)
-// \`\`\`
 
 let environment = {
   Any: KopiAny,
@@ -284,7 +276,7 @@ const Markdown = ({ args, ...props }: any) => {
 
   useEffect(() => {
     (async () => {
-      const markdown = await webdavClient.getFileContents(args, { format: 'text' });
+      const markdown = await (await fetch(`//webdav.mike-austin.com/${args}`)).text();
 
       if (typeof markdown === 'string') {
         setMarkdown(markdown);

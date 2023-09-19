@@ -1,3 +1,5 @@
+/* eslint-disable import/no-anonymous-default-export */
+
 import * as WebDAV from 'webdav';
 
 import { KopiNumber, KopiString } from './kopi-language/src/classes';
@@ -132,6 +134,19 @@ async function kopi_input(message: KopiString) {
 async function kopi_export(value: KopiValue) {
   return value;
 }
+
+export default {
+  KopiDateFunction,
+  KopiClock,
+  KopiCalendar,
+  KopiLs,
+  //
+  kopi_meter,
+  kopi_cat,
+  //
+  kopi_input,
+  kopi_export,
+};
 
 export {
   KopiDateFunction,
