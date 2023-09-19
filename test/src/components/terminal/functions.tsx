@@ -8,8 +8,6 @@ import { KopiValue } from 'kopi-language';
 import Clock from '../clock/Clock';
 import Calendar from '../calendar/Calendar';
 
-import './functions/react';
-
 const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
 
 class KopiDateFunction extends KopiValue {

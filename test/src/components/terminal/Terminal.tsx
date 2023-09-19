@@ -35,7 +35,6 @@ class KopiEnv {
 }
 
 globalThis.environment = {
-  ...(globalThis.environment || {}),
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
   //
@@ -77,6 +76,8 @@ globalThis.environment = {
   ls: functions.KopiLs,
   cat: functions.kopi_cat,
 };
+
+import('./functions/react');
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {
   const newEnvironment = { ...globalThis.environment, ...bindings };
@@ -181,7 +182,7 @@ const interpret = async (
   const promise = new Promise(async (resolve, reject) => {
     try {
       async function kopi_import(url: KopiString) {
-        const source = await webdavClient.getFileContents('/' + url.value, { format: 'text' });
+        const source = await (await fetch('//webdav.mike-austin.com/' + url.value)).text();
 
         if (typeof source === 'string') {
           return kopi.interpret(source, { ...globalThis.environment, print: kopi_print, import: kopi_import }, () => { });
