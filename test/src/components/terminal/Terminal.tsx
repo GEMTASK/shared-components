@@ -3,7 +3,6 @@ import { createUseStyles } from 'react-jss';
 import * as WebDAV from 'webdav';
 
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
-import Clock from '../clock/Clock';
 
 import * as kopi from 'kopi-language';
 import { KopiValue, KopiNumber, KopiString } from 'kopi-language';
@@ -244,8 +243,7 @@ const initialHistory = [
   <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT, userSelect: 'text' }}>
     Kopi shell – a simple, immutable, async programming langauge.<br />
     Read <Link onClick={() => globalThis.postMessage({ type: 'openFile', payload: '/Learning Kopi.md' })}>Learning Kopi</Link> for an introduction and to learn more.
-  </Text>,
-  <Clock style={{ width: 150 }} />
+  </Text>
 ];
 
 const Terminal = ({ ...props }: any) => {

@@ -133,19 +133,6 @@ async function kopi_export(value: KopiValue) {
   return value;
 }
 
-export default {
-  KopiDateFunction,
-  KopiClock,
-  KopiCalendar,
-  KopiLs,
-  //
-  kopi_meter,
-  kopi_cat,
-  //
-  kopi_input,
-  kopi_export,
-};
-
 export {
   KopiDateFunction,
   KopiClock,
