@@ -1,0 +1,22 @@
+{
+  "name": "kopi-node-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "tsc --watch",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "kopi-language": "file:../kopi-language",
+    "readline": "^1.3.0",
+    "typescript": "^5.1.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.6.2"
+  }
+}
