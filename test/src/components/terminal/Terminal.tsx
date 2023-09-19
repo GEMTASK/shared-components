@@ -15,6 +15,10 @@ import reference from './reference';
 
 import * as functions from './functions';
 
+declare global {
+  var environment: { [key: string | symbol]: any; };
+}
+
 const MONOSPACE_FONT = 'Iosevka';
 
 const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
@@ -29,11 +33,12 @@ const Link = ({ children, ...props }: any) => {
 
 class KopiEnv {
   static async inspect() {
-    return Object.keys(environment).map(key => key.padEnd(12)).join('');
+    return Object.keys(globalThis.environment).map(key => key.padEnd(12)).join('');
   }
 }
 
-let environment = {
+globalThis.environment = {
+  ...(globalThis.environment || {}),
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
   //
@@ -70,22 +75,16 @@ let environment = {
   input: functions.kopi_input,
   export: functions.kopi_export,
   log: async (value: KopiValue) => console.log(await value.inspect()),
-  open: async (filename: KopiString) => window.postMessage({ type: 'openFile', payload: `/${filename.value}` }),
+  open: async (filename: KopiString) => globalThis.postMessage({ type: 'openFile', payload: `/${filename.value}` }),
   //
   ls: functions.KopiLs,
   cat: functions.kopi_cat,
-  //
-  element: functions.kopi_element,
-  component: functions.kopi_component,
-  View: functions.kopi_View,
-  Text: functions.kopi_Text,
-  Button: functions.kopi_Button,
 };
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {
-  const newEnvironment = { ...environment, ...bindings };
+  const newEnvironment = { ...globalThis.environment, ...bindings };
 
-  environment = newEnvironment;
+  globalThis.environment = newEnvironment;
 };
 
 const useSidebarStyles = createUseStyles({
@@ -188,7 +187,7 @@ const interpret = async (
         const source = await webdavClient.getFileContents('/' + url.value, { format: 'text' });
 
         if (typeof source === 'string') {
-          return kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import }, () => { });
+          return kopi.interpret(source, { ...globalThis.environment, print: kopi_print, import: kopi_import }, () => { });
         }
       }
 
@@ -207,7 +206,7 @@ const interpret = async (
         ]);
       }
 
-      const value = await kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import }, bind);
+      const value = await kopi.interpret(source, { ...globalThis.environment, print: kopi_print, import: kopi_import }, bind);
 
       if (value) {
         const element = await value?.inspect();
@@ -246,7 +245,7 @@ const interpret = async (
 const initialHistory = [
   <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT, userSelect: 'text' }}>
     Kopi shell – a simple, immutable, async programming langauge.<br />
-    Read <Link onClick={() => window.postMessage({ type: 'openFile', payload: '/Learning Kopi.md' })}>Learning Kopi</Link> for an introduction and to learn more.
+    Read <Link onClick={() => globalThis.postMessage({ type: 'openFile', payload: '/Learning Kopi.md' })}>Learning Kopi</Link> for an introduction and to learn more.
   </Text>,
   <Clock style={{ width: 150 }} />
 ];
@@ -263,7 +262,7 @@ const Terminal = ({ ...props }: any) => {
   const [inputValue, setInputValue] = useState('');
   const [elementHistory, setElementHistory] = useState<React.ReactElement[]>(initialHistory);
   const [inputHistory, setInputHistory] = useState<string[]>([]);
-  const [isHistoryVisible, setIsHistoryVisible] = useState(window.innerWidth >= 640);
+  const [isHistoryVisible, setIsHistoryVisible] = useState(globalThis.innerWidth >= 640);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
