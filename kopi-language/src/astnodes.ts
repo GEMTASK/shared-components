@@ -1,5 +1,5 @@
-import { KopiArray, KopiBoolean, KopiNumber, KopiString, KopiTuple } from './classes';
-import { ASTNode, ASTPatternNode, Context, KopiValue } from './types';
+import { KopiArray, KopiBoolean, KopiNumber, KopiString, KopiTuple } from './classes/index.js';
+import { ASTNode, ASTPatternNode, Context, KopiValue } from './types.js';
 
 //
 // Statements

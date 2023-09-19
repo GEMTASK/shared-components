@@ -1,13 +1,13 @@
-import { Context, KopiValue } from '../types';
+import { Context, KopiValue } from '../types.js';
 
-import KopiNumber from './KopiNumber';
-import KopiBoolean from './KopiBoolean';
-import KopiTuple from './KopiTuple';
-import KopiRange from './KopiRange';
-import KopiString from './KopiString';
+import KopiNumber from './KopiNumber.js';
+import KopiBoolean from './KopiBoolean.js';
+import KopiTuple from './KopiTuple.js';
+import KopiRange from './KopiRange.js';
+import KopiString from './KopiString.js';
 
-import type { KopiStream } from './KopiStream';
-import type { KopiIterable } from './KopiIterable';
+import type { KopiStream } from './KopiStream.js';
+import type { KopiIterable } from './KopiIterable.js';
 
 interface KopiArray extends KopiValue, KopiIterable<KopiArray> { };
 
@@ -21,10 +21,10 @@ let ArrayIterable: {
   }): KopiIterable<KopiArray>;
 };
 
-import('./KopiStream').then((result) => {
+import('./KopiStream.js').then((result) => {
   ArrayStream = result.KopiStream_T(fromIterable);
 
-  import('./KopiIterable').then((result) => {
+  import('./KopiIterable.js').then((result) => {
     ArrayIterable = result.KopiIterable_T(ArrayStream, fromIterable);
 
     KopiArray.prototype.map = ArrayIterable.prototype.map;

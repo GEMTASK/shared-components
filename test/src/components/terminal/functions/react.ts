@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 
-import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from '../classes';
-import { Context, KopiValue } from '../types';
+import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from 'kopi-language';
+import { Context, KopiValue } from 'kopi-language';
 
 import { Button, Text, View } from 'bare';
 

@@ -1,11 +1,11 @@
-import { Context, KopiValue } from '../types';
+import { Context, KopiValue } from '../types.js';
 
-import KopiArray from './KopiArray';
-import KopiBoolean from './KopiBoolean';
-import KopiNumber from './KopiNumber';
-import KopiString from './KopiString';
+import KopiArray from './KopiArray.js';
+import KopiBoolean from './KopiBoolean.js';
+import KopiNumber from './KopiNumber.js';
+import KopiString from './KopiString.js';
 
-import KopiTuple from './KopiTuple';
+import KopiTuple from './KopiTuple.js';
 
 function transform(value: unknown): KopiValue {
   if (value === null) {

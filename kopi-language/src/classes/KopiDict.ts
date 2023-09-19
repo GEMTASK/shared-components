@@ -1,13 +1,13 @@
-import { Context, KopiValue } from '../types';
+import { Context, KopiValue } from '../types.js';
 
-import KopiNumber from './KopiNumber';
-import KopiTuple from './KopiTuple';
-import KopiString from './KopiString';
-import KopiArray from './KopiArray';
-import KopiFunction from './KopiFunction';
+import KopiNumber from './KopiNumber.js';
+import KopiTuple from './KopiTuple.js';
+import KopiString from './KopiString.js';
+import KopiArray from './KopiArray.js';
+import KopiFunction from './KopiFunction.js';
 
-import type { KopiStream } from './KopiStream';
-import type { KopiIterable } from './KopiIterable';
+import type { KopiStream } from './KopiStream.js';
+import type { KopiIterable } from './KopiIterable.js';
 
 interface KopiDict extends KopiValue, KopiIterable<KopiValue> { };
 
@@ -31,11 +31,11 @@ let ArrayIterable: {
   }): KopiIterable<KopiArray>;
 };
 
-import('./KopiStream').then((result) => {
+import('./KopiStream.js').then((result) => {
   DictStream = result.KopiStream_T(fromIterable);
   ArrayStream = result.KopiStream_T(KopiArray.fromIterable);
 
-  import('./KopiIterable').then((result) => {
+  import('./KopiIterable.js').then((result) => {
     DictIterable = result.KopiIterable_T(DictStream, fromIterable);
     ArrayIterable = result.KopiIterable_T(ArrayStream, KopiArray.fromIterable);
 

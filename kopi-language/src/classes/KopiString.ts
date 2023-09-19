@@ -1,14 +1,14 @@
-import { Context, KopiValue } from '../types';
+import { Context, KopiValue } from '../types.js';
 
-import KopiNumber from './KopiNumber';
-import KopiArray from './KopiArray';
-import KopiFunction from './KopiFunction';
-import KopiTuple from './KopiTuple';
-import KopiBoolean from './KopiBoolean';
-import KopiRange from './KopiRange';
+import KopiNumber from './KopiNumber.js';
+import KopiArray from './KopiArray.js';
+import KopiFunction from './KopiFunction.js';
+import KopiTuple from './KopiTuple.js';
+import KopiBoolean from './KopiBoolean.js';
+import KopiRange from './KopiRange.js';
 
-import type { KopiStream } from './KopiStream';
-import type { KopiIterable } from './KopiIterable';
+import type { KopiStream } from './KopiStream.js';
+import type { KopiIterable } from './KopiIterable.js';
 
 interface KopiString extends KopiValue {
   toArray(): Promise<KopiArray>;
@@ -55,11 +55,11 @@ let ArrayIterable: {
   }): KopiIterable<KopiArray>;
 };
 
-import('./KopiStream').then((result) => {
+import('./KopiStream.js').then((result) => {
   StringStream = result.KopiStream_T(fromIterable);
   ArrayStream = result.KopiStream_T(KopiArray.fromIterable);
 
-  import('./KopiIterable').then((result) => {
+  import('./KopiIterable.js').then((result) => {
     StringIterable = result.KopiIterable_T(StringStream, fromIterable);
     ArrayIterable = result.KopiIterable_T(ArrayStream, KopiArray.fromIterable);
 
@@ -163,7 +163,7 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
       throw new Error('String at range must be numeric.');
     }
 
-    const string = this.codePoints.at(index.value);
+    const string = this.codePoints[index.value];
 
     if (string) {
       return new KopiString(string);

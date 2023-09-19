@@ -5,16 +5,13 @@ import * as WebDAV from 'webdav';
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 import Clock from '../clock/Clock';
 
-import * as kopi from './kopi-language';
-
-import { KopiAny, KopiArray, KopiNumber, KopiString, KopiTuple, KopiDate, KopiBoolean, KopiDict } from './kopi-language/src/classes';
-import { KopiValue } from './kopi-language/src/types';
+import * as kopi from 'kopi-language';
+import { KopiValue, KopiNumber, KopiString } from 'kopi-language';
 
 import exampless from './examples';
 import reference from './reference';
 
 import * as functions from './functions';
-import * as core from './kopi-language/src/functions/core';
 
 declare global {
   var environment: { [key: string | symbol]: any; };
@@ -43,34 +40,34 @@ globalThis.environment = {
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
   //
-  Any: KopiAny,
-  Tuple: KopiTuple,
-  Array: KopiArray,
-  String: KopiString,
-  Number: KopiNumber,
-  Boolean: KopiBoolean,
-  Dict: KopiDict,
-  Date: KopiDate,
+  Any: kopi.KopiAny,
+  Tuple: kopi.KopiTuple,
+  Array: kopi.KopiArray,
+  String: kopi.KopiString,
+  Number: kopi.KopiNumber,
+  Boolean: kopi.KopiBoolean,
+  Dict: kopi.KopiDict,
+  Date: kopi.KopiDate,
   //
   env: KopiEnv,
   date: functions.KopiDateFunction,
   clock: functions.KopiClock,
   calendar: functions.KopiCalendar,
   //
-  let: core.kopi_let,
-  loop: core.kopi_loop,
-  match: core.kopi_match,
-  apply: core.kopi_apply,
-  eval: core.kopi_eval,
-  ident: core.kopi_ident,
-  sleep: core.kopi_sleep,
-  fetch: core.kopi_fetch,
-  random: core.kopi_random,
-  repeat: core.kopi_repeat,
-  struct: core.kopi_struct,
-  extend: core.kopi_extend,
-  spawn: core.kopi_spawn,
-  context: core.kopi_context,
+  let: kopi.kopi_let,
+  loop: kopi.kopi_loop,
+  match: kopi.kopi_match,
+  apply: kopi.kopi_apply,
+  eval: kopi.kopi_eval,
+  ident: kopi.kopi_ident,
+  sleep: kopi.kopi_sleep,
+  fetch: kopi.kopi_fetch,
+  random: kopi.kopi_random,
+  repeat: kopi.kopi_repeat,
+  struct: kopi.kopi_struct,
+  extend: kopi.kopi_extend,
+  spawn: kopi.kopi_spawn,
+  context: kopi.kopi_context,
   //
   km: functions.kopi_meter,
   input: functions.kopi_input,

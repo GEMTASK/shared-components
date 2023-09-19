@@ -1,10 +1,10 @@
 /* eslint-disable import/no-anonymous-default-export */
 
-import { KopiArray, KopiBoolean, KopiFunction, KopiNumber, KopiString, KopiTuple } from '../classes';
-import { ASTNode, Bind, Context, KopiValue } from '../types';
+import { KopiArray, KopiBoolean, KopiFunction, KopiNumber, KopiString, KopiTuple } from '../classes/index.js';
+import { ASTNode, Bind, Context, KopiValue } from '../types.js';
 
-import KopiStream_T from '../classes/KopiStream';
-import KopiRange from '../classes/KopiRange';
+import KopiStream_T from '../classes/KopiStream.js';
+import KopiRange from '../classes/KopiRange.js';
 
 async function kopi_let(func: KopiFunction, context: Context) {
   let result: KopiValue = KopiTuple.empty;

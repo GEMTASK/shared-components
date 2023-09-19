@@ -1,18 +1,18 @@
-import { Context, KopiValue } from '../types';
+import { Context, KopiValue } from '../types.js';
 
-import KopiNumber from './KopiNumber';
-import KopiFunction from './KopiFunction';
-import KopiTuple from './KopiTuple';
-import KopiArray from './KopiArray';
+import KopiNumber from './KopiNumber.js';
+import KopiFunction from './KopiFunction.js';
+import KopiTuple from './KopiTuple.js';
+import KopiArray from './KopiArray.js';
 
-import type { KopiStream } from './KopiStream';
-import KopiBoolean from './KopiBoolean';
+import type { KopiStream } from './KopiStream.js';
+import KopiBoolean from './KopiBoolean.js';
 
 let ArrayStream: {
   new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiArray>;
 };
 
-import('./KopiStream').then((result) => {
+import('./KopiStream.js').then((result) => {
   ArrayStream = result.KopiStream_T(KopiArray.fromIterable);
 });
 

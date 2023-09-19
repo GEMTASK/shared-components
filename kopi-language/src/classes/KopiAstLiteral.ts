@@ -1,4 +1,4 @@
-import { ASTNode, KopiValue } from '../types';
+import { ASTNode, KopiValue } from '../types.js';
 
 class KopiAstLiteral extends KopiValue {
   readonly value: ASTNode;

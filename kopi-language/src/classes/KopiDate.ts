@@ -1,6 +1,6 @@
-import { KopiValue } from "../types";
+import { KopiValue } from "../types.js";
 
-import KopiNumber from "./KopiNumber";
+import KopiNumber from "./KopiNumber.js";
 
 class KopiDate extends KopiValue {
   static async inspect() {

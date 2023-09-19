@@ -2,12 +2,12 @@
 
 import * as parser from './lib/parser.mjs';
 
-import { RawASTNode, ASTNode, ASTPatternNode, Environment, Bind } from './src/types';
+import { RawASTNode, ASTNode, ASTPatternNode, Environment, Bind } from './types.js';
 
-import * as astnodes from './src/astnodes';
-import * as visitors from './src/visitors';
+import * as astnodes from './astnodes.js';
+import * as visitors from './visitors.js';
 
-import { inspect } from './src/utils';
+import { inspect } from './utils.js';
 
 function transform(rawASTNode: RawASTNode): ASTNode {
   switch (rawASTNode.type) {
@@ -246,3 +246,40 @@ export {
   interpret,
   inspect,
 };
+
+export {
+  KopiValue,
+  type Context,
+} from './types.js';
+
+export {
+  KopiAny,
+  KopiNumber,
+  KopiString,
+  KopiBoolean,
+  KopiTuple,
+  KopiRange,
+  KopiArray,
+  KopiDict,
+  KopiFunction,
+  KopiAstLiteral,
+  KopiStream_T,
+  KopiDate,
+} from './classes/index.js';
+
+export {
+  kopi_apply,
+  kopi_context,
+  kopi_eval,
+  kopi_extend,
+  kopi_fetch,
+  kopi_ident,
+  kopi_let,
+  kopi_loop,
+  kopi_match,
+  kopi_random,
+  kopi_repeat,
+  kopi_sleep,
+  kopi_spawn,
+  kopi_struct,
+} from './functions/core.js';

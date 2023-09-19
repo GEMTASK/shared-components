@@ -1,10 +1,10 @@
-import { Context, KopiValue, ReactElement } from '../types';
+import { Context, KopiValue, ReactElement } from '../types.js';
 
-import KopiFunction from './KopiFunction';
-import KopiNumber from './KopiNumber';
-import KopiArray from './KopiArray';
+import KopiFunction from './KopiFunction.js';
+import KopiNumber from './KopiNumber.js';
+import KopiArray from './KopiArray.js';
 
-import type { KopiIterable } from './KopiIterable';
+import type { KopiIterable } from './KopiIterable.js';
 
 interface KopiStream<TResult extends KopiValue> extends KopiValue, AsyncIterable<KopiValue> {
   [Symbol.asyncIterator](): AsyncIterator<KopiValue>;
@@ -35,7 +35,7 @@ const KopiStream_T = <TResult extends KopiValue>(
     }): KopiIterable<KopiStream>;
   };
 
-  import('./KopiIterable').then((result) => {
+  import('./KopiIterable.js').then((result) => {
     RangeIterable = result.KopiIterable_T(KopiStream, _fromIterable);
 
     KopiStream.prototype.toArray = RangeIterable.prototype.toArray;

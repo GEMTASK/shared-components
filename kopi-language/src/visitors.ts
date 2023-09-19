@@ -1,5 +1,5 @@
-import * as astnodes from './astnodes';
-import { ASTNode, Context, KopiValue } from './types';
+import * as astnodes from './astnodes.js';
+import { ASTNode, Context, KopiValue } from './types.js';
 import {
   KopiArray,
   KopiAstLiteral,
@@ -10,7 +10,7 @@ import {
   KopiString,
   KopiTuple,
   KopiRange
-} from './classes';
+} from './classes/index.js';
 
 interface Visitor {
   astNode: ASTNode,

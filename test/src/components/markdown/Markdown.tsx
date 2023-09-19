@@ -2,11 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { createUseStyles } from 'react-jss';
 
-import kopi from '../terminal/kopi-language';
-import core from '../terminal/kopi-language/src/functions/core';
-
-import { KopiValue } from '../terminal/kopi-language/src/types';
-import { KopiAny, KopiBoolean, KopiNumber, KopiString } from '../terminal/kopi-language/src/classes';
+import * as kopi from 'kopi-language';
+import { KopiValue } from 'kopi-language';
 
 import { Stack, Text, View } from 'bare';
 
@@ -90,18 +87,18 @@ const useMarkdownStyles = createUseStyles({
 });
 
 let environment = {
-  Any: KopiAny,
-  Number: KopiNumber,
-  String: KopiString,
-  Boolean: KopiBoolean,
-  let: core.kopi_let,
-  loop: core.kopi_loop,
-  match: core.kopi_match,
-  sleep: core.kopi_sleep,
-  struct: core.kopi_struct,
-  extend: core.kopi_extend,
-  random: core.kopi_random,
-  spawn: core.kopi_spawn,
+  Any: kopi.KopiAny,
+  Number: kopi.KopiNumber,
+  String: kopi.KopiString,
+  Boolean: kopi.KopiBoolean,
+  let: kopi.kopi_let,
+  loop: kopi.kopi_loop,
+  match: kopi.kopi_match,
+  sleep: kopi.kopi_sleep,
+  struct: kopi.kopi_struct,
+  extend: kopi.kopi_extend,
+  random: kopi.kopi_random,
+  spawn: kopi.kopi_spawn,
 };
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {

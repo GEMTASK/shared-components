@@ -1,12 +1,11 @@
-import { Context, KopiValue } from '../types';
+import { Context, KopiValue } from '../types.js';
 
-import { error } from '../utils';
+import { error } from '../utils.js';
 
-import KopiString from './KopiString';
-import KopiBoolean from './KopiBoolean';
-import KopiTuple from './KopiTuple';
-import KopiFunction from './KopiFunction';
-
+import KopiString from './KopiString.js';
+import KopiBoolean from './KopiBoolean.js';
+import KopiTuple from './KopiTuple.js';
+import KopiFunction from './KopiFunction.js';
 
 function kopiOperator(argumentType: () => Function) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {

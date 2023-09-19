@@ -2,15 +2,13 @@
 
 import * as WebDAV from 'webdav';
 
-import { KopiNumber, KopiString } from './kopi-language/src/classes';
-import { KopiValue } from './kopi-language/src/types';
-
-import KopiDate from './kopi-language/src/classes/KopiDate';
+import { KopiNumber, KopiString, KopiDate } from 'kopi-language';
+import { KopiValue } from 'kopi-language';
 
 import Clock from '../clock/Clock';
 import Calendar from '../calendar/Calendar';
 
-import './kopi-language/src/functions/react';
+import './functions/react';
 
 const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
 

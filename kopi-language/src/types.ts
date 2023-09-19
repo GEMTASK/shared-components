@@ -1,7 +1,7 @@
 /* eslint-disable no-extend-native */
 
-import { KopiString } from './classes';
-import { inspect } from './utils';
+import { KopiString } from './classes/index.js';
+import { inspect } from './utils.js';
 
 type ReactElement = {
   type: (props: object) => ReactElement;
