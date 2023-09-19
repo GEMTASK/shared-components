@@ -13,7 +13,7 @@ import Clock, { DigitalClock } from './components/clock';
 import Calculator from './components/calculator';
 import Notes from './components/notes';
 import Music from './components/music';
-import Filesystem from './components/filesystem';
+import Files from './components/files';
 import Terminal from './components/terminal';
 import Preferences from './components/preferences';
 import Eyes from './components/eyes';
@@ -47,7 +47,7 @@ const initialState = [
     }
   },
   {
-    id: uuidv4(), icon: 'folder-open', title: 'Files', element: <Filesystem />, rect: {
+    id: uuidv4(), icon: 'folder-open', title: 'Files', element: <Files />, rect: {
       x: 15, y: 360, width: 675, height: 540,
     }
   },
