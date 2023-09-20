@@ -3,10 +3,6 @@ import { KopiValue } from "../types.js";
 import KopiNumber from "./KopiNumber.js";
 
 class KopiDate extends KopiValue {
-  static async inspect() {
-    return `Date`;
-  }
-
   readonly _date: Date;
 
   readonly day: KopiNumber;
@@ -31,5 +27,9 @@ class KopiDate extends KopiValue {
     return this._date.toLocaleString();
   }
 }
+
+Object.defineProperty(KopiDate, 'name', {
+  value: 'Date'
+});
 
 export default KopiDate;

@@ -65,10 +65,6 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
 class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
   // static readonly emptyValue = () => new KopiArray([]);
 
-  static async inspect() {
-    return `Array`;
-  }
-
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {
     return fromIterable(iterable);
   }
@@ -202,5 +198,9 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
   }
 
 }
+
+Object.defineProperty(KopiArray, 'name', {
+  value: 'Array'
+});
 
 export default KopiArray;

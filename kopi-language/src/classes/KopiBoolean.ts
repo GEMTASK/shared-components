@@ -6,10 +6,6 @@ class KopiBoolean extends KopiValue {
   static true = new KopiBoolean(true);
   static false = new KopiBoolean(false);
 
-  static async inspect() {
-    return 'Boolean';
-  }
-
   static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
     return new KopiBoolean((await value.toString()).value === 'true' ? true : false);
   }
@@ -48,5 +44,9 @@ class KopiBoolean extends KopiValue {
     return new KopiBoolean(this.value !== that.value);
   }
 }
+
+Object.defineProperty(KopiBoolean, 'name', {
+  value: 'Boolean'
+});
 
 export default KopiBoolean;

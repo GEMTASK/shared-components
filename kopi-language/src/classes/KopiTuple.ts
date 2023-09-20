@@ -22,10 +22,6 @@ import('./KopiStream.js').then((result) => {
 class KopiTuple extends KopiValue {
   static readonly empty = new KopiTuple([]);
 
-  static async inspect() {
-    return `Tuple`;
-  }
-
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {
     let fields: KopiValue[] = [];
 
@@ -145,5 +141,9 @@ class KopiTuple extends KopiValue {
 
   // TODO: (1..2, "a".."b") | combinations
 }
+
+Object.defineProperty(KopiTuple, 'name', {
+  value: 'Tuple'
+});
 
 export default KopiTuple;

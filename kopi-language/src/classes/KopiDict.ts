@@ -75,14 +75,10 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
 }
 
 //
-//
+// class KopiDict
 //
 
 class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
-  static async inspect() {
-    return `Dict`;
-  }
-
   static async fromIterable(iterable: AsyncIterable<KopiTuple>) {
     return fromIterable(iterable);
   }
@@ -170,5 +166,9 @@ class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
     };
   }
 }
+
+Object.defineProperty(KopiDict, 'name', {
+  value: 'Dict'
+});
 
 export default KopiDict;

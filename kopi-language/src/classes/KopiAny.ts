@@ -34,10 +34,10 @@ class KopiAny extends KopiValue {
 
     return transform(json);
   }
-
-  static async inspect() {
-    return 'Any';
-  }
 }
+
+Object.defineProperty(KopiAny, 'name', {
+  value: 'Any'
+});
 
 export default KopiAny;

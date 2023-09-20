@@ -79,15 +79,11 @@ import('./KopiStream.js').then((result) => {
 });
 
 //
-//
+// class KopiString
 //
 
 class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
   static newline = new KopiString('\n');
-
-  static async inspect() {
-    return 'String';
-  }
 
   static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
     return value;
@@ -252,5 +248,9 @@ class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
     return joiner.invoke('combine', [this, context]);
   }
 }
+
+Object.defineProperty(KopiString, 'name', {
+  value: 'String'
+});
 
 export default KopiString;

@@ -29,10 +29,6 @@ class KopiNumber extends KopiValue {
   static readonly PI: KopiNumber = new KopiNumber(Math.PI);
   static readonly E: KopiNumber = new KopiNumber(Math.E);
 
-  static async inspect() {
-    return 'Number';
-  }
-
   static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
     return new KopiNumber(Number((await value.toString()).value));
   }
@@ -228,5 +224,9 @@ class KopiNumber extends KopiValue {
     return new KopiNumber(Math.cos(this.value));
   }
 }
+
+Object.defineProperty(KopiNumber, 'name', {
+  value: 'Number'
+});
 
 export default KopiNumber;

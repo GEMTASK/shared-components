@@ -5,10 +5,6 @@ const {
 } = window.environment;
 
 class KopiVector extends KopiAny {
-  static inspect() {
-    return `Vector`;
-  }
-
   static async apply(thisArg, [iterable, context]) {
     const array = await KopiArray.fromIterable(iterable);
 
@@ -41,6 +37,10 @@ class KopiVector extends KopiAny {
     return new KopiArray(results);
   }
 }
+
+Object.defineProperty(KopiVector, 'name', {
+  value: 'Vector'
+});
 
 export {
   KopiVector as Vector,
