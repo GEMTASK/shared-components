@@ -105,9 +105,9 @@ async function kopi_repeat(func: KopiFunction, context: Context) {
 }
 
 async function kopi_struct(tuple: KopiTuple, context: Context) {
-  return class class_ extends KopiTuple {
+  return class struct extends KopiTuple {
     static apply(thisArg: void, [value]: [KopiTuple]) {
-      return new class_(value);
+      return new struct(value);
     }
 
     constructor(value: KopiTuple) {

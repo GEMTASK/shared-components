@@ -44,7 +44,7 @@ abstract class KopiValue {
     const method = extensions?.get(this.constructor)?.[methodName] ?? Object.getPrototypeOf(this)[methodName];
 
     if (method) {
-      return await method.apply(this, [argument, context]);
+      return method.apply(this, [argument, context]);
     }
 
     throw new ReferenceError(

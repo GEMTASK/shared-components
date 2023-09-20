@@ -1,11 +1,10 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-import * as WebDAV from 'webdav';
 
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 
 import * as kopi from 'kopi-language';
-import { KopiValue, KopiNumber, KopiString } from 'kopi-language';
+import { Context, KopiValue, KopiNumber, KopiString } from 'kopi-language';
 
 import exampless from './examples';
 import reference from './reference';
@@ -17,8 +16,6 @@ declare global {
 }
 
 const MONOSPACE_FONT = 'Iosevka';
-
-const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
 
 const Link = ({ children, ...props }: any) => {
   return (
@@ -181,14 +178,6 @@ const interpret = async (
 
   const promise = new Promise(async (resolve, reject) => {
     try {
-      async function kopi_import(url: KopiString) {
-        const source = await (await fetch('//webdav.mike-austin.com/' + url.value)).text();
-
-        if (typeof source === 'string') {
-          return kopi.interpret(source, { ...globalThis.environment, print: kopi_print, import: kopi_import }, () => { });
-        }
-      }
-
       async function kopi_print(value: KopiValue) {
         const string = (await value.toString() as unknown as KopiString).value;
 
@@ -202,6 +191,26 @@ const interpret = async (
             {string}
           </Text>
         ]);
+      }
+
+      async function kopi_import(url: KopiString, context: Context) {
+        if (url.value.endsWith('.js')) {
+          const { bind } = context;
+
+          const module = await import(/*webpackIgnore: true*/ `/${url.value}`);
+
+          Object.entries(module).forEach(([name, value]) => {
+            bind({ [name]: value as KopiValue });
+          });
+
+          return;
+        }
+
+        const source = await (await fetch('//webdav.mike-austin.com/' + url.value)).text();
+
+        if (typeof source === 'string') {
+          return kopi.interpret(source, { ...globalThis.environment, print: kopi_print, import: kopi_import }, () => { });
+        }
       }
 
       const value = await kopi.interpret(source, { ...globalThis.environment, print: kopi_print, import: kopi_import }, bind);
