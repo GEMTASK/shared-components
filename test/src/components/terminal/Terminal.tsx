@@ -195,7 +195,7 @@ const interpret = async (
 
       async function kopi_import(url: KopiString, context: Context) {
         if (url.value.endsWith('.js')) {
-          const module = await import(/*webpackIgnore: true*/ `/${url.value}`);
+          const module = await import(/*webpackIgnore: true*/ `//webdav.mike-austin.com/${url.value}`);
 
           const [fields, names] = Object.entries(module).reduce(([fields, names], [name, value]) => {
             return [
@@ -207,7 +207,7 @@ const interpret = async (
           return new KopiTuple(fields, names);
         }
 
-        const source = await (await fetch('//webdav.mike-austin.com/' + url.value)).text();
+        const source = await (await fetch(`//webdav.mike-austin.com/${url.value}`)).text();
 
         if (typeof source === 'string') {
           return kopi.interpret(source, { ...globalThis.environment, print: kopi_print, import: kopi_import }, () => { });
