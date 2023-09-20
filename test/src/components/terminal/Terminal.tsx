@@ -4,7 +4,7 @@ import { createUseStyles } from 'react-jss';
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 
 import * as kopi from 'kopi-language';
-import { Context, KopiValue, KopiNumber, KopiString } from 'kopi-language';
+import { Context, KopiValue, KopiNumber, KopiString, KopiTuple } from 'kopi-language';
 
 import exampless from './examples';
 import reference from './reference';
@@ -195,15 +195,16 @@ const interpret = async (
 
       async function kopi_import(url: KopiString, context: Context) {
         if (url.value.endsWith('.js')) {
-          const { bind } = context;
-
           const module = await import(/*webpackIgnore: true*/ `/${url.value}`);
 
-          Object.entries(module).forEach(([name, value]) => {
-            bind({ [name]: value as KopiValue });
-          });
+          const [fields, names] = Object.entries(module).reduce(([fields, names], [name, value]) => {
+            return [
+              [...fields, value],
+              [...names, name]
+            ];
+          }, [[] as any, [] as any]);
 
-          return;
+          return new KopiTuple(fields, names);
         }
 
         const source = await (await fetch('//webdav.mike-austin.com/' + url.value)).text();

@@ -4,11 +4,15 @@ const {
   Number: KopiNumber,
 } = window.environment;
 
-class Vector extends KopiAny {
+class KopiVector extends KopiAny {
+  static inspect() {
+    return `Vector`;
+  }
+
   static async apply(thisArg, [iterable, context]) {
     const array = await KopiArray.fromIterable(iterable);
 
-    return new Vector(array._elements);
+    return new KopiVector(array._elements);
   }
 
   constructor(elements) {
@@ -39,5 +43,5 @@ class Vector extends KopiAny {
 }
 
 export {
-  Vector,
+  KopiVector as Vector,
 };
