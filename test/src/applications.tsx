@@ -40,7 +40,7 @@ const Applications = {
     icon: 'music', title: 'Music', client: <Music />, rect: { width: 400, height: 400 }
   },
   'files': {
-    icon: 'files', title: 'Files', client: <Files />, rect: { width: 800, height: 600 }
+    icon: 'folder-open', title: 'Files', client: <Files />, rect: { width: 800, height: 600 }
   },
   'contacts': {
     icon: 'address-book', title: 'Contacts', client: <Contacts />, rect: { width: 800, height: 600 }
