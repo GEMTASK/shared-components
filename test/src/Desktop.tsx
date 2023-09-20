@@ -12,6 +12,7 @@ import Calendar from './components/calendar';
 import Clock, { DigitalClock } from './components/clock';
 import Calculator from './components/calculator';
 import Notes from './components/notes';
+import Editor from './components/editor';
 import Music from './components/music';
 import Files from './components/files';
 import Terminal from './components/terminal';
@@ -70,10 +71,12 @@ const sideBarClientStyle = {
 type WindowsProp = React.ComponentProps<typeof Desktop>['windows'];
 
 const FileExtension = {
+  'txt': Applications.editor,
   'md': Applications.markdown,
+  'js': Applications.editor,
+  'kopi': Applications.editor,
   'mp3': Applications.music,
   'jpg': Applications.media,
-  'txt': Applications.media,
 } as const;
 
 const addApplication = (key: keyof typeof Applications, { addWindow }: any) => {

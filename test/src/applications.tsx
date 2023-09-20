@@ -4,6 +4,7 @@ import Calendar from './components/calendar';
 import Clock from './components/clock';
 import Calculator from './components/calculator';
 import Notes from './components/notes';
+import Editor from './components/editor';
 import Music from './components/music';
 import Browser from './components/browser';
 import Files from './components/files';
@@ -31,6 +32,9 @@ const Applications = {
   },
   'notes': {
     icon: 'note-sticky', title: 'Notes', client: <Notes />, rect: { width: 800, height: 600 }
+  },
+  'editor': {
+    icon: 'file', title: 'Editor', client: <Editor />, rect: { width: 800, height: 1024 }
   },
   'music': {
     icon: 'music', title: 'Music', client: <Music />, rect: { width: 400, height: 400 }
