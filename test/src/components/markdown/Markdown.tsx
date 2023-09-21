@@ -85,7 +85,13 @@ const useMarkdownStyles = createUseStyles({
       marginBottom: 16,
     },
   },
+  table: {
+    marginTop: 16,
+    marginBottom: 16,
+    borderSpacing: 0,
+  },
   th: {
+    textAlign: 'left',
     borderBottom: '1px solid #dee2e6',
     paddingBottom: 8,
     '&:not(:first-child)': {
@@ -221,13 +227,14 @@ const Code = ({
 };
 
 //
-//
+// Markdown
 //
 
 const Markdown = ({ args, ...props }: any) => {
   console.log('Markdown()', props);
 
   const [markdown, setMarkdown] = useState('');
+  const markdownElementRef = useRef<HTMLElement>(null);
 
   const sidebarStyles = useSidebarStyles();
   const markdownStyles = useMarkdownStyles();
@@ -236,27 +243,27 @@ const Markdown = ({ args, ...props }: any) => {
     h1: ({ children }: { children: any; }) => (
       <Text fontSize="large" fontWeight="thin" className={sidebarStyles.h1}>{children}</Text>
     ),
-    h2: ({ children }: { children: any; }) => (
+    h2: ({ children: [child] }: { children: any; }) => (
       <Text
         fontSize="medium"
         fontWeight="semibold"
         className={sidebarStyles.h2}
-        onClick={() => document.getElementById(children)?.scrollIntoView({
+        onClick={() => markdownElementRef.current?.querySelector(`#${child.replaceAll(' ', '-')}`)?.scrollIntoView({
           behavior: 'smooth'
         })}
       >
-        {children}
+        {child}
       </Text>
     ),
-    h3: ({ children }: { children: any; }) => (
+    h3: ({ children: [child] }: { children: any; }) => (
       <Text
         fontWeight="medium"
         className={sidebarStyles.h3}
-        onClick={() => document.getElementById(children)?.scrollIntoView({
+        onClick={() => markdownElementRef.current?.querySelector(`#${child.replaceAll(' ', '-')}`)?.scrollIntoView({
           behavior: 'smooth'
         })}
       >
-        {children}
+        {child}
       </Text>
     ),
     p: ({ children }: { children: any; }) => null,
@@ -271,11 +278,11 @@ const Markdown = ({ args, ...props }: any) => {
     h1: ({ children }: { children: any; }) => (
       <Text fontSize="xlarge" fontWeight="thin" className={markdownStyles.h1}>{children}</Text>
     ),
-    h2: ({ children }: { children: any; }) => (
-      <Text id={children} fontSize="large" fontWeight="semibold" className={markdownStyles.h2}>{children}</Text>
+    h2: ({ children: [child] }: { children: any; }) => (
+      <Text id={child.replaceAll(' ', '-')} fontSize="large" fontWeight="semibold" className={markdownStyles.h2}>{child}</Text>
     ),
-    h3: ({ children }: { children: any; }) => (
-      <Text id={children} fontSize="medium" fontWeight="medium" className={markdownStyles.h3}>{children}</Text>
+    h3: ({ children: [child] }: { children: any; }) => (
+      <Text id={child.replaceAll(' ', '-')} fontSize="medium" fontWeight="medium" className={markdownStyles.h3}>{child}</Text>
     ),
     p: ({ children, ...props }: { children: any; }) => (
       <Text textColor="gray-7" className={markdownStyles.p}>{children}</Text>
@@ -288,7 +295,7 @@ const Markdown = ({ args, ...props }: any) => {
       <Code language={className} inline={inline} className={markdownStyles.code}>{children}</Code>
     ),
     table: ({ children }: any) => (
-      <table style={{ borderSpacing: 0 }}>{children}</table>
+      <table className={markdownStyles.table}>{children}</table>
     ),
     th: ({ children }: any) => (
       <th className={markdownStyles.th}>
@@ -304,11 +311,11 @@ const Markdown = ({ args, ...props }: any) => {
         </Text>
       </td>
     ),
-  }), [markdownStyles.code, markdownStyles.h1, markdownStyles.h2, markdownStyles.h3, markdownStyles.p, markdownStyles.td, markdownStyles.th]);;
+  }), [markdownStyles.code, markdownStyles.h1, markdownStyles.h2, markdownStyles.h3, markdownStyles.p, markdownStyles.table, markdownStyles.td, markdownStyles.th]);;
 
   useEffect(() => {
     (async () => {
-      const markdown = await (await fetch(`//webdav.mike-austin.com/${args}`)).text();
+      const markdown = await (await fetch(`//webdav.mike-austin.com/${args}?${Date.now()}`)).text();
 
       if (typeof markdown === 'string') {
         setMarkdown(markdown);
@@ -323,7 +330,7 @@ const Markdown = ({ args, ...props }: any) => {
           {markdown}
         </ReactMarkdown>
       </View>
-      <View padding="xxlarge" style={{ display: 'block', overflow: 'auto' }}>
+      <View ref={markdownElementRef} flex padding="xxlarge" style={{ display: 'block', overflow: 'auto' }}>
         <ReactMarkdown components={markdownComponents} remarkPlugins={[remarkGfm]}>
           {markdown}
         </ReactMarkdown>
