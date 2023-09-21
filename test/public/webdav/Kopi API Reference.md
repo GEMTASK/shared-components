@@ -4,19 +4,19 @@
 
 ### Stringable
 
-| **Field / Method** | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
+| Field / Method     | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
 | ------------------ | :-----: | :----: | :----: | :---: | :--: | :---: | :----: | :---: | :----: | :------: |
 | `toString`         | ✓       | ✓      | ✓      | ✓     | ✓    | ✓     | ✓      | ✓     |        |          |
 
 ### Equabile
 
-| **Field / Method** | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
+| Field / Method     | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
 | ------------------ | :-----: | :----: | :----: | :---: | :--: | :---: | :----: | :---: | :----: | :------: |
 | `==`               | ✓       | ✓      | ✓      | ✓     | ✓    | ✓     | ✓      | ✓     |        |          |
 
 ### Comparable
 
-| **Field / Method** | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
+| Field / Method     | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
 | ------------------ | :-----: | :----: | :----: | :---: | :--: | :---: | :----: | :---: | :----: | :------: |
 | `<`                | ✓       | ✓      | ✓      | ?     |      |       |        |       |        |          |
 | `<=`               | ✓       | ✓      | ✓      | ?     |      |       |        |       |        |          |
@@ -25,20 +25,20 @@
 
 ### Enumerable
 
-| **Field / Method** | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
+| Field / Method     | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
 | ------------------ | :-----: | :----: | :----: | :---: | :--: | :---: | :----: | :---: | :----: | :------: |
 | `succ`             | ✓       | ✓      | ✓      |       |      |       |        |       |        |          |
 
 ### Iterable
 
-| **Field / Method** | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
+| Field / Method     | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
 | ------------------ | :-----: | :----: | :----: | :---: | :--: | :---: | :----: | :---: | :----: | :------: |
 | `map`              |         |        | ✓      | ✓     | ✓    | ✓     |        |       | ✓      |          |
 | `flatMap`          |         |        | ✓      | ✓     | ✓    | ✓     |        |       | ✓      |          |
 | `filter`           |         |        | ✓      | ✓     | ✓    | ✓     |        |       | ✓      |          |
 | `reduce`           |         |        | ✓      | ✓     | ✓    | ✓     |        |       | ✓      |          |
 
-| **Field / Method** | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
+| Field / Method     | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
 | ------------------ | :-----: | :----: | :----: | :---: | :--: | :---: | :----: | :---: | :----: | :------: |
 | `splitOn`          |         |        | ✓      | ✓     |      | ✓     |        |       | ✓      |          |
 | `splitAt`          |         |        | ✓      | ✓     |      | ✓     |        |       | ✓      |          |
@@ -48,7 +48,7 @@
 
 ### Number
 
-| **Field / Method** | Description |
+| Field / Method     | Description |
 | ------------------ | ----------- |
 | `toString`         | The string representation of the number |
 |                    |
@@ -80,7 +80,7 @@
 
 ### Boolean
 
-| **Field / Method** | Description |
+| Field / Method     | Description |
 | ------------------ | ----------- |
 | `toString`         | The string representation of the boolean |
 | `==`               | Tests if is equal to the argument |
@@ -90,7 +90,7 @@
 
 ### String
 
-| **Field / Method** | Description |
+| Field / Method     | Description |
 | ------------------ | ----------- |
 | `.size`            | The number of characters in the string |
 |                    |
@@ -109,11 +109,11 @@
 
 ### Array
 
-| **Static Method**  | Description |
+| Static Method      | Description |
 | ------------------ | ----------- |
 | `fromIterable`     | |
 
-| **Field / Method** | Description |
+| Field / Method     | Description |
 | ------------------ | ----------- |
 | `.size`            | The number of elements in the array |
 | `.(index)`         | |
