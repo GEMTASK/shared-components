@@ -105,6 +105,10 @@ class KopiTuple extends KopiValue {
     return new KopiBoolean(true);
   }
 
+  async '!='(that: KopiTuple, context: Context) {
+    return new KopiBoolean(!((await this['=='](that, context)).value));
+  }
+
   //
 
   map(func: KopiFunction, context: Context) {
