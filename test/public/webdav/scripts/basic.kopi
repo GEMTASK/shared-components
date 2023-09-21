@@ -1,0 +1,52 @@
+program = "
+  10 print 'hello'
+  20 goto 30
+  30 print 'world'
+"
+
+indexOf (lineNo) = {
+  (Number lineNo) / 10 - 1
+}
+
+next (index) = index + 1
+goto (index) () = index
+
+evaluate (line) = match (
+  line
+    | trim
+    | splitOn " "
+    | toArray
+) (
+  [lineNo, "print", value] => {
+    print value
+    next
+  }
+  [lineNo, "goto", gotoNo] => {
+    goto (indexOf gotoNo)
+  }
+)
+
+interpret (program) = {
+  lines = program
+    | trim
+    | splitOn String.newline
+    | toArray
+
+  let (index = 0) => {
+    reducer = evaluate (
+      lines.(index)
+    )
+    newIndex = reducer index
+
+    newIndex < lines.size ? {
+      loop (newIndex)
+    } : "Done."
+  }
+}
+
+interpret program
+
+export (
+  program: program
+  interpret: interpret
+)

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { createUseStyles } from 'react-jss';
 
 import * as kopi from 'kopi-language';
@@ -83,6 +84,23 @@ const useMarkdownStyles = createUseStyles({
     '&:not(:last-child)': {
       marginBottom: 16,
     },
+  },
+  th: {
+    borderBottom: '1px solid #dee2e6',
+    paddingBottom: 8,
+    '&:not(:first-child)': {
+      textAlign: 'left',
+      paddingLeft: 16
+    }
+  },
+  td: {
+    borderBottom: '1px solid #dee2e6',
+    paddingTop: 8,
+    paddingBottom: 8,
+    '&:not(:first-child)': {
+      textAlign: 'left',
+      paddingLeft: 16,
+    }
   },
 });
 
@@ -269,7 +287,24 @@ const Markdown = ({ args, ...props }: any) => {
     code: ({ children, className, inline }: { inline?: boolean; children: any; className?: string; }) => (
       <Code language={className} inline={inline} className={markdownStyles.code}>{children}</Code>
     ),
-  }), [markdownStyles.code, markdownStyles.h1, markdownStyles.h2, markdownStyles.h3, markdownStyles.p]);;
+    table: ({ children }: any) => (
+      <table style={{ borderSpacing: 0 }}>{children}</table>
+    ),
+    th: ({ children }: any) => (
+      <th className={markdownStyles.th}>
+        <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6">
+          {children}
+        </Text>
+      </th>
+    ),
+    td: ({ children }: any) => (
+      <td className={markdownStyles.td}>
+        <Text>
+          {children}
+        </Text>
+      </td>
+    ),
+  }), [markdownStyles.code, markdownStyles.h1, markdownStyles.h2, markdownStyles.h3, markdownStyles.p, markdownStyles.td, markdownStyles.th]);;
 
   useEffect(() => {
     (async () => {
@@ -289,7 +324,7 @@ const Markdown = ({ args, ...props }: any) => {
         </ReactMarkdown>
       </View>
       <View padding="xxlarge" style={{ display: 'block', overflow: 'auto' }}>
-        <ReactMarkdown components={markdownComponents}>
+        <ReactMarkdown components={markdownComponents} remarkPlugins={[remarkGfm]}>
           {markdown}
         </ReactMarkdown>
       </View>

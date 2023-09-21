@@ -1,5 +1,23 @@
 # Learning Kopi
 
+|              | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
+| ------------ | ------- | ------ | ------ | ----- | ---- | ----- | ------ | ----- | ------ | -------- |
+| `toString`   | ✅✔️✓✔︎      | ✅     | ✅     | ✅    | ✅   | ✅    | ✅     | ✅    |        |          |
+|              |                                                                                       |
+| `==`         | ✅      | ✅     | ✅     | ✅     | ✅  | ✅    | ✅     | ✅    |        |          |
+| `<`          | ✅      | ✅     | ✅     | ✅     |     |       |        |       |        |          |
+|              |                                                                                       |
+| `succ`       | ✅      | ✅     | ✅     |        |     |       |        |       |        |          |
+|              |                                                                                       |
+| `map`        |         |        | ✅     | ✅     | ✅  | ✅    |        |       | ✅     |          |
+| `flatMap`    |         |        | ✅     | ✅     | ✅  | ✅    |        |       | ✅     |          |
+| `filter`     |         |        | ✅     | ✅     | ✅  | ✅    |        |       | ✅     |          |
+| `reduce`     |         |        | ✅     | ✅     | ✅  | ✅    |        |       | ✅     |          |
+|              |                                                                                       |
+| `splitOn`    |         |        | ✅     | ✅     |     | ✅    |        |       | ✅     |          |
+| `splitAt`    |         |        | ✅     | ✅     |     | ✅    |        |       | ✅     |          |
+| `splitEvery` |         |        | ✅     | ✅     |     | ✅    |        |       | ✅     |          |
+
 ## Introduction
 
 Kopi is a small, immutable, 100% async programming language. It provides several literal types, uses patterns for destructuring and matching values, and supports lazy streams and coroutines.

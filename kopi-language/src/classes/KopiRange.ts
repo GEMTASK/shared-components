@@ -50,7 +50,7 @@ import('./KopiStream.js').then((result) => {
 });
 
 //
-//
+// class KopiRange
 //
 
 class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
