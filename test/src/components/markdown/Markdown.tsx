@@ -98,7 +98,7 @@ const useMarkdownStyles = createUseStyles({
     paddingTop: 8,
     paddingBottom: 8,
     '&:not(:first-child)': {
-      textAlign: 'left',
+      // textAlign: 'left',
       paddingLeft: 16,
     }
   },
@@ -297,9 +297,9 @@ const Markdown = ({ args, ...props }: any) => {
         </Text>
       </th>
     ),
-    td: ({ children }: any) => (
+    td: ({ children, style, ...props }: any) => (
       <td className={markdownStyles.td}>
-        <Text>
+        <Text textAlign={style?.textAlign}>
           {children}
         </Text>
       </td>
