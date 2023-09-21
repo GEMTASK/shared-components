@@ -2,18 +2,21 @@
 
 |              | Boolean | Number | String | Array | Dict | Range | ASTree | Tuple | Stream | Function |
 | ------------ | :-----: | :----: | :----: | :---: | :--: | :---: | :----: | :---: | :----: | :------: |
-| `toString`   | ●       | ✓      | ✓      | ✓     | ✓    | ✓     | ✓      | ✓     |        |          |
-|              |                                                                                       |
+| `toString`   | ✓       | ✓      | ✓      | ✓     | ✓    | ✓     | ✓      | ✓     |        |          |
+|                                                                                                      |
 | `==`         | ✓       | ✓      | ✓      | ✓     | ✓    | ✓     | ✓      | ✓     |        |          |
-| `<`          | ✓       | ✓      | ✓      | ✓     |      |       |        |       |        |          |
-|              |                                                                                       |
+| `<`          | ✓       | ✓      | ✓      | ?     |      |       |        |       |        |          |
+| `<=`          | ✓       | ✓      | ✓      | ?     |      |       |        |       |        |          |
+| `>`          | ✓       | ✓      | ✓      | ?     |      |       |        |       |        |          |
+| `>=`          | ✓       | ✓      | ✓      | ?     |      |       |        |       |        |          |
+|                                                                                                      |
 | `succ`       | ✓       | ✓      | ✓      |       |      |       |        |       |        |          |
-|              |                                                                                       |
+|                                                                                                      |
 | `map`        |         |        | ✓      | ✓     | ✓    | ✓     |        |       | ✓      |          |
 | `flatMap`    |         |        | ✓      | ✓     | ✓    | ✓     |        |       | ✓      |          |
 | `filter`     |         |        | ✓      | ✓     | ✓    | ✓     |        |       | ✓      |          |
 | `reduce`     |         |        | ✓      | ✓     | ✓    | ✓     |        |       | ✓      |          |
-|              |                                                                                       |
+|                                                                                                      |
 | `splitOn`    |         |        | ✓      | ✓     |      | ✓     |        |       | ✓      |          |
 | `splitAt`    |         |        | ✓      | ✓     |      | ✓     |        |       | ✓      |          |
 | `splitEvery` |         |        | ✓      | ✓     |      | ✓     |        |       | ✓      |          |
@@ -32,7 +35,7 @@ Kopi is a small language, meanining it has a minimum of syntax. In fact, there a
 
 All values are immutable, which makes it much easier to understand what's happening in a program. State can be introduced by using loops, using recursion, or by using coroutines.
 
-### 100% async
+### 100% Asynchronous
 
 Every expression in Kopi is asynchronous, so there's no need for `await` or similar concepts. This allows you to write async code that's easy to follow. Under the hood, all expressions are based on promises.
 

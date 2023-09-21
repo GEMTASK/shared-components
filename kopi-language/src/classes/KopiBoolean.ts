@@ -1,6 +1,7 @@
 import { Context, KopiValue } from '../types.js';
 
 import KopiString from './KopiString.js';
+import KopiTuple from './KopiTuple.js';
 
 class KopiBoolean extends KopiValue {
   static true = new KopiBoolean(true);
@@ -33,15 +34,19 @@ class KopiBoolean extends KopiValue {
   }
 
   '!'(): KopiBoolean {
-    return new KopiBoolean(!this.value);
+    return this.value ? KopiBoolean.false : KopiBoolean.true;
   }
 
   '=='(that: KopiBoolean) {
-    return new KopiBoolean(this.value === that.value);
+    return this.value === that.value ? KopiBoolean.true : KopiBoolean.false;
   }
 
   '!='(that: KopiBoolean) {
-    return new KopiBoolean(this.value !== that.value);
+    return this.value !== that.value ? KopiBoolean.true : KopiBoolean.false;
+  }
+
+  succ() {
+    return !this.value ? KopiBoolean.true : KopiTuple.empty;
   }
 }
 
