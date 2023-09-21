@@ -64,6 +64,11 @@ class KopiNumber extends KopiValue {
     return new KopiBoolean(this.value === that.value);
   }
 
+  @kopiOperator(() => KopiNumber)
+  '!='(that: KopiNumber) {
+    return new KopiBoolean(this.value !== that.value);
+  }
+
   '>'(that: KopiValue) {
     if (!(that instanceof KopiNumber)) {
       throw error('number-operator-argument-type', { operator: '+' });
