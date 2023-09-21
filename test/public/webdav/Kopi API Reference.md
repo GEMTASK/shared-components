@@ -1,4 +1,6 @@
-# Kopi Methods
+# Kopi API Reference
+
+## Common Functionality
 
 ### Stringable
 
@@ -41,3 +43,42 @@
 | `splitOn`      |         |        | ✓      | ✓     |      | ✓     |        |       | ✓      |          |
 | `splitAt`      |         |        | ✓      | ✓     |      | ✓     |        |       | ✓      |          |
 | `splitEvery`   |         |        | ✓      | ✓     |      | ✓     |        |       | ✓      |          |
+
+## Methods by Type
+
+### Number
+
+| **Method**     | Description |
+| -------------- | ----------- |
+| `toString`     | |
+| `==`           | |
+| `!=`           | |
+| `<`            | |
+| `<=`           | |
+| `>`            | |
+| `>=`           | |
+| `abs`          | |
+| `floor`        | |
+| `round`        | |
+| `ceil`         | |
+| `sin`          | |
+| `cos`          | |
+
+### String
+
+| **Method**     | Description |
+| -------------- | ----------- |
+| `toString`     | |
+| `toUpper`      | Transforms the entire string to upper case |
+| `tirm`         | |
+| `split`        | |
+
+### Boolean
+
+| **Method**     | Description |
+| -------------- | ----------- |
+| `toString`     | |
+| `==`           | |
+| `!=`           | |
+| `!`            | |
+| `succ`         | |
