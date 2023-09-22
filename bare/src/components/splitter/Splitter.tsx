@@ -79,7 +79,7 @@ const Splitter = ({
   const childrenArray = React.Children.toArray(children);
 
   return (
-    <View {...props} style={{ ...style, scrollSnapType: 'x mandatory' }}>
+    <View {...props} style={{ ...style, minHeight: 0, scrollSnapType: 'x mandatory' }}>
       {React.isValidElement(childrenArray[0]) && React.cloneElement(childrenArray[0] as React.ReactElement, {
         ref: elementRef,
         style: {
