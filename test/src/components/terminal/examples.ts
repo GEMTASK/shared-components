@@ -396,6 +396,12 @@ Vector [1, 2] + Vector [2, 3]
 }
 print ('size "hello" == 5)
   `,
+  `
+{ 1: "One", 2: "Two" }
+  | reduce (z = {}, (k, v)) => {
+      z << { (v): k }
+    }
+  `,
 ];
 
 export default examples;

@@ -157,6 +157,10 @@ class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
     return new KopiBoolean(true);
   }
 
+  async '!='(that: KopiArray, context: Context) {
+    return new KopiBoolean(!((await this['=='](that, context)).value));
+  }
+
   '++'(that: KopiArray) {
     return new KopiArray(this._elements.concat(that._elements));
   }
