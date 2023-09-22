@@ -5,7 +5,7 @@ import { styleTags, tags as t } from "@lezer/highlight";
 
 import { parser } from './kopi-parser';
 
-import { View } from 'bare';
+import { Button, Divider, View, Splitter, Text } from 'bare';
 
 export const KopiLanguage = LRLanguage.define({
   parser: parser.configure({
@@ -37,6 +37,7 @@ export const KopiLanguage = LRLanguage.define({
 const kopiLanguage = new LanguageSupport(KopiLanguage);
 
 const Editor = ({ args, ...props }: any) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [text, setText] = useState(args);
 
   useEffect(() => {
@@ -51,13 +52,31 @@ const Editor = ({ args, ...props }: any) => {
 
   return (
     <View flex {...props}>
-      <CodeMirror
-        value={text}
-        height="100%"
-        style={{ flex: 1, overflow: 'auto' }}
-        extensions={[kopiLanguage]}
-      // onChange={onChange}
-      />
+      <Splitter flex horizontal>
+        {isSidebarOpen && (
+          <View padding="small" style={{ width: 192 }}>
+            <Text>Sidebar</Text>
+          </View>
+        )}
+        <View flex>
+          <View horizontal padding="small" fillColor="gray-1">
+            <Button
+              hover
+              icon="table-columns"
+              selected={isSidebarOpen}
+              onClick={() => setIsSidebarOpen(isSidebarOpen => !isSidebarOpen)}
+            />
+          </View>
+          <Divider />
+          <CodeMirror
+            value={text}
+            height="100%"
+            style={{ flex: 1, overflow: 'auto' }}
+            extensions={[kopiLanguage]}
+          // onChange={onChange}
+          />
+        </View>
+      </Splitter>
     </View>
   );
 };
