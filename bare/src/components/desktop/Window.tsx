@@ -241,8 +241,6 @@ const Window = ({
 
     firstEventRef.current = event;
 
-    onWindowFocus?.(id);
-
     if (windowElementRef.current) {
       rightWindowRectsRef.current = getOffsetsRect(windowElementRef.current);
     }
