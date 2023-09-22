@@ -1,0 +1,27 @@
+@top Program { expression* }
+
+@skip { space | LineComment }
+
+expression {
+  Identifier |
+  Number |
+  String |
+  Boolean |
+  Application { "(" expression* ")" }
+}
+
+@tokens {
+  @precedence {
+    Boolean, Number, Identifier
+  }
+
+  Identifier { $[a-zA-Z_\-0-9]+ }
+  Number { $[0-9]+ }
+  String { '"' (!["\\] | "\\" _)* '"' }
+  Boolean { "true" | "false" }
+  LineComment { "#" ![\n]* }
+  space { $[ ]+ }
+  "(" ")" "{" "}"
+}
+
+@detectDelim
