@@ -59,12 +59,12 @@
 | `%` `n`            | Remainer |
 | `^` `n`            | Exponent |
 |                    |
-| `==` `n`           | Tests if is equal to the argument |
-| `!=` `n`           | Tests if not equal to the argument |
-| `<` `n`            | Compares less than the argument |
-| `<=` `n`           | Compares less than or equal to the argument |
-| `>` `n`            | Compares greater than the argument |
-| `>=` `n`           | Compares greater than or equal to the argument |
+| `==` `n`           | Tests if is equal to another string |
+| `!=` `n`           | Tests if not equal to another string |
+| `<` `n`            | Compares less than another string |
+| `<=` `n`           | Compares less than or equal to another string |
+| `>` `n`            | Compares greater than another string |
+| `>=` `n`           | Compares greater than or equal to another string |
 |                    |
 | `abs`              | The absolute value of the number |
 | `floor`            | The largest integer less than or equal to the number |
@@ -83,8 +83,8 @@
 | Field / Method     | Description |
 | ------------------ | ----------- |
 | `toString`         | The string representation of the boolean |
-| `==` `b`           | Tests if is equal to the argument |
-| `!=` `b`           | Tests if not equal to the argument |
+| `==` `b`           | Tests if is equal to another boolean |
+| `!=` `b`           | Tests if not equal to another boolean |
 | `!`                | Logical complement, negation |
 | `succ`             | If `false`, returns `true`, else `()` |
 
@@ -94,12 +94,12 @@
 | ------------------ | ----------- |
 | `.size`            | The number of characters in the string |
 |                    |
-| `==` `s`           | Tests if is equal to the argument |
-| `!=` `s`           | Tests if not equal to the argument |
-| `<` `s`            | Compares less than the argument |
-| `<=` `s`           | Compares less than or equal to the argument |
-| `>` `s`            | Compares greater than the argument |
-| `>=` `s`           | Compares greater than or equal to the argument |
+| `==` `s`           | Tests if is equal to another string |
+| `!=` `s`           | Tests if not equal to another string |
+| `<` `s`            | Compares less than another string |
+| `<=` `s`           | Compares less than or equal to another string |
+| `>` `s`            | Compares greater than another string |
+| `>=` `s`           | Compares greater than or equal to another string |
 |                    |
 | `toString`         | Returns itself |
 | `empty`            | Tests if the string is empty (size == 0) |
@@ -118,9 +118,9 @@
 | `.size`            | The number of elements in the array |
 | `.(i)`             | |
 |                    |
-| `==` `a`           | Tests if is equal to the argument |
-| `!=` `a`           | Tests if not equal to the argument |
-| `++` `a`           | Concatenate the array with another |
+| `==` `a`           | Tests if is equal to another array |
+| `!=` `a`           | Tests if not equal to another array |
+| `++` `a`           | Concatenate the array with another array |
 |                    |
 | `toString`         | The string representation of the array |
 | `at` `i`           | |
@@ -147,8 +147,8 @@
 | ------------------ | ----------- |
 | `.n`               | The n'th field of the tuple, or an error if out of range |
 | `.field`           | The field by name, or an error if not found |
-| `==` `t`           | Tests if is equal to the argument |
-| `!=` `t`           | Tests if not equal to the argument |
+| `==` `t`           | Tests if is equal to another tuple |
+| `!=` `t`           | Tests if not equal to another tuple |
 
 ### Dict
 
@@ -160,7 +160,7 @@
 | ------------------ | ----------- |
 | `.size`            | The number of entries in the dictionary |
 |                    |
-| `<<` `d`           | Merge the dictionary with another |
+| `<<` `d`           | Merge the dictionary with another dictionary |
 |                    |
 | `toString`         | The string representation of the array |
 | `at` `k`           | |
