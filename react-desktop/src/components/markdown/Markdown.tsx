@@ -325,7 +325,7 @@ const Markdown = ({ args, ...props }: any) => {
 
   return (
     <Stack horizontal divider {...props} style={{ userSelect: 'text' }}>
-      <View padding="large" minWidth={256} style={{ display: 'block', overflow: 'auto' }}>
+      <View padding="large" fillColor="gray-1" minWidth={256} style={{ display: 'block', overflow: 'auto' }}>
         <ReactMarkdown components={sidebarComponents}>
           {markdown}
         </ReactMarkdown>
