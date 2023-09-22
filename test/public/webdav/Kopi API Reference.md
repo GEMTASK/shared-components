@@ -168,7 +168,7 @@
 |                    |
 | `Iterable.*`       | Dict supports all the Iterable methods |
 
-### Itrable
+### Iterable
 
 | Field / Method     | Description |
 | ------------------ | ----------- |
