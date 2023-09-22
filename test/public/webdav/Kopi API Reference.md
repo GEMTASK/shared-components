@@ -50,7 +50,7 @@
 
 | Field / Method     | Description |
 | ------------------ | ----------- |
-| `toString`         | The string representation of the number |
+| `toString`         | A string representation of the number |
 |                    |
 | `+` `n`            | Addition |
 | `-` `n`            | Subtraction |
@@ -82,7 +82,7 @@
 
 | Field / Method     | Description |
 | ------------------ | ----------- |
-| `toString`         | The string representation of the boolean |
+| `toString`         | A string representation of the boolean |
 | `==` `b`           | Tests if is equal to another boolean |
 | `!=` `b`           | Tests if not equal to another boolean |
 | `!`                | Logical complement, negation |
@@ -122,7 +122,7 @@
 | `!=` `a`           | Tests if not equal to another array |
 | `++` `a`           | Concatenate the array with another array |
 |                    |
-| `toString`         | The string representation of the array |
+| `toString`         | A string representation of the array |
 | `at` `i`           | |
 | `empty`            | Tests if the array is empty (size == 0) |
 | `zip` `[f]`        | |
@@ -136,7 +136,7 @@
 | `.from`            | The lower bound of the range, inclusive |
 | `.to`              | The upper bound of the range, inclusive |
 |                    |
-| `toString`         | The string representation of the range |
+| `toString`         | A string representation of the range |
 | `(by: n)`          | Sets the stride of the range |
 |                    |
 | `Iterable.*`       | Range supports all the Iterable methods |
@@ -162,7 +162,7 @@
 |                    |
 | `<<` `d`           | Merge the dictionary with another dictionary |
 |                    |
-| `toString`         | The string representation of the array |
+| `toString`         | A string representation of the array |
 | `at` `k`           | |
 | `update` `k` `f`   | |
 |                    |
