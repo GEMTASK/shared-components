@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useMemo, useState } from 'react';
 import * as WebDAV from 'webdav';
 import HumanReadable from '@tsmx/human-readable';
 
-import { Button, Divider, Grid, Icon, Spacer, Splitter, Table, Text, View, ViewProps } from 'bare';
+import { Button, Divider, Grid, Icon, Spacer, Splitter, Table, Text, View, Menu, ViewProps, Stack } from 'bare';
 import { ButtonProps } from 'bare/dist/components/button';
 
 const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
@@ -15,6 +15,7 @@ type DisplayItemProps = {
   onFileSelect?: (basename: string) => void,
   onFolderOpen?: (basename: string) => void;
   onFileOpen?: (filename: string) => void;
+  onFileEdit?: (filename: string) => void;
 } & ViewProps;
 
 const DisplayItem = ({
@@ -26,9 +27,15 @@ const DisplayItem = ({
   onFileSelect,
   onFolderOpen,
   onFileOpen,
+  onFileEdit,
   ...props
 }: DisplayItemProps) => {
-  const handlePointerDown = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const firstEventRef = useRef<React.MouseEvent | null>(null);
+
+  const handlePointerDown = (event: any) => {
+    event.stopPropagation();
+
     onFileSelect?.(basename);
   };
 
@@ -40,6 +47,41 @@ const DisplayItem = ({
     }
   };
 
+  const handleContextMenu = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+
+    firstEventRef.current = event;
+
+    setIsMenuOpen(true);
+  };
+
+  const handleItemSelect = (itemIndex: number) => {
+    const item = menuItems[itemIndex];
+
+    if (item && typeof item === 'object') {
+      item.action?.();
+    }
+
+    setIsMenuOpen(false);
+  };
+
+  const handleDocumentPointerDown = () => {
+    setIsMenuOpen(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener('pointerdown', handleDocumentPointerDown);
+
+    return () => {
+      document.removeEventListener('pointerdown', handleDocumentPointerDown);
+    };
+  }, []);
+
+  const menuItems = [
+    { title: 'Open', action: () => { console.log('here'); onFileOpen?.(filename); } },
+    { title: 'Edit', action: () => 0 },
+  ];
+
   return (
     <View
       padding="small"
@@ -48,8 +90,26 @@ const DisplayItem = ({
       fillColor={selected ? 'blue-0' : undefined}
       onPointerDown={handlePointerDown}
       onDoubleClick={handleDoubleClick}
+      onContextMenu={handleContextMenu}
       {...props}
     >
+      {isMenuOpen && (
+        <Menu.List
+          fillColor="white"
+          padding="small none"
+          items={menuItems}
+          style={{
+            position: 'fixed',
+            left: firstEventRef.current?.clientX,
+            top: firstEventRef.current?.clientY,
+            zIndex: 1,
+            borderRadius: 2.5,
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.25), 0 0 0 1px hsla(0, 0%, 50%, 0.1)',
+          }}
+          onItemSelect={handleItemSelect}
+        />
+
+      )}
       {children}
     </View>
   );
@@ -65,16 +125,15 @@ type DisplayProps = {
   onFileSelect?: (basename: string) => void;
   onFolderOpen?: (basename: string) => void;
   onFileOpen?: (filename: string) => void;
+  onFileEdit?: (filename: string) => void;
 } & ViewProps;
 
 const IconDisplay = ({
   files,
   selectedFile,
-  onFileSelect,
-  onFolderOpen,
-  onFileOpen,
+  ...props
 }: DisplayProps) => {
-  const itemProps = { align: 'top', onFileSelect, onFolderOpen, onFileOpen } as const;
+  const itemProps = { align: 'top', ...props } as const;
 
   return (
     <Grid style={{ rowGap: 8, gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
@@ -92,11 +151,9 @@ const IconDisplay = ({
 const TileDisplay = ({
   files,
   selectedFile,
-  onFileSelect,
-  onFolderOpen,
-  onFileOpen,
+  ...props
 }: DisplayProps) => {
-  const itemProps = { horizontal: true, align: 'left', onFileSelect, onFolderOpen, onFileOpen } as const;
+  const itemProps = { horizontal: true, align: 'left', ...props } as const;
 
   return (
     <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
@@ -118,11 +175,9 @@ const TileDisplay = ({
 const ListDisplay = ({
   files,
   selectedFile,
-  onFileSelect,
-  onFolderOpen,
-  onFileOpen,
+  ...props
 }: DisplayProps) => {
-  const itemProps = { horizontal: true, align: 'left', onFileSelect, onFolderOpen, onFileOpen } as const;
+  const itemProps = { horizontal: true, align: 'left', ...props } as const;
 
   return (
     <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
@@ -188,7 +243,11 @@ const Files = ({ ...props }: any) => {
   }, []);
 
   const handleFileOpen = useCallback((filename: string) => {
-    window.postMessage({ type: 'openFile', payload: filename });
+    globalThis.postMessage({ type: 'openFile', payload: filename });
+  }, []);
+
+  const handleFileEdit = useCallback((filename: string) => {
+    globalThis.postMessage({ type: 'editFile', payload: filename });
   }, []);
 
   useEffect(() => {
@@ -256,6 +315,7 @@ const Files = ({ ...props }: any) => {
               onFileSelect={handleFileSelect}
               onFolderOpen={handleFolderOpen}
               onFileOpen={handleFileOpen}
+              onFileEdit={handleFileEdit}
             />
           </View>
           <Divider />

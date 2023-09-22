@@ -46,7 +46,7 @@ const List = ({
   onItemSelect,
   ...props
 }: ListProps) => {
-  const handleItemClick = (itemIndex: number) => {
+  const handleItemSelect = (itemIndex: number) => {
     onItemSelect?.(itemIndex);
   };
 
@@ -60,7 +60,7 @@ const List = ({
             {item}
           </Text>
         ) : (
-          <Item key={index} index={index} title={item.title} onItemSelect={handleItemClick} />
+          <Item key={index} index={index} title={item.title} onItemSelect={handleItemSelect} />
         )
       ))}
     </View>
@@ -148,5 +148,7 @@ const Menu = ({ title, items = defaultItems, ...props }: MenuProps) => {
     </View>
   );
 };
+
+Menu.List = List;
 
 export default Menu;
