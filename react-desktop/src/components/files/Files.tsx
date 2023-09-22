@@ -139,7 +139,7 @@ const IconDisplay = ({
     <Grid style={{ rowGap: 8, gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
       {files?.map(({ basename, filename, type }) => (
         <DisplayItem key={basename} type={type} basename={basename} filename={filename} selected={basename === selectedFile} {...itemProps}>
-          <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="4x" color={type === 'directory' ? 'yellow-4' : 'gray-5'} />
+          <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="4x" color={type === 'directory' ? 'yellow-4' : 'gray-4'} />
           <Spacer size="small" />
           <Text lineClamp={2} textAlign="center" style={{ overflowWrap: 'anywhere' }}>{basename}</Text>
         </DisplayItem>
@@ -159,7 +159,7 @@ const TileDisplay = ({
     <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
       {files?.map(({ basename, filename, type, size }) => (
         <DisplayItem key={basename} type={type} basename={basename} filename={filename} selected={basename === selectedFile} {...itemProps}>
-          <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="3x" color={type === 'directory' ? 'yellow-4' : 'gray-5'} />
+          <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="3x" color={type === 'directory' ? 'yellow-4' : 'gray-4'} />
           <Spacer size="small" />
           <View>
             <Text lineClamp={1} style={{ overflowWrap: 'anywhere' }}>{basename}</Text>
@@ -183,7 +183,7 @@ const ListDisplay = ({
     <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
       {files?.map(({ basename, filename, type }) => (
         <DisplayItem key={basename} type={type} basename={basename} filename={filename} selected={basename === selectedFile} {...itemProps}>
-          <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="2x" color={type === 'directory' ? 'yellow-4' : 'gray-5'} />
+          <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="2x" color={type === 'directory' ? 'yellow-4' : 'gray-4'} />
           <Spacer size="small" />
           <Text lineClamp={1} style={{ overflowWrap: 'anywhere' }}>{basename}</Text>
         </DisplayItem>
