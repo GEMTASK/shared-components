@@ -57,7 +57,9 @@ const Desktop = ({
   };
 
   const handlePointerDown = useCallback((event: React.PointerEvent) => {
-    // event.preventDefault();
+    if (event.target !== desktopElementRef.current) {
+      return;
+    }
 
     onWindowFocus?.('');
 
@@ -78,7 +80,7 @@ const Desktop = ({
       flex
       ref={desktopElementRef}
       style={style}
-      onPointerDownCapture={handlePointerDown}
+      onPointerDown={handlePointerDown}
     >
       {windows.map(({ id, title, element, rect }) => (
         <Window

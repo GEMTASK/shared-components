@@ -282,7 +282,7 @@ const Window = ({
     }
   }, []);
 
-  const handleWindowPointerDown = useCallback(() => {
+  const handleWindowPointerDown = useCallback((event: React.PointerEvent) => {
     onWindowFocus?.(id);
   }, []);
 
@@ -306,14 +306,20 @@ const Window = ({
       tabIndex={0}
       className={styles.Window + (focused ? ' ' + styles.focused : '')}
       {...props}
-      onPointerDown={handleWindowPointerDown}
+      onPointerDownCapture={handleWindowPointerDown}
     >
       <Sizer absolute style={{ inset: -15, touchAction: 'none' }} />
       <View flex style={{ overflow: 'hidden', borderRadius: 4 }}>
         <View fillColor="gray-3" className={styles.Titlebar} {...titleBarEvents}>
           <View absolute className={styles.Extender} />
           <View horizontal alignVertical="middle" style={{ height: 32, flexShrink: 0 }}>
-            <Button hover size="xsmall" icon="close" onPointerDown={handleCloseButtonPointerDown} onClick={handleCloseButtonClick} />
+            <Button
+              hover
+              size="xsmall"
+              icon="close"
+              onPointerDown={handleCloseButtonPointerDown}
+              onClick={handleCloseButtonClick}
+            />
             <Spacer flex size="small" />
             <Text fontWeight="bold" textColor="gray-7" textAlign="center" padding="small large" style={{ marginBottom: -1 }}>
               {title}
