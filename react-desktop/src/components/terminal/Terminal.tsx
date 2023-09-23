@@ -328,7 +328,7 @@ const Terminal = ({ ...props }: any) => {
   return (
     <Stack horizontal divider {...props} onPointerDown={handlePointerDown} onPointerUp={handlePointerUp}>
       <View flex>
-        <View horizontal padding="small large" fillColor="gray-1">
+        <View horizontal padding="small" fillColor="gray-1">
           <Button icon="trash-alt" onClick={() => setElementHistory([])} />
           <Spacer flex size="large" />
           <Button icon="table-columns" selected={isHistoryVisible} onClick={() => setIsHistoryVisible(isHistoryVisible => !isHistoryVisible)} />

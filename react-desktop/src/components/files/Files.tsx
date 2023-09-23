@@ -283,7 +283,7 @@ const Files = ({ ...props }: any) => {
         )}
         <View flex>
           <View>
-            <View horizontal padding="small large" fillColor="gray-1">
+            <View horizontal padding="small" fillColor="gray-1">
               <Button
                 hover
                 icon="table-columns"
