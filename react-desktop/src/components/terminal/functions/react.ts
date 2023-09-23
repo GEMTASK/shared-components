@@ -108,7 +108,7 @@ async function kopi_View(props: KopiTuple) {
       fillColor: fillColor?.value,
       padding: padding?.value,
       border: border?.value,
-      style: { gap: 16 }
+      // style: { gap: 16 }
     }, children);
   };
 }

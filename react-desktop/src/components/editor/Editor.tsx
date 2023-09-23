@@ -42,6 +42,13 @@ export const KopiLanguage = LRLanguage.define({
 const kopiLanguage = new LanguageSupport(KopiLanguage);
 
 const environment = {
+  String: kopi.KopiString,
+  Number: kopi.KopiNumber,
+  let: kopi.kopi_let,
+  loop: kopi.kopi_loop,
+  match: kopi.kopi_match,
+  print: (arg: any) => console.log(arg),
+  export: (arg: any) => arg,
   View: kopi_View,
   Text: kopi_Text,
   Svg: kopi_Svg,
@@ -54,7 +61,7 @@ const Editor = ({ args, ...props }: any) => {
   const [text, setText] = useState(args);
   const [value, setValue] = useState<React.ReactElement>();
 
-  const handleCodeMirrorChange = async (source: any) => {
+  const interpret = async (source: string) => {
     try {
       const value = await (await kopi.interpret(source, environment, () => 0))?.inspect();
 
@@ -72,13 +79,19 @@ const Editor = ({ args, ...props }: any) => {
     }
   };
 
+  const handleCodeMirrorChange = async (source: string) => {
+    interpret(source);
+  };
+
   useEffect(() => {
     (async () => {
-      const text = await (await fetch(`//webdav.mike-austin.com/${args}`)).text();
+      const source = await (await fetch(`//webdav.mike-austin.com/${args}`)).text();
 
-      if (typeof text === 'string') {
-        setText(text);
+      if (typeof source === 'string') {
+        setText(source);
       }
+
+      interpret(source);
     })();
   }, [args]);
 
