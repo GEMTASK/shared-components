@@ -6,11 +6,11 @@ import { Context, KopiValue } from 'kopi-language';
 import { Button, Text, View } from 'bare';
 
 class KopiElement extends KopiValue {
-  component: React.ComponentType;
+  component: React.ComponentType | string;
   props: any;
   children?: KopiArray;
 
-  constructor(component: React.ComponentType, props: any, children?: KopiArray) {
+  constructor(component: React.ComponentType | string, props: any, children?: KopiArray) {
     super();
 
     this.component = component;
@@ -143,6 +143,45 @@ async function kopi_Button(props: KopiTuple, context: Context) {
     title: title?.value,
   });
 }
+
+async function kopi_Circle(props: KopiTuple, context: Context) {
+  const [cx, cy, r] = await Promise.all([
+    (props as any).cx,
+    (props as any).cy,
+    (props as any).r
+  ]);
+
+  return new KopiElement('circle', {
+    cx: cx.value,
+    cy: cy.value,
+    r: r.value,
+  });
+}
+
+async function kopi_Svg(props: KopiTuple, context: Context) {
+  const [title, solid] = await Promise.all([
+    (props as any).title,
+    (props as any).solid
+  ]);
+
+  return (children: any) => {
+    return new KopiElement('svg', {
+      // solid: solid?.value,
+      // primary: true,
+      // title: title?.value,
+    }, children);
+  };
+}
+
+export {
+  kopi_element,
+  kopi_component,
+  kopi_View,
+  kopi_Text,
+  kopi_Button,
+  kopi_Svg,
+  kopi_Circle,
+};
 
 globalThis.environment = {
   ...(globalThis.environment || {}),

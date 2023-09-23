@@ -76,24 +76,25 @@ const Splitter = ({
     }
   }, []);
 
-  const childrenArray = React.Children.toArray(children);
+  const [firstChild, secondChild, ...childrenArray] = React.Children.toArray(children);
 
   return (
     <View {...props} style={{ ...style, minHeight: 0, scrollSnapType: 'x mandatory' }}>
-      {React.isValidElement(childrenArray[0]) && React.cloneElement(childrenArray[0] as React.ReactElement, {
+      {React.isValidElement(firstChild) && React.cloneElement(firstChild as React.ReactElement, {
         ref: elementRef,
         style: {
-          ...childrenArray[0].props.style,
+          ...firstChild.props.style,
           scrollSnapAlign: 'start'
         }
       })}
       <Handle onDrag={handleDrag} onDragFinish={handleDragFinish} />
-      {React.isValidElement(childrenArray[1]) && React.cloneElement(childrenArray[1] as React.ReactElement, {
+      {React.isValidElement(secondChild) && React.cloneElement(secondChild as React.ReactElement, {
         style: {
-          ...childrenArray[1].props.style,
+          ...secondChild.props.style,
           scrollSnapAlign: 'start'
         }
       })}
+      {childrenArray}
     </View>
   );
 };

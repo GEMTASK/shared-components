@@ -5,7 +5,12 @@ import { styleTags, tags as t } from "@lezer/highlight";
 
 import { parser } from './kopi-parser';
 
+import * as kopi from 'kopi-language';
+import { KopiValue } from 'kopi-language';
+
 import { Button, Divider, View, Splitter, Text } from 'bare';
+
+import { kopi_View, kopi_Text, kopi_Svg, kopi_Circle } from '../terminal/functions/react';
 
 export const KopiLanguage = LRLanguage.define({
   parser: parser.configure({
@@ -36,9 +41,36 @@ export const KopiLanguage = LRLanguage.define({
 
 const kopiLanguage = new LanguageSupport(KopiLanguage);
 
+const environment = {
+  View: kopi_View,
+  Text: kopi_Text,
+  Svg: kopi_Svg,
+  Circle: kopi_Circle,
+};
+
 const Editor = ({ args, ...props }: any) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false);
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
   const [text, setText] = useState(args);
+  const [value, setValue] = useState<React.ReactElement>();
+
+  const handleCodeMirrorChange = async (source: any) => {
+    try {
+      const value = await (await kopi.interpret(source, environment, () => 0))?.inspect();
+
+      if (typeof value === 'string') {
+        setValue(
+          <Text>
+            {value}
+          </Text>
+        );
+      } else if (value) {
+        setValue(value);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -53,7 +85,7 @@ const Editor = ({ args, ...props }: any) => {
   return (
     <View flex {...props}>
       <Splitter flex horizontal>
-        {isSidebarOpen && (
+        {isLeftSidebarOpen && (
           <View padding="small" style={{ width: 192 }}>
             <Text>Sidebar</Text>
           </View>
@@ -63,8 +95,8 @@ const Editor = ({ args, ...props }: any) => {
             <Button
               hover
               icon="table-columns"
-              selected={isSidebarOpen}
-              onClick={() => setIsSidebarOpen(isSidebarOpen => !isSidebarOpen)}
+              selected={isLeftSidebarOpen}
+              onClick={() => setIsLeftSidebarOpen(isLeftSidebarOpen => !isLeftSidebarOpen)}
             />
           </View>
           <Divider />
@@ -73,9 +105,14 @@ const Editor = ({ args, ...props }: any) => {
             height="100%"
             style={{ flex: 1, overflow: 'auto' }}
             extensions={[kopiLanguage]}
-          // onChange={onChange}
+            onChange={handleCodeMirrorChange}
           />
         </View>
+        {isRightSidebarOpen && (
+          <View style={{ width: 360 }}>
+            {value}
+          </View>
+        )}
       </Splitter>
     </View>
   );
