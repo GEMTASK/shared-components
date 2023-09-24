@@ -46,7 +46,7 @@ class PipeExpression extends ASTNode {
 }
 
 class OperatorExpression extends ASTNode {
-  readonly operator: '+' | '-' | '*' | '/' | '%';
+  readonly operator: string;
   readonly leftExpression: ASTNode;
   readonly rightExpression: ASTNode;
 

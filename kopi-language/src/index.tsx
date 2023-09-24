@@ -2,7 +2,7 @@
 
 import * as parser from './lib/parser.mjs';
 
-import { RawASTNode, ASTNode, ASTPatternNode, Environment, Bind } from './types.js';
+import { RawASTNode, ASTNode, ASTPatternNode, Environment, Bind, KopiValue } from './types.js';
 
 import * as astnodes from './astnodes.js';
 import * as visitors from './visitors.js';
@@ -179,7 +179,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
   }
 }
 
-async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
+async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind): Promise<KopiValue> {
   const context = { environment, evaluate, bind };
 
   switch (astNode.constructor) {
@@ -189,15 +189,34 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) 
       return (astNode as astnodes.NumericLiteral).value;
     case astnodes.StringLiteral:
       return (astNode as astnodes.StringLiteral).value;
+    case astnodes.OperatorExpression: {
+      const { environment, evaluate, bind } = context;
+
+      const [leftValue, rightValue] = await Promise.all([
+        evaluate((astNode as astnodes.OperatorExpression).leftExpression, environment, bind),
+        evaluate((astNode as astnodes.OperatorExpression).rightExpression, environment, bind),
+      ]);
+
+      if (leftValue instanceof KopiNumber && rightValue instanceof KopiNumber) {
+        switch ((astNode as astnodes.OperatorExpression).operator) {
+          case '+': return new KopiNumber(leftValue.value + rightValue.value);
+          case '-': return new KopiNumber(leftValue.value - rightValue.value);
+          case '*': return new KopiNumber(leftValue.value * rightValue.value);
+          case '/': return new KopiNumber(leftValue.value / rightValue.value);
+          case '%': return new KopiNumber(leftValue.value % rightValue.value);
+          case '^': return new KopiNumber(leftValue.value ** rightValue.value);
+        }
+      }
+
+      return leftValue.invoke((astNode as astnodes.OperatorExpression).operator, [rightValue, context]);
+    }
     default:
       if (astNode instanceof astnodes.Assignment) {
-        return visitors.Assignment(astNode, context);
+        return visitors.Assignment(astNode, context) as any;
       } else if (astNode instanceof astnodes.BlockExpression) {
         return visitors.BlockExpression(astNode, context);
       } else if (astNode instanceof astnodes.PipeExpression) {
         return visitors.PipeExpression(astNode, context);
-      } else if (astNode instanceof astnodes.OperatorExpression) {
-        return visitors.OperatorExpression(astNode, context);
       } else if (astNode instanceof astnodes.ConditionalExpression) {
         return visitors.ConditionalExpression(astNode, context);
       } else if (astNode instanceof astnodes.LogicalOrExpression) {

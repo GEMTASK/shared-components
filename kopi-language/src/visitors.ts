@@ -86,22 +86,6 @@ async function PipeExpression(
   return expressionValue.invoke(methodName, [argumentValue, context]);
 }
 
-async function OperatorExpression(
-  { operator, leftExpression, rightExpression }: astnodes.OperatorExpression,
-  context: Context
-): Promise<KopiValue> {
-  const { environment, evaluate, bind } = context;
-
-  const [leftValue, rightValue] = await Promise.all([
-    evaluate(leftExpression, environment, bind),
-    evaluate(rightExpression, environment, bind),
-  ]);
-
-  return leftValue.invoke(operator, [rightValue, context]);
-
-  // throw new Error(`"${await leftValue.inspect()}" of type ${leftValue.constructor.name} doesn't have an operator method "${operator}".`);
-}
-
 async function ConditionalExpression(
   { expression, consequent, alternate }: astnodes.ConditionalExpression,
   context: Context
@@ -306,7 +290,6 @@ export {
   //
   BlockExpression,
   PipeExpression,
-  OperatorExpression,
   ConditionalExpression,
   LogicalOrExpression,
   LogicalAndExpression,
