@@ -9,7 +9,7 @@ import * as visitors from './visitors.js';
 
 import { inspect } from './utils.js';
 
-import { KopiNumber } from './index.js';
+import { KopiBoolean, KopiNumber, KopiString } from './index.js';
 
 function transform(rawASTNode: RawASTNode): ASTNode {
   switch (rawASTNode.type) {
@@ -138,7 +138,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
     //
     case 'BooleanLiteral':
       return new astnodes.BooleanLiteral({
-        value: rawASTNode.value,
+        value: new KopiBoolean(rawASTNode.value),
         location: rawASTNode.location,
       } as astnodes.BooleanLiteral);
     case 'NumericLiteral':
@@ -148,7 +148,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       } as astnodes.NumericLiteral);
     case 'StringLiteral':
       return new astnodes.StringLiteral({
-        value: rawASTNode.value,
+        value: new KopiString(rawASTNode.value),
         location: rawASTNode.location,
       } as astnodes.StringLiteral);
     case 'ArrayLiteral':
@@ -183,8 +183,12 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) 
   const context = { environment, evaluate, bind };
 
   switch (astNode.constructor) {
+    case astnodes.BooleanLiteral:
+      return (astNode as astnodes.BooleanLiteral).value;
     case astnodes.NumericLiteral:
       return (astNode as astnodes.NumericLiteral).value;
+    case astnodes.StringLiteral:
+      return (astNode as astnodes.StringLiteral).value;
     default:
       if (astNode instanceof astnodes.Assignment) {
         return visitors.Assignment(astNode, context);
@@ -212,12 +216,6 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) 
         return visitors.FunctionExpression(astNode, context);
       } else if (astNode instanceof astnodes.TupleExpression) {
         return visitors.TupleExpression(astNode, context);
-      } else if (astNode instanceof astnodes.BooleanLiteral) {
-        return visitors.BooleanLiteral(astNode);
-      } else if (astNode instanceof astnodes.NumericLiteral) {
-        return visitors.NumericLiteral(astNode);
-      } else if (astNode instanceof astnodes.StringLiteral) {
-        return visitors.StringLiteral(astNode);
       } else if (astNode instanceof astnodes.ArrayLiteral) {
         return visitors.ArrayLiteral(astNode, context);
       } else if (astNode instanceof astnodes.DictLiteral) {

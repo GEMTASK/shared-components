@@ -252,24 +252,6 @@ async function TupleExpression(
 // Literals
 //
 
-async function BooleanLiteral(
-  { value }: astnodes.BooleanLiteral
-): Promise<KopiValue> {
-  return new KopiBoolean(value);
-}
-
-async function NumericLiteral(
-  { value }: astnodes.NumericLiteral
-): Promise<KopiValue> {
-  return value;
-}
-
-async function StringLiteral(
-  { value }: astnodes.StringLiteral,
-): Promise<KopiValue> {
-  return new KopiString(value);
-}
-
 async function ArrayLiteral(
   { elementExpressions }: astnodes.ArrayLiteral,
   context: Context,
@@ -335,9 +317,6 @@ export {
   FunctionExpression,
   TupleExpression,
   //
-  BooleanLiteral,
-  NumericLiteral,
-  StringLiteral,
   ArrayLiteral,
   DictLiteral,
   AstLiteral,

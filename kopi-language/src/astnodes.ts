@@ -473,7 +473,7 @@ class IdentifierPattern extends ASTPatternNode {
 //
 
 class BooleanLiteral extends ASTNode {
-  readonly value: boolean;
+  readonly value: KopiBoolean;
 
   constructor({ value, location }: BooleanLiteral) {
     super(location);
@@ -482,7 +482,7 @@ class BooleanLiteral extends ASTNode {
   }
 
   async inspect() {
-    return `${this.value ? 'true' : 'false'}`;
+    return `${this.value.value ? 'true' : 'false'}`;
   }
 }
 
@@ -496,12 +496,12 @@ class NumericLiteral extends ASTNode {
   }
 
   async inspect() {
-    return `${this.value}`;
+    return `${this.value.value}`;
   }
 }
 
 class StringLiteral extends ASTNode {
-  readonly value: string;
+  readonly value: KopiString;
 
   constructor({ value, location }: StringLiteral) {
     super(location);
@@ -510,7 +510,7 @@ class StringLiteral extends ASTNode {
   }
 
   async inspect() {
-    return `"${this.value}"`;
+    return `"${this.value.value}"`;
   }
 }
 
