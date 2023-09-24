@@ -487,7 +487,7 @@ class BooleanLiteral extends ASTNode {
 }
 
 class NumericLiteral extends ASTNode {
-  readonly value: number;
+  readonly value: KopiNumber;
 
   constructor({ value, location }: NumericLiteral) {
     super(location);

@@ -261,7 +261,7 @@ async function BooleanLiteral(
 async function NumericLiteral(
   { value }: astnodes.NumericLiteral
 ): Promise<KopiValue> {
-  return new KopiNumber(value);
+  return value;
 }
 
 async function StringLiteral(

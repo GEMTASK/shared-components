@@ -9,6 +9,8 @@ import * as visitors from './visitors.js';
 
 import { inspect } from './utils.js';
 
+import { KopiNumber } from './index.js';
+
 function transform(rawASTNode: RawASTNode): ASTNode {
   switch (rawASTNode.type) {
     case 'Assignment':
@@ -141,7 +143,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       } as astnodes.BooleanLiteral);
     case 'NumericLiteral':
       return new astnodes.NumericLiteral({
-        value: rawASTNode.value,
+        value: new KopiNumber(rawASTNode.value),
         location: rawASTNode.location,
       } as astnodes.NumericLiteral);
     case 'StringLiteral':
@@ -177,53 +179,58 @@ function transform(rawASTNode: RawASTNode): ASTNode {
   }
 }
 
-function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
+async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind) {
   const context = { environment, evaluate, bind };
 
-  if (astNode instanceof astnodes.Assignment) {
-    return visitors.Assignment(astNode, context);
-  } else if (astNode instanceof astnodes.BlockExpression) {
-    return visitors.BlockExpression(astNode, context);
-  } else if (astNode instanceof astnodes.PipeExpression) {
-    return visitors.PipeExpression(astNode, context);
-  } else if (astNode instanceof astnodes.OperatorExpression) {
-    return visitors.OperatorExpression(astNode, context);
-  } else if (astNode instanceof astnodes.ConditionalExpression) {
-    return visitors.ConditionalExpression(astNode, context);
-  } else if (astNode instanceof astnodes.LogicalOrExpression) {
-    return visitors.LogicalOrExpression(astNode, context);
-  } else if (astNode instanceof astnodes.LogicalAndExpression) {
-    return visitors.LogicalAndExpression(astNode, context);
-  } else if (astNode instanceof astnodes.ApplyExpression) {
-    return visitors.ApplyExpression(astNode, context);
-  } else if (astNode instanceof astnodes.RangeExpression) {
-    return visitors.RangeExpression(astNode, context);
-  } else if (astNode instanceof astnodes.MemberExpression) {
-    return visitors.MemberExpression(astNode, context);
-  } else if (astNode instanceof astnodes.UnaryExpression) {
-    return visitors.UnaryExpression(astNode, context);
-  } else if (astNode instanceof astnodes.FunctionExpression) {
-    return visitors.FunctionExpression(astNode, context);
-  } else if (astNode instanceof astnodes.TupleExpression) {
-    return visitors.TupleExpression(astNode, context);
-  } else if (astNode instanceof astnodes.BooleanLiteral) {
-    return visitors.BooleanLiteral(astNode);
-  } else if (astNode instanceof astnodes.NumericLiteral) {
-    return visitors.NumericLiteral(astNode);
-  } else if (astNode instanceof astnodes.StringLiteral) {
-    return visitors.StringLiteral(astNode);
-  } else if (astNode instanceof astnodes.ArrayLiteral) {
-    return visitors.ArrayLiteral(astNode, context);
-  } else if (astNode instanceof astnodes.DictLiteral) {
-    return visitors.DictLiteral(astNode, context);
-  } else if (astNode instanceof astnodes.AstLiteral) {
-    return astNode.value;
-  } else if (astNode instanceof astnodes.Identifier) {
-    return visitors.Identifier(astNode, context);
-  } else {
-    console.warn('No visitor found for', astNode);
+  switch (astNode.constructor) {
+    case astnodes.NumericLiteral:
+      return (astNode as astnodes.NumericLiteral).value;
+    default:
+      if (astNode instanceof astnodes.Assignment) {
+        return visitors.Assignment(astNode, context);
+      } else if (astNode instanceof astnodes.BlockExpression) {
+        return visitors.BlockExpression(astNode, context);
+      } else if (astNode instanceof astnodes.PipeExpression) {
+        return visitors.PipeExpression(astNode, context);
+      } else if (astNode instanceof astnodes.OperatorExpression) {
+        return visitors.OperatorExpression(astNode, context);
+      } else if (astNode instanceof astnodes.ConditionalExpression) {
+        return visitors.ConditionalExpression(astNode, context);
+      } else if (astNode instanceof astnodes.LogicalOrExpression) {
+        return visitors.LogicalOrExpression(astNode, context);
+      } else if (astNode instanceof astnodes.LogicalAndExpression) {
+        return visitors.LogicalAndExpression(astNode, context);
+      } else if (astNode instanceof astnodes.ApplyExpression) {
+        return visitors.ApplyExpression(astNode, context);
+      } else if (astNode instanceof astnodes.RangeExpression) {
+        return visitors.RangeExpression(astNode, context);
+      } else if (astNode instanceof astnodes.MemberExpression) {
+        return visitors.MemberExpression(astNode, context);
+      } else if (astNode instanceof astnodes.UnaryExpression) {
+        return visitors.UnaryExpression(astNode, context);
+      } else if (astNode instanceof astnodes.FunctionExpression) {
+        return visitors.FunctionExpression(astNode, context);
+      } else if (astNode instanceof astnodes.TupleExpression) {
+        return visitors.TupleExpression(astNode, context);
+      } else if (astNode instanceof astnodes.BooleanLiteral) {
+        return visitors.BooleanLiteral(astNode);
+      } else if (astNode instanceof astnodes.NumericLiteral) {
+        return visitors.NumericLiteral(astNode);
+      } else if (astNode instanceof astnodes.StringLiteral) {
+        return visitors.StringLiteral(astNode);
+      } else if (astNode instanceof astnodes.ArrayLiteral) {
+        return visitors.ArrayLiteral(astNode, context);
+      } else if (astNode instanceof astnodes.DictLiteral) {
+        return visitors.DictLiteral(astNode, context);
+      } else if (astNode instanceof astnodes.AstLiteral) {
+        return astNode.value;
+      } else if (astNode instanceof astnodes.Identifier) {
+        return visitors.Identifier(astNode, context);
+      } else {
+        console.warn('No visitor found for', astNode);
 
-    throw new Error(`No visitor found for ${astNode.constructor.name}.`);
+        throw new Error(`No visitor found for ${astNode.constructor.name}.`);
+      }
   }
 }
 
