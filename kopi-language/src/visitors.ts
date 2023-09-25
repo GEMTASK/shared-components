@@ -94,7 +94,7 @@ async function ApplyExpression(
     ]);
   }
 
-  throw new Error(`No KopiApplicative.apply() method found for ${func.constructor.name}.`);
+  throw new ReferenceError(`No 'apply' method found for ${func.constructor.name}.`);
 }
 
 async function RangeExpression(
