@@ -210,19 +210,65 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
 
       return leftValue.invoke((astNode as astnodes.OperatorExpression).operator, [rightValue, context]);
     }
+    case astnodes.Assignment: {
+      const { environment, evaluate, bind } = context;
+
+      const expressionValue = await evaluate((astNode as astnodes.Assignment).expression, environment, bind);
+      const patternMatches = await (astNode as astnodes.Assignment).pattern.match(expressionValue, context);
+
+      if (patternMatches) {
+        Object.entries(patternMatches).forEach(([name, value]) => {
+          if (typeof value === 'function') {
+            Object.defineProperty(value, 'name', {
+              value: name
+            });
+          }
+        });
+
+        bind(patternMatches);
+      }
+
+      return undefined as any;
+    }
+    case astnodes.LogicalOrExpression: {
+      const { environment, evaluate, bind } = context;
+
+      const leftValue = await evaluate((astNode as astnodes.LogicalOrExpression).leftExpression, environment, bind);
+
+      if ((leftValue as KopiBoolean).value) {
+        return KopiBoolean.true;
+      }
+
+      const rightValue = await evaluate((astNode as astnodes.LogicalOrExpression).rightExpression, environment, bind);
+
+      if ((rightValue as KopiBoolean).value) {
+        return KopiBoolean.true;
+      }
+
+      return KopiBoolean.false;
+    }
+    case astnodes.LogicalAndExpression: {
+      const { environment, evaluate, bind } = context;
+
+      const leftValue = await evaluate((astNode as astnodes.LogicalAndExpression).leftExpression, environment, bind);
+
+      if ((leftValue as KopiBoolean).value) {
+        const rightValue = await evaluate((astNode as astnodes.LogicalAndExpression).rightExpression, environment, bind);
+
+        if ((rightValue as KopiBoolean).value) {
+          return KopiBoolean.true;
+        }
+      }
+
+      return KopiBoolean.false;
+    }
     default:
-      if (astNode instanceof astnodes.Assignment) {
-        return visitors.Assignment(astNode, context) as any;
-      } else if (astNode instanceof astnodes.BlockExpression) {
+      if (astNode instanceof astnodes.BlockExpression) {
         return visitors.BlockExpression(astNode, context);
       } else if (astNode instanceof astnodes.PipeExpression) {
         return visitors.PipeExpression(astNode, context);
       } else if (astNode instanceof astnodes.ConditionalExpression) {
         return visitors.ConditionalExpression(astNode, context);
-      } else if (astNode instanceof astnodes.LogicalOrExpression) {
-        return visitors.LogicalOrExpression(astNode, context);
-      } else if (astNode instanceof astnodes.LogicalAndExpression) {
-        return visitors.LogicalAndExpression(astNode, context);
       } else if (astNode instanceof astnodes.ApplyExpression) {
         return visitors.ApplyExpression(astNode, context);
       } else if (astNode instanceof astnodes.RangeExpression) {

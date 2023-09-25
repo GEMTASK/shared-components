@@ -18,32 +18,6 @@ interface Visitor {
 }
 
 //
-// Statements
-//
-
-async function Assignment(
-  { pattern, expression }: astnodes.Assignment,
-  context: Context,
-) {
-  const { environment, evaluate, bind } = context;
-
-  const expressionValue = await evaluate(expression, environment, bind);
-  const patternMatches = await pattern.match(expressionValue, context);
-
-  if (patternMatches) {
-    Object.entries(patternMatches).forEach(([name, value]) => {
-      if (typeof value === 'function') {
-        Object.defineProperty(value, 'name', {
-          value: name
-        });
-      }
-    });
-
-    bind(patternMatches);
-  }
-}
-
-//
 // Expressions
 //
 
@@ -103,46 +77,6 @@ async function ConditionalExpression(
   }
 
   throw new TypeError(`Conditional expression must be of type Boolean.`);
-}
-
-async function LogicalOrExpression(
-  { leftExpression, rightExpression }: astnodes.LogicalOrExpression,
-  context: Context
-) {
-  const { environment, evaluate, bind } = context;
-
-  const leftValue = await evaluate(leftExpression, environment, bind);
-
-  if ((leftValue as KopiBoolean).value) {
-    return KopiBoolean.true;
-  }
-
-  const rightValue = await evaluate(rightExpression, environment, bind);
-
-  if ((rightValue as KopiBoolean).value) {
-    return KopiBoolean.true;
-  }
-
-  return KopiBoolean.false;
-}
-
-async function LogicalAndExpression(
-  { leftExpression, rightExpression }: astnodes.LogicalAndExpression,
-  context: Context
-) {
-  const { environment, evaluate, bind } = context;
-
-  const leftValue = await evaluate(leftExpression, environment, bind);
-
-  if ((leftValue as KopiBoolean).value) {
-    const rightValue = await evaluate(rightExpression, environment, bind);
-
-    if ((rightValue as KopiBoolean).value) {
-      return KopiBoolean.true;
-    }
-  }
-
-  return KopiBoolean.false;
 }
 
 async function ApplyExpression(
@@ -286,13 +220,10 @@ async function Identifier(
 
 export {
   type Visitor,
-  Assignment,
   //
   BlockExpression,
   PipeExpression,
   ConditionalExpression,
-  LogicalOrExpression,
-  LogicalAndExpression,
   ApplyExpression,
   RangeExpression,
   MemberExpression,
