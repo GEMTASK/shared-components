@@ -9,7 +9,7 @@ import * as visitors from './visitors.js';
 
 import { inspect } from './utils.js';
 
-import { KopiBoolean, KopiNumber, KopiString } from './index.js';
+import { KopiBoolean, KopiNumber, KopiString, KopiArray, KopiDict, KopiTuple } from './index.js';
 
 function transform(rawASTNode: RawASTNode): ASTNode {
   switch (rawASTNode.type) {
@@ -192,8 +192,6 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
     case astnodes.AstLiteral:
       return (astNode as astnodes.AstLiteral).value;
     case astnodes.Identifier: {
-      const { environment } = context;
-
       const value = environment[(astNode as astnodes.Identifier).name];
 
       if ((astNode as astnodes.Identifier).name in environment) {
@@ -203,8 +201,6 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
       throw new ReferenceError(`Variable "${(astNode as astnodes.Identifier).name}" not found in current scope.`);
     }
     case astnodes.OperatorExpression: {
-      const { environment, evaluate, bind } = context;
-
       const [leftValue, rightValue] = await Promise.all([
         evaluate((astNode as astnodes.OperatorExpression).leftExpression, environment, bind),
         evaluate((astNode as astnodes.OperatorExpression).rightExpression, environment, bind),
@@ -224,8 +220,6 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
       return leftValue.invoke((astNode as astnodes.OperatorExpression).operator, [rightValue, context]);
     }
     case astnodes.Assignment: {
-      const { environment, evaluate, bind } = context;
-
       const expressionValue = await evaluate((astNode as astnodes.Assignment).expression, environment, bind);
       const patternMatches = await (astNode as astnodes.Assignment).pattern.match(expressionValue, context);
 
@@ -244,8 +238,6 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
       return undefined as any;
     }
     case astnodes.LogicalOrExpression: {
-      const { environment, evaluate, bind } = context;
-
       const leftValue = await evaluate((astNode as astnodes.LogicalOrExpression).leftExpression, environment, bind);
 
       if ((leftValue as KopiBoolean).value) {
@@ -261,8 +253,6 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
       return KopiBoolean.false;
     }
     case astnodes.LogicalAndExpression: {
-      const { environment, evaluate, bind } = context;
-
       const leftValue = await evaluate((astNode as astnodes.LogicalAndExpression).leftExpression, environment, bind);
 
       if ((leftValue as KopiBoolean).value) {
@@ -274,6 +264,21 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
       }
 
       return KopiBoolean.false;
+    }
+    case astnodes.ArrayLiteral: {
+      return new KopiArray(
+        (astNode as astnodes.ArrayLiteral).elementExpressions.map((expression) => evaluate(expression, environment, bind))
+      );
+    }
+    case astnodes.DictLiteral: {
+      return KopiDict.fromIterable(
+        new KopiArray(
+          (astNode as astnodes.DictLiteral).entryExpressions.map(([key, expression]) => new KopiTuple([
+            evaluate(key, environment, bind),
+            evaluate(expression, environment, bind)
+          ]))
+        ) as AsyncIterable<KopiTuple>
+      );
     }
     default:
       if (astNode instanceof astnodes.BlockExpression) {
@@ -294,10 +299,6 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
         return visitors.FunctionExpression(astNode, context);
       } else if (astNode instanceof astnodes.TupleExpression) {
         return visitors.TupleExpression(astNode, context);
-      } else if (astNode instanceof astnodes.ArrayLiteral) {
-        return visitors.ArrayLiteral(astNode, context);
-      } else if (astNode instanceof astnodes.DictLiteral) {
-        return visitors.DictLiteral(astNode, context);
       } else {
         console.warn('No visitor found for', astNode);
 

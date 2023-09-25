@@ -174,37 +174,6 @@ async function TupleExpression(
   );
 }
 
-//
-// Literals
-//
-
-async function ArrayLiteral(
-  { elementExpressions }: astnodes.ArrayLiteral,
-  context: Context,
-): Promise<KopiValue> {
-  const { environment, evaluate, bind } = context;
-
-  return new KopiArray(
-    elementExpressions.map((expression) => evaluate(expression, environment, bind))
-  );
-}
-
-async function DictLiteral(
-  { entryExpressions }: astnodes.DictLiteral,
-  context: Context,
-): Promise<KopiValue> {
-  const { environment, evaluate, bind } = context;
-
-  return KopiDict.fromIterable(
-    new KopiArray(
-      entryExpressions.map(([key, expression]) => new KopiTuple([
-        evaluate(key, environment, bind),
-        evaluate(expression, environment, bind)
-      ]))
-    ) as AsyncIterable<KopiTuple>
-  );
-}
-
 export {
   type Visitor,
   //
@@ -217,7 +186,4 @@ export {
   UnaryExpression,
   FunctionExpression,
   TupleExpression,
-  //
-  ArrayLiteral,
-  DictLiteral,
 };
