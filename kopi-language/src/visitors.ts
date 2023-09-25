@@ -117,7 +117,15 @@ async function MemberExpression(
 
   const expressionValue = await evaluate(expression, environment, bind);
 
-  if (expressionValue.hasOwnProperty(member)) {
+  if (typeof member === 'number') {
+    const value = expressionValue instanceof KopiTuple
+      ? await expressionValue.fields[member]
+      : member === 0 ? expressionValue : undefined;
+
+    if (value !== undefined) {
+      return value;
+    }
+  } else {
     const value = await (expressionValue as any)[member];
 
     if (value !== undefined) {

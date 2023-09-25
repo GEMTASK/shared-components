@@ -32,6 +32,7 @@ class KopiEnv {
 }
 
 globalThis.environment = {
+  ...(globalThis.environment || {}),
   PI: new KopiNumber(Math.PI),
   E: new KopiNumber(Math.E),
   //

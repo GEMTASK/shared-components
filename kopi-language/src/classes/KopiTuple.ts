@@ -55,7 +55,6 @@ class KopiTuple extends KopiValue {
     this._fieldNames = fieldNames;
 
     fields.forEach((field, index) => {
-      this[index] = field;
       this[(this._fieldNames as any)[index]] = field;
     });
 

@@ -18,10 +18,6 @@ abstract class KopiValue {
   //   return `${this}`;
   // }
 
-  constructor() {
-    (this as any)[0] = this;
-  }
-
   async toString() {
     return new KopiString(Object.prototype.toString.apply(this));
   }
