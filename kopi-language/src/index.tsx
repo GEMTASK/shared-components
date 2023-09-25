@@ -189,6 +189,19 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
       return (astNode as astnodes.NumericLiteral).value;
     case astnodes.StringLiteral:
       return (astNode as astnodes.StringLiteral).value;
+    case astnodes.AstLiteral:
+      return (astNode as astnodes.AstLiteral).value;
+    case astnodes.Identifier: {
+      const { environment } = context;
+
+      const value = environment[(astNode as astnodes.Identifier).name];
+
+      if ((astNode as astnodes.Identifier).name in environment) {
+        return value;
+      }
+
+      throw new ReferenceError(`Variable "${(astNode as astnodes.Identifier).name}" not found in current scope.`);
+    }
     case astnodes.OperatorExpression: {
       const { environment, evaluate, bind } = context;
 
@@ -285,10 +298,6 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
         return visitors.ArrayLiteral(astNode, context);
       } else if (astNode instanceof astnodes.DictLiteral) {
         return visitors.DictLiteral(astNode, context);
-      } else if (astNode instanceof astnodes.AstLiteral) {
-        return astNode.value;
-      } else if (astNode instanceof astnodes.Identifier) {
-        return visitors.Identifier(astNode, context);
       } else {
         console.warn('No visitor found for', astNode);
 

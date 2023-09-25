@@ -197,27 +197,6 @@ async function DictLiteral(
   );
 }
 
-async function AstLiteral(
-  { value }: astnodes.AstLiteral
-): Promise<KopiValue> {
-  return new KopiAstLiteral(value);
-}
-
-async function Identifier(
-  { name }: astnodes.Identifier,
-  context: Context,
-): Promise<KopiValue> {
-  const { environment } = context;
-
-  const value = environment[name];
-
-  if (name in environment) {
-    return value;
-  }
-
-  throw new ReferenceError(`Variable "${name}" not found in current scope.`);
-}
-
 export {
   type Visitor,
   //
@@ -233,6 +212,4 @@ export {
   //
   ArrayLiteral,
   DictLiteral,
-  AstLiteral,
-  Identifier,
 };
