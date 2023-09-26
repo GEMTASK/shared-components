@@ -39,7 +39,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
-    "lezer": "lezer-generator src/components/editor/kopi.grammar -o src/components/editor/kopi-parser.js",
+    "lezer": "lezer-generator src/components/editor/components//kopi.grammar -o src/components/editor/components/kopi-parser.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -74,7 +74,7 @@ const FileExtension = {
   'txt': Applications.editor,
   'md': Applications.markdown,
   'js': Applications.editor,
-  'kopi': Applications.editor,
+  'kopi': Applications.develop,
   'mp3': Applications.music,
   'jpg': Applications.media,
 } as const;

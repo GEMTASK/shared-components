@@ -5,6 +5,7 @@ import Clock from './components/clock';
 import Calculator from './components/calculator';
 import Notes from './components/notes';
 import Editor from './components/editor';
+import Develop from './components/develop';
 import Music from './components/music';
 import Browser from './components/browser';
 import Files from './components/files';
@@ -35,6 +36,9 @@ const Applications = {
   },
   'editor': {
     icon: 'file', title: 'Editor', client: <Editor />, rect: { width: 800, height: 1024 }
+  },
+  'develop': {
+    icon: 'file', title: 'Develop', client: <Develop />, rect: { width: 1440, height: 1024 }
   },
   'music': {
     icon: 'music', title: 'Music', client: <Music />, rect: { width: 400, height: 400 }

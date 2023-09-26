@@ -94,6 +94,9 @@ const Splitter = ({
           scrollSnapAlign: 'start'
         }
       })}
+      {childrenArray.length > 0 && (
+        <Handle onDrag={handleDrag} onDragFinish={handleDragFinish} />
+      )}
       {childrenArray}
     </View>
   );
