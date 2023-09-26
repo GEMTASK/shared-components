@@ -88,10 +88,9 @@ async function ApplyExpression(
   const func = await evaluate(expression, environment, bind);
 
   if ('apply' in func && typeof func.apply === 'function') {
-    return func.apply(undefined, [
-      await evaluate(argumentExpression, environment, bind),
-      context
-    ]);
+    const arg = await evaluate(argumentExpression, environment, bind);
+
+    return func.apply(undefined, [arg, context]);
   }
 
   throw new ReferenceError(`No 'apply' method found for ${func.constructor.name}.`);
