@@ -1,11 +1,24 @@
-View () [
-  Text (
-    padding: "large"
-    fillColor: "green-1"
-  ) "Hello"
-  Svg () [
-    Circle (cx: 50, cy: 50, r: 10)
-    Circle (cx: 100, cy: 50, r: 10)
-    Circle (cx: 75, cy: 80, r: 10)
-  ]
-]
+Bounce = component (setState) => {
+  (angle = 0) => {
+    requestAnimationFrame(() => {
+      setState (angle + 0.05)
+    })
+
+    (x, y) = (
+      'cos angle * 25 + 52
+      'sin angle * 25 + 52
+    )
+
+    View () [
+      Text (
+        padding: "large"
+        fillColor: "green-1"
+      ) "Round and round..."
+      Svg () [
+        Circle (cx: x, cy: y, r: 10)
+      ]
+    ]
+  }
+}
+
+Bounce () []

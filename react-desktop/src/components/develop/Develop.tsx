@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import * as kopi from 'kopi-language';
 
-import { kopi_View, kopi_Text, kopi_Svg, kopi_Circle } from '../terminal/functions/react';
+import { kopi_component, kopi_element, kopi_View, kopi_Text, kopi_Button, kopi_Svg, kopi_Circle, kopi_requestAnimationFrame } from '../terminal/functions/react';
 
 import { View, Splitter, Text, Button, Divider } from 'bare';
 
@@ -16,8 +16,12 @@ const environment = {
   match: kopi.kopi_match,
   print: (arg: any) => console.log(arg),
   export: (arg: any) => arg,
+  component: kopi_component,
+  element: kopi_element,
+  requestAnimationFrame: kopi_requestAnimationFrame,
   View: kopi_View,
   Text: kopi_Text,
+  Button: kopi_Button,
   Svg: kopi_Svg,
   Circle: kopi_Circle,
 };

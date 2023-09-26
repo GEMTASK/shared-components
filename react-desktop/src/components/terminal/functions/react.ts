@@ -46,7 +46,7 @@ class KopiElement extends KopiValue {
 }
 
 const reducer = (state: any, action: any) => {
-  console.log(action.payload);
+  // console.log(action.payload);
   // return ({ ...state, ...action.payload });
   return action.payload;
 };
@@ -160,7 +160,7 @@ async function kopi_Circle(props: KopiTuple, context: Context) {
 
 async function kopi_Svg(props: KopiTuple, context: Context) {
   const [title, solid] = await Promise.all([
-    (props as any).title,
+    (props as any).onAnimationFrame,
     (props as any).solid
   ]);
 
@@ -173,9 +173,16 @@ async function kopi_Svg(props: KopiTuple, context: Context) {
   };
 }
 
+async function kopi_requestAnimationFrame(func: KopiFunction, context: Context) {
+  window.requestAnimationFrame(() => {
+    func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+  });
+}
+
 export {
   kopi_element,
   kopi_component,
+  kopi_requestAnimationFrame,
   kopi_View,
   kopi_Text,
   kopi_Button,
