@@ -218,7 +218,7 @@ const interpret = async (
       const value = await kopi.interpret(source, { ...globalThis.environment, print: kopi_print, import: kopi_import }, bind);
 
       if (value) {
-        const element = await value?.inspect();
+        const element = await value.inspect();
 
         if (typeof element === 'string') {
           resolve(

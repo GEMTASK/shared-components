@@ -67,7 +67,7 @@ const Editor = ({ args, ...props }: any) => {
 
       if (typeof value === 'string') {
         setValue(
-          <Text>
+          <Text padding="large">
             {value}
           </Text>
         );
@@ -75,7 +75,11 @@ const Editor = ({ args, ...props }: any) => {
         setValue(value);
       }
     } catch (error) {
-      console.error(error);
+      setValue(
+        <Text padding="large" fillColor="red-1">
+          {(error as Error).toString()}
+        </Text>
+      );
     }
   };
 
