@@ -18,6 +18,7 @@ import Files from './components/files';
 import Terminal from './components/terminal';
 import Preferences from './components/preferences';
 import Eyes from './components/eyes';
+import Todos from './components/todos';
 
 import styles from './App.module.css';
 
@@ -49,7 +50,7 @@ const initialState = [
   },
   {
     id: uuidv4(), icon: 'folder-open', title: 'Files', element: <Files />, rect: {
-      x: 15, y: 360, width: 675, height: 540,
+      x: 15, y: 360, width: 675, height: 535,
     }
   },
   {
@@ -58,8 +59,13 @@ const initialState = [
     }
   },
   {
+    id: uuidv4(), icon: 'list', title: 'Todos', element: <Todos />, rect: {
+      x: 705, y: 540, width: 255, height: 325 + 30,
+    }
+  },
+  {
     id: uuidv4(), icon: 'terminal', title: 'Terminal', element: <Terminal />, rect: {
-      x: 975, y: 360, width: 690, height: 540,
+      x: 975, y: 360, width: 690, height: 535,
     }
   },
 ];
