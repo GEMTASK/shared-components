@@ -2,7 +2,8 @@
 export const
   LineComment = 1,
   Program = 2,
-  Identifier = 3,
-  Number = 4,
-  String = 5,
-  Boolean = 6
+  TypeName = 3,
+  Identifier = 4,
+  Number = 5,
+  String = 6,
+  Boolean = 7

@@ -23,23 +23,24 @@ const myTheme = createTheme({
     gutterForeground: '#adb5bd',
   },
   styles: [
-
     { tag: t.comment, color: '#adb5bd' },
-    // { tag: t.variableName, color: '#868e96', textShadow: '0 0 0 #868e96' },
-    // { tag: t.typeName, color: 'red' },
+    // { tag: t.variableName, color: 'red' },
+    { tag: t.typeName, color: '#495057', fontWeight: 600 },
+    // { tag: t.typeName, color: '#495057', textShadow: '1px 0 0 #868e96' },
     { tag: t.string, color: '#339af0' },
     { tag: t.number, color: '#339af0' },
-    // { tag: t.bool, color: '#5c6166' },
+    { tag: t.bool, color: '#339af0' },
     // { tag: t.null, color: '#5c6166' },
     { tag: t.keyword, color: 'red' },
     // { tag: t.operator, color: '#5c6166' },
     // { tag: t.definition(t.typeName), color: '#5c6166' },
-    { tag: t.typeName, color: '#5c6166' },
     // { tag: t.angleBracket, color: '#5c6166' },
     // { tag: t.tagName, color: '#5c6166' },
     // { tag: t.attributeName, color: '#5c6166' },
-    { tag: t.brace, color: 'red' },
+    { tag: t.brace, color: '#adb5bd' },
     { tag: t.bracket, color: '#adb5bd' }, // Parenthesis
+    { tag: t.paren, color: '#adb5bd' }, // Parenthesis
+    { tag: t.squareBracket, color: '#adb5bd' }
   ],
 });
 
@@ -47,12 +48,13 @@ export const KopiLanguage = LRLanguage.define({
   parser: parser.configure({
     props: [
       indentNodeProp.add({
-        Application: delimitedIndent({ closing: ")", align: false })
+        Perens: delimitedIndent({ closing: ")", align: false }),
+        Block: delimitedIndent({ closing: "}", align: false }),
+        Array: delimitedIndent({ closing: "]", align: false })
       }),
       styleTags({
-        FieldName: t.keyword,
-        TypeName: t.typeName,
         Identifier: t.variableName,
+        TypeName: t.typeName,
         Number: t.number,
         Boolean: t.bool,
         String: t.string,

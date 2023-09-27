@@ -3,19 +3,23 @@
 @skip { space | LineComment }
 
 expression {
+  TypeName |
   Identifier |
   Number |
   String |
   Boolean |
-  Application { "(" expression* ")" }
+  Parens { "(" expression* ")" } |
+  Block { "{" expression* "}" } |
+  Array { "[" expression* "]" }
 }
 
 @tokens {
   @precedence {
-    Boolean, Number, Identifier
+    Boolean, Number, TypeName, Identifier
   }
 
-  Identifier { $[A-Z] $[_a-zA-Z0-9]* }
+  TypeName { $[A-Z] $[_a-zA-Z0-9]* }
+  Identifier { $[_a-zA-Z0-9]+ }
   Number { $[0-9]+ }
   String { '"' (!["\\] | "\\" _)* '"' }
   Boolean { "true" | "false" }
