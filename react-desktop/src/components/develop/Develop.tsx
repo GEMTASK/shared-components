@@ -8,9 +8,31 @@ import { View, Splitter, Text, Button, Divider } from 'bare';
 
 import TextEdit from '../editor/components/TextEdit';
 
-const environment = {
+async function kopi_import(url: kopi.KopiString, context: kopi.Context) {
+  if (url.value.endsWith('.js')) {
+    const module = await import(/*webpackIgnore: true*/ `//webdav.mike-austin.com/${url.value}?${Date.now()}`);
+
+    const [fields, names] = Object.entries(module).reduce(([fields, names], [name, value]) => {
+      return [
+        [...fields, value],
+        [...names, name]
+      ];
+    }, [[] as any, [] as any]);
+
+    return new kopi.KopiTuple(fields, names);
+  }
+
+  const source = await (await fetch(`//webdav.mike-austin.com/${url.value}?${Date.now()}`)).text();
+
+  if (typeof source === 'string') {
+    return kopi.interpret(source, environment, () => { });
+  }
+}
+
+let environment = {
   String: kopi.KopiString,
   Number: kopi.KopiNumber,
+  import: kopi_import,
   let: kopi.kopi_let,
   loop: kopi.kopi_loop,
   match: kopi.kopi_match,
@@ -29,6 +51,12 @@ const environment = {
   Circle: kopi_Circle,
 };
 
+const bind = (bindings: { [name: string]: kopi.KopiValue; }) => {
+  const newEnvironment = { environment, ...bindings };
+
+  environment = newEnvironment as any;
+};
+
 const Develop = ({ args, ...props }: any) => {
   const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(true);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
@@ -37,7 +65,7 @@ const Develop = ({ args, ...props }: any) => {
 
   const interpret = async (source: string) => {
     try {
-      const value = await (await kopi.interpret(source, environment, () => 0))?.inspect();
+      const value = await (await kopi.interpret(source, environment, bind))?.inspect();
 
       if (typeof value === 'string') {
         setValue(

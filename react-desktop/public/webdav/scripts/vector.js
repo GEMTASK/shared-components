@@ -2,6 +2,7 @@ const {
   Any: KopiAny,
   Array: KopiArray,
   Number: KopiNumber,
+  Tuple: KopiTuple,
 } = window.environment;
 
 class KopiVector extends KopiAny {
@@ -25,6 +26,10 @@ class KopiVector extends KopiAny {
     return `Vector [${elements.join(', ')}]`;
   }
 
+  async at(index) {
+    return this._elements[index.value] ?? KopiTuple.empty;
+  }
+
   async '+'(that) {
     const results = [];
 
@@ -34,7 +39,7 @@ class KopiVector extends KopiAny {
       );
     }
 
-    return new KopiArray(results);
+    return new KopiVector(results);
   }
 }
 

@@ -1,0 +1,20 @@
+(:Vector) = import "scripts/vector.js"
+
+positions = Vector [0, 0, 5, 5, 10, 10]
+velocities = Vector [5, 5, 5, 5, 5, 5]
+
+positions = positions + velocities
+
+ParticleSystem = component (setState) => (state) => {
+  Svg () {
+    0..2 | map (index) => {
+      Circle (
+        cx: positions.(index * 2 + 0)
+        cy: positions.(index * 2 + 1)
+        r: 2
+      )
+    } | toArray
+  }
+}
+
+ParticleSystem () []

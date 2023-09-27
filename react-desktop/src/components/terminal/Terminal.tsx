@@ -196,7 +196,7 @@ const interpret = async (
 
       async function kopi_import(url: KopiString, context: Context) {
         if (url.value.endsWith('.js')) {
-          const module = await import(/*webpackIgnore: true*/ `//webdav.mike-austin.com/${url.value}`);
+          const module = await import(/*webpackIgnore: true*/ `//webdav.mike-austin.com/${url.value}?${Date.now()}`);
 
           const [fields, names] = Object.entries(module).reduce(([fields, names], [name, value]) => {
             return [

@@ -383,7 +383,7 @@ hello "Joe"
   `,
   `
 (:Vector) = import "scripts/vector.js"
-Vector [1, 2] + Vector [2, 3]
+Vector [1, 2, 3] + Vector [2, 3, 5]
   `,
   `
 {
