@@ -1,24 +1,42 @@
-Bounce = component (setState) => {
-  (angle = 0) => {
-    requestAnimationFrame(() => {
-      setState (angle + 0.05)
-    })
+Vector = struct (Number, Number)
 
-    (x, y) = (
-      'cos angle * 25 + 52
-      'sin angle * 25 + 52
-    )
+extend Vector (
+  +: (that) => Vector (this.0 + that.0, this.1 + that.1)
+)
 
-    View () [
-      Text (
-        padding: "large"
-        fillColor: "green-1"
-      ) "Round and round..."
-      Svg () [
-        Circle (cx: x, cy: y, r: 10)
-      ]
-    ]
+Particle = struct (
+  position: Vector
+  velocity: Vector
+)
+
+generateParticle () = {
+  Particle (
+    position: Vector (180, 150)
+    velocity: Vector (random -0.25..0.25, random -1.5..-1)   
+  )
+}
+
+initialState = 1..10 | map generateParticle | toArray
+
+gravity = Vector (0, 0.01)
+
+ParticleSystem = component (setState) => {
+  (particles = initialState) => {
+    requestAnimationFrame () => {
+      setState (
+        particles | map (position, velocity) => Particle (
+          position: position + velocity
+          velocity: velocity + gravity
+        ) | toArray
+      )
+    }
+
+    Svg () {
+      particles | map (position, velocity) => {
+        Circle (cx: position.0, cy: position.1, r: 2)
+      } | toArray
+    }
   }
 }
 
-Bounce () []
+ParticleSystem () []

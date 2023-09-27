@@ -231,7 +231,7 @@ View (
 ]
   `,
   `
-Hello setState state = {
+Hello setState (state = 0) = {
   Text (
     padding: "small"
     fillColor: "green-1"
@@ -244,7 +244,7 @@ element (Hello, (), [])
   `,
   `
 Hello = component (setState) =>
-  (state) => {
+  (state = 0) => {
     Text (
       padding: "small"
       fillColor: "green-1"

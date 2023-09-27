@@ -55,7 +55,7 @@ const Component = (component: KopiFunction, context: Context) => function _({ pr
   const functionRef = useRef<KopiFunction>();
 
   const [value, setValue] = useState<any>(null);
-  const [state, dispatch] = useReducer(reducer, new KopiNumber(0));
+  const [state, dispatch] = useReducer(reducer, KopiTuple.empty);
 
   const setState = (payload: any) => dispatch({ type: 'setState', payload });
 

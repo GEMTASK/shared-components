@@ -185,7 +185,7 @@ FunctionExpression
   / RangeExpression
 
 RangeExpression
-  = from:PrimaryExpression _ ".." _ to:PrimaryExpression {
+  = from:MemberExpression _ ".." _ to:MemberExpression {
       return {
         type: 'RangeExpression',
         from,

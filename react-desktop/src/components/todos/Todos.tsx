@@ -23,6 +23,7 @@ const Todos = ({ ...props }) => {
           <View horizontal>
             <Spacer size="large" />
             <Checkbox
+              flex
               label={title}
               value={done}
               onValueChange={value => setTodos(todos => todos.map(todo => todo.id === id ? ({
