@@ -2,8 +2,9 @@
 export const
   LineComment = 1,
   Program = 2,
-  TypeName = 3,
-  Identifier = 4,
-  Number = 5,
-  String = 6,
-  Boolean = 7
+  Keyword = 3,
+  TypeName = 4,
+  Identifier = 5,
+  Number = 6,
+  String = 7,
+  Boolean = 8

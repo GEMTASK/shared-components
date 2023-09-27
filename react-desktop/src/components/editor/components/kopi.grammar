@@ -3,21 +3,23 @@
 @skip { space | LineComment }
 
 expression {
+  Keyword |
   TypeName |
   Identifier |
   Number |
   String |
   Boolean |
   Parens { "(" expression* ")" } |
-  Block { "{" expression* "}" } |
-  Array { "[" expression* "]" }
+  Braces { "{" expression* "}" } |
+  Brackets { "[" expression* "]" }
 }
 
 @tokens {
   @precedence {
-    Boolean, Number, TypeName, Identifier
+    Boolean, Number, Keyword, TypeName, Identifier
   }
 
+  Keyword { $[_a-zA-Z0-9]+ ":" }
   TypeName { $[A-Z] $[_a-zA-Z0-9]* }
   Identifier { $[_a-zA-Z0-9]+ }
   Number { $[0-9]+ }
@@ -25,7 +27,7 @@ expression {
   Boolean { "true" | "false" }
   LineComment { "#" ![\n]* }
   space { $[ ]+ }
-  "(" ")" "{" "}"
+  "(" ")" "{" "}" "[" "]"
 }
 
 @detectDelim

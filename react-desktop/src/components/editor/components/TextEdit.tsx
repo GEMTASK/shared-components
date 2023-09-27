@@ -13,7 +13,7 @@ const myTheme = createTheme({
   settings: {
     fontFamily: 'Iosevka',
     background: '#ffffff',
-    foreground: '#495057',
+    foreground: '#343a40',
     caret: 'black',
     selection: '#e7f5ff',
     selectionMatch: '#f1f3f5',
@@ -30,17 +30,14 @@ const myTheme = createTheme({
     { tag: t.string, color: '#339af0' },
     { tag: t.number, color: '#339af0' },
     { tag: t.bool, color: '#339af0' },
-    // { tag: t.null, color: '#5c6166' },
-    { tag: t.keyword, color: 'red' },
+    // { tag: t.keyword, color: '#868e96' },
     // { tag: t.operator, color: '#5c6166' },
     // { tag: t.definition(t.typeName), color: '#5c6166' },
     // { tag: t.angleBracket, color: '#5c6166' },
     // { tag: t.tagName, color: '#5c6166' },
     // { tag: t.attributeName, color: '#5c6166' },
-    { tag: t.brace, color: '#adb5bd' },
-    { tag: t.bracket, color: '#adb5bd' }, // Parenthesis
-    { tag: t.paren, color: '#adb5bd' }, // Parenthesis
-    { tag: t.squareBracket, color: '#adb5bd' }
+    // { tag: t.brace, color: '#adb5bd' },
+    // { tag: t.bracket, color: '#adb5bd' }, // Parenthesis
   ],
 });
 
@@ -49,12 +46,13 @@ export const KopiLanguage = LRLanguage.define({
     props: [
       indentNodeProp.add({
         Perens: delimitedIndent({ closing: ")", align: false }),
-        Block: delimitedIndent({ closing: "}", align: false }),
-        Array: delimitedIndent({ closing: "]", align: false })
+        Braces: delimitedIndent({ closing: "}", align: false }),
+        Brackets: delimitedIndent({ closing: "]", align: false })
       }),
       styleTags({
-        Identifier: t.variableName,
+        Keyword: t.keyword,
         TypeName: t.typeName,
+        Identifier: t.variableName,
         Number: t.number,
         Boolean: t.bool,
         String: t.string,
