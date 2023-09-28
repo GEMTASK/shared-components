@@ -223,6 +223,14 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
       const expressionValue = await evaluate((astNode as astnodes.Assignment).expression, environment, bind);
       const patternMatches = await (astNode as astnodes.Assignment).pattern.match(expressionValue, context);
 
+      for (const match in patternMatches) {
+        const value = patternMatches[match] as any;
+
+        if ('iterable' in value) {
+          patternMatches[match] = value.fromIterable(value.iterable);
+        }
+      }
+
       if (patternMatches) {
         Object.entries(patternMatches).forEach(([name, value]) => {
           if (typeof value === 'function') {

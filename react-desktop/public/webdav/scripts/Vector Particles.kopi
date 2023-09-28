@@ -13,7 +13,7 @@ ParticleSystem = component (setState) => (state) => {
         cy: positions.(index * 2 + 1)
         r: 2
       )
-    } | toArray
+    }
   }
 }
 

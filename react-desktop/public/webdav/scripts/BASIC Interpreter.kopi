@@ -15,7 +15,6 @@ evaluate (line) = match (
   line
     | trim
     | splitOn " "
-    | toArray
 ) (
   [lineNo, "print", value] => {
     print value
@@ -30,7 +29,6 @@ interpret (program) = {
   lines = program
     | trim
     | splitOn String.newline
-    | toArray
 
   let (index = 0) => {
     reducer = evaluate (

@@ -19,7 +19,7 @@ inspect (object) = match object (
   Array array => {
     items = array | map (item) => {
       inspect item
-    } | toArray
+    }
     "[" ++ (items | join ", ") ++ "]"
   }
   Number number => String number
@@ -29,8 +29,6 @@ inspect (object) = match object (
 )
 
 inspect [1, "2", 3]
-
-
 
 match 5 (
   n [n > 10] => "n > 10"
@@ -42,7 +40,6 @@ match 5 (
   _ [n > 1] => "n > 1"
   _         => "n"
 )
-
 
 1..15 | map (n) => {
   match (n) (

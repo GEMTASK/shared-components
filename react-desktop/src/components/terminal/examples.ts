@@ -178,12 +178,11 @@ coros = [
 let (n = 1) => {
   data = coros | map (coro) => {
     coro | send n
-  } | toArray
+  }
 
   values = data
     | zip (a, b) => a * b
     | map '(toFixed 1)
-    | toArray
 
   print values
 
@@ -279,7 +278,6 @@ evaluate (line) = match (
   line
     | trim
     | splitOn " "
-    | toArray
 ) (
   [lineNo, "print", value] => {
     print value
@@ -294,7 +292,6 @@ interpret (program) = {
   lines = program
     | trim
     | splitOn String.newline
-    | toArray
 
   let (index = 0) => {
     reducer = evaluate (
@@ -351,7 +348,7 @@ inspect (object) = match object (
   Array array => {
     items = array | map (item) => {
       inspect item
-    } | toArray
+    }
     "[" ++ (items | join ", ") ++ "]"
   }
   Number number => String number

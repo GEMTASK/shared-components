@@ -35,6 +35,7 @@ class KopiFunction extends KopiValue {
 
     const matches = await this.parameterPattern.match(argument, context);
 
+    // TODO: We only need a new env if assignment used (in a block)
     const newEnvironment = {
       ...this.environment,
       ...matches,
