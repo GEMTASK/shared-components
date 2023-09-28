@@ -1,18 +1,29 @@
 (:Vector) = import "scripts/vector.js"
 
-positions = Vector [0, 0, 5, 5, 10, 10]
-velocities = Vector [5, 5, 5, 5, 5, 5]
+particlesCount = 10
 
-positions = positions + velocities
+positions = Vector (
+  0..particlesCount | flatMap (n) => [random 0..10, random 0..10]
+)
 
-ParticleSystem = component (setState) => (state) => {
-  Svg () {
-    0..2 | map (index) => {
-      Circle (
-        cx: positions.(index * 2 + 0)
-        cy: positions.(index * 2 + 1)
-        r: 2
-      )
+velocities = Vector (
+  0..particlesCount | flatMap (n) => [random 0.1..0.5, random 0.1..0.5]
+)
+
+ParticleSystem = component (setState) => {
+  (positions = positions) => {
+    requestAnimationFrame () => {
+      setState (positions + velocities)
+    }
+
+    Svg () {
+      0..particlesCount | map (index) => {
+        Circle (
+          cx: positions.(index * 2 + 0)
+          cy: positions.(index * 2 + 1)
+          r: 2
+        )
+      }
     }
   }
 }
