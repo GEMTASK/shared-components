@@ -185,7 +185,7 @@ const Code = ({
 
   const innerProps = {
     ref: textElementRef,
-    contentEditable: true,
+    contentEditable: language === 'language-kopi',
     suppressContentEditableWarning: true
   };
 
