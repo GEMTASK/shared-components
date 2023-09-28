@@ -1,34 +1,38 @@
-Vector = struct (Number, Number)
+Point = struct (Number, Number)
 
-extend Vector (
-  +: (that) => Vector (this.0 + that.0, this.1 + that.1)
+extend Point (
+  +: (that) => Point (this.0 + that.0, this.1 + that.1)
 )
 
+gravity = Point (0, 0.01)
+
 Particle = struct (
-  position: Vector
-  velocity: Vector
+  position: Point
+  velocity: Point
+  ttl: Number
 )
 
 generateParticle () = {
   Particle (
-    position: Vector (180, 150)
-    velocity: Vector (random -0.25..0.25, random -1.5..-1)   
+    position: Point (180, 150)
+    velocity: Point (random -0.25..0.25, random -1.5..-1)
+    ttl: random 100..200
   )
 }
 
-initialState = 1..10 | map generateParticle | toArray
-
-gravity = Vector (0, 0.01)
+initialState = 1..20 | map generateParticle | toArray
 
 ParticleSystem = component (setState) => {
   (particles = initialState) => {
     requestAnimationFrame () => {
-      setState (
-        particles | map (position, velocity) => Particle (
+      particles = particles | map (position, velocity, ttl) =>
+        ttl < 0 ? generateParticle () : Particle (
           position: position + velocity
           velocity: velocity + gravity
+          ttl: ttl - 1
         ) | toArray
-      )
+      
+      setState particles
     }
 
     Svg () {
