@@ -20,16 +20,16 @@ class KopiElement extends KopiValue {
 
   async inspectChildren(children: any): Promise<React.ReactNode> {
     return Promise.all(
-      children.map(async (child: any) => {
+      children.map(async (child: any, index: number) => {
         const awaitedChild = await child;
 
         if (awaitedChild.children instanceof KopiString) {
           return React.createElement(this.component, awaitedChild.props, awaitedChild.children.value) as any;
         } else if (awaitedChild.children) {
-          return React.createElement(awaitedChild.component, awaitedChild.props, await this.inspectChildren(awaitedChild.children._elements));
+          return React.createElement(awaitedChild.component, { key: index, ...awaitedChild.props }, await this.inspectChildren(awaitedChild.children._elements));
         }
 
-        return React.createElement(awaitedChild.component, awaitedChild.props) as any;
+        return React.createElement(awaitedChild.component, { key: index, ...awaitedChild.props }) as any;
       })
     );
   }

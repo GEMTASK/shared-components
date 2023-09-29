@@ -33,7 +33,9 @@ class KopiVector extends KopiAny {
   }
 
   '+'(that) {
-    for (let i = 0; i < this._elements.length; i += 4) {
+    const length = Math.min(this._elements.length, that._elements.length);
+
+    for (let i = 0; i < length; i += 4) {
       this._elements[i + 0] += that._elements[i + 0];
       this._elements[i + 1] += that._elements[i + 1];
       this._elements[i + 2] += that._elements[i + 2];
