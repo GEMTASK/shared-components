@@ -1,6 +1,6 @@
 (:Vector) = import "scripts/vector.js"
 
-particlesCount = 100
+particlesCount = 10
 
 initialPositions = Vector (
   0..(particlesCount - 1) | flatMap (n) =>
@@ -14,14 +14,17 @@ velocities = Vector (
 
 ParticleSystem = component (setState) => {
   handleUpdate () = {
-    setState (positions = initialPositions) => (
-      positions + velocities
+    setState (positions = initialPositions, frame = 0) => (
+      frame > 100 ? initialPositions : positions + velocities 
+      frame > 100 ? 0 : frame + 1
     )
-  }
-  
-  (positions) => {
-    requestAnimationFrame handleUpdate
 
+    requestAnimationFrame handleUpdate
+  }
+
+  requestAnimationFrame handleUpdate
+
+  (positions, frame) => {
     Svg () {
       0..(particlesCount - 1) | map (index) => {
         Circle (

@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 
 import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from 'kopi-language';
 import { Context, KopiValue } from 'kopi-language';
@@ -51,13 +51,13 @@ const Component = (component: KopiFunction, context: Context) => function _({ pr
   const [state, _setState] = useState<KopiValue>(KopiTuple.empty);
   const [value, setValue] = useState<any>(null);
 
-  const setState = async (func: KopiFunction) => {
-    if ('apply' in func) {
-      _setState(await func.apply(KopiTuple.empty, [state, context]));
+  const setState = useCallback(async (value: KopiFunction) => {
+    if ('apply' in value) {
+      _setState(async (state) => await value.apply(KopiTuple.empty, [await state, context]));
     } else {
-      _setState(func);
+      _setState(value);
     }
-  };
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -65,11 +65,11 @@ const Component = (component: KopiFunction, context: Context) => function _({ pr
         functionRef.current = await component.apply(KopiTuple.empty, [setState, context]) as KopiFunction;
       }
 
-      const value = await functionRef.current.apply(KopiTuple.empty, [state, context]);
+      const value = await functionRef.current.apply(KopiTuple.empty, [await state, context]);
 
       setValue(await value.inspect());
     })();
-  }, [state]);
+  }, [setState, state]);
 
   return value;
 };
@@ -177,6 +177,9 @@ async function kopi_requestAnimationFrame(func: KopiFunction, context: Context) 
   window.requestAnimationFrame(() => {
     func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
   });
+  // setTimeout(() => {
+  //   func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+  // }, 1000 / 30);
 }
 
 export {
