@@ -102,7 +102,7 @@ const Develop = ({ args, ...props }: any) => {
   }, [args]);
 
   return (
-    <Splitter felx horizontal {...props}>
+    <Splitter flex horizontal {...props}>
       {isLeftSidebarOpen && (
         <View style={{ width: 278 }}>
           <View horizontal fillColor="gray-1" padding="small">

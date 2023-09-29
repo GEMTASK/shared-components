@@ -1,13 +1,13 @@
 (:Vector) = import "scripts/vector.js"
 
-particlesCount = 10
+particlesCount = 100
 
 positions = Vector (
-  0..particlesCount | flatMap (n) => [random 0..10, random 0..10]
+  0..(particlesCount - 1) | flatMap (n) => [random 0..10, random 0..10]
 )
 
 velocities = Vector (
-  0..particlesCount | flatMap (n) => [random 0.1..0.5, random 0.1..0.5]
+  0..(particlesCount - 1) | flatMap (n) => [random 0.1..0.5, random 0.1..0.5]
 )
 
 ParticleSystem = component (setState) => {
@@ -17,7 +17,7 @@ ParticleSystem = component (setState) => {
     }
 
     Svg () {
-      0..particlesCount | map (index) => {
+      0..(particlesCount - 1) | map (index) => {
         Circle (
           cx: positions.(index * 2 + 0)
           cy: positions.(index * 2 + 1)

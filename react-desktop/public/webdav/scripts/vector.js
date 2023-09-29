@@ -9,37 +9,38 @@ class KopiVector extends KopiAny {
   static async apply(thisArg, [iterable, context]) {
     const array = await KopiArray.fromIterable(iterable);
 
-    return new KopiVector(array._elements);
+    return new KopiVector(
+      array._elements.map(element => element.value)
+    );
   }
 
-  constructor(elements) {
+  constructor(elements = []) {
     super();
 
-    this._elements = elements;
+    this._elements = new Float64Array(elements);
   }
 
-  async inspect() {
-    const elements = await Promise.all(
-      this._elements.map(async element => (await element).inspect())
-    );
+  inspect() {
+    const elements = this._elements.map(element => `${element}`);
 
     return `Vector [${elements.join(', ')}]`;
   }
 
-  async at(index) {
-    return this._elements[index.value] ?? KopiTuple.empty;
+  at(index) {
+    const value = this._elements[index.value];
+
+    return value ? new KopiNumber(value) : KopiTuple.empty;
   }
 
-  async '+'(that) {
-    const results = [];
-
-    for (let i = 0; i < this._elements.length; ++i) {
-      results[i] = new KopiNumber(
-        (await this._elements[i]).value + (await that._elements[i]).value
-      );
+  '+'(that) {
+    for (let i = 0; i < this._elements.length; i += 4) {
+      this._elements[i + 0] += that._elements[i + 0];
+      this._elements[i + 1] += that._elements[i + 1];
+      this._elements[i + 2] += that._elements[i + 2];
+      this._elements[i + 3] += that._elements[i + 3];
     }
 
-    return new KopiVector(results);
+    return new KopiVector(this._elements);
   }
 }
 
