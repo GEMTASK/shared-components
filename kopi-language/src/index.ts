@@ -229,6 +229,16 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
         if ('iterable' in value) {
           patternMatches[match] = value.fromIterable(value.iterable);
         }
+
+        if (value.constructor.name === 'Vector') {
+          if (!environment[match] && (value as any)?._referenced) {
+            console.log('Vector copied');
+
+            patternMatches[match] = new value.constructor([...value._elements]);
+          } else {
+            value._referenced = true;
+          }
+        }
       }
 
       if (patternMatches) {
