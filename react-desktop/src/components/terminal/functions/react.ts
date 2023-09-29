@@ -45,19 +45,19 @@ class KopiElement extends KopiValue {
   }
 }
 
-const reducer = (state: any, action: any) => {
-  // console.log(action.payload);
-  // return ({ ...state, ...action.payload });
-  return action.payload;
-};
-
 const Component = (component: KopiFunction, context: Context) => function _({ props }: any) {
   const functionRef = useRef<KopiFunction>();
 
+  const [state, _setState] = useState<KopiValue>(KopiTuple.empty);
   const [value, setValue] = useState<any>(null);
-  const [state, dispatch] = useReducer(reducer, KopiTuple.empty);
 
-  const setState = (payload: any) => dispatch({ type: 'setState', payload });
+  const setState = async (func: KopiFunction) => {
+    if ('apply' in func) {
+      _setState(await func.apply(KopiTuple.empty, [state, context]));
+    } else {
+      _setState(func);
+    }
+  };
 
   useEffect(() => {
     (async () => {

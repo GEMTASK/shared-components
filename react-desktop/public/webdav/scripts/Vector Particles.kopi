@@ -2,19 +2,25 @@
 
 particlesCount = 100
 
-positions = Vector (
-  0..(particlesCount - 1) | flatMap (n) => [random 0..10, random 0..10]
+initialPositions = Vector (
+  0..(particlesCount - 1) | flatMap (n) =>
+    [random 0..10, random 0..10]
 )
 
 velocities = Vector (
-  0..(particlesCount - 1) | flatMap (n) => [random 0.1..0.5, random 0.1..0.5]
+  0..(particlesCount - 1) | flatMap (n) =>
+    [random 0.1..0.5, random 0.1..0.5]
 )
 
 ParticleSystem = component (setState) => {
-  (positions = positions) => {
-    requestAnimationFrame () => {
-      setState (positions + velocities)
-    }
+  handleUpdate () = {
+    setState (positions = initialPositions) => (
+      positions + velocities
+    )
+  }
+  
+  (positions) => {
+    requestAnimationFrame handleUpdate
 
     Svg () {
       0..(particlesCount - 1) | map (index) => {
