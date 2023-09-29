@@ -23,18 +23,23 @@ generateParticle () = {
 initialState = 1..20 | map generateParticle
 
 ParticleSystem = component (setState) => {
-  (particles = initialState) => {
-    requestAnimationFrame () => {
-      particles = particles | map (position, velocity, ttl) =>
+  handleUpdate () = {
+    setState (particles = initialState) => {
+      particles | map (position, velocity, ttl) => {
         ttl < 0 ? generateParticle () : Particle (
           position: position + velocity
           velocity: velocity + gravity
           ttl: ttl - 1
         )
-      
-      setState particles
+      } | toArray
     }
+    
+    requestAnimationFrame handleUpdate
+  }
 
+  requestAnimationFrame handleUpdate
+
+  (particles) => {
     Svg () {
       particles | map (position, velocity) => {
         Circle (cx: position.0, cy: position.1, r: 2)

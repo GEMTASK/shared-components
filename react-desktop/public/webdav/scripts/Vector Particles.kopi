@@ -1,6 +1,6 @@
 (:Vector) = import "scripts/vector.js"
 
-particlesCount = 10
+particlesCount = 100
 
 initialPositions = Vector (
   0..(particlesCount - 1) | flatMap (n) =>
