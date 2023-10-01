@@ -1,25 +1,32 @@
 (:Vector) = import "scripts/vector.js"
 
-particlesCount = 100
+particlesCount = 10
 
 initialPositions = Vector (
   0..(particlesCount - 1) | flatMap (n) =>
     [random 0..10, random 0..10]
 )
 
-velocities = Vector (
+initialVelocities = Vector (
   0..(particlesCount - 1) | flatMap (n) =>
     [random 0.1..0.5, random 0.1..0.5]
 )
 
+gravity = Vector (
+  0..(particlesCount) | flatMap () =>
+    [0, 0.01]
+)
+
 ParticleSystem = component (setState) => {
   handleUpdate () = {
-    setState (positions = initialPositions, frame = 0) =>
+    setState (positions = initialPositions, velocities = initialVelocities, frame = 0) =>
       frame > 300 ? (
         initialPositions
+        initialVelocities
         0
       ) : (
         positions + velocities 
+        velocities + gravity
         frame + 1
       )
 
@@ -28,7 +35,7 @@ ParticleSystem = component (setState) => {
 
   requestAnimationFrame handleUpdate
 
-  (positions, frame) => {
+  (positions, velocities, frame) => {
     Svg () {
       0..(particlesCount - 1) | map (index) => {
         Circle (
