@@ -14,10 +14,14 @@ velocities = Vector (
 
 ParticleSystem = component (setState) => {
   handleUpdate () = {
-    setState (positions = initialPositions, frame = 0) => (
-      frame > 100 ? initialPositions : positions + velocities 
-      frame > 100 ? 0 : frame + 1
-    )
+    setState (positions = initialPositions, frame = 0) =>
+      frame > 300 ? (
+        initialPositions
+        0
+      ) : (
+        positions + velocities 
+        frame + 1
+      )
 
     requestAnimationFrame handleUpdate
   }
