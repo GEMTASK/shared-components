@@ -41,7 +41,7 @@ const DisplayItem = ({
 
   const handleDoubleClick = () => {
     if (type === 'directory') {
-      onFolderOpen?.(basename);
+      onFolderOpen?.(filename);
     } else {
       onFileOpen?.(filename);
     }
@@ -238,7 +238,7 @@ const Files = ({ ...props }: any) => {
   }, []);
 
   const handleFolderOpen = useCallback((basename: string) => {
-    setCurrentDirectory(`/${basename}`);
+    setCurrentDirectory(`${basename}`);
     setSelectedFile(null);
   }, []);
 

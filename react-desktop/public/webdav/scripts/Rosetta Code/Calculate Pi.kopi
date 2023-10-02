@@ -1,0 +1,9 @@
+# Arithmetic-geometric mean/Calculate Pi
+
+let (i = 5, a = 1, n = 1, g = 'sqrt 0.5, z = 0.25) => {
+  x = ((a + g) * 0.5, 'sqrt (a * g))
+
+  i == 0 ? a * a / z : {
+    loop (i - 1, x.0, n + n, x.1, z - (x.0 - a)^2 * n)
+  }
+}
