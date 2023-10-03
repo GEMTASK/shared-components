@@ -363,7 +363,7 @@ const Markdown = ({ args, ...props }: any) => {
 
         const window = markdownElementRef.current?.parentElement?.parentElement?.parentElement;
 
-        if (window) {
+        if (window && window.offsetWidth === 1024) {
           window.style.width = `${window.offsetWidth + 416}px`;
         }
       }
