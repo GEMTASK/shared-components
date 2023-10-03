@@ -166,6 +166,7 @@ async function kopi_Svg(props: KopiTuple, context: Context) {
 
   return (children: any) => {
     return new KopiElement('svg', {
+      style: { height: 150 },
       // solid: solid?.value,
       // primary: true,
       // title: title?.value,
