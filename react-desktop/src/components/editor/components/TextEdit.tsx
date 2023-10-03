@@ -30,7 +30,7 @@ const myTheme = createTheme({
     { tag: t.string, color: '#1971c2' },
     { tag: t.number, color: '#1971c2' },
     { tag: t.bool, color: '#1971c2' },
-    { tag: t.keyword, color: '#495057', fontWeight: 600 },
+    // { tag: t.keyword, color: '#495057', fontWeight: 600 },
     // { tag: t.operator, color: '#5c6166' },
     // { tag: t.definition(t.typeName), color: '#5c6166' },
     // { tag: t.angleBracket, color: '#5c6166' },

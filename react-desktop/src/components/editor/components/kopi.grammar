@@ -19,7 +19,7 @@ expression {
     Boolean, Number, Keyword, TypeName, Identifier
   }
 
-  Keyword { 'let' | 'loop' | 'match' | 'extend' | 'import' | 'export' }
+  Keyword { 'let' | 'loop' | 'match' | 'struct' | 'extend' | 'import' | 'export' }
   TypeName { $[A-Z] $[_a-zA-Z0-9]* }
   Identifier { $[_a-zA-Z0-9]+ }
   Number { $[0-9]+ }

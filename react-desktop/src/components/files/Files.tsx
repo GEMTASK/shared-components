@@ -266,19 +266,30 @@ const Files = ({ ...props }: any) => {
     <View {...props}>
       <Splitter flex horizontal style={{ minHeight: 0, overflow: 'auto' }}>
         {isSidebarOpen && (
-          <View padding="small" minWidth={112} style={{ width: 192 }}>
-            <DisplayItem horizontal align="left" key={0} type="directory" basename={'Foo Bar'} filename="" selected={false}>
-              <Icon fixedWidth icon="angle-right" style={{ width: 20 }} />
-              <Icon fixedWidth icon="folder" color="yellow-4" size="lg" style={{ width: 20 }} />
-              <Spacer size="xsmall" />
-              <Text lineClamp={1}>{'Foo Bar'}</Text>
-            </DisplayItem>
-            <DisplayItem horizontal align="left" key={1} type="directory" basename={'Foo Bar'} filename="" selected={true}>
-              <Icon fixedWidth icon="angle-right" style={{ width: 20 }} />
-              <Icon fixedWidth icon="folder" color="yellow-4" size="lg" style={{ width: 20 }} />
-              <Spacer size="xsmall" />
-              <Text lineClamp={1}>{'Foo Bar'}</Text>
-            </DisplayItem>
+          <View minWidth={112} style={{ width: 224 }}>
+            <View horizontal padding="small" fillColor="gray-1" minHeight={50}>
+              <Button
+                hover
+                icon="table-columns"
+                selected={isSidebarOpen}
+                onClick={() => setIsSidebarOpen(isSidebarOpen => !isSidebarOpen)}
+              />
+            </View>
+            <Divider />
+            <View padding="small">
+              <DisplayItem horizontal align="left" key={0} type="directory" basename={'Foo Bar'} filename="" selected={false}>
+                <Icon fixedWidth icon="angle-right" style={{ width: 20 }} />
+                <Icon fixedWidth icon="folder" color="yellow-4" size="lg" style={{ width: 20 }} />
+                <Spacer size="xsmall" />
+                <Text lineClamp={1}>{'Foo Bar'}</Text>
+              </DisplayItem>
+              <DisplayItem horizontal align="left" key={1} type="directory" basename={'Foo Bar'} filename="" selected={true}>
+                <Icon fixedWidth icon="angle-right" style={{ width: 20 }} />
+                <Icon fixedWidth icon="folder" color="yellow-4" size="lg" style={{ width: 20 }} />
+                <Spacer size="xsmall" />
+                <Text lineClamp={1}>{'Foo Bar'}</Text>
+              </DisplayItem>
+            </View>
           </View>
         )}
         <View flex>

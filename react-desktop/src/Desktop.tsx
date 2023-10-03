@@ -228,6 +228,9 @@ const App = () => {
     if (app) {
       const { icon, title, client, rect } = app;
 
+      setWindows([]);
+      setWindowIdOrder([]);
+
       addWindow(icon, title, client, rect);
     }
 
@@ -236,7 +239,7 @@ const App = () => {
     return () => {
       window.removeEventListener('message', handleWindowMessage);
     };
-  }, [addWindow, handleWindowMessage, params]);
+  }, [isSidebarHidden]);
 
   return (
     <View className={styles.App}>
