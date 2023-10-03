@@ -53,7 +53,7 @@ const Applications = {
     icon: 'terminal', title: 'Terminal', client: <Terminal />, rect: { width: 800, height: 600 }
   },
   'markdown': {
-    icon: 'marker', title: 'Markdown', client: <Markdown args="/Learning Kopi.md" />, rect: { width: 1152, height: 800 }
+    icon: 'marker', title: 'Markdown', client: <Markdown args="/Learning Kopi.md" />, rect: { width: 1024, height: 800 }
   },
   'media': {
     icon: 'image', title: 'Media', client: <Media />, rect: undefined,

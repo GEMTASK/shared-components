@@ -259,10 +259,10 @@ const App = () => {
         <View
           absolute
           fillColor="white-2"
-          minWidth={240}
           style={{
             zIndex: 1000,
             top: window.innerWidth < 640 ? undefined : 0, right: 0, bottom: 0, left: window.innerWidth < 640 ? 0 : undefined,
+            width: window.innerWidth >= 640 ? 240 : undefined,
             boxShadow: '0 0 16px hsla(0, 0%, 0%, 0.1)',
             WebkitBackdropFilter: 'blur(10px)',
             backdropFilter: 'blur(10px)',
@@ -280,7 +280,7 @@ const App = () => {
                 <View key={index} horizontal hoverTarget='a' align="left" padding="small large" fillColor={isFocused ? 'gray-3' : undefined} onClick={() => handleWindowFocus(window.id)}>
                   <Icon fixedWidth icon={window?.icon as any} />
                   <Spacer size="small" />
-                  <Text fontWeight="semibold">{window.title}</Text>
+                  <Text fontWeight="semibold" lineClamp={1}>{window.title}</Text>
                   <Spacer flex size="small" />
                   <View hoverParent='a' onClick={() => handleWindowClose(window.id)}>
                     <Button hover size="xsmall" icon="close" style={{ margin: -4 }} />

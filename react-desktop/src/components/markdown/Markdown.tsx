@@ -240,8 +240,9 @@ const Code = ({
 
   const float = language?.includes('float') && {
     float: 'right',
-    minWidth: 600,
-    margin: '0 0 0 32px'
+    minWidth: 550,
+    marginTop: 0,
+    marginLeft: 32
   } as const;
 
   return (
@@ -356,12 +357,22 @@ const Markdown = ({ args, ...props }: any) => {
       if (typeof markdown === 'string') {
         setMarkdown(markdown);
       }
+
+      if (markdown.includes('-float')) {
+        console.log(markdownElementRef.current?.parentElement?.parentElement?.parentElement);
+
+        const window = markdownElementRef.current?.parentElement?.parentElement?.parentElement;
+
+        if (window) {
+          window.style.width = `${window.offsetWidth + 416}px`;
+        }
+      }
     })();
   }, [args]);
 
   return (
     <Stack horizontal divider {...props} style={{ userSelect: 'text' }}>
-      <View padding="large" fillColor="gray-1" style={{ display: 'block', width: 300, overflow: 'auto' }}>
+      <View padding="large" fillColor="gray-1" style={{ display: 'block', width: 256, overflow: 'auto' }}>
         <ReactMarkdown components={sidebarComponents}>
           {markdown}
         </ReactMarkdown>
