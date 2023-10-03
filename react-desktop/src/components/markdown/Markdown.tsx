@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { createUseStyles } from 'react-jss';
+import * as peggy from 'peggy';
 
 import * as kopi from 'kopi-language';
 import { KopiValue } from 'kopi-language';
@@ -53,6 +54,7 @@ const useMarkdownStyles = createUseStyles({
   },
   h2: {
     '&:not(:first-child)': {
+      clear: 'right',
       marginTop: 32,
       scrollMarginTop: '24px',
     },
@@ -148,19 +150,47 @@ const Code = ({
   const [value, setValue] = useState<string | React.ReactElement>();
 
   useEffect(() => {
-    if (inline || language !== 'language-kopi') {
-      return;
-    }
+    if (language?.includes('kopi')) {
+      (async () => {
+        observerRef.current = new MutationObserver(async (mutationList) => {
+          if (mutationList[0].target.textContent) {
+            try {
+              const value = await kopi.interpret(mutationList[0].target.textContent, environment, bind);
 
-    (async () => {
+              if (value) {
+                setValue(await value.inspect());
+              }
+            } catch (error) {
+              setValue((error as Error).toString());
+            }
+          }
+        });
+
+        if (textElementRef.current) {
+          observerRef.current.observe(textElementRef.current, { characterData: true, subtree: true });
+        }
+
+        const value = await kopi.interpret(children[0], environment, bind);
+
+        if (value) {
+          setValue(await value.inspect());
+        }
+      })();
+
+      return () => {
+        observerRef.current?.disconnect();
+      };
+    } else if (language?.includes('peggy')) {
+      let input = '';
+
       observerRef.current = new MutationObserver(async (mutationList) => {
         if (mutationList[0].target.textContent) {
           try {
-            const value = await kopi.interpret(mutationList[0].target.textContent, environment, bind);
+            const parser = peggy.generate(mutationList[0].target.textContent);
 
-            if (value) {
-              setValue(await value.inspect());
-            }
+            const ast = parser.parse(input);
+
+            setValue(JSON.stringify(ast, undefined, 2));
           } catch (error) {
             setValue((error as Error).toString());
           }
@@ -171,21 +201,21 @@ const Code = ({
         observerRef.current.observe(textElementRef.current, { characterData: true, subtree: true });
       }
 
-      const value = await kopi.interpret(children[0], environment, bind);
+      try {
+        const parser = peggy.generate(children[0]);
 
-      if (value) {
-        setValue(await value.inspect());
+        const ast = parser.parse(input);
+
+        setValue(JSON.stringify(ast, undefined, 2));
+      } catch (error) {
+        setValue((error as Error).toString());
       }
-    })();
-
-    return () => {
-      observerRef.current?.disconnect();
-    };
+    }
   }, [children, className, inline, language]);
 
   const innerProps = {
     ref: textElementRef,
-    contentEditable: language === 'language-kopi',
+    contentEditable: language?.includes('kopi') || language?.includes('peggy'),
     suppressContentEditableWarning: true
   };
 
@@ -208,8 +238,14 @@ const Code = ({
     );
   }
 
+  const float = language?.includes('float') && {
+    float: 'right',
+    minWidth: 600,
+    marginLeft: 32
+  } as const;
+
   return (
-    <View border fillColor="gray-1" className={className}>
+    <View border fillColor="gray-1" className={className} style={{ ...float, clear: 'right' }}>
       <Text innerProps={innerProps} padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka', whiteSpace: 'pre-wrap' }}>
         {children}
       </Text>
@@ -325,7 +361,7 @@ const Markdown = ({ args, ...props }: any) => {
 
   return (
     <Stack horizontal divider {...props} style={{ userSelect: 'text' }}>
-      <View padding="large" fillColor="gray-1" minWidth={256} style={{ display: 'block', overflow: 'auto' }}>
+      <View padding="large" fillColor="gray-1" style={{ display: 'block', width: 256, overflow: 'auto' }}>
         <ReactMarkdown components={sidebarComponents}>
           {markdown}
         </ReactMarkdown>
