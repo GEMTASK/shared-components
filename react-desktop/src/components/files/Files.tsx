@@ -136,7 +136,7 @@ const IconDisplay = ({
   const itemProps = { align: 'top', ...props } as const;
 
   return (
-    <Grid style={{ rowGap: 8, gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
+    <Grid style={{ rowGap: 8, gridTemplateColumns: 'repeat(auto-fit, minmax(192px, 1fr))' }}>
       {files?.map(({ basename, filename, type }) => (
         <DisplayItem key={basename} type={type} basename={basename} filename={filename} selected={basename === selectedFile} {...itemProps}>
           <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="4x" color={type === 'directory' ? 'yellow-4' : 'gray-4'} />
@@ -156,7 +156,7 @@ const TileDisplay = ({
   const itemProps = { horizontal: true, align: 'left', ...props } as const;
 
   return (
-    <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+    <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(256px, 1fr))' }}>
       {files?.map(({ basename, filename, type, size }) => (
         <DisplayItem key={basename} type={type} basename={basename} filename={filename} selected={basename === selectedFile} {...itemProps}>
           <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="3x" color={type === 'directory' ? 'yellow-4' : 'gray-4'} />
@@ -180,7 +180,7 @@ const ListDisplay = ({
   const itemProps = { horizontal: true, align: 'left', ...props } as const;
 
   return (
-    <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+    <Grid align="top left" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
       {files?.map(({ basename, filename, type }) => (
         <DisplayItem key={basename} type={type} basename={basename} filename={filename} selected={basename === selectedFile} {...itemProps}>
           <Icon fixedWidth icon={type === 'directory' ? 'folder' : 'file'} size="2x" color={type === 'directory' ? 'yellow-4' : 'gray-4'} />

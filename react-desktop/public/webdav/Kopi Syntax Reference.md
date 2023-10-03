@@ -3,7 +3,6 @@
 ## Kopi EBNF
 
 ```
-
 //
 // Expressions
 //
@@ -188,5 +187,4 @@ Comment "comment"
 
 Newline
   = Comment? [\r?\n]
-
 ```

@@ -287,7 +287,7 @@ const Markdown = ({ args, ...props }: any) => {
         fontSize="medium"
         fontWeight="semibold"
         className={sidebarStyles.h2}
-        onClick={() => markdownElementRef.current?.querySelector(`#${child.replaceAll(' ', '-')}`)?.scrollIntoView({
+        onClick={() => markdownElementRef.current?.querySelector(`#${child.replaceAll(/[\d% ]/g, '-')}`)?.scrollIntoView({
           behavior: 'smooth'
         })}
       >
@@ -298,7 +298,7 @@ const Markdown = ({ args, ...props }: any) => {
       <Text
         fontWeight="medium"
         className={sidebarStyles.h3}
-        onClick={() => markdownElementRef.current?.querySelector(`#${child.replaceAll(' ', '-')}`)?.scrollIntoView({
+        onClick={() => markdownElementRef.current?.querySelector(`#${child.replaceAll(/[\d% ]/g, '-')}`)?.scrollIntoView({
           behavior: 'smooth'
         })}
       >
@@ -318,10 +318,10 @@ const Markdown = ({ args, ...props }: any) => {
       <Text fontSize="xlarge" fontWeight="thin" className={markdownStyles.h1}>{children}</Text>
     ),
     h2: ({ children: [child] }: { children: any; }) => (
-      <Text id={child.replaceAll(' ', '-')} fontSize="large" fontWeight="semibold" className={markdownStyles.h2}>{child}</Text>
+      <Text id={child.replaceAll(/[\d% ]/g, '-')} fontSize="large" fontWeight="semibold" className={markdownStyles.h2}>{child}</Text>
     ),
     h3: ({ children: [child] }: { children: any; }) => (
-      <Text id={child.replaceAll(' ', '-')} fontSize="medium" fontWeight="medium" className={markdownStyles.h3}>{child}</Text>
+      <Text id={child.replaceAll(/[\d% ]/g, '-')} fontSize="medium" fontWeight="medium" className={markdownStyles.h3}>{child}</Text>
     ),
     p: ({ children, ...props }: { children: any; }) => (
       <Text textColor="gray-7" className={markdownStyles.p}>{children}</Text>
