@@ -134,6 +134,10 @@ const bind = (bindings: { [name: string]: KopiValue; }) => {
   };
 };
 
+//
+// Code
+//
+
 const Code = ({
   children,
   language,
@@ -277,9 +281,7 @@ const Markdown = ({ args, ...props }: any) => {
   const markdownStyles = useMarkdownStyles();
 
   const sidebarComponents = React.useMemo(() => ({
-    h1: ({ children }: { children: any; }) => (
-      <Text fontSize="large" fontWeight="thin" className={sidebarStyles.h1}>{children}</Text>
-    ),
+    h1: () => null,
     h2: ({ children: [child] }: { children: any; }) => (
       <Text
         fontSize="medium"
@@ -303,13 +305,13 @@ const Markdown = ({ args, ...props }: any) => {
         {child}
       </Text>
     ),
-    p: ({ children }: { children: any; }) => null,
+    p: () => null,
     strong: ({ children }: { children: any; }) => (
       <Text fontWeight="bold" textColor="gray-7">{children}</Text>
     ),
-    code: ({ children }: { children: any; }) => null,
+    code: () => null,
     pre: () => null,
-  }), [sidebarStyles.h1, sidebarStyles.h2, sidebarStyles.h3]);
+  }), [sidebarStyles.h2, sidebarStyles.h3]);
 
   const markdownComponents = React.useMemo(() => ({
     h1: ({ children }: { children: any; }) => (
@@ -359,8 +361,6 @@ const Markdown = ({ args, ...props }: any) => {
       }
 
       if (markdown.includes('-float')) {
-        console.log(markdownElementRef.current?.parentElement?.parentElement?.parentElement);
-
         const window = markdownElementRef.current?.parentElement?.parentElement?.parentElement;
 
         if (window && window.offsetWidth === 1024) {
