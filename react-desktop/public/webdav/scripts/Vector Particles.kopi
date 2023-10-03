@@ -19,7 +19,11 @@ gravity = Vector (
 
 ParticleSystem = component (setState) => {
   handleUpdate () = {
-    setState (positions = initialPositions, velocities = initialVelocities, frame = 0) =>
+    setState (
+      positions = initialPositions
+      velocities = initialVelocities
+      frame = 0
+    ) =>
       frame > 300 ? (
         initialPositions
         initialVelocities

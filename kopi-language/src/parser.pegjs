@@ -305,7 +305,7 @@ PrimaryPattern
         fieldPatterns: [],
       }
     }
-  / "(" _ colon:(":")? head:Pattern tail:(_ "," _ (":")? Pattern)* _ ")" {
+  / "(" __ colon:(":")? head:Pattern tail:(_ ("," / Newline+) _ (":")? Pattern)* __ ")" {
       return !colon && tail.length === 0 ? head : {
         type: 'TuplePattern',
         fieldPatterns: tail.reduce((patterns, [, , , , pattern]) => [
