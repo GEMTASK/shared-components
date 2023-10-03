@@ -210,8 +210,9 @@ const App = () => {
 
         if (mapping) {
           const { icon, title, client, rect } = mapping;
+          const titleArg = event.data.payload.split('/').at(-1);
 
-          addWindow(icon, title, React.cloneElement(client, { args: event.data.payload }), rect);
+          addWindow(icon, `${title}${titleArg ? ' — ' + titleArg : ''}`, React.cloneElement(client, { args: event.data.payload }), rect);
         }
       }
     }

@@ -241,7 +241,7 @@ const Code = ({
   const float = language?.includes('float') && {
     float: 'right',
     minWidth: 600,
-    marginLeft: 32
+    margin: '0 0 0 32px'
   } as const;
 
   return (
@@ -361,7 +361,7 @@ const Markdown = ({ args, ...props }: any) => {
 
   return (
     <Stack horizontal divider {...props} style={{ userSelect: 'text' }}>
-      <View padding="large" fillColor="gray-1" style={{ display: 'block', width: 256, overflow: 'auto' }}>
+      <View padding="large" fillColor="gray-1" style={{ display: 'block', width: 300, overflow: 'auto' }}>
         <ReactMarkdown components={sidebarComponents}>
           {markdown}
         </ReactMarkdown>
