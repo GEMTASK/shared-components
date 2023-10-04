@@ -168,7 +168,7 @@ const Button = ({
       {...props}
     >
       {!!icon && (
-        <Icon icon={icon} color={textColor} size={iconSize ?? getIconSize({ size })} />
+        <Icon icon={icon} color={textColor} size={iconSize ?? getIconSize({ size })} style={{ marginTop: -1, marginBottom: -1 }} />
       )}
       {!!icon && !!title && !(tabletTitleHidden && isTablet) && (
         <Spacer size="small" minWidth={size === 'xsmall' ? 6 : undefined} />

@@ -88,27 +88,40 @@ const useMarkdownStyles = createUseStyles({
     },
   },
   table: {
+    width: '100%',
     marginTop: 16,
     marginBottom: 16,
     borderSpacing: 0,
   },
   th: {
+    whiteSpace: 'nowrap',
     textAlign: 'left',
     borderBottom: '1px solid #dee2e6',
     paddingBottom: 8,
     '&:not(:first-child)': {
       textAlign: 'left',
       paddingLeft: 16
+    },
+    '&:last-child': {
+      width: '100%'
     }
+  },
+  tr: {
+    // '&:last-child $td': {
+    //   borderBottom: '1px solid #dee2e6',
+    // },
+    // '&:has(td:first-child:empty) $td': {
+    //   padding: 0,
+    //   borderBottom: '1px solid #dee2e6',
+    // }
   },
   td: {
     borderBottom: '1px solid #dee2e6',
     paddingTop: 8,
     paddingBottom: 8,
     '&:not(:first-child)': {
-      // textAlign: 'left',
       paddingLeft: 16,
-    }
+    },
   },
 });
 
@@ -272,7 +285,7 @@ const Code = ({
 //
 
 const Markdown = ({ args, ...props }: any) => {
-  console.log('Markdown()', props);
+  console.log('Markdown()');
 
   const [markdown, setMarkdown] = useState('');
   const markdownElementRef = useRef<HTMLElement>(null);
@@ -336,6 +349,11 @@ const Markdown = ({ args, ...props }: any) => {
     table: ({ children }: any) => (
       <table className={markdownStyles.table}>{children}</table>
     ),
+    tr: ({ children }: any) => (
+      <tr className={markdownStyles.tr}>
+        {children}
+      </tr>
+    ),
     th: ({ children }: any) => (
       <th className={markdownStyles.th}>
         <Text caps fontSize="xxsmall" fontWeight="semibold" textColor="gray-6">
@@ -345,12 +363,14 @@ const Markdown = ({ args, ...props }: any) => {
     ),
     td: ({ children, style, ...props }: any) => (
       <td className={markdownStyles.td}>
-        <Text textAlign={style?.textAlign}>
-          {children}
-        </Text>
+        {children && (
+          <Text textAlign={style?.textAlign}>
+            {children}
+          </Text>
+        )}
       </td>
     ),
-  }), [markdownStyles.code, markdownStyles.h1, markdownStyles.h2, markdownStyles.h3, markdownStyles.p, markdownStyles.table, markdownStyles.td, markdownStyles.th]);;
+  }), [markdownStyles.code, markdownStyles.h1, markdownStyles.h2, markdownStyles.h3, markdownStyles.p, markdownStyles.table, markdownStyles.td, markdownStyles.th, markdownStyles.tr]);;
 
   useEffect(() => {
     (async () => {
