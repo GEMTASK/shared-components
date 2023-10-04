@@ -176,7 +176,7 @@ async function kopi_Svg(props: KopiTuple, context: Context) {
 
 async function kopi_requestAnimationFrame(func: KopiFunction, context: Context) {
   window.requestAnimationFrame(() => {
-    func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
+    func.apply(KopiTuple.empty, [func, context]);
   });
   // setTimeout(() => {
   //   func.apply(KopiTuple.empty, [KopiTuple.empty, context]);

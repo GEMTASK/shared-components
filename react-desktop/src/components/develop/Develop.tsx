@@ -58,7 +58,7 @@ const bind = (bindings: { [name: string]: kopi.KopiValue; }) => {
 };
 
 const Develop = ({ args, ...props }: any) => {
-  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(true);
+  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(window.innerWidth >= 1440);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
   const [text, setText] = useState<string>();
   const [value, setValue] = useState<React.ReactElement>();

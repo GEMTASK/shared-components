@@ -18,7 +18,7 @@ gravity = Vector (
 )
 
 ParticleSystem = component (setState) => {
-  handleUpdate () = {
+  requestAnimationFrame (handleUpdate) => {
     setState (
       positions = initialPositions
       velocities = initialVelocities
@@ -36,8 +36,6 @@ ParticleSystem = component (setState) => {
 
     requestAnimationFrame handleUpdate
   }
-
-  requestAnimationFrame handleUpdate
 
   (positions, velocities, frame) => {
     Svg () {
