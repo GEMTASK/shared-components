@@ -24,31 +24,53 @@ class KopiElement extends KopiValue {
         const awaitedChild = await child;
 
         if (awaitedChild.children instanceof KopiString) {
-          return React.createElement(this.component, awaitedChild.props, awaitedChild.children.value) as any;
+          return React.createElement(
+            this.component,
+            awaitedChild.props,
+            awaitedChild.children.value
+          ) as any;
         } else if (awaitedChild.children) {
-          return React.createElement(awaitedChild.component, { key: index, ...awaitedChild.props }, await this.inspectChildren(awaitedChild.children._elements));
+          return React.createElement(
+            awaitedChild.component,
+            { key: index, ...awaitedChild.props },
+            await this.inspectChildren(awaitedChild.children._elements)
+          );
         }
 
-        return React.createElement(awaitedChild.component, { key: index, ...awaitedChild.props }) as any;
+        return React.createElement(
+          awaitedChild.component,
+          { key: index, ...awaitedChild.props }
+        ) as any;
       })
     );
   }
 
   async inspect() {
     if (this.children instanceof KopiString) {
-      return React.createElement(this.component, this.props, this.children.value) as any;
+      return React.createElement(
+        this.component,
+        this.props,
+        this.children.value
+      ) as any;
     } else if (this.children) {
-      return React.createElement(this.component, this.props, await this.inspectChildren(this.children._elements)) as any;
+      return React.createElement(
+        this.component,
+        this.props,
+        await this.inspectChildren(this.children._elements)
+      ) as any;
     }
 
-    return React.createElement(this.component, this.props) as any;
+    return React.createElement(
+      this.component,
+      this.props
+    ) as any;
   }
 }
 
 const Component = (component: KopiFunction, context: Context) => function _({ props }: any) {
   const functionRef = useRef<KopiFunction>();
 
-  const [state, _setState] = useState<KopiValue>(KopiTuple.empty);
+  const [state, _setState] = useState<KopiValue | Promise<KopiValue>>(KopiTuple.empty);
   const [value, setValue] = useState<any>(null);
 
   const setState = useCallback(async (value: KopiFunction) => {
@@ -64,12 +86,20 @@ const Component = (component: KopiFunction, context: Context) => function _({ pr
       if (!functionRef.current) {
         functionRef.current = await component.apply(KopiTuple.empty, [setState, context]) as KopiFunction;
       }
+    })();
+  }, [setState]);
+
+  useEffect(() => {
+    (async () => {
+      if (!functionRef.current) {
+        return;
+      }
 
       const value = await functionRef.current.apply(KopiTuple.empty, [await state, context]);
 
       setValue(await value.inspect());
     })();
-  }, [setState, state]);
+  }, [state]);
 
   return value;
 };
