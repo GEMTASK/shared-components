@@ -28,7 +28,7 @@ class KopiElement extends KopiValue {
             this.component,
             awaitedChild.props,
             awaitedChild.children.value
-          ) as any;
+          );
         } else if (awaitedChild.children) {
           return React.createElement(
             awaitedChild.component,
@@ -40,7 +40,7 @@ class KopiElement extends KopiValue {
         return React.createElement(
           awaitedChild.component,
           { key: index, ...awaitedChild.props }
-        ) as any;
+        );
       })
     );
   }
@@ -51,18 +51,18 @@ class KopiElement extends KopiValue {
         this.component,
         this.props,
         this.children.value
-      ) as any;
+      );
     } else if (this.children) {
       return React.createElement(
         this.component,
         this.props,
         await this.inspectChildren(this.children._elements)
-      ) as any;
+      );
     }
 
     return React.createElement(
       this.component,
-      this.props
+      this.props,
     ) as any;
   }
 }
