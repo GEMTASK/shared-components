@@ -23,7 +23,7 @@ generateParticle () = {
 initialState = 1..20 | map generateParticle
 
 ParticleSystem = component (setState) => {
-  handleUpdate () = {
+  requestAnimationFrame (handleUpdate) => {
     setState (particles = initialState) => {
       particles | map (position, velocity, ttl) => {
         ttl < 0 ? generateParticle () : Particle (
@@ -36,8 +36,6 @@ ParticleSystem = component (setState) => {
     
     requestAnimationFrame handleUpdate
   }
-
-  requestAnimationFrame handleUpdate
 
   (particles) => {
     Svg () {
