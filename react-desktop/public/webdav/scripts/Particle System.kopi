@@ -33,11 +33,11 @@ ParticleSystem = component (setState) => {
         )
       } | toArray
     }
-    
+
     requestAnimationFrame handleUpdate
   }
 
-  (particles) => {
+  (particles = initialState) => {
     Svg () {
       particles | map (position, velocity) => {
         Circle (cx: position.0, cy: position.1, r: 2)

@@ -29,7 +29,7 @@ ParticleSystem = component (setState) => {
         initialVelocities
         0
       ) : (
-        positions + velocities 
+        positions + velocities
         velocities + gravity
         frame + 1
       )
@@ -37,7 +37,7 @@ ParticleSystem = component (setState) => {
     requestAnimationFrame handleUpdate
   }
 
-  (positions, velocities, frame) => {
+  (positions = initialPositions, velocities = initialVelocities, frame = 0) => {
     Svg () {
       0..(particlesCount - 1) | map (index) => {
         Circle (

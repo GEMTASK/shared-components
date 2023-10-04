@@ -230,32 +230,24 @@ View (
 ]
   `,
   `
-Hello setState (state = 0) = {
-  Text (
-    padding: "small"
-    fillColor: "green-1"
-    onClick: () => {
-      setState (state + 1)
-    }
-  ) ("Counter: " ++ String state)
-}
-element (Hello, (), [])
-  `,
-  `
-Hello = component (setState) =>
+Hello = component (setState) => {
+  handleClick () = {
+    setState (state = 0) => state + 1
+  }
+
   (state = 0) => {
     Text (
       padding: "small"
       fillColor: "green-1"
-      onClick: () => {
-        setState (state + 1)
-      }
+      onClick: handleClick
     ) ("Counter: " ++ String state)
   }
+}
+
 Hello () []
   `,
   `
-Goodbye = component () => (state) => {
+Goodbye = component () => () => {
   Text () "Goodbye"
 }
 Goodbye () []
