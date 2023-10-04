@@ -78,7 +78,7 @@ const DisplayItem = ({
   }, []);
 
   const menuItems = [
-    { title: 'Open', action: () => { console.log('here'); onFileOpen?.(filename); } },
+    { title: 'Open', action: () => onFileOpen?.(filename) },
     { title: 'Edit', action: () => 0 },
   ];
 
@@ -267,7 +267,7 @@ const Files = ({ ...props }: any) => {
       <Splitter flex horizontal style={{ minHeight: 0, overflow: 'auto' }}>
         {isSidebarOpen && (
           <View minWidth={112} style={{ width: 224 }}>
-            <View horizontal padding="small" fillColor="gray-1" minHeight={50}>
+            <View horizontal padding="small" fillColor="gray-1">
               <Button
                 hover
                 icon="table-columns"
