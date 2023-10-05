@@ -208,15 +208,22 @@ async function kopi_requestAnimationFrame(func: KopiFunction, context: Context) 
   window.requestAnimationFrame(() => {
     func.apply(KopiTuple.empty, [func, context]);
   });
-  // setTimeout(() => {
-  //   func.apply(KopiTuple.empty, [KopiTuple.empty, context]);
-  // }, 1000 / 30);
+}
+
+async function kopi_requestDebugAnimationFrame(func: KopiFunction, context: Context) {
+  // window.requestAnimationFrame(() => {
+  //   func.apply(KopiTuple.empty, [func, context]);
+  // });
+  setTimeout(() => {
+    func.apply(KopiTuple.empty, [func, context]);
+  }, 200);
 }
 
 export {
   kopi_element,
   kopi_component,
   kopi_requestAnimationFrame,
+  kopi_requestDebugAnimationFrame,
   kopi_View,
   kopi_Text,
   kopi_Button,

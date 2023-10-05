@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import * as kopi from 'kopi-language';
 
-import { kopi_component, kopi_element, kopi_View, kopi_Text, kopi_Button, kopi_Svg, kopi_Circle, kopi_requestAnimationFrame } from '../terminal/functions/react';
+import { kopi_component, kopi_element, kopi_View, kopi_Text, kopi_Button, kopi_Svg, kopi_Circle, kopi_requestAnimationFrame, kopi_requestDebugAnimationFrame } from '../terminal/functions/react';
 
 import { View, Splitter, Text, Button, Divider } from 'bare';
 
@@ -44,6 +44,7 @@ let environment = {
   component: kopi_component,
   element: kopi_element,
   requestAnimationFrame: kopi_requestAnimationFrame,
+  requestDebugAnimationFrame: kopi_requestDebugAnimationFrame,
   View: kopi_View,
   Text: kopi_Text,
   Button: kopi_Button,
@@ -77,6 +78,8 @@ const Develop = ({ args, ...props }: any) => {
         setValue(value);
       }
     } catch (error) {
+      console.warn(error);
+
       setValue(
         <Text padding="large" fillColor="red-1">
           {(error as Error).toString()}
