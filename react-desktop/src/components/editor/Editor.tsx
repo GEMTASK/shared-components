@@ -9,7 +9,7 @@ const Editor = ({ args, onChange, ...props }: any) => {
 
   useEffect(() => {
     (async () => {
-      const text = await (await fetch(`//webdav.mike-austin.com/${args}`)).text();
+      const text = await (await fetch(`//webdav.mike-austin.com/${args}?${Date.now()}`)).text();
 
       if (typeof text === 'string') {
         setValue(text);

@@ -1,17 +1,17 @@
 (:Vector) = import "scripts/vector.js"
 
-particlesCount = 10
+particlesCount = 100
 
 initialPositions = Vector (
   0..(particlesCount - 1) | flatMap (n) =>
-    [random 0..100, random 0..100]
+    [random 0..150, random 0..150]
 )
 
 initialVelocities = Vector (
   0..(particlesCount - 1) | flatMap (n) =>
     [0, 0]
 )
-
+                             
 ParticleSystem = component (setState) => {
   requestDebugAnimationFrame (handleUpdate) => {
     setState (
@@ -19,18 +19,12 @@ ParticleSystem = component (setState) => {
       velocities = initialVelocities
       frame = 0
     ) => {
-      frame > 300 ? (
-        initialPositions
-        initialVelocities
-        0
-      ) : {
-        (p, v) = Vector.applyGravity2D (positions, velocities)
+      (p, v) = Vector.applyGravity2D (positions, velocities)
 
-        (p, v, frame + 1)
-      }
+      (p, v, frame + 1)
     }
 
-    requestDebugAnimationFrame handleUpdate
+    requestAnimationFrame handleUpdate
   }
 
   (positions = initialPositions, velocities = initialVelocities, frame = 0) => {

@@ -58,16 +58,15 @@ KopiVector.applyGravity2D = (tuple) => {
 
   for (let i = 0; i < length; i += 2) {
     for (let j = i + 2; j < length; j += 2) {
-      const force = 1 / Math.sqrt(
-        Math.abs(positions[i + 0] - positions[j + 0])
-        * Math.abs(positions[i + 1] - positions[j + 1])
-      ) ** 2;
+      const vector = [positions[i + 0] - positions[j + 0], positions[i + 1] - positions[j + 1]];
 
-      velocities[i + 0] += force;
-      velocities[i + 1] += force;
+      const magnitude = Math.sqrt(Math.abs(vector[0] * vector[0]) + Math.abs(vector[1] * vector[1]));
 
-      velocities[j + 0] -= force;
-      velocities[j + 1] -= force;
+      velocities[i + 0] -= 0.0001 / magnitude * vector[0];
+      velocities[i + 1] -= 0.0001 / magnitude * vector[1];
+
+      velocities[j + 0] += 0.0001 / magnitude * vector[0];
+      velocities[j + 1] += 0.0001 / magnitude * vector[1];
     }
 
     positions[i + 0] += velocities[i + 0];
