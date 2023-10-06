@@ -371,7 +371,7 @@ cat "scripts/hello.kopi"
 hello "Joe"
   `,
   `
-(:Vector) = import "scripts/vector.js"
+(:Vector) = import "scripts/Vector.js"
 Vector [1, 2, 3] + Vector [2, 3, 5]
   `,
   `
