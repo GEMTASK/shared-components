@@ -98,6 +98,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       return new astnodes.TuplePattern({
         fieldPatterns: rawASTNode.fieldPatterns.map((pattern: ASTPatternNode) => transform(pattern)),
         fieldNames: rawASTNode.fieldNames,
+        defaultExpression: rawASTNode.defaultExpression && transform(rawASTNode.defaultExpression),
         location: rawASTNode.location,
       } as astnodes.TuplePattern);
     case 'ConstructorPattern':

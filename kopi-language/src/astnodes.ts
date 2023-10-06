@@ -192,12 +192,14 @@ class TupleExpression extends ASTNode {
 class TuplePattern extends ASTPatternNode {
   readonly fieldPatterns: ASTPatternNode[];
   readonly fieldNames: string[];
+  readonly defaultExpression: ASTNode | null;
 
-  constructor({ fieldPatterns, fieldNames, location }: TuplePattern) {
+  constructor({ fieldPatterns, fieldNames, defaultExpression, location }: TuplePattern) {
     super(location);
 
     this.fieldPatterns = fieldPatterns;
     this.fieldNames = fieldNames;
+    this.defaultExpression = defaultExpression;
   }
 
   async test(value: KopiValue, context: Context) {
@@ -213,7 +215,18 @@ class TuplePattern extends ASTPatternNode {
   }
 
   override async match(value: KopiValue, context: Context) {
+    const { evaluate, environment, bind } = context;
+
+    if (this.defaultExpression) {
+      if (value === KopiTuple.empty) {
+        value = await evaluate(this.defaultExpression, environment, bind);
+      } else {
+        throw new TypeError(`Match expected a value but ${value} found.`);
+      }
+    }
+
     const tuple = value as KopiTuple;
+
     let bindings = {};
 
     for (const [index, pattern] of this.fieldPatterns.entries()) {
@@ -381,11 +394,6 @@ class ArrayLiteralPattern extends ASTPatternNode {
   override async match(value: KopiValue, context: Context) {
     const { evaluate, environment, bind } = context;
 
-    let bindings = {};
-    let index = 0;
-    let init = [];
-    let rest = [];
-
     if (value === KopiTuple.empty) {
       if (this.defaultExpression) {
         value = await evaluate(this.defaultExpression, environment, bind);
@@ -395,6 +403,11 @@ class ArrayLiteralPattern extends ASTPatternNode {
     }
 
     let array = value as KopiArray;
+
+    let bindings = {};
+    let index = 0;
+    let init = [];
+    let rest = [];
 
     for await (const value of array) {
       if (this.restPattern && index > this.elementPatterns.length - 1) {

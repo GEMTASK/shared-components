@@ -17,9 +17,14 @@ ParticleSystem = component (setState) => {
       velocities = initialVelocities
       frame = 0
     ) => {
-      (p, v) = Vector.applyGravity2D (positions, velocities)
-
-      (p, v, frame + 1)
+      let ((
+        positions
+        velocities
+      ) = Vector.applyGravity2D (positions, velocities)) => (
+        positions
+        velocities
+        frame + 1
+      )
     }
 
     requestAnimationFrame handleUpdate
