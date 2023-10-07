@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import * as WebDAV from 'webdav';
 
 import * as kopi from 'kopi-language';
 
 import { kopi_component, kopi_element, kopi_View, kopi_Text, kopi_Button, kopi_Svg, kopi_Circle, kopi_requestAnimationFrame, kopi_requestDebugAnimationFrame } from '../terminal/functions/react';
 
-import { View, Splitter, Text, Button, Divider } from 'bare';
+import { View, Splitter, Text, Button, Divider, Icon, Spacer } from 'bare';
 
 import TextEdit from '../editor/components/TextEdit';
+
+const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
 
 async function kopi_import(url: kopi.KopiString, context: kopi.Context) {
   if (url.value.endsWith('.js')) {
@@ -58,11 +61,47 @@ const bind = (bindings: { [name: string]: kopi.KopiValue; }) => {
   environment = newEnvironment as any;
 };
 
+const Item = ({ type, basename, filename, selected, children, onItemSelect }: any) => {
+  const icon = type === 'directory' ? 'folder' : 'file';
+  const color = type === 'directory' ? 'yellow-4' : 'gray-4';
+
+  return (
+    <View>
+      <View
+        key={filename}
+        horizontal
+        align="left"
+        padding="small"
+        border={selected}
+        borderColor="alpha-1"
+        fillColor={selected ? 'blue-0' : undefined}
+        onPointerDown={() => onItemSelect(filename)}
+      >
+        <Icon fixedWidth icon="angle-right" style={{ width: 20, visibility: type === 'directory' ? 'visible' : 'hidden' }} />
+        <Icon fixedWidth icon={icon} color={color} size="lg" style={{ width: 20 }} />
+        <Spacer size="xsmall" />
+        <Text lineClamp={1}>{basename}</Text>
+      </View>
+      <View style={{ marginLeft: 20 }}>
+        {children}
+      </View>
+    </View>
+  );
+};
+
 const Develop = ({ args, ...props }: any) => {
   const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(window.innerWidth >= 1440);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
   const [text, setText] = useState<string>();
   const [value, setValue] = useState<React.ReactElement>();
+
+  const [items, setItems] = useState<WebDAV.FileStat[] | null>(null);
+  const [currentDirectory, setCurrentDirectory] = useState('/');
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+  const handleItemSelect = (filename: string) => {
+    setSelectedItem(filename);
+  };
 
   const interpret = async (source: string) => {
     try {
@@ -94,6 +133,16 @@ const Develop = ({ args, ...props }: any) => {
 
   useEffect(() => {
     (async () => {
+      const directoryItems = await webdavClient.getDirectoryContents(currentDirectory);
+
+      if (Array.isArray(directoryItems)) {
+        setItems(directoryItems);
+      }
+    })();
+  }, [currentDirectory]);
+
+  useEffect(() => {
+    (async () => {
       const text = await (await fetch(`//webdav.mike-austin.com/${args}?${Date.now()}`)).text();
 
       if (typeof text === 'string') {
@@ -112,6 +161,20 @@ const Develop = ({ args, ...props }: any) => {
             <Button icon="house" />
           </View>
           <Divider />
+          <View padding="small">
+            <View>
+              {items?.map(({ type, basename, filename }) => (
+                <Item type={type} basename={basename} filename={filename} selected={filename === selectedItem} onItemSelect={handleItemSelect} />
+              ))}
+              {/* <Item type="directory" selected>
+                <Item type="file" />
+                <Item type="directory">
+                  <Item type="file" />
+                </Item>
+                <Item type="file" />
+              </Item> */}
+            </View>
+          </View>
         </View>
       )}
       <View flex>

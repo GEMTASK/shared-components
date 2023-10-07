@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useMemo, useState } from 'react';
-import * as WebDAV from 'webdav';
 import HumanReadable from '@tsmx/human-readable';
+import * as WebDAV from 'webdav';
 
 import { Button, Divider, Grid, Icon, Spacer, Splitter, Table, Text, View, Menu, ViewProps, Stack } from 'bare';
 import { ButtonProps } from 'bare/dist/components/button';
