@@ -1,4 +1,4 @@
-(:Vector) = import "scripts/Vector.js"
+(:Vector) = import "Scripts/Vector.js"
 
 particlesCount = 100
 

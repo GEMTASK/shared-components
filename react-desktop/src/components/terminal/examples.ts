@@ -361,17 +361,17 @@ inspect [1, "2", 3]
 ls
   `,
   `
-ls 'l "scripts"
+ls 'l "Scripts"
   `,
   `
-cat "scripts/hello.kopi"
+cat "Scripts/hello.kopi"
   `,
   `
-(:hello) = import "scripts/hello.kopi"
+(:hello) = import "Scripts/hello.kopi"
 hello "Joe"
   `,
   `
-(:Vector) = import "scripts/Vector.js"
+(:Vector) = import "Scripts/Vector.js"
 Vector [1, 2, 3] + Vector [2, 3, 5]
   `,
   `
