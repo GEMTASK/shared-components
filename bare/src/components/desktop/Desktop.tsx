@@ -1,6 +1,6 @@
 import React, { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 
-import View from '../view/index.js';
+import View, { ViewProps } from '../view/index.js';
 
 import Window from './Window.js';
 
@@ -16,7 +16,7 @@ function getOffsetsRect(windowElement: HTMLElement) {
 }
 
 //
-//
+// Desktop
 //
 
 type DesktopProps = {
@@ -32,7 +32,7 @@ type DesktopProps = {
   onWindowFocus?: (id: string) => void,
   onWindowChange?: (id: string, rect: DOMRect) => void,
   onWindowClose?: (id: string) => void,
-};
+} & ViewProps;
 
 const Desktop = ({
   windows,
@@ -41,6 +41,7 @@ const Desktop = ({
   onWindowFocus,
   onWindowChange,
   onWindowClose,
+  ...props
 }: DesktopProps) => {
   console.log('Desktop()');
 
@@ -80,6 +81,7 @@ const Desktop = ({
       flex
       ref={desktopElementRef}
       style={style}
+      {...props}
       onPointerDown={handlePointerDown}
     >
       {windows.map(({ id, title, element, rect }) => (

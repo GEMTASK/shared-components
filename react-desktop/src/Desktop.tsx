@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { v4 as uuidv4 } from 'uuid';
 
 import { View, Text, Button, Spacer, Stack, Icon } from 'bare';
@@ -151,6 +152,10 @@ const App = () => {
   const [windows, setWindows] = useState<WindowsProp>(window.innerWidth < 1440 || params.get('app') ? [] : initialState);
   const [windowIdOrder, setWindowIdOrder] = useState<string[]>(windows.map(({ id }) => id));
   const [isSidebarHidden, setIsSidebarHidden] = useState(window.innerWidth < 1024);
+
+  useHotkeys('alt+tab', () => console.log('here'), {
+    preventDefault: true
+  }, []);
 
   const addWindow = useCallback((icon: string, title: string, element: React.ReactElement, rect?: Rect) => {
     const id = uuidv4();
