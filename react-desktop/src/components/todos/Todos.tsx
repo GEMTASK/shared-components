@@ -8,9 +8,10 @@ const initialState = [
   { id: 3, title: 'BigInt', done: false },
   { id: 4, title: 'IndexDB', done: false },
   { id: 5, title: 'LocalStorage', done: false },
-  { id: 6, title: 'TypedArray', done: false },
+  { id: 6, title: 'TypedArray (Vector)', done: true },
   { id: 7, title: 'Enumerations', done: false },
   { id: 8, title: 'Fix leaky JS types', done: false },
+  { id: 8, title: 'Desktop dark mode', done: false },
 ];
 
 const Todos = ({ ...props }) => {
