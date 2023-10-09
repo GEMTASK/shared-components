@@ -216,7 +216,7 @@ const Files = ({ ...props }: any) => {
   const [currentDirectory, setCurrentDirectory] = useState('/');
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [files, setFiles] = useState<WebDAV.FileStat[] | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth >= 640);
 
   const DisplayButton = useMemo(() => ({ displayType, ...props }: { displayType: keyof typeof DisplayType; } & ButtonProps) => {
     const handleClick = () => {
@@ -229,7 +229,16 @@ const Files = ({ ...props }: any) => {
   }, [selectedDisplayType]);
 
   const handleHomeClick = useCallback(() => {
-    setCurrentDirectory('/');
+    setCurrentDirectory(currentDirectory => {
+      const lastIndex = currentDirectory.lastIndexOf('/');
+
+      if (lastIndex === 0) {
+        return '/';
+      }
+
+      return currentDirectory.slice(0, currentDirectory.lastIndexOf('/'));
+    });
+
     setSelectedFile(null);
   }, []);
 
@@ -301,8 +310,8 @@ const Files = ({ ...props }: any) => {
                 selected={isSidebarOpen}
                 onClick={() => setIsSidebarOpen(isSidebarOpen => !isSidebarOpen)}
               />
-              <Spacer size="small" />
-              <Button hover icon="home" onClick={handleHomeClick} />
+              {/* <Spacer size="small" /> */}
+              <Button hover icon="angle-left" iconSize="lg" disabled={currentDirectory === '/'} onClick={handleHomeClick} />
               {/* <Spacer size="large" /> */}
               {/* <View>
                 <Text fontSize="xsmall" textColor="gray-6">webdav.mike-austin.com</Text>

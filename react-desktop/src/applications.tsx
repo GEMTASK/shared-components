@@ -38,7 +38,7 @@ const Applications = {
     icon: 'file', title: 'Editor', client: <Editor />, rect: { width: 800, height: 1024 }
   },
   'develop': {
-    icon: 'code', title: 'Develop', client: <Develop />, rect: { width: 1320, height: 1024 }
+    icon: 'code', title: 'Develop', client: <Develop />, rect: { width: 1440, height: 1024 }
   },
   'music': {
     icon: 'music', title: 'Music', client: <Music />, rect: { width: 400, height: 400 }

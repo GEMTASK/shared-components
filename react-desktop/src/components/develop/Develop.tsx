@@ -143,7 +143,7 @@ const Item = React.memo(({
         onDoubleClick={handleDoubleClick}
       >
         <Icon fixedWidth icon={arrowIcon} style={{ marginTop: -2, marginBottom: -2, width: 20, height: 14, visibility: arrowVisibility }} onClick={handleArrowClick} />
-        <Icon fixedWidth icon={icon} color={iconColor} style={{ marginTop: -2, marginBottom: -2, width: 20, height: 16 }} />
+        <Icon fixedWidth icon={icon} color={iconColor} style={{ marginTop: -3, marginBottom: -3, width: 20, height: 18 }} />
         <Spacer size="xsmall" />
         <Text lineClamp={1}>{basename}</Text>
       </View>
