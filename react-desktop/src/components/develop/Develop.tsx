@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import * as WebDAV from 'webdav';
 
 import * as kopi from 'kopi-language';
@@ -61,9 +61,49 @@ const bind = (bindings: { [name: string]: kopi.KopiValue; }) => {
   environment = newEnvironment as any;
 };
 
-const Item = ({ type, basename, filename, selected, children, onItemSelect }: any) => {
+type ItemProps = {
+  type: 'file' | 'directory',
+  basename: string,
+  filename: string,
+  selectedItem: string | null,
+  onItemSelect: (filename: string) => void;
+};
+
+const Item = ({
+  type,
+  basename,
+  filename,
+  selectedItem,
+  onItemSelect
+}: ItemProps) => {
+  const [items, setItems] = useState<WebDAV.FileStat[]>();
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleArrowClick = useCallback(async () => {
+    setIsExpanded(isExpanded => !isExpanded);
+  }, []);
+
+  const handleDoubleClick = useCallback(async () => {
+    setIsExpanded(isExpanded => !isExpanded);
+  }, []);
+
+  useEffect(() => {
+    if (isExpanded) {
+      (async () => {
+        const directoryItems = await webdavClient.getDirectoryContents(filename);
+
+        if (Array.isArray(directoryItems)) {
+          setItems(directoryItems);
+        }
+      })();
+    }
+  }, [filename, isExpanded]);
+
   const icon = type === 'directory' ? 'folder' : 'file';
-  const color = type === 'directory' ? 'yellow-4' : 'gray-4';
+  const iconColor = type === 'directory' ? 'yellow-4' : 'gray-4';
+
+  const arrowIcon = isExpanded ? 'angle-down' : 'angle-right';
+  const arrowVisibility = type === 'directory' ? 'visible' : 'hidden';
 
   return (
     <View>
@@ -72,19 +112,30 @@ const Item = ({ type, basename, filename, selected, children, onItemSelect }: an
         horizontal
         align="left"
         padding="small"
-        border={selected}
+        border={selectedItem === filename}
         borderColor="alpha-1"
-        fillColor={selected ? 'blue-0' : undefined}
+        fillColor={selectedItem === filename ? 'blue-0' : undefined}
         onPointerDown={() => onItemSelect(filename)}
+        onDoubleClick={handleDoubleClick}
       >
-        <Icon fixedWidth icon="angle-right" style={{ width: 20, visibility: type === 'directory' ? 'visible' : 'hidden' }} />
-        <Icon fixedWidth icon={icon} color={color} size="lg" style={{ width: 20 }} />
+        <Icon fixedWidth icon={arrowIcon} style={{ visibility: arrowVisibility }} onClick={handleArrowClick} />
+        <Icon fixedWidth icon={icon} color={iconColor} size="lg" />
         <Spacer size="xsmall" />
         <Text lineClamp={1}>{basename}</Text>
       </View>
-      <View style={{ marginLeft: 20 }}>
-        {children}
-      </View>
+      {isExpanded && (
+        <View style={{ marginLeft: 20 }}>
+          {items?.map(({ type, basename, filename }) => (
+            <Item
+              type={type}
+              basename={basename}
+              filename={filename}
+              selectedItem={selectedItem}
+              onItemSelect={onItemSelect}
+            />
+          ))}
+        </View>
+      )}
     </View>
   );
 };
@@ -95,7 +146,7 @@ const Develop = ({ args, ...props }: any) => {
   const [text, setText] = useState<string>();
   const [value, setValue] = useState<React.ReactElement>();
 
-  const [items, setItems] = useState<WebDAV.FileStat[] | null>(null);
+  const [items, setItems] = useState<WebDAV.FileStat[]>();
   const [currentDirectory, setCurrentDirectory] = useState('/');
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
@@ -161,19 +212,16 @@ const Develop = ({ args, ...props }: any) => {
             <Button icon="house" />
           </View>
           <Divider />
-          <View padding="small">
-            <View>
-              {items?.map(({ type, basename, filename }) => (
-                <Item type={type} basename={basename} filename={filename} selected={filename === selectedItem} onItemSelect={handleItemSelect} />
-              ))}
-              {/* <Item type="directory" selected>
-                <Item type="file" />
-                <Item type="directory">
-                  <Item type="file" />
-                </Item>
-                <Item type="file" />
-              </Item> */}
-            </View>
+          <View padding="small" style={{ overflow: 'auto' }}>
+            {items?.map(({ type, basename, filename }) => (
+              <Item
+                type={type}
+                basename={basename}
+                filename={filename}
+                selectedItem={selectedItem}
+                onItemSelect={handleItemSelect}
+              />
+            ))}
           </View>
         </View>
       )}

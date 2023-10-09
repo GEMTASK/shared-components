@@ -30,7 +30,7 @@ const DisplayItem = ({
   onFileEdit,
   ...props
 }: DisplayItemProps) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isContextMenuOpen, setIsMenuOpen] = useState(false);
   const firstEventRef = useRef<React.MouseEvent | null>(null);
 
   const handlePointerDown = (event: any) => {
@@ -93,7 +93,7 @@ const DisplayItem = ({
       onContextMenu={handleContextMenu}
       {...props}
     >
-      {isMenuOpen && (
+      {isContextMenuOpen && (
         <Menu.List
           fillColor="white"
           padding="small none"

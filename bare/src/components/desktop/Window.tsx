@@ -306,7 +306,7 @@ const Window = ({
       {...props}
       onPointerDownCapture={handleWindowPointerDown}
     >
-      <Sizer absolute style={{ inset: -15, touchAction: 'none' }} />
+      <Sizer absolute style={{ inset: -15, touchAction: 'none', cursor: 'ns-resize' }} />
       <View flex style={{ overflow: 'hidden', borderRadius: 4 }}>
         <View fillColor="gray-3" className={styles.Titlebar} {...titleBarEvents}>
           <View absolute className={styles.Extender} />
