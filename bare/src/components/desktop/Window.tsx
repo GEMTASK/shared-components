@@ -112,13 +112,33 @@ const Sizer = ({ ...props }: any) => {
       topWindowRectsRef.current = topWindowsRef.current.map(window => getOffsetsRect(window));
       bottomWindowRectsRef.current = bottomWindowsRef.current.map(window => getOffsetsRect(window));
     }
-
-    // if (leftWindowsRef.current.length > 0 || rightWindowsRef.current.length > 0) {
-    //   (event.currentTarget as HTMLElement).style.cursor = 'ns-reisze';
-    // }
   }, []);
 
-  const handlePointerMove = useCallback((event: React.PointerEvent) => {
+  const handlePointerMove = useCallback((event: React.PointerEvent<HTMLElement>) => {
+    const parentElement = event.currentTarget.parentElement;
+
+    if (parentElement) {
+      const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = parentElement;
+
+      if (
+        event.clientX - (offsetLeft + offsetWidth) > 0 && event.clientY - offsetTop - 32 < 0
+        || event.clientX - offsetLeft < 0 && event.clientY - (offsetTop + offsetHeight) - 32 > 0
+      ) {
+        event.currentTarget.style.cursor = 'nesw-resize';
+      } else if (
+        event.clientX - offsetLeft < 0 && event.clientY - offsetTop - 32 < 0
+        || event.clientX - (offsetLeft + offsetWidth) > 0 && event.clientY - (offsetTop + offsetHeight) - 32 > 0
+      ) {
+        event.currentTarget.style.cursor = 'nwse-resize';
+      } else if (event.clientX - offsetLeft < 0 || event.clientX - (offsetLeft + offsetWidth) > 0) {
+        event.currentTarget.style.cursor = 'ew-resize';
+      } else if (event.clientY - offsetTop - 32 < 0 || event.clientY - (offsetTop + offsetHeight) - 32 > 0) {
+        event.currentTarget.style.cursor = 'ns-resize';
+      } else {
+        event.currentTarget.style.cursor = '';
+      }
+    }
+
     if (firstEventRef.current && rightWindowsRef.current && rightWindowRectsRef.current) {
       const firstEvent = firstEventRef.current;
 
@@ -306,7 +326,7 @@ const Window = ({
       {...props}
       onPointerDownCapture={handleWindowPointerDown}
     >
-      <Sizer absolute style={{ inset: -15, touchAction: 'none', cursor: 'ns-resize' }} />
+      <Sizer absolute style={{ inset: -15, touchAction: 'none' }} />
       <View flex style={{ overflow: 'hidden', borderRadius: 4 }}>
         <View fillColor="gray-3" className={styles.Titlebar} {...titleBarEvents}>
           <View absolute className={styles.Extender} />

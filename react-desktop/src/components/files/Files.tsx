@@ -279,9 +279,9 @@ const Files = ({ ...props }: any) => {
             <View horizontal padding="small" fillColor="gray-1">
               <Button
                 hover
-                icon="table-columns"
-                selected={isSidebarOpen}
-                onClick={() => setIsSidebarOpen(isSidebarOpen => !isSidebarOpen)}
+                icon="star"
+                selected={false}
+              // onClick={() => setIsSidebarOpen(isSidebarOpen => !isSidebarOpen)}
               />
             </View>
             <Divider />
