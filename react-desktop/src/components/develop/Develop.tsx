@@ -66,17 +66,21 @@ type ItemProps = {
   basename: string,
   filename: string,
   selectedItem: string | null,
+  initialSelectedItem: string | null,
   onItemSelect: (filename: string) => void;
 };
 
-const Item = ({
+const Item = React.memo(({
   type,
   basename,
   filename,
   selectedItem,
+  initialSelectedItem,
   onItemSelect
 }: ItemProps) => {
-  const [items, setItems] = useState<WebDAV.FileStat[]>();
+  console.log('Item');
+
+  const [directoryItems, setDirectoryItems] = useState<WebDAV.FileStat[]>();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleArrowClick = useCallback(async () => {
@@ -84,20 +88,39 @@ const Item = ({
   }, []);
 
   const handleDoubleClick = useCallback(async () => {
-    setIsExpanded(isExpanded => !isExpanded);
-  }, []);
+    if (type === 'directory') {
+      setIsExpanded(isExpanded => !isExpanded);
+    }
+  }, [type]);
 
   useEffect(() => {
     if (isExpanded) {
+      console.log(1, filename);
+
       (async () => {
         const directoryItems = await webdavClient.getDirectoryContents(filename);
 
         if (Array.isArray(directoryItems)) {
-          setItems(directoryItems);
+          setDirectoryItems(directoryItems);
         }
       })();
     }
   }, [filename, isExpanded]);
+
+  useEffect(() => {
+    if (type === 'directory' && initialSelectedItem?.startsWith(filename)) {
+      console.log(2, filename);
+
+      (async () => {
+        const directoryItems = await webdavClient.getDirectoryContents(filename);
+
+        if (Array.isArray(directoryItems)) {
+          setDirectoryItems(directoryItems);
+          setIsExpanded(true);
+        }
+      })();
+    }
+  }, [filename, initialSelectedItem, type]);
 
   const icon = type === 'directory' ? 'folder' : 'file';
   const iconColor = type === 'directory' ? 'yellow-4' : 'gray-4';
@@ -125,12 +148,14 @@ const Item = ({
       </View>
       {isExpanded && (
         <View style={{ marginLeft: 20 }}>
-          {items?.map(({ type, basename, filename }) => (
+          {directoryItems?.map(({ type, basename, filename }) => (
             <Item
+              key={filename}
               type={type}
               basename={basename}
               filename={filename}
               selectedItem={selectedItem}
+              initialSelectedItem={initialSelectedItem}
               onItemSelect={onItemSelect}
             />
           ))}
@@ -138,7 +163,7 @@ const Item = ({
       )}
     </View>
   );
-};
+});
 
 const Develop = ({ args, ...props }: any) => {
   const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(window.innerWidth >= 1440);
@@ -146,9 +171,9 @@ const Develop = ({ args, ...props }: any) => {
   const [text, setText] = useState<string>();
   const [value, setValue] = useState<React.ReactElement>();
 
-  const [items, setItems] = useState<WebDAV.FileStat[]>();
+  const [directoryItems, setDirectoryItems] = useState<WebDAV.FileStat[]>();
   const [currentDirectory, setCurrentDirectory] = useState('/');
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(args);
 
   const handleItemSelect = (filename: string) => {
     setSelectedItem(filename);
@@ -187,7 +212,7 @@ const Develop = ({ args, ...props }: any) => {
       const directoryItems = await webdavClient.getDirectoryContents(currentDirectory);
 
       if (Array.isArray(directoryItems)) {
-        setItems(directoryItems);
+        setDirectoryItems(directoryItems);
       }
     })();
   }, [currentDirectory]);
@@ -213,12 +238,14 @@ const Develop = ({ args, ...props }: any) => {
           </View>
           <Divider />
           <View padding="small" style={{ overflow: 'auto' }}>
-            {items?.map(({ type, basename, filename }) => (
+            {directoryItems?.map(({ type, basename, filename }) => (
               <Item
+                key={filename}
                 type={type}
                 basename={basename}
                 filename={filename}
                 selectedItem={selectedItem}
+                initialSelectedItem={args}
                 onItemSelect={handleItemSelect}
               />
             ))}
