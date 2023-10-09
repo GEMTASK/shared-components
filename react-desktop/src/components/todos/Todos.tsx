@@ -11,7 +11,7 @@ const initialState = [
   { id: 6, title: 'TypedArray (Vector)', done: true },
   { id: 7, title: 'Enumerations', done: false },
   { id: 8, title: 'Fix leaky JS types', done: false },
-  { id: 8, title: 'Desktop dark mode', done: false },
+  { id: 9, title: 'Desktop dark mode', done: false },
 ];
 
 const Todos = ({ ...props }) => {
@@ -21,7 +21,7 @@ const Todos = ({ ...props }) => {
     <View {...props}>
       <Stack divider dividerInset={48} spacing="small" padding="large none" style={{ overflow: 'auto' }}>
         {todos.map(({ id, title, done }) => (
-          <View horizontal>
+          <View key={id} horizontal>
             <Spacer size="large" />
             <Checkbox
               flex
