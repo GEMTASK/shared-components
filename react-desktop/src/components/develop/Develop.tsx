@@ -135,19 +135,20 @@ const Item = React.memo(({
         horizontal
         align="left"
         padding="small"
+        style={{ paddingLeft: (filename.split('/').length - 2) * 20 + 8 }}
         border={selectedItem === filename}
         borderColor="alpha-1"
         fillColor={selectedItem === filename ? 'blue-0' : undefined}
         onPointerDown={() => onItemSelect(filename)}
         onDoubleClick={handleDoubleClick}
       >
-        <Icon fixedWidth icon={arrowIcon} style={{ visibility: arrowVisibility }} onClick={handleArrowClick} />
-        <Icon fixedWidth icon={icon} color={iconColor} size="lg" />
+        <Icon fixedWidth icon={arrowIcon} style={{ marginTop: -2, marginBottom: -2, width: 20, height: 14, visibility: arrowVisibility }} onClick={handleArrowClick} />
+        <Icon fixedWidth icon={icon} color={iconColor} style={{ marginTop: -2, marginBottom: -2, width: 20, height: 16 }} />
         <Spacer size="xsmall" />
         <Text lineClamp={1}>{basename}</Text>
       </View>
       {isExpanded && (
-        <View style={{ marginLeft: 20 }}>
+        <View>
           {directoryItems?.map(({ type, basename, filename }) => (
             <Item
               key={filename}
