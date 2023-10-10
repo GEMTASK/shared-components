@@ -49,7 +49,7 @@ abstract class KopiClass {
   }
 }
 
-type KopiValue = KopiClass;
+type KopiValue = KopiClass | number;
 
 declare global {
   interface FunctionConstructor {
@@ -65,6 +65,16 @@ declare global {
       [argument, context]: [KopiValue, Context]
     ): Promise<KopiValue>;
   }
+
+  interface Number {
+    inspect(): Promise<string>;
+    get fields(): Promise<KopiValue>[];
+    // toString(): Promise<KopiString>;
+    invoke(
+      methodName: string,
+      [argument, context]: [KopiValue, Context]
+    ): Promise<KopiValue>;
+  }
 }
 
 Function.prototype.inspect = function () {
@@ -74,6 +84,22 @@ Function.prototype.inspect = function () {
       : '<native-function>'
   );
 };
+
+Object.defineProperty(Function.prototype, 'fields', {
+  get() {
+    return [this.valueOf()];
+  }
+});
+
+Number.prototype.inspect = async function () {
+  return this.toString();
+};
+
+Object.defineProperty(Number.prototype, 'fields', {
+  get() {
+    return [this.valueOf()];
+  }
+});
 
 interface RawASTNode {
   [key: string]: any;

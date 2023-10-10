@@ -8,6 +8,10 @@ class KopiBoolean extends KopiClass {
   static false = new KopiBoolean(false);
 
   static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
+    if (typeof value === 'number') {
+      return KopiBoolean.false;
+    }
+
     return new KopiBoolean((await value.toString()).value === 'true' ? true : false);
   }
 

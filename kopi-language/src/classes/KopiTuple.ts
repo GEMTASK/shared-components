@@ -116,13 +116,17 @@ class KopiTuple extends KopiClass {
         this._fields.map(async (field) => {
           const resolvedField = await field;
 
-          const iterFunc = resolvedField[Symbol.asyncIterator];
+          if (typeof resolvedField === 'object') {
+            const iterFunc = resolvedField[Symbol.asyncIterator];
 
-          if (!iterFunc) {
-            throw new TypeError(`Value ${await resolvedField.inspect()} does not have an asyncIterator.`);
+            if (!iterFunc) {
+              throw new TypeError(`Value ${await resolvedField.inspect()} does not have an asyncIterator.`);
+            }
+
+            return iterFunc.apply(resolvedField, []);
           }
 
-          return iterFunc.apply(resolvedField, []);
+          throw new TypeError(`Value ${await resolvedField.inspect()} does not have an asyncIterator.`);
         })
       );
 

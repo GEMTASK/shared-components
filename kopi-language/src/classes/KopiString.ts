@@ -13,6 +13,7 @@ import type { KopiIterable } from './KopiIterable.js';
 interface KopiString extends KopiClass {
   toArray(): Promise<KopiArray>;
   map(func: KopiFunction, context: Context): KopiStream<KopiString>;
+  filter(func: KopiFunction, context: Context): KopiStream<KopiString>;
   reduce(func: KopiFunction, context: Context): Promise<KopiValue>;
   combos(): Promise<KopiValue>;
   some(func: KopiFunction, context: Context): Promise<KopiBoolean>;
@@ -29,7 +30,11 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
   let values: string = '';
 
   for await (const element of iterable) {
-    values += (await element.toString()).value;
+    if (typeof element === 'number') {
+      values += element.toString();
+    } else {
+      values += (await element.toString()).value;
+    }
   }
 
   return new KopiString(values);
@@ -65,7 +70,8 @@ import('./KopiStream.js').then((result) => {
 
     KopiString.prototype.toArray = ArrayIterable.prototype.toArray;
     KopiString.prototype.map = ArrayIterable.prototype.map;
-    KopiString.prototype.reduce = ArrayIterable.prototype.reduce;
+    KopiString.prototype.filter = StringIterable.prototype.filter;
+    KopiString.prototype.reduce = StringIterable.prototype.reduce;
     KopiString.prototype.combos = StringIterable.prototype.combos;
     KopiString.prototype.some = StringIterable.prototype.some;
     KopiString.prototype.every = StringIterable.prototype.every;
@@ -185,7 +191,11 @@ class KopiString extends KopiClass implements AsyncIterable<KopiValue> {
   }
 
   async apply(thisArg: this, [that]: [that: KopiValue]) {
-    return new KopiString(this.value.toString().concat((await that.toString()).value));
+    if (typeof that === 'number') {
+      new KopiString(this.value.concat(that.toString()));
+    } else {
+      return new KopiString(this.value.concat((await that.toString()).value));
+    }
   }
 
   succ(count: KopiNumber | KopiTuple): KopiString {
@@ -242,7 +252,11 @@ class KopiString extends KopiClass implements AsyncIterable<KopiValue> {
     let array = [];
 
     for await (const value of iterable) {
-      array.push(await value.toString());
+      if (typeof value === 'number') {
+        array.push(new KopiString(value.toString()));
+      } else {
+        array.push(await value.toString());
+      }
     }
 
     return new KopiString(array.map(string => string.value).join(this.value));

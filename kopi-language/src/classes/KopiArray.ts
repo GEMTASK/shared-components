@@ -175,13 +175,17 @@ class KopiArray extends KopiClass implements AsyncIterable<KopiValue> {
         this._elements.map(async (element) => {
           const resolvedElement = await element;
 
-          const iterFunc = resolvedElement[Symbol.asyncIterator];
+          if (typeof resolvedElement === 'object') {
+            const iterFunc = resolvedElement[Symbol.asyncIterator];
 
-          if (!iterFunc) {
-            throw new TypeError(`Value ${await resolvedElement.inspect()} does not have an asyncIterator.`);
+            if (!iterFunc) {
+              throw new TypeError(`Value ${await resolvedElement.inspect()} does not have an asyncIterator.`);
+            }
+
+            return iterFunc.apply(resolvedElement, []);
           }
 
-          return iterFunc.apply(resolvedElement, []);
+          throw new TypeError(`Value ${await resolvedElement.inspect()} does not have an asyncIterator.`);
         })
       );
 

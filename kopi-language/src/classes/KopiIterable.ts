@@ -64,12 +64,11 @@ function KopiIterable_T<TIterable extends KopiClass & AsyncIterable<TResult>, TR
         for await (const value of this) {
           const mappedValue = await func.apply(KopiTuple.empty, [value, context]);
 
-          if (Symbol.asyncIterator in mappedValue) {
+          if (typeof mappedValue === 'object' && Symbol.asyncIterator in mappedValue) {
             yield* (mappedValue as TIterable);
           } else {
             yield mappedValue;
           }
-
         }
       }.apply(this);
 

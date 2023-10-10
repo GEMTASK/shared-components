@@ -87,10 +87,10 @@ async function ApplyExpression(
 
   const func = await evaluate(expression, environment, bind);
 
-  if ('apply' in func && typeof func.apply === 'function') {
+  if ((typeof func === 'object' || typeof func === 'function') && 'apply' in func && typeof func.apply === 'function') {
     let argument = await evaluate(argumentExpression, environment, bind);
 
-    if ('iterable' in argument) {
+    if (typeof argument === 'object' && 'iterable' in argument) {
       argument = await (argument as any).fromIterable((argument as any).iterable);
     }
 

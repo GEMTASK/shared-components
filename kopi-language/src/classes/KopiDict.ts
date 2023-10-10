@@ -9,7 +9,7 @@ import KopiFunction from './KopiFunction.js';
 import type { KopiStream } from './KopiStream.js';
 import type { KopiIterable } from './KopiIterable.js';
 
-interface KopiDict extends KopiClass, KopiIterable<KopiValue> { };
+interface KopiDict extends KopiClass, KopiIterable<KopiClass> { };
 
 let DictStream: {
   new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiDict>;

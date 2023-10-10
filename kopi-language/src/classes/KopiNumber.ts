@@ -30,6 +30,10 @@ class KopiNumber extends KopiClass {
   static readonly E: KopiNumber = new KopiNumber(Math.E);
 
   static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
+    if (typeof value === 'number') {
+      return new KopiNumber(value);
+    }
+
     return new KopiNumber(Number((await value.toString()).value));
   }
 
