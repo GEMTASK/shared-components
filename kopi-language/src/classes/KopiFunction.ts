@@ -1,6 +1,6 @@
-import { ASTNode, ASTPatternNode, Context, Environment, KopiValue } from '../types.js';
+import { ASTNode, ASTPatternNode, Context, Environment, KopiClass, KopiValue } from '../types.js';
 
-class KopiFunction extends KopiValue {
+class KopiFunction extends KopiClass {
   readonly parameterPattern: ASTPatternNode;
   readonly predicateExpression: ASTNode;
   readonly bodyExpression: ASTNode;

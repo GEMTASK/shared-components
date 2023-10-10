@@ -1,4 +1,4 @@
-import { Context, KopiValue } from '../types.js';
+import { Context, KopiClass, KopiValue } from '../types.js';
 
 import KopiNumber from './KopiNumber.js';
 import KopiFunction from './KopiFunction.js';
@@ -16,7 +16,7 @@ import('./KopiStream.js').then((result) => {
   ArrayStream = result.KopiStream_T(KopiArray.fromIterable);
 });
 
-interface IKopiIterable<TResult extends KopiValue> {
+interface IKopiIterable<TResult extends KopiClass> {
   toArray(): Promise<KopiArray>;
   map(func: KopiFunction, context: Context): KopiStream<TResult>;
   flatMap(func: KopiFunction, context: Context): KopiStream<TResult>;
@@ -38,7 +38,7 @@ interface IKopiIterable<TResult extends KopiValue> {
   includes(value: KopiValue, context: Context): Promise<KopiBoolean>;
 }
 
-function KopiIterable_T<TIterable extends KopiValue & AsyncIterable<TResult>, TResult extends KopiValue>(
+function KopiIterable_T<TIterable extends KopiClass & AsyncIterable<TResult>, TResult extends KopiClass>(
   Stream: {
     new(iterable: AsyncIterable<KopiValue>): KopiStream<TResult>;
   },

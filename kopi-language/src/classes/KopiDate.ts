@@ -1,8 +1,8 @@
-import { KopiValue } from "../types.js";
+import { KopiClass, KopiValue } from "../types.js";
 
 import KopiNumber from "./KopiNumber.js";
 
-class KopiDate extends KopiValue {
+class KopiDate extends KopiClass {
   readonly _date: Date;
 
   readonly day: KopiNumber;

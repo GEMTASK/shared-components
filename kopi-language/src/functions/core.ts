@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 
 import { KopiArray, KopiBoolean, KopiFunction, KopiNumber, KopiString, KopiTuple } from '../classes/index.js';
-import { ASTNode, Bind, Context, KopiValue } from '../types.js';
+import { ASTNode, Bind, Context, KopiClass, KopiValue } from '../types.js';
 
 import KopiStream_T from '../classes/KopiStream.js';
 import KopiRange from '../classes/KopiRange.js';
@@ -18,7 +18,7 @@ async function kopi_let(func: KopiFunction, context: Context) {
   return result instanceof KopiLoop ? result.value : result;
 }
 
-class KopiLoop extends KopiValue {
+class KopiLoop extends KopiClass {
   constructor(value: KopiValue) {
     super();
 
@@ -195,7 +195,7 @@ class Channel {
 
 //
 
-class Coroutine extends KopiValue {
+class Coroutine extends KopiClass {
   channel: Channel = new Channel();
 
   async yield(func: KopiFunction, context: Context) {
@@ -219,7 +219,7 @@ async function kopi_spawn(func: KopiFunction, context: Context) {
   return coro;
 }
 
-class KopiContext extends KopiValue {
+class KopiContext extends KopiClass {
   symbol: symbol;
 
   constructor(value: KopiValue, bind: Bind) {

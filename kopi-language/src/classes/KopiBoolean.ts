@@ -1,9 +1,9 @@
-import { Context, KopiValue } from '../types.js';
+import { Context, KopiClass, KopiValue } from '../types.js';
 
 import KopiString from './KopiString.js';
 import KopiTuple from './KopiTuple.js';
 
-class KopiBoolean extends KopiValue {
+class KopiBoolean extends KopiClass {
   static true = new KopiBoolean(true);
   static false = new KopiBoolean(false);
 

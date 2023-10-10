@@ -1,4 +1,4 @@
-import { Context, KopiValue, ReactElement } from '../types.js';
+import { Context, KopiClass, KopiValue, ReactElement } from '../types.js';
 
 import KopiFunction from './KopiFunction.js';
 import KopiNumber from './KopiNumber.js';
@@ -6,7 +6,7 @@ import KopiArray from './KopiArray.js';
 
 import type { KopiIterable } from './KopiIterable.js';
 
-interface KopiStream<TResult extends KopiValue> extends KopiValue, AsyncIterable<KopiValue> {
+interface KopiStream<TResult extends KopiClass> extends KopiClass, AsyncIterable<KopiValue> {
   [Symbol.asyncIterator](): AsyncIterator<KopiValue>;
 
   toArray(): Promise<KopiArray>;
@@ -24,10 +24,10 @@ interface KopiStream<TResult extends KopiValue> extends KopiValue, AsyncIterable
   splitEvery(count: KopiNumber, context: Context): KopiStream<TResult>;
 }
 
-const KopiStream_T = <TResult extends KopiValue>(
+const KopiStream_T = <TResult extends KopiClass>(
   _fromIterable: (iterable: AsyncIterable<KopiValue>) => Promise<TResult>
 ) => {
-  interface KopiStream extends KopiValue, KopiIterable<TResult> { };
+  interface KopiStream extends KopiClass, KopiIterable<TResult> { };
 
   let RangeIterable: {
     new(Stream: {
@@ -55,7 +55,7 @@ const KopiStream_T = <TResult extends KopiValue>(
     // KopiStream.prototype.combos = RangeIterable.prototype.combos;
   });
 
-  class KopiStream extends KopiValue implements AsyncIterable<KopiValue> {
+  class KopiStream extends KopiClass implements AsyncIterable<KopiValue> {
     readonly iterable: AsyncIterable<KopiValue>;
     readonly fromIterable: (iterable: AsyncIterable<KopiValue>) => Promise<TResult>;
 

@@ -1,4 +1,4 @@
-import { Context, KopiValue } from '../types.js';
+import { Context, KopiValue, KopiClass } from '../types.js';
 
 import KopiArray from './KopiArray.js';
 import KopiBoolean from './KopiBoolean.js';
@@ -28,7 +28,7 @@ function transform(value: unknown): KopiValue {
   return KopiTuple.empty;
 }
 
-class KopiAny extends KopiValue {
+class KopiAny extends KopiClass {
   static fromJsonString(jsonString: KopiString) {
     const json = JSON.parse(jsonString.value);
 

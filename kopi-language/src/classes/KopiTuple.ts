@@ -1,4 +1,4 @@
-import { Context, KopiValue } from '../types.js';
+import { Context, KopiClass, KopiValue } from '../types.js';
 
 import KopiArray from './KopiArray.js';
 import KopiBoolean from './KopiBoolean.js';
@@ -19,7 +19,7 @@ import('./KopiStream.js').then((result) => {
 // class KopiTuple
 //
 
-class KopiTuple extends KopiValue {
+class KopiTuple extends KopiClass {
   static readonly empty = new KopiTuple([]);
 
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {

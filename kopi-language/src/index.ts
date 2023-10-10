@@ -347,7 +347,8 @@ export {
 };
 
 export {
-  KopiValue,
+  KopiClass,
+  type KopiValue,
   type Context,
 } from './types.js';
 

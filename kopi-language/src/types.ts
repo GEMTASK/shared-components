@@ -9,11 +9,11 @@ type ReactElement = {
   key: string | number | null;
 };
 
-interface KopiValue {
+interface KopiClass {
   [Symbol.asyncIterator]?(): AsyncIterator<KopiValue>;
 }
 
-abstract class KopiValue {
+abstract class KopiClass {
   // async _toString() {
   //   return `${this}`;
   // }
@@ -49,6 +49,8 @@ abstract class KopiValue {
   }
 }
 
+type KopiValue = KopiClass;
+
 declare global {
   interface FunctionConstructor {
     // traits: KopiTrait[];
@@ -77,7 +79,7 @@ interface RawASTNode {
   [key: string]: any;
 }
 
-class ASTNode extends KopiValue {
+class ASTNode extends KopiClass {
   location: {} = {};
 
   constructor(location: {}) {
@@ -125,7 +127,8 @@ export {
   type Bind,
   type Context,
   type ReactElement,
+  type KopiValue,
   ASTNode,
   ASTPatternNode,
-  KopiValue,
+  KopiClass,
 };

@@ -1,6 +1,6 @@
-import { ASTNode, KopiValue } from '../types.js';
+import { ASTNode, KopiClass, KopiValue } from '../types.js';
 
-class KopiAstLiteral extends KopiValue {
+class KopiAstLiteral extends KopiClass {
   readonly value: ASTNode;
 
   constructor(value: ASTNode) {

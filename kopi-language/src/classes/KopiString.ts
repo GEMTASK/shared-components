@@ -1,4 +1,4 @@
-import { Context, KopiValue } from '../types.js';
+import { Context, KopiClass, KopiValue } from '../types.js';
 
 import KopiNumber from './KopiNumber.js';
 import KopiArray from './KopiArray.js';
@@ -10,7 +10,7 @@ import KopiRange from './KopiRange.js';
 import type { KopiStream } from './KopiStream.js';
 import type { KopiIterable } from './KopiIterable.js';
 
-interface KopiString extends KopiValue {
+interface KopiString extends KopiClass {
   toArray(): Promise<KopiArray>;
   map(func: KopiFunction, context: Context): KopiStream<KopiString>;
   reduce(func: KopiFunction, context: Context): Promise<KopiValue>;
@@ -82,7 +82,7 @@ import('./KopiStream.js').then((result) => {
 // class KopiString
 //
 
-class KopiString extends KopiValue implements AsyncIterable<KopiValue> {
+class KopiString extends KopiClass implements AsyncIterable<KopiValue> {
   static newline = new KopiString('\n');
 
   static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {

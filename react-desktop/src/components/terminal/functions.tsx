@@ -3,14 +3,14 @@
 import * as WebDAV from 'webdav';
 
 import { KopiNumber, KopiString, KopiDate } from 'kopi-language';
-import { KopiValue } from 'kopi-language';
+import { KopiValue, KopiClass } from 'kopi-language';
 
 import Clock from '../clock/Clock';
 import Calendar from '../calendar/Calendar';
 
 const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
 
-class KopiDateFunction extends KopiValue {
+class KopiDateFunction extends KopiClass {
   static now() {
     return new KopiDate(new Date());
   }
@@ -24,13 +24,13 @@ class KopiDateFunction extends KopiValue {
   }
 }
 
-class KopiClock extends KopiValue {
+class KopiClock extends KopiClass {
   static async inspect() {
     return <Clock style={{ width: 150 }} />;
   }
 }
 
-class KopiCalendar extends KopiValue {
+class KopiCalendar extends KopiClass {
   static async inspect() {
     return <Calendar style={{ width: 360 }} />;
   }
@@ -40,7 +40,7 @@ async function kopi_meter(value: KopiNumber) {
   return new MetricUnit(value);
 }
 
-class MetricUnit extends KopiValue {
+class MetricUnit extends KopiClass {
   value: KopiNumber;
 
   constructor(value: KopiNumber) {

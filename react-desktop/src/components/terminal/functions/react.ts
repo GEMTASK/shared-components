@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 
 import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from 'kopi-language';
-import { Context, KopiValue } from 'kopi-language';
+import { Context, KopiValue, KopiClass } from 'kopi-language';
 
 import { Button, Text, View } from 'bare';
 
-class KopiElement extends KopiValue {
+class KopiElement extends KopiClass {
   component: React.ComponentType | string;
   props: any;
   children?: KopiArray;

@@ -1,4 +1,4 @@
-import { KopiValue } from '../types.js';
+import { KopiClass, KopiValue } from '../types.js';
 
 import KopiNumber from './KopiNumber.js';
 import KopiArray from './KopiArray.js';
@@ -9,7 +9,7 @@ import KopiString from './KopiString.js';
 import type { KopiStream } from './KopiStream.js';
 import type { KopiIterable } from './KopiIterable.js';
 
-interface KopiRange extends KopiValue, KopiIterable<KopiArray> { };
+interface KopiRange extends KopiClass, KopiIterable<KopiArray> { };
 
 let RangeStream: {
   new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiArray>;
@@ -53,7 +53,7 @@ import('./KopiStream.js').then((result) => {
 // class KopiRange
 //
 
-class KopiRange extends KopiValue implements AsyncIterable<KopiValue> {
+class KopiRange extends KopiClass implements AsyncIterable<KopiValue> {
   // static emptyValue = () => new KopiArray([]);
 
   from: KopiValue | Promise<KopiValue>;

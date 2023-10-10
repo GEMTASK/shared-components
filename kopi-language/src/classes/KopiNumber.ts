@@ -1,4 +1,4 @@
-import { Context, KopiValue } from '../types.js';
+import { Context, KopiClass, KopiValue } from '../types.js';
 
 import { error } from '../utils.js';
 
@@ -25,7 +25,7 @@ function kopiOperator(argumentType: () => Function) {
   };
 }
 
-class KopiNumber extends KopiValue {
+class KopiNumber extends KopiClass {
   static readonly PI: KopiNumber = new KopiNumber(Math.PI);
   static readonly E: KopiNumber = new KopiNumber(Math.E);
 

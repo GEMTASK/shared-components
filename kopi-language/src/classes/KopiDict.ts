@@ -1,4 +1,4 @@
-import { Context, KopiValue } from '../types.js';
+import { Context, KopiClass, KopiValue } from '../types.js';
 
 import KopiNumber from './KopiNumber.js';
 import KopiTuple from './KopiTuple.js';
@@ -9,7 +9,7 @@ import KopiFunction from './KopiFunction.js';
 import type { KopiStream } from './KopiStream.js';
 import type { KopiIterable } from './KopiIterable.js';
 
-interface KopiDict extends KopiValue, KopiIterable<KopiValue> { };
+interface KopiDict extends KopiClass, KopiIterable<KopiValue> { };
 
 let DictStream: {
   new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiDict>;
@@ -78,7 +78,7 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
 // class KopiDict
 //
 
-class KopiDict extends KopiValue implements AsyncIterable<KopiValue> {
+class KopiDict extends KopiClass implements AsyncIterable<KopiValue> {
   static async fromIterable(iterable: AsyncIterable<KopiTuple>) {
     return fromIterable(iterable);
   }

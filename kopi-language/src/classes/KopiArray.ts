@@ -1,4 +1,4 @@
-import { Context, KopiValue } from '../types.js';
+import { Context, KopiValue, KopiClass } from '../types.js';
 
 import KopiNumber from './KopiNumber.js';
 import KopiBoolean from './KopiBoolean.js';
@@ -9,7 +9,7 @@ import KopiString from './KopiString.js';
 import type { KopiStream } from './KopiStream.js';
 import type { KopiIterable } from './KopiIterable.js';
 
-interface KopiArray extends KopiValue, KopiIterable<KopiArray> { };
+interface KopiArray extends KopiClass, KopiIterable<KopiArray> { };
 
 let ArrayStream: {
   new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiArray>;
@@ -62,7 +62,7 @@ async function fromIterable(iterable: AsyncIterable<KopiValue>) {
 // class KopiArray
 //
 
-class KopiArray extends KopiValue implements AsyncIterable<KopiValue> {
+class KopiArray extends KopiClass implements AsyncIterable<KopiValue> {
   // static readonly emptyValue = () => new KopiArray([]);
 
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {
