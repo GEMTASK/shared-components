@@ -2,7 +2,7 @@
 
 import * as WebDAV from 'webdav';
 
-import { KopiNumber, KopiString, KopiDate } from 'kopi-language';
+import { KopiString, KopiDate } from 'kopi-language';
 import { KopiValue, KopiClass } from 'kopi-language';
 
 import Clock from '../clock/Clock';
@@ -36,21 +36,21 @@ class KopiCalendar extends KopiClass {
   }
 }
 
-async function kopi_meter(value: KopiNumber) {
+async function kopi_meter(value: number) {
   return new MetricUnit(value);
 }
 
 class MetricUnit extends KopiClass {
-  value: KopiNumber;
+  value: number;
 
-  constructor(value: KopiNumber) {
+  constructor(value: number) {
     super();
 
-    this.value = new KopiNumber(value.value * 1000);
+    this.value = value * 1000;
   }
 
   // toImperial() {
-  //   return new ImperialUnit(new KopiNumber(this.value.value * 3.28084));
+  //   return new ImperialUnit(this.value.value * 3.28084);
   // }
 }
 

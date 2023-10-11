@@ -2,7 +2,6 @@ import { Context, KopiValue, KopiClass } from '../types.js';
 
 import KopiArray from './KopiArray.js';
 import KopiBoolean from './KopiBoolean.js';
-import KopiNumber from './KopiNumber.js';
 import KopiString from './KopiString.js';
 
 import KopiTuple from './KopiTuple.js';
@@ -20,7 +19,7 @@ function transform(value: unknown): KopiValue {
   } else if (typeof value === 'string') {
     return new KopiString(value);
   } else if (typeof value === 'number') {
-    return new KopiNumber(value);
+    return value;
   } else if (typeof value === 'boolean') {
     return new KopiBoolean(value);
   }

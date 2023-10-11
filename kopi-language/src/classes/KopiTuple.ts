@@ -94,7 +94,7 @@ class KopiTuple extends KopiClass {
       const thisValue = await this._fields[index];
       const thatValue = await that._fields[index];
 
-      const result = await thisValue.invoke('==', [thatValue, context]);
+      const result = await thisValue.invoke(thisValue, '==', [thatValue, context]);
 
       if (!(result as KopiBoolean).value) {
         return new KopiBoolean(false);

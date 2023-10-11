@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 
-import { KopiArray, KopiBoolean, KopiFunction, KopiNumber, KopiString, KopiTuple } from '../classes/index.js';
+import { KopiArray, KopiBoolean, KopiFunction, KopiString, KopiTuple } from '../classes/index.js';
 import { ASTNode, Bind, Context, KopiClass, KopiValue } from '../types.js';
 
 import KopiStream_T from '../classes/KopiStream.js';
@@ -63,9 +63,9 @@ async function kopi_apply(func: KopiFunction, context: Context) {
   };
 }
 
-async function kopi_sleep(seconds: KopiNumber) {
+async function kopi_sleep(seconds: number) {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(seconds), seconds.value * 1000);
+    setTimeout(() => resolve(seconds), seconds * 1000);
   });
 }
 
@@ -84,10 +84,10 @@ async function kopi_fetch(url: KopiString, context: Context) {
 }
 
 async function kopi_random(range: KopiRange, context: Context) {
-  const from = (await range.from as KopiNumber).value;
-  const to = (await range.to as KopiNumber).value;
+  const from = await range.from as number;
+  const to = await range.to as number;
 
-  return new KopiNumber(Math.random() * (to - from) + from);
+  return Math.random() * (to - from) + from;
 }
 
 const RepeatStream = KopiStream_T(KopiArray.fromIterable);
@@ -97,7 +97,7 @@ async function kopi_repeat(func: KopiFunction, context: Context) {
     for (let n = 0; ; ++n) {
       if (n >= 10) break;
 
-      yield new KopiNumber(n);
+      yield n;
     }
   }.apply(KopiTuple.empty, []);
 

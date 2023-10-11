@@ -1,13 +1,11 @@
 import { KopiClass, KopiValue } from "../types.js";
 
-import KopiNumber from "./KopiNumber.js";
-
 class KopiDate extends KopiClass {
   readonly _date: Date;
 
-  readonly day: KopiNumber;
-  readonly month: KopiNumber;
-  readonly year: KopiNumber;
+  readonly day: number;
+  readonly month: number;
+  readonly year: number;
 
   static now() {
     return new KopiDate(new Date());
@@ -18,9 +16,9 @@ class KopiDate extends KopiClass {
 
     this._date = date;
 
-    this.day = new KopiNumber(date.getDay());
-    this.month = new KopiNumber(date.getMonth());
-    this.year = new KopiNumber(date.getFullYear());
+    this.day = date.getDay();
+    this.month = date.getMonth();
+    this.year = date.getFullYear();
   }
 
   async inspect() {

@@ -4,7 +4,7 @@ import { createUseStyles } from 'react-jss';
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 
 import * as kopi from 'kopi-language';
-import { Context, KopiValue, KopiNumber, KopiString, KopiTuple } from 'kopi-language';
+import { Context, KopiValue, KopiString, KopiTuple } from 'kopi-language';
 
 import exampless from './examples';
 import reference from './reference';
@@ -33,8 +33,8 @@ class KopiEnv {
 
 globalThis.environment = {
   ...(globalThis.environment || {}),
-  PI: new KopiNumber(Math.PI),
-  E: new KopiNumber(Math.E),
+  PI: Math.PI,
+  E: Math.E,
   //
   Any: kopi.KopiAny,
   Tuple: kopi.KopiTuple,
@@ -180,7 +180,7 @@ const interpret = async (
   const promise = new Promise(async (resolve, reject) => {
     try {
       async function kopi_print(value: KopiValue) {
-        const string = (await value.toString() as unknown as KopiString).value;
+        const string = await value.toNativeString();
 
         setElementHistory(history => [
           ...history,
@@ -217,7 +217,7 @@ const interpret = async (
 
       const value = await kopi.interpret(source, { ...globalThis.environment, print: kopi_print, import: kopi_import }, bind);
 
-      if (value) {
+      if (value !== undefined) {
         const element = await value.inspect();
 
         if (typeof element === 'string') {

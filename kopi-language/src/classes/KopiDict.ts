@@ -1,6 +1,5 @@
 import { Context, KopiClass, KopiValue } from '../types.js';
 
-import KopiNumber from './KopiNumber.js';
 import KopiTuple from './KopiTuple.js';
 import KopiString from './KopiString.js';
 import KopiArray from './KopiArray.js';
@@ -94,7 +93,7 @@ class KopiDict extends KopiClass implements AsyncIterable<KopiValue> {
     ]));
 
     Object.defineProperty(this, 'size', {
-      get: () => new KopiNumber(this._map.size)
+      get: () => this._map.size
     });
   }
 
@@ -123,7 +122,7 @@ class KopiDict extends KopiClass implements AsyncIterable<KopiValue> {
   }
 
   size() {
-    return new KopiNumber(this._map.size);
+    return this._map.size;
   }
 
   async at(key: KopiValue) {

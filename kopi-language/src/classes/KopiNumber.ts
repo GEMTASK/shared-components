@@ -26,15 +26,16 @@ function kopiOperator(argumentType: () => Function) {
 }
 
 class KopiNumber extends KopiClass {
-  static readonly PI: KopiNumber = new KopiNumber(Math.PI);
-  static readonly E: KopiNumber = new KopiNumber(Math.E);
+  static readonly Zero = new KopiNumber(0);
+  static readonly PI: number = Math.PI;
+  static readonly E: number = Math.E;
 
   static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
     if (typeof value === 'number') {
-      return new KopiNumber(value);
+      return value;
     }
 
-    return new KopiNumber(Number((await value.toString()).value));
+    return Number((await value.toString()).value);
   }
 
   //
@@ -49,8 +50,8 @@ class KopiNumber extends KopiClass {
     this.value = value;
   }
 
-  async toString() {
-    return new KopiString(`${this.value}`);
+  async toString(this: number) {
+    return new KopiString(`${this}`);
   }
 
   override async inspect() {
@@ -63,122 +64,122 @@ class KopiNumber extends KopiClass {
 
   //
 
-  @kopiOperator(() => KopiNumber)
-  '=='(that: KopiNumber) {
-    return new KopiBoolean(this.value === that.value);
+  // @kopiOperator(() => Number)
+  '=='(this: number, that: number) {
+    return new KopiBoolean(this === that);
   }
 
-  @kopiOperator(() => KopiNumber)
-  '!='(that: KopiNumber) {
-    return new KopiBoolean(this.value !== that.value);
+  // @kopiOperator(() => KopiNumber)
+  '!='(this: number, that: number) {
+    return new KopiBoolean(this !== that);
   }
 
-  '>'(that: KopiValue) {
-    if (!(that instanceof KopiNumber)) {
+  '>'(this: number, that: number) {
+    if (!(typeof that !== 'number')) {
       throw error('number-operator-argument-type', { operator: '+' });
     }
 
-    return new KopiBoolean(this.value > that.value);
+    return new KopiBoolean(this > that);
   }
 
-  '<'(that: KopiValue) {
-    if (!(that instanceof KopiNumber)) {
+  '<'(this: number, that: number) {
+    if (!(typeof that !== 'number')) {
       throw error('number-operator-argument-type', { operator: '+' });
     }
 
-    return new KopiBoolean(this.value < that.value);
+    return new KopiBoolean(this < that);
   }
 
-  '>='(that: KopiValue) {
-    if (!(that instanceof KopiNumber)) {
+  '>='(this: number, that: number) {
+    if (!(typeof that !== 'number')) {
       throw error('number-operator-argument-type', { operator: '+' });
     }
 
-    return new KopiBoolean(this.value >= that.value);
+    return new KopiBoolean(this >= that);
   }
 
-  '<='(that: KopiValue) {
-    if (!(that instanceof KopiNumber)) {
+  '<='(this: number, that: number) {
+    if (!(typeof that !== 'number')) {
       throw error('number-operator-argument-type', { operator: '+' });
     }
 
-    return new KopiBoolean(this.value <= that.value);
+    return new KopiBoolean(this <= that);
   }
 
   //
 
-  succ(count: KopiValue) {
+  succ(this: number, count: KopiValue) {
     if (count === KopiTuple.empty) {
-      count = new KopiNumber(1);
+      count = 1;
     }
 
-    if (count instanceof KopiNumber) {
-      return new KopiNumber(this.value + count.value);
+    if (typeof count === 'number') {
+      return this + count;
     }
 
     throw error('number-method-argument-type', { method: 'succ' });
   }
 
-  toFixed(digits: KopiValue) {
+  toFixed(this: number, digits: KopiValue) {
     if (digits === KopiTuple.empty) {
-      return new KopiString(this.value.toFixed());
+      return new KopiString(this.toFixed());
     }
 
-    if (digits instanceof KopiNumber) {
-      return new KopiString(this.value.toFixed(digits.value));
+    if (typeof digits === 'number') {
+      return new KopiString(this.toFixed(digits));
     }
 
     throw error('number-method-argument-type', { method: 'toFixed' });
   }
 
-  even() {
-    return this.value % 2 === 0 ? KopiBoolean.true : KopiBoolean.false;
+  even(this: number) {
+    return this % 2 === 0 ? KopiBoolean.true : KopiBoolean.false;
   }
 
-  odd() {
-    return this.value % 2 !== 0 ? KopiBoolean.true : KopiBoolean.false;
+  odd(this: number) {
+    return this % 2 !== 0 ? KopiBoolean.true : KopiBoolean.false;
   }
 
   //
 
-  '^'(exponent: KopiValue) {
-    if (!(exponent instanceof KopiNumber)) {
+  '^'(this: number, exponent: KopiValue) {
+    if (typeof exponent !== 'number') {
       throw error('number-operator-argument-type', { operator: '+' });
     }
 
-    return new KopiNumber(this.value ** exponent.value);
+    return this ** exponent;
   }
 
-  sqrt() {
-    return new KopiNumber(Math.sqrt(this.value));
+  sqrt(this: number) {
+    return Math.sqrt(this);
   }
 
-  abs() {
-    return new KopiNumber(Math.abs(this.value));
+  abs(this: number) {
+    return Math.abs(this);
   }
 
-  floor() {
-    return new KopiNumber(Math.floor(this.value));
+  floor(this: number) {
+    return Math.floor(this);
   }
 
-  round() {
-    return new KopiNumber(Math.round(this.value));
+  round(this: number) {
+    return Math.round(this);
   }
 
-  ceil() {
-    return new KopiNumber(Math.ceil(this.value));
+  ceil(this: number) {
+    return Math.ceil(this);
   }
 
   //
   // Arithmetic
   //
 
-  '$-'() {
-    return new KopiNumber(-this.value);
+  '$-'(this: number) {
+    return -this;
   }
 
-  async '+'(that: KopiValue) {
-    if (!(that instanceof KopiNumber)) {
+  async '+'(this: number, that: KopiValue) {
+    if (typeof that !== 'number') {
       throw error('number-operator-argument-type', {
         operator: '+',
         value: await that.inspect(),
@@ -186,56 +187,60 @@ class KopiNumber extends KopiClass {
       });
     }
 
-    return new KopiNumber(this.value + that.value);
+    return this + that;
   }
 
-  '-'(that: KopiValue) {
-    if (!(that instanceof KopiNumber)) {
+  '-'(this: number, that: number) {
+    if (typeof that !== 'number') {
       throw error('number-operator-argument-type', { operator: '+' });
     }
 
-    return new KopiNumber(this.value - that.value);
+    return this - that;
   }
 
-  '*'(that: KopiValue) {
-    if (!(that instanceof KopiNumber)) {
+  '*'(this: number, that: number) {
+    if (typeof that !== 'number') {
       throw error('number-operator-argument-type', { operator: '+' });
     }
 
-    return new KopiNumber(this.value * that.value);
+    return this * that;
   }
 
-  '/'(that: KopiValue) {
-    if (!(that instanceof KopiNumber)) {
+  '/'(this: number, that: number) {
+    if (typeof that !== 'number') {
       throw error('number-operator-argument-type', { operator: '+' });
     }
 
-    return new KopiNumber(this.value / that.value);
+    return this / that;
   }
 
-  '%'(that: KopiValue) {
-    if (!(that instanceof KopiNumber)) {
+  '%'(this: number, that: number) {
+    if (typeof that !== 'number') {
       throw error('number-operator-argument-type', { operator: '+' });
     }
 
-    return new KopiNumber(this.value % that.value);
+    return this % that;
   }
 
   //
   // Trigonometry
   //
 
-  sin() {
-    return new KopiNumber(Math.sin(this.value));
+  sin(this: number) {
+    return Math.sin(this);
   }
 
-  cos() {
-    return new KopiNumber(Math.cos(this.value));
+  cos(this: number) {
+    return Math.cos(this);
   }
 }
 
 Object.defineProperty(KopiNumber, 'name', {
   value: 'Number'
 });
+
+Number.prototype.invoke = function (thisArg: number, methodName: string, [argument, context]: [KopiValue, Context]) {
+  return KopiNumber.prototype.invoke.apply(KopiNumber.Zero, [thisArg, methodName, [argument, context]]);
+};
 
 export default KopiNumber;

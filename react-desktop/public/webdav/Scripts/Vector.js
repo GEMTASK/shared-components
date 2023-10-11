@@ -1,7 +1,6 @@
 const {
   Any: KopiAny,
   Array: KopiArray,
-  Number: KopiNumber,
   Tuple: KopiTuple,
 } = window.environment;
 
@@ -10,7 +9,7 @@ class KopiVector extends KopiAny {
     const array = await KopiArray.fromIterable(iterable);
 
     return new KopiVector(
-      array._elements.map(element => element.value)
+      array._elements
     );
   }
 
@@ -27,9 +26,9 @@ class KopiVector extends KopiAny {
   }
 
   at(index) {
-    const value = this._elements[index.value];
+    const value = this._elements[index];
 
-    return value ? new KopiNumber(value) : KopiTuple.empty;
+    return value !== undefined ? value : KopiTuple.empty;
   }
 
   '+'(that) {

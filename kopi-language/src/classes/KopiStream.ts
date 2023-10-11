@@ -1,7 +1,6 @@
 import { Context, KopiClass, KopiValue, ReactElement } from '../types.js';
 
 import KopiFunction from './KopiFunction.js';
-import KopiNumber from './KopiNumber.js';
 import KopiArray from './KopiArray.js';
 
 import type { KopiIterable } from './KopiIterable.js';
@@ -14,14 +13,14 @@ interface KopiStream<TResult extends KopiClass> extends KopiClass, AsyncIterable
   flatMap(func: KopiFunction, context: Context): KopiStream<TResult>;
   filter(func: KopiFunction, context: Context): KopiStream<TResult>;
   reduce(func: KopiFunction, context: Context): Promise<KopiValue>;
-  take(count: KopiNumber): KopiStream<TResult>;
-  skip(count: KopiNumber): KopiStream<TResult>;
+  take(count: number): KopiStream<TResult>;
+  skip(count: number): KopiStream<TResult>;
   repeat(): KopiStream<TResult>;
   join(joiner: KopiValue, context: Context): Promise<KopiValue>;
-  count(func: KopiFunction, context: Context): Promise<KopiNumber>;
+  count(func: KopiFunction, context: Context): Promise<number>;
   splitOn(delimeter: KopiValue, context: Context): KopiStream<TResult>;
   splitAt(index: KopiValue, context: Context): KopiStream<TResult>;
-  splitEvery(count: KopiNumber, context: Context): KopiStream<TResult>;
+  splitEvery(count: number, context: Context): KopiStream<TResult>;
 }
 
 const KopiStream_T = <TResult extends KopiClass>(
@@ -70,7 +69,7 @@ const KopiStream_T = <TResult extends KopiClass>(
     }
 
     override async inspect(): Promise<string | ReactElement> {
-      const stream = (this.take(new KopiNumber(100)) as any).iterable;
+      const stream = (this.take(100) as any).iterable;
 
       return (await _fromIterable(stream)).inspect(); // TODO: use _fromIterable or fromIterable?
     }

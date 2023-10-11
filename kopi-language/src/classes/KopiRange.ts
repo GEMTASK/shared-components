@@ -1,6 +1,5 @@
 import { KopiClass, KopiValue } from '../types.js';
 
-import KopiNumber from './KopiNumber.js';
 import KopiArray from './KopiArray.js';
 import KopiBoolean from './KopiBoolean.js';
 import KopiTuple from './KopiTuple.js';
@@ -58,18 +57,18 @@ class KopiRange extends KopiClass implements AsyncIterable<KopiValue> {
 
   from: KopiValue | Promise<KopiValue>;
   to: KopiValue | Promise<KopiValue>;
-  stride: KopiNumber;
+  stride: number;
 
   constructor(
     from: KopiValue | Promise<KopiValue>,
     to: KopiValue | Promise<KopiValue>,
-    stride?: KopiNumber
+    stride?: number
   ) {
     super();
 
     this.from = from;
     this.to = to;
-    this.stride = stride ?? new KopiNumber(1);
+    this.stride = stride ?? 1;
 
     Promise.all([from, to]).then(([from, to]) => {
       this.from = from;
@@ -82,15 +81,15 @@ class KopiRange extends KopiClass implements AsyncIterable<KopiValue> {
   }
 
   override async inspect() {
-    return `${await (await this.from).inspect()}..${await (await this.to).inspect()}${this.stride.value !== 1 ? ` (by: ${this.stride.value})` : ''}`;
+    return `${await (await this.from).inspect()}..${await (await this.to).inspect()}${this.stride !== 1 ? ` (by: ${this.stride})` : ''}`;
   }
 
   async *[Symbol.asyncIterator]() {
     const [from, to] = await Promise.all([this.from, this.to]);
 
-    if (from instanceof KopiNumber && to instanceof KopiNumber) {
-      for (let current = from.value; current <= to.value; current += this.stride.value) {
-        yield new KopiNumber(current);
+    if (typeof from === 'number' && typeof to === 'number') {
+      for (let current = from; current <= to; current += this.stride) {
+        yield current;
       }
 
       return;
@@ -100,8 +99,8 @@ class KopiRange extends KopiClass implements AsyncIterable<KopiValue> {
 
     for (
       let current = from;
-      (await current.invoke('<=', [to, context]) as KopiBoolean).value;
-      current = await current.invoke('succ', [this.stride, context])
+      (await current.invoke(current, '<=', [to, context]) as KopiBoolean).value;
+      current = await current.invoke(current, 'succ', [this.stride, context])
     ) {
       yield current;
     }
@@ -110,7 +109,7 @@ class KopiRange extends KopiClass implements AsyncIterable<KopiValue> {
   //
 
   async apply(thisArg: this, [stride]: [stride: KopiTuple]) {
-    return new KopiRange(this.from, this.to, await stride.fields[0] as KopiNumber);
+    return new KopiRange(this.from, this.to, await stride.fields[0] as number);
   }
 }
 

@@ -1,6 +1,5 @@
 import { Context, KopiClass, KopiValue } from '../types.js';
 
-import KopiNumber from './KopiNumber.js';
 import KopiArray from './KopiArray.js';
 import KopiFunction from './KopiFunction.js';
 import KopiTuple from './KopiTuple.js';
@@ -19,11 +18,11 @@ interface KopiString extends KopiClass {
   some(func: KopiFunction, context: Context): Promise<KopiBoolean>;
   every(func: KopiFunction, context: Context): Promise<KopiBoolean>;
   find(func: KopiFunction, context: Context): Promise<KopiValue | KopiTuple>;
-  count(func: KopiFunction, context: Context): Promise<KopiNumber>;
+  count(func: KopiFunction, context: Context): Promise<number>;
   includes(value: KopiValue, context: Context): Promise<KopiBoolean>;
   splitOn(delimeter: KopiValue, context: Context): KopiStream<KopiString>;
   splitAt(index: KopiValue, context: Context): KopiStream<KopiString>;
-  splitEvery(count: KopiNumber, context: Context): KopiStream<KopiString>;
+  splitEvery(count: number, context: Context): KopiStream<KopiString>;
 };
 
 async function fromIterable(iterable: AsyncIterable<KopiValue>) {
@@ -92,7 +91,7 @@ class KopiString extends KopiClass implements AsyncIterable<KopiValue> {
   static newline = new KopiString('\n');
 
   static async apply(thisArg: void, [value, context]: [KopiValue, Context]) {
-    return value;
+    return new KopiString(String(value));
   }
 
   static async fromIterable(iterable: AsyncIterable<KopiValue>) {
@@ -109,7 +108,7 @@ class KopiString extends KopiClass implements AsyncIterable<KopiValue> {
     this.codePoints = [...value];
 
     Object.defineProperty(this, 'size', {
-      get: () => new KopiNumber(this.value.length)
+      get: () => this.value.length
     });
   }
 
@@ -152,24 +151,24 @@ class KopiString extends KopiClass implements AsyncIterable<KopiValue> {
   }
 
   size() {
-    return new KopiNumber(this.value.length);
+    return this.value.length;
   }
 
-  async at(index: KopiNumber) {
+  async at(index: number | KopiRange) {
     if (index instanceof KopiRange) {
       const [from, to] = await Promise.all([
         index.from,
         index.to
       ]);
 
-      if (from instanceof KopiNumber && to instanceof KopiNumber) {
-        return new KopiString(this.codePoints.slice(from.value, to.value).join(''));
+      if (typeof from === 'number' && typeof to === 'number') {
+        return new KopiString(this.codePoints.slice(from, to).join(''));
       }
 
       throw new Error('String at range must be numeric.');
     }
 
-    const string = this.codePoints[index.value];
+    const string = this.codePoints[index];
 
     if (string) {
       return new KopiString(string);
@@ -198,20 +197,20 @@ class KopiString extends KopiClass implements AsyncIterable<KopiValue> {
     }
   }
 
-  succ(count: KopiNumber | KopiTuple): KopiString {
+  succ(count: number | KopiTuple): KopiString {
     if (count === KopiTuple.empty) {
-      count = new KopiNumber(1);
+      count = 1;
     }
-
-    if (count instanceof KopiNumber) {
+    console.log('count', count);
+    if (typeof count === 'number') {
       const codePoint = this.value.codePointAt(0);
 
       if (codePoint) {
-        return new KopiString(String.fromCodePoint(codePoint + count.value));
+        return new KopiString(String.fromCodePoint(codePoint + count));
       }
     }
 
-    throw new Error('KopiString.succ()');
+    throw new Error('Error KopiString.succ()');
   }
 
   empty() {
@@ -263,7 +262,7 @@ class KopiString extends KopiClass implements AsyncIterable<KopiValue> {
   }
 
   join(joiner: KopiValue, context: Context) {
-    return joiner.invoke('combine', [this, context]);
+    return joiner.invoke(joiner, 'combine', [this, context]);
   }
 }
 

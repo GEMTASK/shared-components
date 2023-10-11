@@ -9,7 +9,11 @@ import * as visitors from './visitors.js';
 
 import { inspect } from './utils.js';
 
-import { KopiBoolean, KopiNumber, KopiString, KopiArray, KopiDict, KopiTuple } from './index.js';
+import { KopiBoolean, KopiString, KopiArray, KopiDict, KopiTuple } from './index.js';
+
+//
+// transform()
+//
 
 function transform(rawASTNode: RawASTNode): ASTNode {
   switch (rawASTNode.type) {
@@ -144,7 +148,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       } as astnodes.BooleanLiteral);
     case 'NumericLiteral':
       return new astnodes.NumericLiteral({
-        value: new KopiNumber(rawASTNode.value),
+        value: rawASTNode.value,
         location: rawASTNode.location,
       } as astnodes.NumericLiteral);
     case 'StringLiteral':
@@ -180,6 +184,10 @@ function transform(rawASTNode: RawASTNode): ASTNode {
   }
 }
 
+//
+// evaluate()
+//
+
 async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind): Promise<KopiValue> {
   const context = { environment, evaluate, bind };
 
@@ -207,18 +215,22 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
         evaluate((astNode as astnodes.OperatorExpression).rightExpression, environment, bind),
       ]);
 
-      if (leftValue instanceof KopiNumber && rightValue instanceof KopiNumber) {
+      if (typeof leftValue === 'number' && typeof rightValue === 'number') {
         switch ((astNode as astnodes.OperatorExpression).operator) {
-          case '+': return new KopiNumber(leftValue.value + rightValue.value);
-          case '-': return new KopiNumber(leftValue.value - rightValue.value);
-          case '*': return new KopiNumber(leftValue.value * rightValue.value);
-          case '/': return new KopiNumber(leftValue.value / rightValue.value);
-          case '%': return new KopiNumber(leftValue.value % rightValue.value);
-          case '^': return new KopiNumber(leftValue.value ** rightValue.value);
+          case '+': return leftValue + rightValue;
+          case '-': return leftValue - rightValue;
+          case '*': return leftValue * rightValue;
+          case '/': return leftValue / rightValue;
+          case '%': return leftValue % rightValue;
+          case '^': return leftValue ** rightValue;
+          case '<': return new KopiBoolean(leftValue < rightValue);
+          case '<=': return new KopiBoolean(leftValue <= rightValue);
+          case '>': return new KopiBoolean(leftValue > rightValue);
+          case '>=': return new KopiBoolean(leftValue >= rightValue);
         }
       }
 
-      return leftValue.invoke((astNode as astnodes.OperatorExpression).operator, [rightValue, context]);
+      return leftValue.invoke(leftValue, (astNode as astnodes.OperatorExpression).operator, [rightValue, context]);
     }
     case astnodes.Assignment: {
       const expressionValue = await evaluate((astNode as astnodes.Assignment).expression, environment, bind);
@@ -227,7 +239,7 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
       for (const match in patternMatches) {
         const value = patternMatches[match] as any;
 
-        if ('iterable' in value) {
+        if (typeof value === 'object' && 'iterable' in value) {
           patternMatches[match] = value.fromIterable(value.iterable);
         }
 

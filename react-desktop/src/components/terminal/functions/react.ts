@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { KopiArray, KopiFunction, KopiNumber, KopiString, KopiTuple } from 'kopi-language';
+import { KopiArray, KopiFunction, KopiString, KopiTuple } from 'kopi-language';
 import { Context, KopiValue, KopiClass } from 'kopi-language';
 
 import { Button, Text, View } from 'bare';
@@ -182,9 +182,9 @@ async function kopi_Circle(props: KopiTuple, context: Context) {
   ]);
 
   return new KopiElement('circle', {
-    cx: cx.value,
-    cy: cy.value,
-    r: r.value,
+    cx: cx,
+    cy: cy,
+    r: r,
   });
 }
 

@@ -1,4 +1,4 @@
-import { KopiArray, KopiBoolean, KopiNumber, KopiString, KopiTuple } from './classes/index.js';
+import { KopiArray, KopiBoolean, KopiString, KopiTuple } from './classes/index.js';
 import { ASTNode, ASTPatternNode, Context, KopiValue } from './types.js';
 
 //
@@ -117,7 +117,7 @@ class ApplyExpression extends ASTNode {
 
     const arg = await evaluate(this.argumentExpression, environment, bind);
 
-    return argument.invoke((this.expression as Identifier).name, [arg, context]);
+    return argument.invoke(argument, (this.expression as Identifier).name, [arg, context]);
   }
 };
 
@@ -253,6 +253,8 @@ class TuplePattern extends ASTPatternNode {
   }
 }
 
+// TODO: Should capture and use type, not name
+
 class ConstructorPattern extends ASTPatternNode {
   readonly name: string;
   readonly argumentPattern: ASTPatternNode;
@@ -267,17 +269,24 @@ class ConstructorPattern extends ASTPatternNode {
   async test(value: KopiValue, context: Context) {
     const { environment } = context;
 
-    if (value instanceof (environment as any)[this.name]) {
+    if (
+      typeof value === 'number' && this.name === 'Number'
+      || value instanceof (environment as any)[this.name]
+    ) {
       return true;
     }
 
     return false;
   }
 
+  // TODO
   async match(value: KopiValue, context: Context) {
     const { environment } = context;
 
-    if (value instanceof (environment as any)[this.name]) {
+    if (
+      typeof value === 'number' && this.name === 'Number'
+      || value instanceof (environment as any)[this.name]
+    ) {
       return this.argumentPattern.match(value, context);
     }
 
@@ -295,7 +304,7 @@ class NumericLiteralPattern extends ASTPatternNode {
   }
 
   async test(number: KopiValue, context: Context) {
-    if (!(number instanceof KopiNumber && number.value === this.value)) {
+    if (!(typeof number === 'number' && number === this.value)) {
       return false;
     }
 
@@ -303,7 +312,7 @@ class NumericLiteralPattern extends ASTPatternNode {
   }
 
   override async match(number: KopiValue, context: Context) {
-    if (!(number instanceof KopiNumber && number.value === this.value)) {
+    if (!(typeof number === 'number' && number === this.value)) {
       throw new TypeError(`Match expected ${this.value} but ${await number.inspect()} found.`);
     }
 
@@ -500,7 +509,7 @@ class BooleanLiteral extends ASTNode {
 }
 
 class NumericLiteral extends ASTNode {
-  readonly value: KopiNumber;
+  readonly value: number;
 
   constructor({ value, location }: NumericLiteral) {
     super(location);
@@ -509,7 +518,7 @@ class NumericLiteral extends ASTNode {
   }
 
   async inspect() {
-    return `${this.value.value}`;
+    return `${this.value}`;
   }
 }
 
@@ -567,7 +576,7 @@ class Identifier extends ASTNode {
   }
 
   async apply(thisArg: KopiValue, [argument, context]: [KopiValue, Context]): Promise<KopiValue> {
-    return argument.invoke(this.name, [KopiTuple.empty, context]);
+    return argument.invoke(argument, this.name, [KopiTuple.empty, context]);
   }
 
   '=='(that: Identifier) {

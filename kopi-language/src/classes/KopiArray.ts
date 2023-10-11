@@ -1,6 +1,5 @@
 import { Context, KopiValue, KopiClass } from '../types.js';
 
-import KopiNumber from './KopiNumber.js';
 import KopiBoolean from './KopiBoolean.js';
 import KopiTuple from './KopiTuple.js';
 import KopiRange from './KopiRange.js';
@@ -77,7 +76,7 @@ class KopiArray extends KopiClass implements AsyncIterable<KopiValue> {
     this._elements = elements;
 
     Object.defineProperty(this, 'size', {
-      get: () => new KopiNumber(this._elements.length)
+      get: () => this._elements.length
     });
 
     Promise.all(elements).then(resolvedElements => {
@@ -108,28 +107,28 @@ class KopiArray extends KopiClass implements AsyncIterable<KopiValue> {
   }
 
   size() {
-    return new KopiNumber(this._elements.length);
+    return this._elements.length;
   }
 
   empty() {
     return new KopiBoolean(this._elements.length === 0);
   }
 
-  async at(index: KopiNumber | KopiRange) {
+  async at(index: number | KopiRange) {
     if (index instanceof KopiRange) {
       const [from, to] = await Promise.all([
         index.from,
         index.to
       ]);
 
-      if (from instanceof KopiNumber && to instanceof KopiNumber) {
-        return new KopiArray(this._elements.slice(from.value, to.value));
+      if (typeof from === 'number' && typeof to === 'number') {
+        return new KopiArray(this._elements.slice(from, to));
       }
 
       throw new Error('Array at range must be numeric.');
     }
 
-    return this._elements[index.value] ?? KopiTuple.empty;
+    return this._elements[index] ?? KopiTuple.empty;
   }
 
   async toArray() {
@@ -147,7 +146,7 @@ class KopiArray extends KopiClass implements AsyncIterable<KopiValue> {
       const thisValue = await this._elements[index];
       const thatValue = await that._elements[index];
 
-      const result = await thisValue.invoke('==', [thatValue, context]);
+      const result = await thisValue.invoke(thisValue, '==', [thatValue, context]);
 
       if (!(result as KopiBoolean).value) {
         return new KopiBoolean(false);

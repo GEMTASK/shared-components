@@ -1,13 +1,8 @@
 import * as astnodes from './astnodes.js';
 import { ASTNode, Context, KopiValue } from './types.js';
 import {
-  KopiArray,
-  KopiAstLiteral,
   KopiBoolean,
-  KopiDict,
   KopiFunction,
-  KopiNumber,
-  KopiString,
   KopiTuple,
   KopiRange
 } from './classes/index.js';
@@ -57,7 +52,7 @@ async function PipeExpression(
     ? await evaluate(argumentExpression, environment, bind)
     : KopiTuple.empty;
 
-  return expressionValue.invoke(methodName, [argumentValue, context]);
+  return expressionValue.invoke(expressionValue, methodName, [argumentValue, context]);
 }
 
 async function ConditionalExpression(
@@ -147,7 +142,7 @@ async function UnaryExpression(
 
   const argumentValue = await evaluate(argumentExpression, environment, bind);
 
-  return argumentValue.invoke(operator, [argumentValue, context]);
+  return argumentValue.invoke(argumentValue, operator, [argumentValue, context]);
 }
 
 async function FunctionExpression(

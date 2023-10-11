@@ -14,12 +14,12 @@ interface KopiClass {
 }
 
 abstract class KopiClass {
-  // async _toString() {
-  //   return `${this}`;
-  // }
-
   async toString() {
     return new KopiString(Object.prototype.toString.apply(this));
+  }
+
+  async toNativeString() {
+    return (await this.toString()).value;
   }
 
   async inspect(): Promise<string | ReactElement> {
@@ -31,6 +31,7 @@ abstract class KopiClass {
   }
 
   async invoke(
+    thisArg: any,
     methodName: string,
     [argument, context]: [KopiValue, Context]
   ): Promise<KopiValue> {
@@ -40,7 +41,7 @@ abstract class KopiClass {
     const method = extensions?.get(this.constructor)?.[methodName] ?? Object.getPrototypeOf(this)[methodName];
 
     if (method) {
-      return method.apply(this, [argument, context]);
+      return method.apply(thisArg, [argument, context]);
     }
 
     throw new ReferenceError(
@@ -60,7 +61,9 @@ declare global {
     inspect(): Promise<string>;
     get fields(): Promise<KopiValue>[];
     toString(): Promise<KopiString>;
+    toNativeString(): Promise<string>;
     invoke(
+      thisArg: any,
       methodName: string,
       [argument, context]: [KopiValue, Context]
     ): Promise<KopiValue>;
@@ -69,8 +72,9 @@ declare global {
   interface Number {
     inspect(): Promise<string>;
     get fields(): Promise<KopiValue>[];
-    // toString(): Promise<KopiString>;
+    toNativeString(): Promise<string>;
     invoke(
+      thisArg: any,
       methodName: string,
       [argument, context]: [KopiValue, Context]
     ): Promise<KopiValue>;
@@ -92,6 +96,10 @@ Object.defineProperty(Function.prototype, 'fields', {
 });
 
 Number.prototype.inspect = async function () {
+  return this.toString();
+};
+
+Number.prototype.toNativeString = async function () {
   return this.toString();
 };
 
