@@ -248,7 +248,7 @@ class KopiString extends KopiClass implements AsyncIterable<KopiValue> {
   // }
 
   async combine(iterable: AsyncIterable<KopiValue>) {
-    let array = [];
+    const array = [];
 
     for await (const value of iterable) {
       if (typeof value === 'number') {

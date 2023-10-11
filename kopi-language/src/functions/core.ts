@@ -1,5 +1,3 @@
-/* eslint-disable import/no-anonymous-default-export */
-
 import { KopiArray, KopiBoolean, KopiFunction, KopiString, KopiTuple } from '../classes/index.js';
 import { ASTNode, Bind, Context, KopiClass, KopiValue } from '../types.js';
 

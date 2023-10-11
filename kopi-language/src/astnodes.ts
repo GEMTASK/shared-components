@@ -411,18 +411,18 @@ class ArrayLiteralPattern extends ASTPatternNode {
       }
     }
 
-    let array = value as KopiArray;
+    const array = value as KopiArray;
 
     let bindings = {};
     let index = 0;
-    let init = [];
-    let rest = [];
+    const init = [];
+    const rest = [];
 
     for await (const value of array) {
       if (this.restPattern && index > this.elementPatterns.length - 1) {
         rest.push(value);
       } else {
-        let matches = await this.elementPatterns[index].match(value ?? KopiTuple.empty, context);
+        const matches = await this.elementPatterns[index].match(value ?? KopiTuple.empty, context);
 
         if (matches === undefined) {
           throw new Error(`ArrayPattern: match() failed.`);
@@ -439,7 +439,7 @@ class ArrayLiteralPattern extends ASTPatternNode {
     }
 
     if (this.restPattern) {
-      let matches = await this.restPattern.match(new KopiArray(rest), context);
+      const matches = await this.restPattern.match(new KopiArray(rest), context);
 
       bindings = { ...bindings, ...matches };
     }

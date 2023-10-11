@@ -8,7 +8,7 @@ import KopiString from './KopiString.js';
 import type { KopiStream } from './KopiStream.js';
 import type { KopiIterable } from './KopiIterable.js';
 
-interface KopiArray extends KopiClass, KopiIterable<KopiArray> { };
+interface KopiArray extends KopiClass, KopiIterable<KopiArray> { }
 
 let ArrayStream: {
   new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiArray>;

@@ -1,5 +1,3 @@
-/* eslint-disable import/no-anonymous-default-export */
-
 import * as parser from './lib/parser.mjs';
 
 import { RawASTNode, ASTNode, ASTPatternNode, Environment, Bind, KopiValue } from './types.js';
@@ -339,7 +337,7 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
 }
 
 async function interpret(source: string, environment: Environment, bind: Bind) {
-  var rootAst = parser.parse(source);
+  const rootAst = parser.parse(source);
 
   if (rootAst) {
     return evaluate(transform(rootAst), environment, bind);

@@ -114,7 +114,7 @@ interface RawASTNode {
 }
 
 class ASTNode extends KopiClass {
-  location: {} = {};
+  location: object = {};
 
   constructor(location: {}) {
     super();

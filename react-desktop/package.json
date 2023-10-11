@@ -48,7 +48,15 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "parserOptions": {
+      "project": "./react-desktop/tsconfig.json"
+    },
+    "rules": {
+      "no-implicit-coercion": "error",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/strict-boolean-expressions": "error"
+    }
   },
   "browserslist": {
     "production": [
