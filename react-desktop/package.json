@@ -54,6 +54,10 @@
     },
     "rules": {
       "no-implicit-coercion": "error",
+      "no-restricted-globals": [
+        "error",
+        "postMessage"
+      ],
       "@typescript-eslint/no-unused-vars": "warn",
       "@typescript-eslint/strict-boolean-expressions": "error"
     }
