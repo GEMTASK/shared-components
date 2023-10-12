@@ -4,7 +4,7 @@ import { createUseStyles } from 'react-jss';
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 
 import * as kopi from 'kopi-language';
-import { Context, KopiValue, KopiString, KopiTuple } from 'kopi-language';
+import { Environment, Context, KopiValue, KopiString, KopiTuple } from 'kopi-language';
 
 import exampless from './examples';
 import reference from './reference';
@@ -27,12 +27,17 @@ const Link = ({ children, ...props }: any) => {
 
 class KopiEnv {
   static async inspect() {
-    return Object.keys(globalThis.environment).map(key => key.padEnd(12)).join('');
+    return Object.keys(environment).map(key => key.padEnd(12)).join('');
   }
 }
 
-globalThis.environment = {
-  ...(globalThis.environment || {}),
+window.environment = {
+  Any: kopi.KopiAny,
+  Array: kopi.KopiArray,
+  Tuple: kopi.KopiTuple,
+};
+
+let environment: Environment = {
   PI: Math.PI,
   E: Math.E,
   //
@@ -69,18 +74,46 @@ globalThis.environment = {
   input: functions.kopi_input,
   export: functions.kopi_export,
   log: async (value: KopiValue) => console.log(await value.inspect()),
-  open: async (filename: KopiString) => globalThis.postMessage({ type: 'openFile', payload: `/${filename.value}` }),
+  open: async (filename: KopiString) => window.postMessage({
+    type: 'openFile',
+    payload: `/${filename.value}`
+  }),
   //
   ls: functions.KopiLs,
   cat: functions.kopi_cat,
 };
 
-import('./functions/react');
+(async () => {
+  const {
+    kopi_element,
+    kopi_component,
+    kopi_requestAnimationFrame,
+    kopi_requestDebugAnimationFrame,
+    kopi_View,
+    kopi_Text,
+    kopi_Button,
+    kopi_Svg,
+    kopi_Circle,
+  } = await import('./functions/react');
+
+  environment = {
+    ...environment,
+    element: kopi_element,
+    component: kopi_component,
+    requestAnimationFrame: kopi_requestAnimationFrame,
+    requestDebugAnimationFrame: kopi_requestDebugAnimationFrame,
+    View: kopi_View,
+    Text: kopi_Text,
+    Button: kopi_Button,
+    Svg: kopi_Svg,
+    Circle: kopi_Circle,
+  };
+})();
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {
-  const newEnvironment = { ...globalThis.environment, ...bindings };
+  const newEnvironment = { ...environment, ...bindings };
 
-  globalThis.environment = newEnvironment;
+  environment = newEnvironment;
 };
 
 const useSidebarStyles = createUseStyles({
@@ -134,8 +167,12 @@ const HistoryItem = ({
   );
 };
 
-const Value = ({ promise }: any) => {
-  const [element, setValue] = useState<React.ReactElement | null>(
+const Value = ({
+  promise
+}: {
+  promise: Promise<React.ReactElement>;
+}) => {
+  const [element, setValue] = useState<React.ReactElement | undefined>(
     <View minHeight={20} align="center">
       <Icon icon="spinner" spin />
     </View>
@@ -145,11 +182,7 @@ const Value = ({ promise }: any) => {
     (async () => {
       const element = await promise;
 
-      if (element) {
-        setValue(element);
-      } else {
-        setValue(null);
-      }
+      setValue(element);
     })();
   }, [promise]);
 
@@ -211,11 +244,11 @@ const interpret = async (
         const source = await (await fetch(`//webdav.mike-austin.com/${url.value}`)).text();
 
         if (typeof source === 'string') {
-          return kopi.interpret(source, { ...globalThis.environment, print: kopi_print, import: kopi_import }, () => { });
+          return kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import }, () => { });
         }
       }
 
-      const value = await kopi.interpret(source, { ...globalThis.environment, print: kopi_print, import: kopi_import }, bind);
+      const value = await kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import }, bind);
 
       if (value !== undefined) {
         const element = await value.inspect();
@@ -254,7 +287,7 @@ const interpret = async (
 const initialHistory = [
   <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT, userSelect: 'text' }}>
     Kopi shell – a simple, immutable, async programming langauge.<br />
-    Read <Link onClick={() => globalThis.postMessage({ type: 'openFile', payload: '/Learning Kopi.md' })}>Learning Kopi</Link> for an introduction and to learn more.
+    Read <Link onClick={() => window.postMessage({ type: 'openFile', payload: '/Learning Kopi.md' })}>Learning Kopi</Link> for an introduction and to learn more.
   </Text>
 ];
 
@@ -270,7 +303,7 @@ const Terminal = ({ ...props }: any) => {
   const [inputValue, setInputValue] = useState('');
   const [elementHistory, setElementHistory] = useState<React.ReactElement[]>(initialHistory);
   const [inputHistory, setInputHistory] = useState<string[]>([]);
-  const [isHistoryVisible, setIsHistoryVisible] = useState(globalThis.innerWidth >= 640);
+  const [isHistoryVisible, setIsHistoryVisible] = useState(window.innerWidth >= 640);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

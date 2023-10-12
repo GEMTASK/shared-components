@@ -359,6 +359,7 @@ export {
 export {
   KopiClass,
   type KopiValue,
+  type Environment,
   type Context,
 } from './types.js';
 

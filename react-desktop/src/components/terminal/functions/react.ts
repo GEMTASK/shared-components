@@ -29,7 +29,7 @@ class KopiElement extends KopiClass {
             awaitedChild.props,
             awaitedChild.children.value
           );
-        } else if (awaitedChild.children) {
+        } else if (awaitedChild.children !== undefined) {
           return React.createElement(
             awaitedChild.component,
             { key: index, ...awaitedChild.props },
@@ -211,9 +211,6 @@ async function kopi_requestAnimationFrame(func: KopiFunction, context: Context) 
 }
 
 async function kopi_requestDebugAnimationFrame(func: KopiFunction, context: Context) {
-  // window.requestAnimationFrame(() => {
-  //   func.apply(KopiTuple.empty, [func, context]);
-  // });
   setTimeout(() => {
     func.apply(KopiTuple.empty, [func, context]);
   }, 200);
@@ -229,13 +226,4 @@ export {
   kopi_Button,
   kopi_Svg,
   kopi_Circle,
-};
-
-globalThis.environment = {
-  ...(globalThis.environment || {}),
-  element: kopi_element,
-  component: kopi_component,
-  View: kopi_View,
-  Text: kopi_Text,
-  Button: kopi_Button,
 };
