@@ -89,7 +89,7 @@ const FileExtension = {
 const addApplication = (key: keyof typeof Applications, { addWindow }: any) => {
   const app = Applications[key];
 
-  if (app) {
+  if (app !== undefined) {
     const { icon, title, client, rect } = app;
 
     addWindow(icon, title, client, rect);
@@ -149,7 +149,7 @@ const App = () => {
 
   const params = useMemo(() => new URLSearchParams(window.location.search), []);
 
-  const [windows, setWindows] = useState<WindowsProp>(window.innerWidth < 1440 || params.get('app') ? [] : initialState);
+  const [windows, setWindows] = useState<WindowsProp>(window.innerWidth < 1440 || params.get('app') !== null ? [] : initialState);
   const [windowIdOrder, setWindowIdOrder] = useState<string[]>(windows.map(({ id }) => id));
   const [isSidebarHidden, setIsSidebarHidden] = useState(window.innerWidth < 1024);
 
@@ -213,11 +213,11 @@ const App = () => {
       if (ext) {
         const mapping = FileExtension[ext as keyof typeof FileExtension];
 
-        if (mapping) {
+        if (mapping !== undefined) {
           const { icon, title, client, rect } = mapping;
           const titleArg = event.data.payload.split('/').at(-1);
 
-          addWindow(icon, `${title}${titleArg ? ' — ' + titleArg : ''}`, React.cloneElement(client, { args: event.data.payload }), rect);
+          addWindow(icon, `${title}${titleArg !== undefined ? ' — ' + titleArg : ''}`, React.cloneElement(client, { args: event.data.payload }), rect);
         }
       }
     }
@@ -230,7 +230,7 @@ const App = () => {
   useEffect(() => {
     const app = Applications[params.get('app') as keyof typeof Applications];
 
-    if (app) {
+    if (app !== undefined) {
       const { icon, title, client, rect } = app;
 
       setWindows([]);
