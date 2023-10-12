@@ -167,12 +167,16 @@ const HistoryItem = ({
   );
 };
 
+//
+// Value
+//
+
 const Value = ({
   promise
 }: {
-  promise: Promise<React.ReactElement>;
+  promise: Promise<React.ReactElement | undefined>;
 }) => {
-  const [element, setValue] = useState<React.ReactElement | undefined>(
+  const [element, setValue] = useState<React.ReactElement | null>(
     <View minHeight={20} align="center">
       <Icon icon="spinner" spin />
     </View>
@@ -182,7 +186,7 @@ const Value = ({
     (async () => {
       const element = await promise;
 
-      setValue(element);
+      setValue(element ?? null);
     })();
   }, [promise]);
 
@@ -210,7 +214,7 @@ const interpret = async (
 
   setInputValue('');
 
-  const promise = new Promise(async (resolve, reject) => {
+  const promise = new Promise<React.ReactElement | undefined>(async (resolve, reject) => {
     try {
       async function kopi_print(value: KopiValue) {
         const string = await value.toNativeString();
@@ -421,14 +425,14 @@ const Terminal = ({ ...props }: any) => {
                                   {item.code.trim()}
                                 </Text>
                               </td>
-                              {item.label && (
+                              {item.label !== undefined && (
                                 <td style={{ paddingBottom: 8, paddingLeft: 16, verticalAlign: 'top' }}>
                                   <Text style={{}}>
                                     {item.label}
                                   </Text>
                                 </td>
                               )}
-                              {item.extra && (
+                              {item.extra !== undefined && (
                                 <td style={{ width: 120, paddingBottom: 8, paddingLeft: 16, verticalAlign: 'top' }}>
                                   <Text style={{ fontFamily: 'Iosevka Fixed', whiteSpace: 'pre' }}>
                                     {item.extra}
