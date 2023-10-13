@@ -4,7 +4,7 @@ import { createUseStyles } from 'react-jss';
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 
 import * as kopi from 'kopi-language';
-import { Environment, Context, KopiValue, KopiString, KopiTuple } from 'kopi-language';
+import { Environment, Context, KopiValue, KopiString, KopiTuple, getSymbol } from 'kopi-language';
 
 import exampless from './examples';
 import reference from './reference';
@@ -108,6 +108,10 @@ let environment: Environment = {
     Svg: kopi_Svg,
     Circle: kopi_Circle,
   };
+
+  for (const binding in environment) {
+    environment[getSymbol(binding)] = environment[binding];
+  }
 })();
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {

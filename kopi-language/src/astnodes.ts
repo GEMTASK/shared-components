@@ -568,11 +568,13 @@ class AstLiteral extends ASTNode {
 
 class Identifier extends ASTNode {
   readonly name: string;
+  readonly symbol: symbol;
 
-  constructor({ name, location }: Identifier) {
+  constructor({ name, symbol, location }: Identifier) {
     super(location);
 
     this.name = name;
+    this.symbol = symbol;
   }
 
   async apply(thisArg: KopiValue, [argument, context]: [KopiValue, Context]): Promise<KopiValue> {

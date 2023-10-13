@@ -9,6 +9,20 @@ import { inspect } from './utils.js';
 
 import { KopiBoolean, KopiString, KopiArray, KopiDict, KopiTuple } from './index.js';
 
+const symbolTable = new Map<string, symbol>();
+
+function getSymbol(string: string) {
+  let symbol = symbolTable.get(string);
+
+  if (symbol === undefined) {
+    symbol = Symbol(string);
+
+    symbolTable.set(string, symbol);
+  }
+
+  return symbol;
+}
+
 //
 // transform()
 //
@@ -173,6 +187,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
     case 'Identifier':
       return new astnodes.Identifier({
         name: rawASTNode.name,
+        symbol: getSymbol(rawASTNode.name),
         location: rawASTNode.location,
       } as astnodes.Identifier);
     default:
@@ -199,9 +214,17 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
     case astnodes.AstLiteral:
       return (astNode as astnodes.AstLiteral).value;
     case astnodes.Identifier: {
-      const value = environment[(astNode as astnodes.Identifier).name];
+      let value = environment[(astNode as astnodes.Identifier).symbol];
+      // console.log('here', value, (astNode as astnodes.Identifier).symbol);
+      if (value !== undefined) {
+        console.log((astNode as astnodes.Identifier).symbol);
 
-      if ((astNode as astnodes.Identifier).name in environment) {
+        return value;
+      }
+
+      value = environment[(astNode as astnodes.Identifier).name];
+
+      if (value !== undefined) {
         return value;
       }
 
@@ -351,6 +374,7 @@ export default {
 };
 
 export {
+  getSymbol,
   evaluate,
   interpret,
   inspect,
