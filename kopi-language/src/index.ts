@@ -216,6 +216,7 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
     case astnodes.Identifier: {
       let value = environment[(astNode as astnodes.Identifier).symbol];
       // console.log('here', value, (astNode as astnodes.Identifier).symbol);
+
       if (value !== undefined) {
         console.log((astNode as astnodes.Identifier).symbol);
 

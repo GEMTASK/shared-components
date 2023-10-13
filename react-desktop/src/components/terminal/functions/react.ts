@@ -213,7 +213,7 @@ async function kopi_requestAnimationFrame(func: KopiFunction, context: Context) 
 async function kopi_requestDebugAnimationFrame(func: KopiFunction, context: Context) {
   setTimeout(() => {
     func.apply(KopiTuple.empty, [func, context]);
-  }, 200);
+  }, 1000);
 }
 
 export {
