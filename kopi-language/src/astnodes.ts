@@ -33,14 +33,16 @@ class BlockExpression extends ASTNode {
 
 class PipeExpression extends ASTNode {
   readonly expression: ASTNode;
-  readonly methodName: string;
+  // readonly methodName: string;
+  readonly methodSymbol: symbol;
   readonly argumentExpression: ASTNode | null;
 
-  constructor({ expression, methodName, argumentExpression, location }: PipeExpression) {
+  constructor({ expression, methodSymbol, argumentExpression, location }: PipeExpression) {
     super(location);
 
     this.expression = expression;
-    this.methodName = methodName;
+    // this.methodName = methodName;
+    this.methodSymbol = methodSymbol;
     this.argumentExpression = argumentExpression;
   }
 }
@@ -109,7 +111,7 @@ class ApplyExpression extends ASTNode {
   }
 
   async inspect() {
-    return `'(${(await this.expression as Identifier).name} ${await this.argumentExpression.inspect()})`;
+    return `'(${(await this.expression as Identifier).symbol.description} ${await this.argumentExpression.inspect()})`;
   }
 
   async apply(thisArg: KopiValue, [argument, context]: [KopiValue, Context]): Promise<KopiValue> {
@@ -117,7 +119,7 @@ class ApplyExpression extends ASTNode {
 
     const arg = await evaluate(this.argumentExpression, environment, bind);
 
-    return argument.invoke(argument, (this.expression as Identifier).name, [arg, context]);
+    return argument.invoke(argument, (this.expression as Identifier).symbol.description as any, [arg, context]);
   }
 };
 
@@ -567,26 +569,28 @@ class AstLiteral extends ASTNode {
 }
 
 class Identifier extends ASTNode {
-  readonly name: string;
   readonly symbol: symbol;
 
-  constructor({ name, symbol, location }: Identifier) {
+  constructor({ symbol, location }: Identifier) {
     super(location);
 
-    this.name = name;
     this.symbol = symbol;
   }
 
   async apply(thisArg: KopiValue, [argument, context]: [KopiValue, Context]): Promise<KopiValue> {
-    return argument.invoke(argument, this.name, [KopiTuple.empty, context]);
+    if (this.symbol.description) {
+      return argument.invoke(argument, this.symbol.description, [KopiTuple.empty, context]);
+    }
+
+    throw new Error(`Kopi symbols must have a description`);
   }
 
   '=='(that: Identifier) {
-    return new KopiBoolean(this.name === that.name);
+    return new KopiBoolean(this.symbol.description === that.symbol.description);
   }
 
   async inspect() {
-    return `'${this.name}`;
+    return `'${this.symbol.description}`;
   }
 }
 

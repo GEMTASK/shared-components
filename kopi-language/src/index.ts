@@ -42,7 +42,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
     case 'PipeExpression':
       return new astnodes.PipeExpression({
         expression: transform(rawASTNode.expression),
-        methodName: rawASTNode.methodName,
+        methodSymbol: getSymbol(rawASTNode.methodName),
         argumentExpression: rawASTNode.argumentExpression && transform(rawASTNode.argumentExpression),
         location: rawASTNode.location,
       } as astnodes.PipeExpression);
@@ -186,7 +186,6 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       } as astnodes.AstLiteral);
     case 'Identifier':
       return new astnodes.Identifier({
-        name: rawASTNode.name,
         symbol: getSymbol(rawASTNode.name),
         location: rawASTNode.location,
       } as astnodes.Identifier);
@@ -215,7 +214,6 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
       return (astNode as astnodes.AstLiteral).value;
     case astnodes.Identifier: {
       let value = environment[(astNode as astnodes.Identifier).symbol];
-      // console.log('here', value, (astNode as astnodes.Identifier).symbol);
 
       if (value !== undefined) {
         console.log((astNode as astnodes.Identifier).symbol);
@@ -223,13 +221,13 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
         return value;
       }
 
-      value = environment[(astNode as astnodes.Identifier).name];
+      value = environment[(astNode as astnodes.Identifier).symbol.description as any];
 
       if (value !== undefined) {
         return value;
       }
 
-      throw new ReferenceError(`Variable "${(astNode as astnodes.Identifier).name}" not found in current scope.`);
+      throw new ReferenceError(`Variable "${(astNode as astnodes.Identifier).symbol.description}" not found in current scope.`);
     }
     case astnodes.OperatorExpression: {
       const [leftValue, rightValue] = await Promise.all([

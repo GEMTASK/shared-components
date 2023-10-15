@@ -27,7 +27,8 @@ const Link = ({ children, ...props }: any) => {
 
 class KopiEnv {
   static async inspect() {
-    return Object.keys(environment).map(key => key.padEnd(12)).join('');
+    return Object.getOwnPropertySymbols(environment)
+      .map(({ description }) => description?.padEnd(12)).join('');
   }
 }
 

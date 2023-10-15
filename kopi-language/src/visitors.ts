@@ -42,7 +42,7 @@ async function BlockExpression(
 }
 
 async function PipeExpression(
-  { expression, methodName, argumentExpression }: astnodes.PipeExpression,
+  { expression, methodSymbol, argumentExpression }: astnodes.PipeExpression,
   context: Context,
 ): Promise<KopiValue> {
   const { environment, evaluate, bind } = context;
@@ -52,7 +52,7 @@ async function PipeExpression(
     ? await evaluate(argumentExpression, environment, bind)
     : KopiTuple.empty;
 
-  return expressionValue.invoke(expressionValue, methodName, [argumentValue, context]);
+  return expressionValue.invoke(expressionValue, methodSymbol.description as any, [argumentValue, context]);
 }
 
 async function ConditionalExpression(
