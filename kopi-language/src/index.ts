@@ -5,23 +5,20 @@ import { RawASTNode, ASTNode, ASTPatternNode, Environment, Bind, KopiValue } fro
 import * as astnodes from './astnodes.js';
 import * as visitors from './visitors.js';
 
-import { inspect } from './utils.js';
+import { getSymbol, inspect } from './utils.js';
 
 import { KopiBoolean, KopiString, KopiArray, KopiDict, KopiTuple } from './index.js';
 
-const symbolTable = new Map<string, symbol>();
-
-function getSymbol(string: string) {
-  let symbol = symbolTable.get(string);
-
-  if (symbol === undefined) {
-    symbol = Symbol(string);
-
-    symbolTable.set(string, symbol);
-  }
-
-  return symbol;
-}
+const plusSymbol = getSymbol('+');
+const minusSymbol = getSymbol('-');
+const timesSymbol = getSymbol('*');
+const divideSymbol = getSymbol('/');
+const remainerSymbol = getSymbol('%');
+const exponentSymbol = getSymbol('^');
+const lessThanSymbol = getSymbol('<');
+const lessThanOrEqualSymbol = getSymbol('<=');
+const greaterThanSymbol = getSymbol('>');
+const greaterThanOrEqualSymbol = getSymbol('>=');
 
 //
 // transform()
@@ -54,7 +51,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       } as astnodes.TupleExpression);
     case 'OperatorExpression':
       return new astnodes.OperatorExpression({
-        operator: rawASTNode.operator,
+        operator: getSymbol(rawASTNode.operator),
         leftExpression: transform(rawASTNode.leftExpression),
         rightExpression: transform(rawASTNode.rightExpression),
         location: rawASTNode.location,
@@ -97,7 +94,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       } as astnodes.MemberExpression);
     case 'UnaryExpression':
       return new astnodes.UnaryExpression({
-        operator: rawASTNode.operator,
+        operator: getSymbol(rawASTNode.operator),
         argumentExpression: transform(rawASTNode.argumentExpression),
         location: rawASTNode.location,
       } as astnodes.UnaryExpression);
@@ -236,17 +233,19 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
       ]);
 
       if (typeof leftValue === 'number' && typeof rightValue === 'number') {
-        switch ((astNode as astnodes.OperatorExpression).operator) {
-          case '+': return leftValue + rightValue;
-          case '-': return leftValue - rightValue;
-          case '*': return leftValue * rightValue;
-          case '/': return leftValue / rightValue;
-          case '%': return leftValue % rightValue;
-          case '^': return leftValue ** rightValue;
-          case '<': return new KopiBoolean(leftValue < rightValue);
-          case '<=': return new KopiBoolean(leftValue <= rightValue);
-          case '>': return new KopiBoolean(leftValue > rightValue);
-          case '>=': return new KopiBoolean(leftValue >= rightValue);
+        const operator = (astNode as astnodes.OperatorExpression).operator;
+
+        switch (operator) {
+          case plusSymbol: return leftValue + rightValue;
+          case minusSymbol: return leftValue - rightValue;
+          case timesSymbol: return leftValue * rightValue;
+          case divideSymbol: return leftValue / rightValue;
+          case remainerSymbol: return leftValue % rightValue;
+          case exponentSymbol: return leftValue ** rightValue;
+          case lessThanSymbol: return new KopiBoolean(leftValue < rightValue);
+          case lessThanOrEqualSymbol: return new KopiBoolean(leftValue <= rightValue);
+          case greaterThanSymbol: return new KopiBoolean(leftValue > rightValue);
+          case greaterThanOrEqualSymbol: return new KopiBoolean(leftValue >= rightValue);
         }
       }
 

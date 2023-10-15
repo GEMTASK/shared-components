@@ -1,3 +1,17 @@
+const symbolTable = new Map<string, symbol>();
+
+function getSymbol(string: string) {
+  let symbol = symbolTable.get(string);
+
+  if (symbol === undefined) {
+    symbol = Symbol(string);
+
+    symbolTable.set(string, symbol);
+  }
+
+  return symbol;
+}
+
 const errors = {
   'number-operator-argument-type': [TypeError, ({ operator, value, type }: any) => `
 There was a TypeError in the Number '${operator}' operator:
@@ -51,6 +65,7 @@ const inspect = (value: unknown, level: number = 0): string => {
 };
 
 export {
+  getSymbol,
   error,
   inspect,
 };

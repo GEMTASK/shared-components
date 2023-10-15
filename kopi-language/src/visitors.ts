@@ -52,7 +52,7 @@ async function PipeExpression(
     ? await evaluate(argumentExpression, environment, bind)
     : KopiTuple.empty;
 
-  return expressionValue.invoke(expressionValue, methodSymbol.description as any, [argumentValue, context]);
+  return expressionValue.invoke(expressionValue, methodSymbol, [argumentValue, context]);
 }
 
 async function ConditionalExpression(

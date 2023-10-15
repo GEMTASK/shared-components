@@ -48,7 +48,7 @@ class PipeExpression extends ASTNode {
 }
 
 class OperatorExpression extends ASTNode {
-  readonly operator: string;
+  readonly operator: symbol;
   readonly leftExpression: ASTNode;
   readonly rightExpression: ASTNode;
 
@@ -119,7 +119,7 @@ class ApplyExpression extends ASTNode {
 
     const arg = await evaluate(this.argumentExpression, environment, bind);
 
-    return argument.invoke(argument, (this.expression as Identifier).symbol.description as any, [arg, context]);
+    return argument.invoke(argument, (this.expression as Identifier).symbol, [arg, context]);
   }
 };
 
@@ -148,7 +148,7 @@ class MemberExpression extends ASTNode {
 }
 
 class UnaryExpression extends ASTNode {
-  readonly operator: string;
+  readonly operator: symbol;
   readonly argumentExpression: ASTNode;
 
   constructor({ operator, argumentExpression, location }: UnaryExpression) {
@@ -579,7 +579,7 @@ class Identifier extends ASTNode {
 
   async apply(thisArg: KopiValue, [argument, context]: [KopiValue, Context]): Promise<KopiValue> {
     if (this.symbol.description) {
-      return argument.invoke(argument, this.symbol.description, [KopiTuple.empty, context]);
+      return argument.invoke(argument, this.symbol, [KopiTuple.empty, context]);
     }
 
     throw new Error(`Kopi symbols must have a description`);

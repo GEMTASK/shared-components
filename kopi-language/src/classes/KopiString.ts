@@ -9,6 +9,10 @@ import KopiRange from './KopiRange.js';
 import type { KopiStream } from './KopiStream.js';
 import type { KopiIterable } from './KopiIterable.js';
 
+import { getSymbol } from '../utils.js';
+
+const combineSymbol = getSymbol('combine');
+
 interface KopiString extends KopiClass {
   toArray(): Promise<KopiArray>;
   map(func: KopiFunction, context: Context): KopiStream<KopiString>;
@@ -262,7 +266,7 @@ class KopiString extends KopiClass implements AsyncIterable<KopiValue> {
   }
 
   join(joiner: KopiValue, context: Context) {
-    return joiner.invoke(joiner, 'combine', [this, context]);
+    return joiner.invoke(joiner, combineSymbol, [this, context]);
   }
 }
 
