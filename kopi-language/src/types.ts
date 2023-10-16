@@ -38,15 +38,21 @@ abstract class KopiClass {
     const { environment } = context ?? {};
 
     const extensions = environment?._extensions as unknown as Map<Function, any>;
-    const method = extensions?.get(this.constructor)?.[methodSymbol.description as any]
-      ?? Object.getPrototypeOf(this)[methodSymbol.description as any];
+    const extensionMethods = extensions?.get(this.constructor);
+
+    const classMethods = Object.getPrototypeOf(this);
+
+    const method = extensionMethods?.[methodSymbol]
+      ?? extensionMethods?.[methodSymbol.description as any]
+      ?? classMethods[methodSymbol]
+      ?? classMethods[methodSymbol.description as any];
 
     if (method) {
       return method.apply(thisArg, [argument, context]);
     }
 
     throw new ReferenceError(
-      `No method named "${methodSymbol.description}" found in value ${await this.inspect()}.`
+      `No method named "${methodSymbol.description}" found in value ${await thisArg.inspect()}.`
     );
   }
 }
