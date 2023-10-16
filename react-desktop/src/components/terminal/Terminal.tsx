@@ -39,49 +39,49 @@ window.environment = {
 };
 
 let environment: Environment = {
-  PI: Math.PI,
-  E: Math.E,
+  [getSymbol('PI')]: Math.PI,
+  [getSymbol('E')]: Math.E,
   //
-  Any: kopi.KopiAny,
-  Tuple: kopi.KopiTuple,
-  Array: kopi.KopiArray,
-  String: kopi.KopiString,
-  Number: kopi.KopiNumber,
-  Boolean: kopi.KopiBoolean,
-  Dict: kopi.KopiDict,
-  Date: kopi.KopiDate,
+  [getSymbol('Any')]: kopi.KopiAny,
+  [getSymbol('Tuple')]: kopi.KopiTuple,
+  [getSymbol('Array')]: kopi.KopiArray,
+  [getSymbol('String')]: kopi.KopiString,
+  [getSymbol('Number')]: kopi.KopiNumber,
+  [getSymbol('Boolean')]: kopi.KopiBoolean,
+  [getSymbol('Dict')]: kopi.KopiDict,
+  [getSymbol('Date')]: kopi.KopiDate,
   //
-  env: KopiEnv,
-  date: functions.KopiDateFunction,
-  clock: functions.KopiClock,
-  calendar: functions.KopiCalendar,
+  [getSymbol('env')]: KopiEnv,
+  [getSymbol('date')]: functions.KopiDateFunction,
+  [getSymbol('clock')]: functions.KopiClock,
+  [getSymbol('calendar')]: functions.KopiCalendar,
   //
-  let: kopi.kopi_let,
-  loop: kopi.kopi_loop,
-  match: kopi.kopi_match,
-  apply: kopi.kopi_apply,
-  eval: kopi.kopi_eval,
-  ident: kopi.kopi_ident,
-  sleep: kopi.kopi_sleep,
-  fetch: kopi.kopi_fetch,
-  random: kopi.kopi_random,
-  repeat: kopi.kopi_repeat,
-  struct: kopi.kopi_struct,
-  extend: kopi.kopi_extend,
-  spawn: kopi.kopi_spawn,
-  context: kopi.kopi_context,
+  [getSymbol('let')]: kopi.kopi_let,
+  [getSymbol('loop')]: kopi.kopi_loop,
+  [getSymbol('match')]: kopi.kopi_match,
+  [getSymbol('apply')]: kopi.kopi_apply,
+  [getSymbol('eval')]: kopi.kopi_eval,
+  [getSymbol('ident')]: kopi.kopi_ident,
+  [getSymbol('sleep')]: kopi.kopi_sleep,
+  [getSymbol('fetch')]: kopi.kopi_fetch,
+  [getSymbol('random')]: kopi.kopi_random,
+  [getSymbol('repeat')]: kopi.kopi_repeat,
+  [getSymbol('struct')]: kopi.kopi_struct,
+  [getSymbol('extend')]: kopi.kopi_extend,
+  [getSymbol('spawn')]: kopi.kopi_spawn,
+  [getSymbol('context')]: kopi.kopi_context,
   //
-  km: functions.kopi_meter,
-  input: functions.kopi_input,
-  export: functions.kopi_export,
-  log: async (value: KopiValue) => console.log(await value.inspect()),
-  open: async (filename: KopiString) => window.postMessage({
+  [getSymbol('km')]: functions.kopi_meter,
+  [getSymbol('input')]: functions.kopi_input,
+  [getSymbol('export')]: functions.kopi_export,
+  [getSymbol('log')]: async (value: KopiValue) => console.log(await value.inspect()),
+  [getSymbol('open')]: async (filename: KopiString) => window.postMessage({
     type: 'openFile',
     payload: `/${filename.value}`
   }),
   //
-  ls: functions.KopiLs,
-  cat: functions.kopi_cat,
+  [getSymbol('ls')]: functions.KopiLs,
+  [getSymbol('cat')]: functions.kopi_cat,
 };
 
 (async () => {
@@ -99,20 +99,16 @@ let environment: Environment = {
 
   environment = {
     ...environment,
-    element: kopi_element,
-    component: kopi_component,
-    requestAnimationFrame: kopi_requestAnimationFrame,
-    requestDebugAnimationFrame: kopi_requestDebugAnimationFrame,
-    View: kopi_View,
-    Text: kopi_Text,
-    Button: kopi_Button,
-    Svg: kopi_Svg,
-    Circle: kopi_Circle,
+    [getSymbol('element')]: kopi_element,
+    [getSymbol('component')]: kopi_component,
+    [getSymbol('requestAnimationFrame')]: kopi_requestAnimationFrame,
+    [getSymbol('requestDebugAnimationFrame')]: kopi_requestDebugAnimationFrame,
+    [getSymbol('View')]: kopi_View,
+    [getSymbol('Text')]: kopi_Text,
+    [getSymbol('Button')]: kopi_Button,
+    [getSymbol('Svg')]: kopi_Svg,
+    [getSymbol('Circle')]: kopi_Circle,
   };
-
-  for (const binding in environment) {
-    environment[getSymbol(binding)] = environment[binding];
-  }
 })();
 
 const bind = (bindings: { [name: string]: KopiValue; }) => {
