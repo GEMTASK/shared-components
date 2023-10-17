@@ -214,7 +214,7 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
       let value = environment[(astNode as astnodes.Identifier).symbol];
 
       if (value !== undefined) {
-        console.log((astNode as astnodes.Identifier).symbol);
+        // console.log((astNode as astnodes.Identifier).symbol);
 
         return value;
       }
