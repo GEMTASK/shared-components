@@ -117,7 +117,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       } as astnodes.TuplePattern);
     case 'ConstructorPattern':
       return new astnodes.ConstructorPattern({
-        name: rawASTNode.name,
+        symbol: getSymbol(rawASTNode.name),
         argumentPattern: transform(rawASTNode.argumentPattern),
         location: rawASTNode.location,
       } as astnodes.ConstructorPattern);

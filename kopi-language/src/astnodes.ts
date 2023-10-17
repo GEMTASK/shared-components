@@ -255,25 +255,28 @@ class TuplePattern extends ASTPatternNode {
   }
 }
 
-// TODO: Should capture and use type, not name
+// TODO: Should capture and use type, not symbol
 
 class ConstructorPattern extends ASTPatternNode {
-  readonly name: string;
+  readonly symbol: symbol;
   readonly argumentPattern: ASTPatternNode;
 
-  constructor({ name, argumentPattern, location }: ConstructorPattern) {
+  constructor({ symbol, argumentPattern, location }: ConstructorPattern) {
     super(location);
 
-    this.name = name;
+    this.symbol = symbol;
     this.argumentPattern = argumentPattern;
   }
 
   async test(value: KopiValue, context: Context) {
     const { environment } = context;
+    const constructor = (environment as any)[this.symbol];
+
+    console.log(environment, typeof constructor);
 
     if (
-      typeof value === 'number' && this.name === 'Number'
-      || value instanceof (environment as any)[this.name]
+      typeof value === 'number' && this.symbol.description === 'Number'
+      || typeof constructor === 'function' && value instanceof constructor
     ) {
       return true;
     }
@@ -284,15 +287,16 @@ class ConstructorPattern extends ASTPatternNode {
   // TODO
   async match(value: KopiValue, context: Context) {
     const { environment } = context;
+    const constructor = (environment as any)[this.symbol];
 
     if (
-      typeof value === 'number' && this.name === 'Number'
-      || value instanceof (environment as any)[this.name]
+      typeof value === 'number' && this.symbol.description === 'Number'
+      || typeof constructor === 'function' && value instanceof constructor
     ) {
       return this.argumentPattern.match(value, context);
     }
 
-    throw new TypeError(`Match expected a ${this.name} but ${await value.constructor.inspect()} found.`);
+    throw new TypeError(`Match expected a ${this.symbol.description} but ${await value.constructor.inspect()} found.`);
   }
 }
 

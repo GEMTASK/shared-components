@@ -12,7 +12,7 @@ function kopiOperator(argumentType: () => Function) {
     const original = descriptor.value;
 
     descriptor.value = async function (that: KopiValue) {
-      if (!(that instanceof argumentType())) {
+      if (!(typeof that === 'object' && that instanceof argumentType())) {
         throw error('number-operator-argument-type', {
           operator: propertyKey,
           value: await that.inspect(),
