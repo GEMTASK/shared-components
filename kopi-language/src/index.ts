@@ -4,10 +4,11 @@ import { RawASTNode, ASTNode, ASTPatternNode, Environment, Bind, KopiValue } fro
 
 import * as astnodes from './astnodes.js';
 import * as visitors from './visitors.js';
+import * as functions from './functions/core.js';
 
 import { getSymbol, inspect } from './utils.js';
 
-import { KopiBoolean, KopiString, KopiArray, KopiDict, KopiTuple } from './index.js';
+import { KopiAny, KopiBoolean, KopiNumber, KopiString, KopiArray, KopiDict, KopiTuple, KopiDate } from './index.js';
 
 const plusSymbol = getSymbol('+');
 const minusSymbol = getSymbol('-');
@@ -357,11 +358,46 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
   }
 }
 
-async function interpret(source: string, environment: Environment, bind: Bind) {
+let globalEnvironment: Environment = {
+  [getSymbol('PI')]: Math.PI,
+  [getSymbol('E')]: Math.E,
+  //
+  [getSymbol('Any')]: KopiAny,
+  [getSymbol('Tuple')]: KopiTuple,
+  [getSymbol('Array')]: KopiArray,
+  [getSymbol('String')]: KopiString,
+  [getSymbol('Number')]: KopiNumber,
+  [getSymbol('Boolean')]: KopiBoolean,
+  [getSymbol('Dict')]: KopiDict,
+  [getSymbol('Date')]: KopiDate,
+  //
+  [getSymbol('let')]: functions.kopi_let,
+  [getSymbol('loop')]: functions.kopi_loop,
+  [getSymbol('match')]: functions.kopi_match,
+  [getSymbol('apply')]: functions.kopi_apply,
+  [getSymbol('eval')]: functions.kopi_eval,
+  [getSymbol('ident')]: functions.kopi_ident,
+  [getSymbol('sleep')]: functions.kopi_sleep,
+  [getSymbol('fetch')]: functions.kopi_fetch,
+  [getSymbol('random')]: functions.kopi_random,
+  [getSymbol('repeat')]: functions.kopi_repeat,
+  [getSymbol('struct')]: functions.kopi_struct,
+  [getSymbol('extend')]: functions.kopi_extend,
+  [getSymbol('spawn')]: functions.kopi_spawn,
+  [getSymbol('context')]: functions.kopi_context,
+};
+
+const bind = (bindings: { [name: string]: KopiValue; }) => {
+  const newEnvironment = { ...globalEnvironment, ...bindings };
+
+  globalEnvironment = newEnvironment;
+};
+
+async function interpret(source: string, environment: Environment = {}) {
   const rootAst = parser.parse(source);
 
   if (rootAst) {
-    return evaluate(transform(rootAst), environment, bind);
+    return evaluate(transform(rootAst), { ...globalEnvironment, ...environment }, bind);
   }
 }
 
@@ -399,20 +435,3 @@ export {
   KopiStream_T,
   KopiDate,
 } from './classes/index.js';
-
-export {
-  kopi_apply,
-  kopi_context,
-  kopi_eval,
-  kopi_extend,
-  kopi_fetch,
-  kopi_ident,
-  kopi_let,
-  kopi_loop,
-  kopi_match,
-  kopi_random,
-  kopi_repeat,
-  kopi_sleep,
-  kopi_spawn,
-  kopi_struct,
-} from './functions/core.js';

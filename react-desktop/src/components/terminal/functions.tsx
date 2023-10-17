@@ -78,7 +78,7 @@ class KopiLs_ {
         : max,
         0);
 
-      if (this.args.find(arg => arg.name === 'l')) {
+      if (this.args.find(arg => arg.name === 'l')) { // TODO
         const items = directoryItems.map(({ basename, type, size, lastmod }) =>
           (basename + (type === 'directory' ? '/' : '')).padEnd(max + 4) +
           (size.toString() + ' B').padEnd(8) +
