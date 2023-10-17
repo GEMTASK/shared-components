@@ -4,7 +4,7 @@ import { RawASTNode, ASTNode, ASTPatternNode, Environment, Bind, KopiValue } fro
 
 import * as astnodes from './astnodes.js';
 import * as visitors from './visitors.js';
-import * as functions from './functions/core.js';
+import * as functions from './functions.js';
 
 import { getSymbol, inspect } from './utils.js';
 
