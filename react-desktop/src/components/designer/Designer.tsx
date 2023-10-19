@@ -55,12 +55,6 @@ let environment = {
   Circle: kopi_Circle,
 };
 
-const bind = (bindings: { [name: string]: kopi.KopiValue; }) => {
-  const newEnvironment = { environment, ...bindings };
-
-  environment = newEnvironment as any;
-};
-
 type ItemProps = {
   type: 'file' | 'directory',
   basename: string,
@@ -168,23 +162,22 @@ const Item = React.memo(({
 
 //
 
-const Shape = ({ id, children, x, y, onUpdate }: any) => {
+const Shape = ({ id, children, x, y, selected, onSelectShape, onUpdate }: any) => {
   const firstEventRef = useRef<React.PointerEvent<SVGElement> | null>(null);
   const shapeMatrixRef = useRef<React.PointerEvent<DOMMatrix> | null>(null);
 
   const handlePointerDown = (event: React.PointerEvent<SVGGElement>) => {
-    console.log('here', event.currentTarget.transform.baseVal[0].matrix.e);
-
     event.currentTarget.setPointerCapture(event.pointerId);
+    event.stopPropagation();
 
     firstEventRef.current = event;
     shapeMatrixRef.current = event.currentTarget.transform.baseVal[0].matrix;
+
+    onSelectShape(id);
   };
 
   const handlePointerMove = (event: React.PointerEvent<SVGGElement>) => {
     if (firstEventRef.current !== null && shapeMatrixRef.current) {
-      console.log('here', shapeMatrixRef.current.e);
-
       event.currentTarget.setAttribute(
         'transform',
         `translate(${event.clientX - firstEventRef.current.clientX + shapeMatrixRef.current.e}, ${event.clientY - firstEventRef.current.clientY + shapeMatrixRef.current.f})`
@@ -198,11 +191,13 @@ const Shape = ({ id, children, x, y, onUpdate }: any) => {
     onUpdate(id, event.currentTarget.transform.baseVal[0].matrix.e, event.currentTarget.transform.baseVal[0].matrix.f);
   };
 
+  console.log('Shape()');
+
   return (
     <g
       transform={`translate(${x} ${y})`}
-      fill="gray"
-      stroke="black"
+      fill="#f1f3f5"
+      stroke={selected ? '#339af0' : "black"}
       strokeWidth={2}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
@@ -274,8 +269,10 @@ const Designer = ({ args, ...props }: any) => {
 
   const [shapes, setShapes] = useState<ShapeType[]>([
     { id: 0, type: 'circle', x: 50, y: 50, diameter: 100 },
-    { id: 1, type: 'rect', x: 100, y: 100, width: 100, height: 100 },
+    { id: 1, type: 'circle', x: 200, y: 50, diameter: 100 },
+    { id: 2, type: 'rect', x: 100, y: 200, width: 150, height: 50 },
   ]);
+  const [selectedShapeId, setSelectedShapeId] = useState<number | null>(null);
 
   const handleItemSelect = (filename: string) => {
     setSelectedItem(filename);
@@ -309,8 +306,25 @@ const Designer = ({ args, ...props }: any) => {
     // interpret(source);
   };
 
+  const handleSelectShape = (id: number) => {
+    console.log('handleSelectShape');
+
+    setSelectedShapeId(id);
+  };
+
   const handleUpdate = (id: number, x: number, y: number) => {
-    setShapes(shapes => shapes.map(shape => shape.id === id ? { ...shape, x, y } : shape));
+    console.log('handleUpdate');
+
+    setShapes(shapes => shapes.map(shape => shape.id === id ? {
+      z: console.log(Math.round(x / 50) * 50),
+      ...shape,
+      x: Math.round(x / 50) * 50,
+      y: Math.round(y / 50) * 50,
+    } : shape));
+  };
+
+  const handleSvgPointerDown = () => {
+    setSelectedShapeId(null);
   };
 
   useEffect(() => {
@@ -369,11 +383,13 @@ const Designer = ({ args, ...props }: any) => {
         </View>
         <Divider />
         <View flex>
-          <svg width="100%" height="100%">
+          <svg width="100%" height="100%" onPointerDown={handleSvgPointerDown}>
             {shapes.map(({ type, id, ...props }) => (
               React.createElement(shapesMap[type], {
                 key: id,
                 id,
+                selected: id === selectedShapeId,
+                onSelectShape: handleSelectShape,
                 onUpdate: handleUpdate,
                 ...props
               })
