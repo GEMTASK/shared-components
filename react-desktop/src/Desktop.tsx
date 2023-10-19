@@ -110,6 +110,7 @@ const getUtilitiesMenuItems = (addWindow: any) => [
   { title: 'Notes', action: () => addApplication('notes', { addWindow }) },
   { title: 'Music', action: () => addApplication('music', { addWindow }) },
   { title: 'Files', action: () => addApplication('files', { addWindow }) },
+  { title: 'Designer', action: () => addApplication('designer', { addWindow }) },
   { title: 'Contacts', action: () => addApplication('contacts', { addWindow }) },
   { title: 'Terminal', action: () => addApplication('terminal', { addWindow }) },
   { title: 'Markdown', action: () => addApplication('markdown', { addWindow }) },
