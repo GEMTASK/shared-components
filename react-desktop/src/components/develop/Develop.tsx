@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import * as WebDAV from 'webdav';
 
-import * as kopi from 'kopi-language';
+import kopi, { Environment, Context, KopiValue, KopiTuple, KopiString, KopiNumber, KopiArray, getSymbol } from 'kopi-language';
 
 import { kopi_component, kopi_element, kopi_View, kopi_Text, kopi_Button, kopi_Svg, kopi_Circle, kopi_requestAnimationFrame, kopi_requestDebugAnimationFrame } from '../terminal/functions/react';
 
@@ -11,7 +11,7 @@ import TextEdit from '../editor/components/TextEdit';
 
 const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
 
-async function kopi_import(url: kopi.KopiString, context: kopi.Context) {
+async function kopi_import(url: KopiString, context: Context) {
   if (url.value.endsWith('.js')) {
     const module = await import(/*webpackIgnore: true*/ `//webdav.mike-austin.com/${url.value}?${Date.now()}`);
 
@@ -22,43 +22,29 @@ async function kopi_import(url: kopi.KopiString, context: kopi.Context) {
       ];
     }, [[] as any, [] as any]);
 
-    return new kopi.KopiTuple(fields, names);
+    return new KopiTuple(fields, names);
   }
 
   const source = await (await fetch(`//webdav.mike-austin.com/${url.value}?${Date.now()}`)).text();
 
   if (typeof source === 'string') {
-    return kopi.interpret(source, environment, () => { });
+    return kopi.interpret(source, environment);
   }
 }
 
-let environment = {
-  String: kopi.KopiString,
-  Number: kopi.KopiNumber,
-  import: kopi_import,
-  let: kopi.kopi_let,
-  loop: kopi.kopi_loop,
-  match: kopi.kopi_match,
-  print: (arg: any) => console.log(arg),
-  random: kopi.kopi_random,
-  struct: kopi.kopi_struct,
-  extend: kopi.kopi_extend,
-  export: (arg: any) => arg,
-  component: kopi_component,
-  element: kopi_element,
-  requestAnimationFrame: kopi_requestAnimationFrame,
-  requestDebugAnimationFrame: kopi_requestDebugAnimationFrame,
-  View: kopi_View,
-  Text: kopi_Text,
-  Button: kopi_Button,
-  Svg: kopi_Svg,
-  Circle: kopi_Circle,
-};
-
-const bind = (bindings: { [name: string]: kopi.KopiValue; }) => {
-  const newEnvironment = { environment, ...bindings };
-
-  environment = newEnvironment as any;
+let environment: Environment = {
+  [getSymbol('import')]: kopi_import,
+  [getSymbol('print')]: (arg: any) => console.log(arg),
+  [getSymbol('export')]: (arg: any) => arg,
+  [getSymbol('component')]: kopi_component,
+  [getSymbol('element')]: kopi_element,
+  [getSymbol('requestAnimationFrame')]: kopi_requestAnimationFrame,
+  [getSymbol('requestDebugAnimationFrame')]: kopi_requestDebugAnimationFrame,
+  [getSymbol('View')]: kopi_View,
+  [getSymbol('Text')]: kopi_Text,
+  [getSymbol('Button')]: kopi_Button,
+  [getSymbol('Svg')]: kopi_Svg,
+  [getSymbol('Circle')]: kopi_Circle,
 };
 
 type ItemProps = {
@@ -182,7 +168,7 @@ const Develop = ({ args, ...props }: any) => {
 
   const interpret = async (source: string) => {
     try {
-      const value = await (await kopi.interpret(source, environment, bind))?.inspect();
+      const value = await (await kopi.interpret(source, environment))?.inspect();
 
       if (typeof value === 'string') {
         setValue(

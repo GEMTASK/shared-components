@@ -32,20 +32,27 @@ abstract class KopiClass {
 
   async invoke(
     thisArg: any,
-    methodName: string,
+    methodSymbol: symbol,
     [argument, context]: [KopiValue, Context]
   ): Promise<KopiValue> {
     const { environment } = context ?? {};
 
     const extensions = environment?._extensions as unknown as Map<Function, any>;
-    const method = extensions?.get(this.constructor)?.[methodName] ?? Object.getPrototypeOf(this)[methodName];
+    const extensionMethods = extensions?.get(this.constructor);
+
+    const classMethods = Object.getPrototypeOf(this);
+
+    const method = extensionMethods?.[methodSymbol]
+      ?? extensionMethods?.[methodSymbol.description as any]
+      ?? classMethods[methodSymbol]
+      ?? classMethods[methodSymbol.description as any];
 
     if (method) {
       return method.apply(thisArg, [argument, context]);
     }
 
     throw new ReferenceError(
-      `No method named "${methodName}" found in value ${await this.inspect()}.`
+      `No method named "${methodSymbol.description}" found in value ${await thisArg.inspect()}.`
     );
   }
 }
@@ -64,7 +71,7 @@ declare global {
     toNativeString(): Promise<string>;
     invoke(
       thisArg: any,
-      methodName: string,
+      methodSymbol: symbol,
       [argument, context]: [KopiValue, Context]
     ): Promise<KopiValue>;
   }
@@ -75,7 +82,7 @@ declare global {
     toNativeString(): Promise<string>;
     invoke(
       thisArg: any,
-      methodName: string,
+      methodSymbol: symbol,
       [argument, context]: [KopiValue, Context]
     ): Promise<KopiValue>;
   }

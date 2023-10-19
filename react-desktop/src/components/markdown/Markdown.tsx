@@ -4,8 +4,7 @@ import remarkGfm from 'remark-gfm';
 import { createUseStyles } from 'react-jss';
 import * as peggy from 'peggy';
 
-import * as kopi from 'kopi-language';
-import { KopiValue } from 'kopi-language';
+import kopi from 'kopi-language';
 
 import { Stack, Text, View } from 'bare';
 
@@ -125,28 +124,6 @@ const useMarkdownStyles = createUseStyles({
   },
 });
 
-let environment = {
-  Any: kopi.KopiAny,
-  Number: kopi.KopiNumber,
-  String: kopi.KopiString,
-  Boolean: kopi.KopiBoolean,
-  let: kopi.kopi_let,
-  loop: kopi.kopi_loop,
-  match: kopi.kopi_match,
-  sleep: kopi.kopi_sleep,
-  struct: kopi.kopi_struct,
-  extend: kopi.kopi_extend,
-  random: kopi.kopi_random,
-  spawn: kopi.kopi_spawn,
-};
-
-const bind = (bindings: { [name: string]: KopiValue; }) => {
-  environment = {
-    ...environment,
-    ...bindings
-  };
-};
-
 //
 // Code
 //
@@ -172,7 +149,7 @@ const Code = ({
         observerRef.current = new MutationObserver(async (mutationList) => {
           if (mutationList[0].target.textContent) {
             try {
-              const value = await kopi.interpret(mutationList[0].target.textContent, environment, bind);
+              const value = await kopi.interpret(mutationList[0].target.textContent);
 
               if (value) {
                 setValue(await value.inspect());
@@ -187,7 +164,7 @@ const Code = ({
           observerRef.current.observe(textElementRef.current, { characterData: true, subtree: true });
         }
 
-        const value = await kopi.interpret(children[0], environment, bind);
+        const value = await kopi.interpret(children[0]);
 
         if (value) {
           setValue(await value.inspect());

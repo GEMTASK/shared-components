@@ -3,8 +3,7 @@ import { createUseStyles } from 'react-jss';
 
 import { Button, Divider, Icon, Input, Spacer, Stack, Text, View, ViewProps } from 'bare';
 
-import * as kopi from 'kopi-language';
-import { Environment, Context, KopiValue, KopiString, KopiTuple, getSymbol } from 'kopi-language';
+import kopi, { Environment, Context, KopiValue, KopiAny, KopiString, KopiTuple, KopiArray, getSymbol } from 'kopi-language';
 
 import exampless from './examples';
 import reference from './reference';
@@ -27,60 +26,33 @@ const Link = ({ children, ...props }: any) => {
 
 class KopiEnv {
   static async inspect() {
-    return Object.keys(environment).map(key => key.padEnd(12)).join('');
+    return Object.getOwnPropertySymbols(environment).map(({ description }) => description?.padEnd(12)).join('');
   }
 }
 
 window.environment = {
-  Any: kopi.KopiAny,
-  Array: kopi.KopiArray,
-  Tuple: kopi.KopiTuple,
+  Any: KopiAny,
+  Array: KopiArray,
+  Tuple: KopiTuple,
 };
 
 let environment: Environment = {
-  PI: Math.PI,
-  E: Math.E,
+  [getSymbol('env')]: KopiEnv,
+  [getSymbol('date')]: functions.KopiDateFunction,
+  [getSymbol('clock')]: functions.KopiClock,
+  [getSymbol('calendar')]: functions.KopiCalendar,
   //
-  Any: kopi.KopiAny,
-  Tuple: kopi.KopiTuple,
-  Array: kopi.KopiArray,
-  String: kopi.KopiString,
-  Number: kopi.KopiNumber,
-  Boolean: kopi.KopiBoolean,
-  Dict: kopi.KopiDict,
-  Date: kopi.KopiDate,
-  //
-  env: KopiEnv,
-  date: functions.KopiDateFunction,
-  clock: functions.KopiClock,
-  calendar: functions.KopiCalendar,
-  //
-  let: kopi.kopi_let,
-  loop: kopi.kopi_loop,
-  match: kopi.kopi_match,
-  apply: kopi.kopi_apply,
-  eval: kopi.kopi_eval,
-  ident: kopi.kopi_ident,
-  sleep: kopi.kopi_sleep,
-  fetch: kopi.kopi_fetch,
-  random: kopi.kopi_random,
-  repeat: kopi.kopi_repeat,
-  struct: kopi.kopi_struct,
-  extend: kopi.kopi_extend,
-  spawn: kopi.kopi_spawn,
-  context: kopi.kopi_context,
-  //
-  km: functions.kopi_meter,
-  input: functions.kopi_input,
-  export: functions.kopi_export,
-  log: async (value: KopiValue) => console.log(await value.inspect()),
-  open: async (filename: KopiString) => window.postMessage({
+  [getSymbol('km')]: functions.kopi_meter,
+  [getSymbol('input')]: functions.kopi_input,
+  [getSymbol('export')]: functions.kopi_export,
+  [getSymbol('log')]: async (value: KopiValue) => console.log(await value.inspect()),
+  [getSymbol('open')]: async (filename: KopiString) => window.postMessage({
     type: 'openFile',
     payload: `/${filename.value}`
   }),
   //
-  ls: functions.KopiLs,
-  cat: functions.kopi_cat,
+  [getSymbol('ls')]: functions.KopiLs,
+  [getSymbol('cat')]: functions.kopi_cat,
 };
 
 (async () => {
@@ -98,27 +70,17 @@ let environment: Environment = {
 
   environment = {
     ...environment,
-    element: kopi_element,
-    component: kopi_component,
-    requestAnimationFrame: kopi_requestAnimationFrame,
-    requestDebugAnimationFrame: kopi_requestDebugAnimationFrame,
-    View: kopi_View,
-    Text: kopi_Text,
-    Button: kopi_Button,
-    Svg: kopi_Svg,
-    Circle: kopi_Circle,
+    [getSymbol('element')]: kopi_element,
+    [getSymbol('component')]: kopi_component,
+    [getSymbol('requestAnimationFrame')]: kopi_requestAnimationFrame,
+    [getSymbol('requestDebugAnimationFrame')]: kopi_requestDebugAnimationFrame,
+    [getSymbol('View')]: kopi_View,
+    [getSymbol('Text')]: kopi_Text,
+    [getSymbol('Button')]: kopi_Button,
+    [getSymbol('Svg')]: kopi_Svg,
+    [getSymbol('Circle')]: kopi_Circle,
   };
-
-  for (const binding in environment) {
-    environment[getSymbol(binding)] = environment[binding];
-  }
 })();
-
-const bind = (bindings: { [name: string]: KopiValue; }) => {
-  const newEnvironment = { ...environment, ...bindings };
-
-  environment = newEnvironment;
-};
 
 const useSidebarStyles = createUseStyles({
   Item: {
@@ -252,11 +214,11 @@ const interpret = async (
         const source = await (await fetch(`//webdav.mike-austin.com/${url.value}`)).text();
 
         if (typeof source === 'string') {
-          return kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import }, () => { });
+          return kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import });
         }
       }
 
-      const value = await kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import }, bind);
+      const value = await kopi.interpret(source, { ...environment, print: kopi_print, import: kopi_import });
 
       if (value !== undefined) {
         const element = await value.inspect();
@@ -274,13 +236,13 @@ const interpret = async (
         resolve(value);
       }
     } catch (error) {
-      console.warn((error as Error).message);
-
       resolve(
         <Text align="left" paddingVertical="xsmall" style={{ whiteSpace: 'pre-wrap', fontFamily: MONOSPACE_FONT, userSelect: 'text' }}>
           {(error as Error).message}
         </Text>
       );
+
+      throw error;
     }
   });
 

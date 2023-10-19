@@ -1,8 +1,8 @@
-import { KopiArray, KopiBoolean, KopiFunction, KopiString, KopiTuple } from '../classes/index.js';
-import { ASTNode, Bind, Context, KopiClass, KopiValue } from '../types.js';
+import { KopiArray, KopiBoolean, KopiFunction, KopiString, KopiTuple } from './classes/index.js';
+import { ASTNode, Bind, Context, KopiClass, KopiValue } from './types.js';
 
-import KopiStream_T from '../classes/KopiStream.js';
-import KopiRange from '../classes/KopiRange.js';
+import KopiStream_T from './classes/KopiStream.js';
+import KopiRange from './classes/KopiRange.js';
 
 async function kopi_let(func: KopiFunction, context: Context) {
   let result: KopiValue = KopiTuple.empty;

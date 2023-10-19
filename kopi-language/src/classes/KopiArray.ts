@@ -8,6 +8,10 @@ import KopiString from './KopiString.js';
 import type { KopiStream } from './KopiStream.js';
 import type { KopiIterable } from './KopiIterable.js';
 
+import { getSymbol } from '../utils.js';
+
+const equalsSymbol = getSymbol('==');
+
 interface KopiArray extends KopiClass, KopiIterable<KopiArray> { }
 
 let ArrayStream: {
@@ -146,7 +150,7 @@ class KopiArray extends KopiClass implements AsyncIterable<KopiValue> {
       const thisValue = await this._elements[index];
       const thatValue = await that._elements[index];
 
-      const result = await thisValue.invoke(thisValue, '==', [thatValue, context]);
+      const result = await thisValue.invoke(thisValue, equalsSymbol, [thatValue, context]);
 
       if (!(result as KopiBoolean).value) {
         return new KopiBoolean(false);

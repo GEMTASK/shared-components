@@ -4,24 +4,22 @@ import { RawASTNode, ASTNode, ASTPatternNode, Environment, Bind, KopiValue } fro
 
 import * as astnodes from './astnodes.js';
 import * as visitors from './visitors.js';
+import * as functions from './functions.js';
 
-import { inspect } from './utils.js';
+import { getSymbol, inspect } from './utils.js';
 
-import { KopiBoolean, KopiString, KopiArray, KopiDict, KopiTuple } from './index.js';
+import { KopiAny, KopiBoolean, KopiNumber, KopiString, KopiArray, KopiDict, KopiTuple, KopiDate } from './index.js';
 
-const symbolTable = new Map<string, symbol>();
-
-function getSymbol(string: string) {
-  let symbol = symbolTable.get(string);
-
-  if (symbol === undefined) {
-    symbol = Symbol(string);
-
-    symbolTable.set(string, symbol);
-  }
-
-  return symbol;
-}
+const plusSymbol = getSymbol('+');
+const minusSymbol = getSymbol('-');
+const timesSymbol = getSymbol('*');
+const divideSymbol = getSymbol('/');
+const remainerSymbol = getSymbol('%');
+const exponentSymbol = getSymbol('^');
+const lessThanSymbol = getSymbol('<');
+const lessThanOrEqualSymbol = getSymbol('<=');
+const greaterThanSymbol = getSymbol('>');
+const greaterThanOrEqualSymbol = getSymbol('>=');
 
 //
 // transform()
@@ -42,7 +40,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
     case 'PipeExpression':
       return new astnodes.PipeExpression({
         expression: transform(rawASTNode.expression),
-        methodName: rawASTNode.methodName,
+        methodSymbol: getSymbol(rawASTNode.methodName),
         argumentExpression: rawASTNode.argumentExpression && transform(rawASTNode.argumentExpression),
         location: rawASTNode.location,
       } as astnodes.PipeExpression);
@@ -54,7 +52,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       } as astnodes.TupleExpression);
     case 'OperatorExpression':
       return new astnodes.OperatorExpression({
-        operator: rawASTNode.operator,
+        operator: getSymbol(rawASTNode.operator),
         leftExpression: transform(rawASTNode.leftExpression),
         rightExpression: transform(rawASTNode.rightExpression),
         location: rawASTNode.location,
@@ -97,7 +95,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       } as astnodes.MemberExpression);
     case 'UnaryExpression':
       return new astnodes.UnaryExpression({
-        operator: rawASTNode.operator,
+        operator: getSymbol(rawASTNode.operator),
         argumentExpression: transform(rawASTNode.argumentExpression),
         location: rawASTNode.location,
       } as astnodes.UnaryExpression);
@@ -119,7 +117,7 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       } as astnodes.TuplePattern);
     case 'ConstructorPattern':
       return new astnodes.ConstructorPattern({
-        name: rawASTNode.name,
+        symbol: getSymbol(rawASTNode.name),
         argumentPattern: transform(rawASTNode.argumentPattern),
         location: rawASTNode.location,
       } as astnodes.ConstructorPattern);
@@ -186,7 +184,6 @@ function transform(rawASTNode: RawASTNode): ASTNode {
       } as astnodes.AstLiteral);
     case 'Identifier':
       return new astnodes.Identifier({
-        name: rawASTNode.name,
         symbol: getSymbol(rawASTNode.name),
         location: rawASTNode.location,
       } as astnodes.Identifier);
@@ -215,21 +212,20 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
       return (astNode as astnodes.AstLiteral).value;
     case astnodes.Identifier: {
       let value = environment[(astNode as astnodes.Identifier).symbol];
-      // console.log('here', value, (astNode as astnodes.Identifier).symbol);
 
       if (value !== undefined) {
-        console.log((astNode as astnodes.Identifier).symbol);
+        // console.log((astNode as astnodes.Identifier).symbol);
 
         return value;
       }
 
-      value = environment[(astNode as astnodes.Identifier).name];
+      value = environment[(astNode as astnodes.Identifier).symbol.description as any];
 
       if (value !== undefined) {
         return value;
       }
 
-      throw new ReferenceError(`Variable "${(astNode as astnodes.Identifier).name}" not found in current scope.`);
+      throw new ReferenceError(`Variable "${(astNode as astnodes.Identifier).symbol.description}" not found in current scope.`);
     }
     case astnodes.OperatorExpression: {
       const [leftValue, rightValue] = await Promise.all([
@@ -238,17 +234,19 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
       ]);
 
       if (typeof leftValue === 'number' && typeof rightValue === 'number') {
-        switch ((astNode as astnodes.OperatorExpression).operator) {
-          case '+': return leftValue + rightValue;
-          case '-': return leftValue - rightValue;
-          case '*': return leftValue * rightValue;
-          case '/': return leftValue / rightValue;
-          case '%': return leftValue % rightValue;
-          case '^': return leftValue ** rightValue;
-          case '<': return new KopiBoolean(leftValue < rightValue);
-          case '<=': return new KopiBoolean(leftValue <= rightValue);
-          case '>': return new KopiBoolean(leftValue > rightValue);
-          case '>=': return new KopiBoolean(leftValue >= rightValue);
+        const operator = (astNode as astnodes.OperatorExpression).operator;
+
+        switch (operator) {
+          case plusSymbol: return leftValue + rightValue;
+          case minusSymbol: return leftValue - rightValue;
+          case timesSymbol: return leftValue * rightValue;
+          case divideSymbol: return leftValue / rightValue;
+          case remainerSymbol: return leftValue % rightValue;
+          case exponentSymbol: return leftValue ** rightValue;
+          case lessThanSymbol: return new KopiBoolean(leftValue < rightValue);
+          case lessThanOrEqualSymbol: return new KopiBoolean(leftValue <= rightValue);
+          case greaterThanSymbol: return new KopiBoolean(leftValue > rightValue);
+          case greaterThanOrEqualSymbol: return new KopiBoolean(leftValue >= rightValue);
         }
       }
 
@@ -360,11 +358,46 @@ async function evaluate(astNode: ASTNode, environment: Environment, bind: Bind):
   }
 }
 
-async function interpret(source: string, environment: Environment, bind: Bind) {
+let globalEnvironment: Environment = {
+  [getSymbol('PI')]: Math.PI,
+  [getSymbol('E')]: Math.E,
+  //
+  [getSymbol('Any')]: KopiAny,
+  [getSymbol('Tuple')]: KopiTuple,
+  [getSymbol('Array')]: KopiArray,
+  [getSymbol('String')]: KopiString,
+  [getSymbol('Number')]: KopiNumber,
+  [getSymbol('Boolean')]: KopiBoolean,
+  [getSymbol('Dict')]: KopiDict,
+  [getSymbol('Date')]: KopiDate,
+  //
+  [getSymbol('let')]: functions.kopi_let,
+  [getSymbol('loop')]: functions.kopi_loop,
+  [getSymbol('match')]: functions.kopi_match,
+  [getSymbol('apply')]: functions.kopi_apply,
+  [getSymbol('eval')]: functions.kopi_eval,
+  [getSymbol('ident')]: functions.kopi_ident,
+  [getSymbol('sleep')]: functions.kopi_sleep,
+  [getSymbol('fetch')]: functions.kopi_fetch,
+  [getSymbol('random')]: functions.kopi_random,
+  [getSymbol('repeat')]: functions.kopi_repeat,
+  [getSymbol('struct')]: functions.kopi_struct,
+  [getSymbol('extend')]: functions.kopi_extend,
+  [getSymbol('spawn')]: functions.kopi_spawn,
+  [getSymbol('context')]: functions.kopi_context,
+};
+
+const bind = (bindings: { [name: string]: KopiValue; }) => {
+  const newEnvironment = { ...globalEnvironment, ...bindings };
+
+  globalEnvironment = newEnvironment;
+};
+
+async function interpret(source: string, environment: Environment = {}) {
   const rootAst = parser.parse(source);
 
   if (rootAst) {
-    return evaluate(transform(rootAst), environment, bind);
+    return evaluate(transform(rootAst), { ...globalEnvironment, ...environment }, bind);
   }
 }
 
@@ -402,20 +435,3 @@ export {
   KopiStream_T,
   KopiDate,
 } from './classes/index.js';
-
-export {
-  kopi_apply,
-  kopi_context,
-  kopi_eval,
-  kopi_extend,
-  kopi_fetch,
-  kopi_ident,
-  kopi_let,
-  kopi_loop,
-  kopi_match,
-  kopi_random,
-  kopi_repeat,
-  kopi_sleep,
-  kopi_spawn,
-  kopi_struct,
-} from './functions/core.js';

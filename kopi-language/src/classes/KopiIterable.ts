@@ -7,6 +7,11 @@ import KopiArray from './KopiArray.js';
 import type { KopiStream } from './KopiStream.js';
 import KopiBoolean from './KopiBoolean.js';
 
+import { getSymbol } from '../utils.js';
+
+const combineSymbol = getSymbol('combine');
+const equalsSymbol = getSymbol('==');
+
 let ArrayStream: {
   new(iterable: AsyncIterable<KopiValue>): KopiStream<KopiArray>;
 };
@@ -149,7 +154,7 @@ function KopiIterable_T<TIterable extends KopiClass & AsyncIterable<TResult>, TR
     }
 
     join(this: TIterable, joiner: KopiValue, context: Context) {
-      return joiner.invoke(joiner, 'combine', [this, context]);
+      return joiner.invoke(joiner, combineSymbol, [this, context]);
     }
 
     async combos(this: TIterable) {
@@ -224,7 +229,7 @@ function KopiIterable_T<TIterable extends KopiClass & AsyncIterable<TResult>, TR
 
     async includes(this: TIterable, _value: KopiValue, context: Context) {
       for await (const value of this) {
-        if ((await value.invoke(value, '==', [_value, context]) as KopiBoolean).value) {
+        if ((await value.invoke(value, equalsSymbol, [_value, context]) as KopiBoolean).value) {
           return KopiBoolean.true;
         }
       }
@@ -237,7 +242,7 @@ function KopiIterable_T<TIterable extends KopiClass & AsyncIterable<TResult>, TR
 
       const generator = async function* (this: TIterable) {
         for await (const value of this) {
-          if ((await value.invoke(value, '==', [delimeter, context]) as KopiBoolean).value) {
+          if ((await value.invoke(value, equalsSymbol, [delimeter, context]) as KopiBoolean).value) {
             yield fromIterable(new KopiArray(values));
 
             values = [];

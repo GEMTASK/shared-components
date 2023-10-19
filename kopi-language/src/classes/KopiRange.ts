@@ -8,6 +8,11 @@ import KopiString from './KopiString.js';
 import type { KopiStream } from './KopiStream.js';
 import type { KopiIterable } from './KopiIterable.js';
 
+import { getSymbol } from '../utils.js';
+
+const lessThanOrEqualSymbol = getSymbol('<=');
+const succSymbol = getSymbol('succ');
+
 interface KopiRange extends KopiClass, KopiIterable<KopiArray> { };
 
 let RangeStream: {
@@ -99,8 +104,8 @@ class KopiRange extends KopiClass implements AsyncIterable<KopiValue> {
 
     for (
       let current = from;
-      (await current.invoke(current, '<=', [to, context]) as KopiBoolean).value;
-      current = await current.invoke(current, 'succ', [this.stride, context])
+      (await current.invoke(current, lessThanOrEqualSymbol, [to, context]) as KopiBoolean).value;
+      current = await current.invoke(current, succSymbol, [this.stride, context])
     ) {
       yield current;
     }

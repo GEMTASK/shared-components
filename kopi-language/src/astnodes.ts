@@ -33,20 +33,22 @@ class BlockExpression extends ASTNode {
 
 class PipeExpression extends ASTNode {
   readonly expression: ASTNode;
-  readonly methodName: string;
+  // readonly methodName: string;
+  readonly methodSymbol: symbol;
   readonly argumentExpression: ASTNode | null;
 
-  constructor({ expression, methodName, argumentExpression, location }: PipeExpression) {
+  constructor({ expression, methodSymbol, argumentExpression, location }: PipeExpression) {
     super(location);
 
     this.expression = expression;
-    this.methodName = methodName;
+    // this.methodName = methodName;
+    this.methodSymbol = methodSymbol;
     this.argumentExpression = argumentExpression;
   }
 }
 
 class OperatorExpression extends ASTNode {
-  readonly operator: string;
+  readonly operator: symbol;
   readonly leftExpression: ASTNode;
   readonly rightExpression: ASTNode;
 
@@ -109,7 +111,7 @@ class ApplyExpression extends ASTNode {
   }
 
   async inspect() {
-    return `'(${(await this.expression as Identifier).name} ${await this.argumentExpression.inspect()})`;
+    return `'(${(await this.expression as Identifier).symbol.description} ${await this.argumentExpression.inspect()})`;
   }
 
   async apply(thisArg: KopiValue, [argument, context]: [KopiValue, Context]): Promise<KopiValue> {
@@ -117,7 +119,7 @@ class ApplyExpression extends ASTNode {
 
     const arg = await evaluate(this.argumentExpression, environment, bind);
 
-    return argument.invoke(argument, (this.expression as Identifier).name, [arg, context]);
+    return argument.invoke(argument, (this.expression as Identifier).symbol, [arg, context]);
   }
 };
 
@@ -146,7 +148,7 @@ class MemberExpression extends ASTNode {
 }
 
 class UnaryExpression extends ASTNode {
-  readonly operator: string;
+  readonly operator: symbol;
   readonly argumentExpression: ASTNode;
 
   constructor({ operator, argumentExpression, location }: UnaryExpression) {
@@ -253,25 +255,28 @@ class TuplePattern extends ASTPatternNode {
   }
 }
 
-// TODO: Should capture and use type, not name
+// TODO: Should capture and use type, not symbol
 
 class ConstructorPattern extends ASTPatternNode {
-  readonly name: string;
+  readonly symbol: symbol;
   readonly argumentPattern: ASTPatternNode;
 
-  constructor({ name, argumentPattern, location }: ConstructorPattern) {
+  constructor({ symbol, argumentPattern, location }: ConstructorPattern) {
     super(location);
 
-    this.name = name;
+    this.symbol = symbol;
     this.argumentPattern = argumentPattern;
   }
 
   async test(value: KopiValue, context: Context) {
     const { environment } = context;
+    const constructor = (environment as any)[this.symbol];
+
+    console.log(environment, typeof constructor);
 
     if (
-      typeof value === 'number' && this.name === 'Number'
-      || value instanceof (environment as any)[this.name]
+      typeof value === 'number' && this.symbol.description === 'Number'
+      || typeof constructor === 'function' && value instanceof constructor
     ) {
       return true;
     }
@@ -282,15 +287,16 @@ class ConstructorPattern extends ASTPatternNode {
   // TODO
   async match(value: KopiValue, context: Context) {
     const { environment } = context;
+    const constructor = (environment as any)[this.symbol];
 
     if (
-      typeof value === 'number' && this.name === 'Number'
-      || value instanceof (environment as any)[this.name]
+      typeof value === 'number' && this.symbol.description === 'Number'
+      || typeof constructor === 'function' && value instanceof constructor
     ) {
       return this.argumentPattern.match(value, context);
     }
 
-    throw new TypeError(`Match expected a ${this.name} but ${await value.constructor.inspect()} found.`);
+    throw new TypeError(`Match expected a ${this.symbol.description} but ${await value.constructor.inspect()} found.`);
   }
 }
 
@@ -567,26 +573,28 @@ class AstLiteral extends ASTNode {
 }
 
 class Identifier extends ASTNode {
-  readonly name: string;
   readonly symbol: symbol;
 
-  constructor({ name, symbol, location }: Identifier) {
+  constructor({ symbol, location }: Identifier) {
     super(location);
 
-    this.name = name;
     this.symbol = symbol;
   }
 
   async apply(thisArg: KopiValue, [argument, context]: [KopiValue, Context]): Promise<KopiValue> {
-    return argument.invoke(argument, this.name, [KopiTuple.empty, context]);
+    if (this.symbol.description) {
+      return argument.invoke(argument, this.symbol, [KopiTuple.empty, context]);
+    }
+
+    throw new Error(`Kopi symbols must have a description`);
   }
 
   '=='(that: Identifier) {
-    return new KopiBoolean(this.name === that.name);
+    return new KopiBoolean(this.symbol.description === that.symbol.description);
   }
 
   async inspect() {
-    return `'${this.name}`;
+    return `'${this.symbol.description}`;
   }
 }
 
