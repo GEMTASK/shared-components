@@ -35,6 +35,17 @@ class KopiNumber extends KopiClass {
       return value;
     }
 
+    throw error('number-constructor-argument-type', {
+      value: await value.inspect(),
+      type: await value.constructor.inspect()
+    });
+  }
+
+  static async fromString(value: KopiValue, context: Context) {
+    if (typeof value === 'number') {
+      return value;
+    }
+
     return Number((await value.toString()).value);
   }
 
