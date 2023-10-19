@@ -162,7 +162,7 @@ const Item = React.memo(({
 
 //
 
-const Shape = ({ id, children, x, y, selected, onSelectShape, onUpdate }: any) => {
+const Shape = ({ id, children, x, y, selected, onShapeSelect, onShapeUpdate }: any) => {
   const firstEventRef = useRef<React.PointerEvent<SVGElement> | null>(null);
   const shapeMatrixRef = useRef<React.PointerEvent<DOMMatrix> | null>(null);
 
@@ -173,7 +173,7 @@ const Shape = ({ id, children, x, y, selected, onSelectShape, onUpdate }: any) =
     firstEventRef.current = event;
     shapeMatrixRef.current = event.currentTarget.transform.baseVal[0].matrix;
 
-    onSelectShape(id);
+    onShapeSelect(id);
   };
 
   const handlePointerMove = (event: React.PointerEvent<SVGGElement>) => {
@@ -188,7 +188,7 @@ const Shape = ({ id, children, x, y, selected, onSelectShape, onUpdate }: any) =
   const handlePointerUp = (event: React.PointerEvent<SVGGElement>) => {
     firstEventRef.current = null;
 
-    onUpdate(id, event.currentTarget.transform.baseVal[0].matrix.e, event.currentTarget.transform.baseVal[0].matrix.f);
+    onShapeUpdate(id, event.currentTarget.transform.baseVal[0].matrix.e, event.currentTarget.transform.baseVal[0].matrix.f);
   };
 
   console.log('Shape()');
@@ -306,14 +306,14 @@ const Designer = ({ args, ...props }: any) => {
     // interpret(source);
   };
 
-  const handleSelectShape = (id: number) => {
-    console.log('handleSelectShape');
+  const handleShapeSelect = (id: number) => {
+    console.log('handleShapeSelect');
 
     setSelectedShapeId(id);
   };
 
-  const handleUpdate = (id: number, x: number, y: number) => {
-    console.log('handleUpdate');
+  const handleShapeUpdate = (id: number, x: number, y: number) => {
+    console.log('handleShapeUpdate');
 
     setShapes(shapes => shapes.map(shape => shape.id === id ? {
       z: console.log(Math.round(x / 50) * 50),
@@ -389,8 +389,8 @@ const Designer = ({ args, ...props }: any) => {
                 key: id,
                 id,
                 selected: id === selectedShapeId,
-                onSelectShape: handleSelectShape,
-                onUpdate: handleUpdate,
+                onShapeSelect: handleShapeSelect,
+                onShapeUpdate: handleShapeUpdate,
                 ...props
               })
             ))}
