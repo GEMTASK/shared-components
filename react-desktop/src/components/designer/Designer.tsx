@@ -89,8 +89,6 @@ const Item = React.memo(({
 
   useEffect(() => {
     if (isExpanded) {
-      console.log(1, filename);
-
       (async () => {
         const directoryItems = await webdavClient.getDirectoryContents(filename);
 
@@ -103,8 +101,6 @@ const Item = React.memo(({
 
   useEffect(() => {
     if (type === 'directory' && initialSelectedItem?.startsWith(filename)) {
-      console.log(2, filename);
-
       (async () => {
         const directoryItems = await webdavClient.getDirectoryContents(filename);
 
@@ -186,12 +182,19 @@ const Shape = ({ id, children, x, y, selected, onShapeSelect, onShapeUpdate }: a
   };
 
   const handlePointerUp = (event: React.PointerEvent<SVGGElement>) => {
+    const shapeMatrix = event.currentTarget.transform.baseVal[0].matrix;
+
+    if (firstEventRef.current !== null && shapeMatrixRef.current) {
+      event.currentTarget.setAttribute(
+        'transform',
+        `translate(${shapeMatrixRef.current.e}, ${shapeMatrixRef.current.f})`
+      );
+    }
+
     firstEventRef.current = null;
 
-    onShapeUpdate(id, event.currentTarget.transform.baseVal[0].matrix.e, event.currentTarget.transform.baseVal[0].matrix.f);
+    onShapeUpdate(id, shapeMatrix.e, shapeMatrix.f);
   };
-
-  console.log('Shape()');
 
   return (
     <g
@@ -269,8 +272,8 @@ const Designer = ({ args, ...props }: any) => {
 
   const [shapes, setShapes] = useState<ShapeType[]>([
     { id: 0, type: 'circle', x: 50, y: 50, diameter: 100 },
-    { id: 1, type: 'circle', x: 200, y: 50, diameter: 100 },
-    { id: 2, type: 'rect', x: 100, y: 200, width: 150, height: 50 },
+    { id: 1, type: 'circle', x: 250, y: 50, diameter: 100 },
+    { id: 2, type: 'rect', x: 100, y: 200, width: 200, height: 50 },
   ]);
   const [selectedShapeId, setSelectedShapeId] = useState<number | null>(null);
 
@@ -307,16 +310,11 @@ const Designer = ({ args, ...props }: any) => {
   };
 
   const handleShapeSelect = (id: number) => {
-    console.log('handleShapeSelect');
-
     setSelectedShapeId(id);
   };
 
   const handleShapeUpdate = (id: number, x: number, y: number) => {
-    console.log('handleShapeUpdate');
-
     setShapes(shapes => shapes.map(shape => shape.id === id ? {
-      z: console.log(Math.round(x / 50) * 50),
       ...shape,
       x: Math.round(x / 50) * 50,
       y: Math.round(y / 50) * 50,
@@ -387,8 +385,17 @@ const Designer = ({ args, ...props }: any) => {
         <Divider />
         <View flex>
           <svg width="100%" height="100%" onPointerDown={handleSvgPointerDown}>
-            {Array.from({ length: columns * rows }, (_, index) => (
-              <circle cx={index % columns * 100 + 100} cy={Math.floor(index / columns) * 100 + 100} r={1} fill="#adb5bd" />
+            {Array.from({ length: rows }, (_, index) => (
+              <>
+                <line x1={-0.5} y1={index * 100 + 100} x2={columns * 100} y2={index * 100 + 100} stroke="hsl(0, 0%, 50%)" stroke-dasharray="1 9" />
+                <line x1={-0.5} y1={index * 100 + 50} x2={columns * 100} y2={index * 100 + 50} stroke="hsl(0, 0%, 75%)" stroke-dasharray="1 9" />
+              </>
+            ))}
+            {Array.from({ length: columns }, (_, index) => (
+              <>
+                <line x1={index * 100 + 100} y1={-0.5} x2={index * 100 + 100} y2={columns * 100} stroke="hsl(0, 0%, 50%)" stroke-dasharray="1 9" />
+                <line x1={index * 100 + 50} y1={-0.5} x2={index * 100 + 50} y2={columns * 100} stroke="hsl(0, 0%, 75%)" stroke-dasharray="1 9" />
+              </>
             ))}
             {shapes.map(({ type, id, ...props }) => (
               React.createElement(shapesMap[type], {
