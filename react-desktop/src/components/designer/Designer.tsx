@@ -195,10 +195,10 @@ const Shape = ({ id, children, x, y, selected, onShapeSelect, onShapeUpdate }: a
 
   return (
     <g
-      transform={`translate(${x} ${y})`}
+      transform={`translate(${x + 0.5} ${y + 0.5})`}
       fill="#f1f3f5"
       stroke={selected ? '#339af0' : "black"}
-      strokeWidth={2}
+      strokeWidth={1}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -349,6 +349,9 @@ const Designer = ({ args, ...props }: any) => {
   //   })();
   // }, [args]);
 
+  const columns = Math.floor(window.innerWidth / 100);
+  const rows = Math.floor(window.innerHeight / 100);
+
   return (
     <Splitter flex horizontal {...props}>
       {isLeftSidebarOpen && (
@@ -384,6 +387,9 @@ const Designer = ({ args, ...props }: any) => {
         <Divider />
         <View flex>
           <svg width="100%" height="100%" onPointerDown={handleSvgPointerDown}>
+            {Array.from({ length: columns * rows }, (_, index) => (
+              <circle cx={index % columns * 100 + 100} cy={Math.floor(index / columns) * 100 + 100} r={1} fill="#adb5bd" />
+            ))}
             {shapes.map(({ type, id, ...props }) => (
               React.createElement(shapesMap[type], {
                 key: id,
