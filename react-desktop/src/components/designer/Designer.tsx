@@ -158,7 +158,7 @@ const Item = React.memo(({
 
 //
 
-const Shape = ({ id, children, x, y, selected, onShapeSelect, onShapeUpdate }: any) => {
+const Shape = ({ id, children, x, y, fill, selected, onShapeSelect, onShapeUpdate }: any) => {
   const firstEventRef = useRef<React.PointerEvent<SVGElement> | null>(null);
   const shapeMatrixRef = useRef<React.PointerEvent<DOMMatrix> | null>(null);
 
@@ -199,7 +199,7 @@ const Shape = ({ id, children, x, y, selected, onShapeSelect, onShapeUpdate }: a
   return (
     <g
       transform={`translate(${x + 0.5} ${y + 0.5})`}
-      fill="#f1f3f5"
+      fill={fill}
       stroke={selected ? '#339af0' : "black"}
       strokeWidth={1}
       onPointerDown={handlePointerDown}
@@ -271,11 +271,22 @@ const Designer = ({ args, ...props }: any) => {
   const [selectedItem, setSelectedItem] = useState<string | null>(args);
 
   const [shapes, setShapes] = useState<ShapeType[]>([
-    { id: 0, type: 'circle', x: 50, y: 50, diameter: 100 },
-    { id: 1, type: 'circle', x: 250, y: 50, diameter: 100 },
-    { id: 2, type: 'rect', x: 100, y: 200, width: 50, height: 200 },
-    { id: 3, type: 'rect', x: 150, y: 200, width: 50, height: 200 },
-    { id: 4, type: 'rect', x: 200, y: 200, width: 50, height: 200 },
+    // { id: 0, type: 'circle', x: 50, y: 50, diameter: 100, fill: 'white' },
+    // { id: 1, type: 'circle', x: 250, y: 50, diameter: 100, fill: 'white' },
+    { id: 2, type: 'rect', x: 100, y: 100, width: 50, height: 200, fill: 'white' },
+    { id: 3, type: 'rect', x: 150, y: 100, width: 50, height: 200, fill: 'white' },
+    { id: 4, type: 'rect', x: 200, y: 100, width: 50, height: 200, fill: 'white' },
+    { id: 5, type: 'rect', x: 250, y: 100, width: 50, height: 200, fill: 'white' },
+    { id: 6, type: 'rect', x: 300, y: 100, width: 50, height: 200, fill: 'white' },
+    { id: 7, type: 'rect', x: 350, y: 100, width: 50, height: 200, fill: 'white' },
+    { id: 8, type: 'rect', x: 400, y: 100, width: 50, height: 200, fill: 'white' },
+    { id: 9, type: 'rect', x: 450, y: 100, width: 50, height: 200, fill: 'white' },
+    //
+    { id: 100, type: 'rect', x: 130, y: 100, width: 30, height: 120, fill: 'black' },
+    { id: 101, type: 'rect', x: 190, y: 100, width: 30, height: 120, fill: 'black' },
+    { id: 102, type: 'rect', x: 280, y: 100, width: 30, height: 120, fill: 'black' },
+    { id: 102, type: 'rect', x: 335, y: 100, width: 30, height: 120, fill: 'black' },
+    { id: 102, type: 'rect', x: 390, y: 100, width: 30, height: 120, fill: 'black' },
   ]);
   const [selectedShapeId, setSelectedShapeId] = useState<number | null>(null);
 
@@ -318,8 +329,8 @@ const Designer = ({ args, ...props }: any) => {
   const handleShapeUpdate = (id: number, x: number, y: number) => {
     setShapes(shapes => shapes.map(shape => shape.id === id ? {
       ...shape,
-      x: Math.round(x / 50) * 50,
-      y: Math.round(y / 50) * 50,
+      x: Math.round(x / 5) * 5,
+      y: Math.round(y / 5) * 5,
     } : shape));
   };
 
