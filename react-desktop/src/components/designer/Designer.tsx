@@ -273,7 +273,9 @@ const Designer = ({ args, ...props }: any) => {
   const [shapes, setShapes] = useState<ShapeType[]>([
     { id: 0, type: 'circle', x: 50, y: 50, diameter: 100 },
     { id: 1, type: 'circle', x: 250, y: 50, diameter: 100 },
-    { id: 2, type: 'rect', x: 100, y: 200, width: 200, height: 50 },
+    { id: 2, type: 'rect', x: 100, y: 200, width: 50, height: 200 },
+    { id: 3, type: 'rect', x: 150, y: 200, width: 50, height: 200 },
+    { id: 4, type: 'rect', x: 200, y: 200, width: 50, height: 200 },
   ]);
   const [selectedShapeId, setSelectedShapeId] = useState<number | null>(null);
 
@@ -387,14 +389,14 @@ const Designer = ({ args, ...props }: any) => {
           <svg width="100%" height="100%" onPointerDown={handleSvgPointerDown}>
             {Array.from({ length: rows }, (_, index) => (
               <>
-                <line x1={-0.5} y1={index * 100 + 100} x2={columns * 100} y2={index * 100 + 100} stroke="hsl(0, 0%, 50%)" stroke-dasharray="1 9" />
-                <line x1={-0.5} y1={index * 100 + 50} x2={columns * 100} y2={index * 100 + 50} stroke="hsl(0, 0%, 75%)" stroke-dasharray="1 9" />
+                <line x1={0} y1={index * 100 + 100.5} x2={columns * 100} y2={index * 100 + 100.5} stroke="hsl(0, 0%, 50%)" stroke-dasharray="1 9" />
+                <line x1={0} y1={index * 100 + 50.5} x2={columns * 100} y2={index * 100 + 50.5} stroke="hsl(0, 0%, 75%)" stroke-dasharray="1 9" />
               </>
             ))}
             {Array.from({ length: columns }, (_, index) => (
               <>
-                <line x1={index * 100 + 100} y1={-0.5} x2={index * 100 + 100} y2={columns * 100} stroke="hsl(0, 0%, 50%)" stroke-dasharray="1 9" />
-                <line x1={index * 100 + 50} y1={-0.5} x2={index * 100 + 50} y2={columns * 100} stroke="hsl(0, 0%, 75%)" stroke-dasharray="1 9" />
+                <line x1={index * 100 + 100.5} y1={0} x2={index * 100 + 100.5} y2={columns * 100} stroke="hsl(0, 0%, 50%)" stroke-dasharray="1 9" />
+                <line x1={index * 100 + 50.5} y1={0} x2={index * 100 + 50.5} y2={columns * 100} stroke="hsl(0, 0%, 75%)" stroke-dasharray="1 9" />
               </>
             ))}
             {shapes.map(({ type, id, ...props }) => (
