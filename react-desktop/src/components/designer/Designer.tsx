@@ -285,8 +285,8 @@ const Designer = ({ args, ...props }: any) => {
     { id: 100, type: 'rect', x: 130, y: 100, width: 30, height: 120, fill: 'black' },
     { id: 101, type: 'rect', x: 190, y: 100, width: 30, height: 120, fill: 'black' },
     { id: 102, type: 'rect', x: 280, y: 100, width: 30, height: 120, fill: 'black' },
-    { id: 102, type: 'rect', x: 335, y: 100, width: 30, height: 120, fill: 'black' },
-    { id: 102, type: 'rect', x: 390, y: 100, width: 30, height: 120, fill: 'black' },
+    { id: 103, type: 'rect', x: 335, y: 100, width: 30, height: 120, fill: 'black' },
+    { id: 104, type: 'rect', x: 390, y: 100, width: 30, height: 120, fill: 'black' },
   ]);
   const [selectedShapeId, setSelectedShapeId] = useState<number | null>(null);
 
@@ -399,16 +399,16 @@ const Designer = ({ args, ...props }: any) => {
         <View flex>
           <svg width="100%" height="100%" onPointerDown={handleSvgPointerDown}>
             {Array.from({ length: rows }, (_, index) => (
-              <>
-                <line x1={0} y1={index * 100 + 100.5} x2={columns * 100} y2={index * 100 + 100.5} stroke="hsl(0, 0%, 50%)" stroke-dasharray="1 9" />
-                <line x1={0} y1={index * 100 + 50.5} x2={columns * 100} y2={index * 100 + 50.5} stroke="hsl(0, 0%, 75%)" stroke-dasharray="1 9" />
-              </>
+              <React.Fragment key={index}>
+                <line x1={0} y1={index * 100 + 100.5} x2={columns * 100} y2={index * 100 + 100.5} stroke="hsl(0, 0%, 50%)" strokeDasharray="1 9" />
+                <line x1={0} y1={index * 100 + 50.5} x2={columns * 100} y2={index * 100 + 50.5} stroke="hsl(0, 0%, 75%)" strokeDasharray="1 9" />
+              </React.Fragment>
             ))}
             {Array.from({ length: columns }, (_, index) => (
-              <>
-                <line x1={index * 100 + 100.5} y1={0} x2={index * 100 + 100.5} y2={columns * 100} stroke="hsl(0, 0%, 50%)" stroke-dasharray="1 9" />
-                <line x1={index * 100 + 50.5} y1={0} x2={index * 100 + 50.5} y2={columns * 100} stroke="hsl(0, 0%, 75%)" stroke-dasharray="1 9" />
-              </>
+              <React.Fragment key={index}>
+                <line key={index} x1={index * 100 + 100.5} y1={0} x2={index * 100 + 100.5} y2={columns * 100} stroke="hsl(0, 0%, 50%)" strokeDasharray="1 9" />
+                <line key={index * 2 + 1} x1={index * 100 + 50.5} y1={0} x2={index * 100 + 50.5} y2={columns * 100} stroke="hsl(0, 0%, 75%)" strokeDasharray="1 9" />
+              </React.Fragment>
             ))}
             {shapes.map(({ type, id, ...props }) => (
               React.createElement(shapesMap[type], {
