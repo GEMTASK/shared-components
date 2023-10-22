@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as WebDAV from 'webdav';
+import * as Tone from 'tone';
 
 import * as kopi from 'kopi-language';
 
@@ -10,6 +11,8 @@ import { View, Splitter, Text, Button, Divider, Icon, Spacer } from 'bare';
 import TextEdit from '../editor/components/TextEdit';
 
 const webdavClient = WebDAV.createClient("https://webdav.mike-austin.com", {});
+
+const synth = new Tone.Synth().toDestination();
 
 async function kopi_import(url: kopi.KopiString, context: kopi.Context) {
   if (url.value.endsWith('.js')) {
@@ -276,6 +279,10 @@ const setFillColor = (shape: any, fillColor: string) => {
   return { fill: fillColor };
 };
 
+const playNote = (shape: any, note: string) => {
+  synth.triggerAttackRelease(note, '8n');
+};
+
 const Designer = ({ args, ...props }: any) => {
   const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(window.innerWidth >= 1440);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
@@ -291,17 +298,19 @@ const Designer = ({ args, ...props }: any) => {
     // { id: 1, type: 'circle', x: 250, y: 50, diameter: 100, fill: 'white' },
     {
       id: 2, type: 'rect', x: 50, y: 50, width: 50, height: 200, fill: 'white', events: {
-        onPress: { action: setFillColor, argument: '#e7f5ff' },
-        onRelease: { action: setFillColor, argument: 'white' },
+        onPress: { action: playNote, argument: 'C4' },
       }
     },
     {
       id: 3, type: 'rect', x: 100, y: 50, width: 50, height: 200, fill: 'white', events: {
-        onPress: { action: setFillColor, argument: 'red' },
-        onRelease: { action: setFillColor, argument: 'white' },
+        onPress: { action: playNote, argument: 'D4' },
       }
     },
-    { id: 4, type: 'rect', x: 150, y: 50, width: 50, height: 200, fill: 'white' },
+    {
+      id: 4, type: 'rect', x: 150, y: 50, width: 50, height: 200, fill: 'white', events: {
+        onPress: { action: playNote, argument: 'E4' },
+      }
+    },
     { id: 5, type: 'rect', x: 200, y: 50, width: 50, height: 200, fill: 'white' },
     { id: 6, type: 'rect', x: 250, y: 50, width: 50, height: 200, fill: 'white' },
     { id: 7, type: 'rect', x: 300, y: 50, width: 50, height: 200, fill: 'white' },
