@@ -157,43 +157,55 @@ const Item = React.memo(({
 });
 
 //
+// Shape
+//
 
-const Shape = ({ id, children, x, y, fill, selected, onShapeSelect, onShapeUpdate }: any) => {
+const Shape = ({ id, children, x, y, fill, selected, designMode, onShapeSelect, onShapeUpdate, onPress, onRelease }: any) => {
   const firstEventRef = useRef<React.PointerEvent<SVGElement> | null>(null);
   const shapeMatrixRef = useRef<React.PointerEvent<DOMMatrix> | null>(null);
 
   const handlePointerDown = (event: React.PointerEvent<SVGGElement>) => {
-    event.currentTarget.setPointerCapture(event.pointerId);
-    event.stopPropagation();
+    if (designMode) {
+      event.currentTarget.setPointerCapture(event.pointerId);
+      event.stopPropagation();
 
-    firstEventRef.current = event;
-    shapeMatrixRef.current = event.currentTarget.transform.baseVal[0].matrix;
+      firstEventRef.current = event;
+      shapeMatrixRef.current = event.currentTarget.transform.baseVal[0].matrix;
 
-    onShapeSelect(id);
+      onShapeSelect(id);
+    } else {
+      onPress?.(id);
+    }
   };
 
   const handlePointerMove = (event: React.PointerEvent<SVGGElement>) => {
-    if (firstEventRef.current !== null && shapeMatrixRef.current) {
-      event.currentTarget.setAttribute(
-        'transform',
-        `translate(${event.clientX - firstEventRef.current.clientX + shapeMatrixRef.current.e}, ${event.clientY - firstEventRef.current.clientY + shapeMatrixRef.current.f})`
-      );
+    if (designMode) {
+      if (firstEventRef.current !== null && shapeMatrixRef.current) {
+        event.currentTarget.setAttribute(
+          'transform',
+          `translate(${event.clientX - firstEventRef.current.clientX + shapeMatrixRef.current.e}, ${event.clientY - firstEventRef.current.clientY + shapeMatrixRef.current.f})`
+        );
+      }
     }
   };
 
   const handlePointerUp = (event: React.PointerEvent<SVGGElement>) => {
-    const shapeMatrix = event.currentTarget.transform.baseVal[0].matrix;
+    if (designMode) {
+      const shapeMatrix = event.currentTarget.transform.baseVal[0].matrix;
 
-    if (firstEventRef.current !== null && shapeMatrixRef.current) {
-      event.currentTarget.setAttribute(
-        'transform',
-        `translate(${shapeMatrixRef.current.e}, ${shapeMatrixRef.current.f})`
-      );
+      if (firstEventRef.current !== null && shapeMatrixRef.current) {
+        event.currentTarget.setAttribute(
+          'transform',
+          `translate(${shapeMatrixRef.current.e}, ${shapeMatrixRef.current.f})`
+        );
+      }
+
+      firstEventRef.current = null;
+
+      onShapeUpdate(id, shapeMatrix.e, shapeMatrix.f);
+    } else {
+      onRelease?.(id);
     }
-
-    firstEventRef.current = null;
-
-    onShapeUpdate(id, shapeMatrix.e, shapeMatrix.f);
   };
 
   return (
@@ -260,6 +272,10 @@ interface IRect {
 
 // type ShapeType = ICircle | IRect;
 
+const setFillColor = (shape: any, fillColor: string) => {
+  return { fill: fillColor };
+};
+
 const Designer = ({ args, ...props }: any) => {
   const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(window.innerWidth >= 1440);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
@@ -273,20 +289,30 @@ const Designer = ({ args, ...props }: any) => {
   const [shapes, setShapes] = useState<ShapeType[]>([
     // { id: 0, type: 'circle', x: 50, y: 50, diameter: 100, fill: 'white' },
     // { id: 1, type: 'circle', x: 250, y: 50, diameter: 100, fill: 'white' },
-    { id: 2, type: 'rect', x: 100, y: 100, width: 50, height: 200, fill: 'white' },
-    { id: 3, type: 'rect', x: 150, y: 100, width: 50, height: 200, fill: 'white' },
-    { id: 4, type: 'rect', x: 200, y: 100, width: 50, height: 200, fill: 'white' },
-    { id: 5, type: 'rect', x: 250, y: 100, width: 50, height: 200, fill: 'white' },
-    { id: 6, type: 'rect', x: 300, y: 100, width: 50, height: 200, fill: 'white' },
-    { id: 7, type: 'rect', x: 350, y: 100, width: 50, height: 200, fill: 'white' },
-    { id: 8, type: 'rect', x: 400, y: 100, width: 50, height: 200, fill: 'white' },
-    { id: 9, type: 'rect', x: 450, y: 100, width: 50, height: 200, fill: 'white' },
+    {
+      id: 2, type: 'rect', x: 50, y: 50, width: 50, height: 200, fill: 'white', events: {
+        onPress: { action: setFillColor, argument: '#e7f5ff' },
+        onRelease: { action: setFillColor, argument: 'white' },
+      }
+    },
+    {
+      id: 3, type: 'rect', x: 100, y: 50, width: 50, height: 200, fill: 'white', events: {
+        onPress: { action: setFillColor, argument: 'red' },
+        onRelease: { action: setFillColor, argument: 'white' },
+      }
+    },
+    { id: 4, type: 'rect', x: 150, y: 50, width: 50, height: 200, fill: 'white' },
+    { id: 5, type: 'rect', x: 200, y: 50, width: 50, height: 200, fill: 'white' },
+    { id: 6, type: 'rect', x: 250, y: 50, width: 50, height: 200, fill: 'white' },
+    { id: 7, type: 'rect', x: 300, y: 50, width: 50, height: 200, fill: 'white' },
+    { id: 8, type: 'rect', x: 350, y: 50, width: 50, height: 200, fill: 'white' },
+    { id: 9, type: 'rect', x: 400, y: 50, width: 50, height: 200, fill: 'white' },
     //
-    { id: 100, type: 'rect', x: 130, y: 100, width: 30, height: 120, fill: 'black' },
-    { id: 101, type: 'rect', x: 190, y: 100, width: 30, height: 120, fill: 'black' },
-    { id: 102, type: 'rect', x: 280, y: 100, width: 30, height: 120, fill: 'black' },
-    { id: 103, type: 'rect', x: 335, y: 100, width: 30, height: 120, fill: 'black' },
-    { id: 104, type: 'rect', x: 390, y: 100, width: 30, height: 120, fill: 'black' },
+    { id: 100, type: 'rect', x: 80, y: 50, width: 30, height: 120, fill: 'black' },
+    { id: 101, type: 'rect', x: 140, y: 50, width: 30, height: 120, fill: 'black' },
+    { id: 102, type: 'rect', x: 230, y: 50, width: 30, height: 120, fill: 'black' },
+    { id: 103, type: 'rect', x: 285, y: 50, width: 30, height: 120, fill: 'black' },
+    { id: 104, type: 'rect', x: 340, y: 50, width: 30, height: 120, fill: 'black' },
   ]);
   const [selectedShapeId, setSelectedShapeId] = useState<number | null>(null);
 
@@ -338,6 +364,21 @@ const Designer = ({ args, ...props }: any) => {
     setSelectedShapeId(null);
   };
 
+  const handlePress = (id: number) => {
+    setShapes(shapes => shapes.map(shape => shape.id === id ? {
+      ...shape,
+      ...shape.events?.onPress?.action(shape, shape.events?.onPress?.argument)
+    } : shape));
+  };
+
+  const handleRelease = (id: number) => {
+    console.log('handleRelease');
+    setShapes(shapes => shapes.map(shape => shape.id === id ? {
+      ...shape,
+      ...shape.events?.onRelease?.action(shape, shape.events?.onRelease?.argument)
+    } : shape));
+  };
+
   useEffect(() => {
     (async () => {
       const directoryItems = await webdavClient.getDirectoryContents(currentDirectory);
@@ -387,41 +428,61 @@ const Designer = ({ args, ...props }: any) => {
         </View>
       )}
       <View flex>
-        <View horizontal padding="small" fillColor="gray-1">
-          <Button
-            hover
-            icon="table-columns"
-            selected={isLeftSidebarOpen}
-            onClick={() => setIsLeftSidebarOpen(isLeftSidebarOpen => !isLeftSidebarOpen)}
-          />
+        <View style={{ height: 400 }}>
+          <View horizontal padding="small" fillColor="gray-1">
+            <Button
+              hover
+              icon="table-columns"
+              selected={isLeftSidebarOpen}
+              onClick={() => setIsLeftSidebarOpen(isLeftSidebarOpen => !isLeftSidebarOpen)}
+            />
+          </View>
+          <Divider />
+          <View flex horizontal>
+            <View flex>
+              <svg width="100%" height="100%" onPointerDown={handleSvgPointerDown}>
+                {Array.from({ length: rows }, (_, index) => (
+                  <React.Fragment key={index}>
+                    <line x1={0} y1={index * 100 + 100.5} x2={columns * 100} y2={index * 100 + 100.5} stroke="hsl(0, 0%, 50%)" strokeDasharray="1 9" />
+                    <line x1={0} y1={index * 100 + 50.5} x2={columns * 100} y2={index * 100 + 50.5} stroke="hsl(0, 0%, 75%)" strokeDasharray="1 9" />
+                  </React.Fragment>
+                ))}
+                {Array.from({ length: columns }, (_, index) => (
+                  <React.Fragment key={index}>
+                    <line key={index} x1={index * 100 + 100.5} y1={0} x2={index * 100 + 100.5} y2={columns * 100} stroke="hsl(0, 0%, 50%)" strokeDasharray="1 9" />
+                    <line key={index * 2 + 1} x1={index * 100 + 50.5} y1={0} x2={index * 100 + 50.5} y2={columns * 100} stroke="hsl(0, 0%, 75%)" strokeDasharray="1 9" />
+                  </React.Fragment>
+                ))}
+                {shapes.map(({ type, id, ...props }) => (
+                  React.createElement(shapesMap[type], {
+                    key: id,
+                    id,
+                    selected: id === selectedShapeId,
+                    designMode: true,
+                    onShapeSelect: handleShapeSelect,
+                    onShapeUpdate: handleShapeUpdate,
+                    ...props
+                  })
+                ))}
+              </svg>
+            </View>
+            <Divider />
+            <View flex>
+              <svg width="100%" height="100%" onPointerDown={handleSvgPointerDown}>
+                {shapes.map(({ type, id, ...props }) => (
+                  React.createElement(shapesMap[type], {
+                    key: id,
+                    id,
+                    ...props,
+                    onPress: handlePress,
+                    onRelease: handleRelease,
+                  })
+                ))}
+              </svg>
+            </View>
+          </View>
         </View>
         <Divider />
-        <View flex>
-          <svg width="100%" height="100%" onPointerDown={handleSvgPointerDown}>
-            {Array.from({ length: rows }, (_, index) => (
-              <React.Fragment key={index}>
-                <line x1={0} y1={index * 100 + 100.5} x2={columns * 100} y2={index * 100 + 100.5} stroke="hsl(0, 0%, 50%)" strokeDasharray="1 9" />
-                <line x1={0} y1={index * 100 + 50.5} x2={columns * 100} y2={index * 100 + 50.5} stroke="hsl(0, 0%, 75%)" strokeDasharray="1 9" />
-              </React.Fragment>
-            ))}
-            {Array.from({ length: columns }, (_, index) => (
-              <React.Fragment key={index}>
-                <line key={index} x1={index * 100 + 100.5} y1={0} x2={index * 100 + 100.5} y2={columns * 100} stroke="hsl(0, 0%, 50%)" strokeDasharray="1 9" />
-                <line key={index * 2 + 1} x1={index * 100 + 50.5} y1={0} x2={index * 100 + 50.5} y2={columns * 100} stroke="hsl(0, 0%, 75%)" strokeDasharray="1 9" />
-              </React.Fragment>
-            ))}
-            {shapes.map(({ type, id, ...props }) => (
-              React.createElement(shapesMap[type], {
-                key: id,
-                id,
-                selected: id === selectedShapeId,
-                onShapeSelect: handleShapeSelect,
-                onShapeUpdate: handleShapeUpdate,
-                ...props
-              })
-            ))}
-          </svg>
-        </View>
       </View>
       {isRightSidebarOpen && (
         <View style={{ width: 360 }}>
