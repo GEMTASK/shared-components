@@ -39,13 +39,7 @@ let environment = {
   String: kopi.KopiString,
   Number: kopi.KopiNumber,
   import: kopi_import,
-  let: kopi.kopi_let,
-  loop: kopi.kopi_loop,
-  match: kopi.kopi_match,
   print: (arg: any) => console.log(arg),
-  random: kopi.kopi_random,
-  struct: kopi.kopi_struct,
-  extend: kopi.kopi_extend,
   export: (arg: any) => arg,
   component: kopi_component,
   element: kopi_element,
@@ -300,17 +294,23 @@ const Designer = ({ args, ...props }: any) => {
     // { id: 1, type: 'circle', x: 250, y: 50, diameter: 100, fill: 'white' },
     {
       id: 2, type: 'rect', x: 50, y: 50, width: 50, height: 200, fill: 'white', events: {
-        onPress: { action: 'playNote', argument: 'C4' },
+        onPress: [
+          { action: 'playNote', argument: 'C4' },
+          { action: 'setFillColor', argument: 'red' },
+        ],
+        onRelease: [
+          { action: 'setFillColor', argument: 'white' },
+        ],
       }
     },
     {
       id: 3, type: 'rect', x: 100, y: 50, width: 50, height: 200, fill: 'white', events: {
-        onPress: { action: 'playNote', argument: 'D4' },
+        onPress: [{ action: 'playNote', argument: 'D4' }],
       }
     },
     {
       id: 4, type: 'rect', x: 150, y: 50, width: 50, height: 200, fill: 'white', events: {
-        onPress: { action: 'playNote', argument: 'E4' },
+        onPress: [{ action: 'playNote', argument: 'E4' }],
       }
     },
     { id: 5, type: 'rect', x: 200, y: 50, width: 50, height: 200, fill: 'white' },
@@ -380,7 +380,10 @@ const Designer = ({ args, ...props }: any) => {
   const handlePress = (id: number) => {
     setShapes(shapes => shapes.map(shape => shape.id === id ? {
       ...shape,
-      ...(actions[shape.events?.onPress?.action as keyof typeof actions])?.(shape, shape.events?.onPress?.argument)
+      // ...(actions[shape.events?.onPress?.action as keyof typeof actions])?.(shape, shape.events?.onPress?.argument),
+      ...(shape.events?.onPress?.reduce((z, { action, argument }: any) => (
+        { ...z, ...actions[action as keyof typeof actions]?.(shape, argument) }
+      ), {}))
     } : shape));
   };
 
@@ -481,7 +484,7 @@ const Designer = ({ args, ...props }: any) => {
             </View>
             <Divider />
             <View flex>
-              <svg width="100%" height="100%" onPointerDown={handleSvgPointerDown}>
+              <svg width="100%" height="100%">
                 {shapes.map(({ type, id, ...props }) => (
                   React.createElement(shapesMap[type], {
                     key: id,
@@ -519,23 +522,27 @@ const Designer = ({ args, ...props }: any) => {
                 <Text caps fontSize="xxsmall">Events</Text>
               </View>
               <Divider />
-              <View padding="large">
+              <Stack spacing="large" padding="large">
                 {selectedShape.events && (
                   Object.entries(selectedShape.events)?.map(([key, value]: [string, any]) => (
                     <View>
                       <Text>{key}</Text>
                       <Spacer size="small" />
-                      <Stack horizontal spacing="large">
-                        <Select value={value.action} options={{
-                          playNote: 'playNote',
-                          setFillColor: 'setFillColor',
-                        }} />
-                        <Input value={value.argument} />
+                      <Stack spacing="small">
+                        {value.map(({ action, argument }: any) => (
+                          <Stack horizontal spacing="small">
+                            <Select value={action} options={{
+                              playNote: 'playNote',
+                              setFillColor: 'setFillColor',
+                            }} />
+                            <Input value={argument} />
+                          </Stack>
+                        ))}
                       </Stack>
                     </View>
                   ))
                 )}
-              </View>
+              </Stack>
             </View>
           )}
         </View>
