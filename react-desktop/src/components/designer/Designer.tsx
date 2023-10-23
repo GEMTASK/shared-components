@@ -6,7 +6,7 @@ import * as kopi from 'kopi-language';
 
 import { kopi_component, kopi_element, kopi_View, kopi_Text, kopi_Button, kopi_Svg, kopi_Circle, kopi_requestAnimationFrame, kopi_requestDebugAnimationFrame } from '../terminal/functions/react';
 
-import { View, Splitter, Text, Button, Divider, Icon, Spacer } from 'bare';
+import { View, Splitter, Text, Button, Divider, Icon, Spacer, Input, Stack, Select } from 'bare';
 
 import TextEdit from '../editor/components/TextEdit';
 
@@ -31,7 +31,7 @@ async function kopi_import(url: kopi.KopiString, context: kopi.Context) {
   const source = await (await fetch(`//webdav.mike-austin.com/${url.value}?${Date.now()}`)).text();
 
   if (typeof source === 'string') {
-    return kopi.interpret(source, environment, () => { });
+    return kopi.interpret(source, environment);
   }
 }
 
@@ -275,12 +275,14 @@ interface IRect {
 
 // type ShapeType = ICircle | IRect;
 
-const setFillColor = (shape: any, fillColor: string) => {
-  return { fill: fillColor };
-};
+const actions = {
+  setFillColor: (shape: any, fillColor: string) => {
+    return { fill: fillColor };
+  },
 
-const playNote = (shape: any, note: string) => {
-  synth.triggerAttackRelease(note, '8n');
+  playNote: (shape: any, note: string) => {
+    synth.triggerAttackRelease(note, '8n');
+  },
 };
 
 const Designer = ({ args, ...props }: any) => {
@@ -298,17 +300,17 @@ const Designer = ({ args, ...props }: any) => {
     // { id: 1, type: 'circle', x: 250, y: 50, diameter: 100, fill: 'white' },
     {
       id: 2, type: 'rect', x: 50, y: 50, width: 50, height: 200, fill: 'white', events: {
-        onPress: { action: playNote, argument: 'C4' },
+        onPress: { action: 'playNote', argument: 'C4' },
       }
     },
     {
       id: 3, type: 'rect', x: 100, y: 50, width: 50, height: 200, fill: 'white', events: {
-        onPress: { action: playNote, argument: 'D4' },
+        onPress: { action: 'playNote', argument: 'D4' },
       }
     },
     {
       id: 4, type: 'rect', x: 150, y: 50, width: 50, height: 200, fill: 'white', events: {
-        onPress: { action: playNote, argument: 'E4' },
+        onPress: { action: 'playNote', argument: 'E4' },
       }
     },
     { id: 5, type: 'rect', x: 200, y: 50, width: 50, height: 200, fill: 'white' },
@@ -324,6 +326,8 @@ const Designer = ({ args, ...props }: any) => {
     { id: 104, type: 'rect', x: 340, y: 50, width: 30, height: 120, fill: 'black' },
   ]);
   const [selectedShapeId, setSelectedShapeId] = useState<number | null>(null);
+
+  const selectedShape = shapes.find(shape => shape.id === selectedShapeId);
 
   const handleItemSelect = (filename: string) => {
     setSelectedItem(filename);
@@ -376,7 +380,7 @@ const Designer = ({ args, ...props }: any) => {
   const handlePress = (id: number) => {
     setShapes(shapes => shapes.map(shape => shape.id === id ? {
       ...shape,
-      ...shape.events?.onPress?.action(shape, shape.events?.onPress?.argument)
+      ...(actions[shape.events?.onPress?.action as keyof typeof actions])?.(shape, shape.events?.onPress?.argument)
     } : shape));
   };
 
@@ -384,7 +388,7 @@ const Designer = ({ args, ...props }: any) => {
     console.log('handleRelease');
     setShapes(shapes => shapes.map(shape => shape.id === id ? {
       ...shape,
-      ...shape.events?.onRelease?.action(shape, shape.events?.onRelease?.argument)
+      ...(actions[shape.events?.onRelease?.action as keyof typeof actions])?.(shape, shape.events?.onRelease?.argument)
     } : shape));
   };
 
@@ -494,12 +498,46 @@ const Designer = ({ args, ...props }: any) => {
         <Divider />
       </View>
       {isRightSidebarOpen && (
-        <View style={{ width: 360 }}>
+        <View style={{ width: 278 }}>
           <View horizontal fillColor="gray-1" padding="small">
             <Button icon="house" />
           </View>
           <Divider />
-          {value}
+          {selectedShape && (
+            <View>
+              <View fillColor="gray-1" padding="small large">
+                <Spacer size="small" />
+                <Text caps fontSize="xxsmall">Shape</Text>
+              </View>
+              <Divider />
+              <View padding="large">
+                <Input value={selectedShape.x} />
+              </View>
+              <Divider />
+              <View fillColor="gray-1" padding="small large">
+                <Spacer size="small" />
+                <Text caps fontSize="xxsmall">Events</Text>
+              </View>
+              <Divider />
+              <View padding="large">
+                {selectedShape.events && (
+                  Object.entries(selectedShape.events)?.map(([key, value]: [string, any]) => (
+                    <View>
+                      <Text>{key}</Text>
+                      <Spacer size="small" />
+                      <Stack horizontal spacing="large">
+                        <Select value={value.action} options={{
+                          playNote: 'playNote',
+                          setFillColor: 'setFillColor',
+                        }} />
+                        <Input value={value.argument} />
+                      </Stack>
+                    </View>
+                  ))
+                )}
+              </View>
+            </View>
+          )}
         </View>
       )}
     </Splitter>
