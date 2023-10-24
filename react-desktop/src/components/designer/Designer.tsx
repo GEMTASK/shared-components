@@ -380,7 +380,6 @@ const Designer = ({ args, ...props }: any) => {
   const handlePress = (id: number) => {
     setShapes(shapes => shapes.map(shape => shape.id === id ? {
       ...shape,
-      // ...(actions[shape.events?.onPress?.action as keyof typeof actions])?.(shape, shape.events?.onPress?.argument),
       ...(shape.events?.onPress?.reduce((z, { action, argument }: any) => (
         { ...z, ...actions[action as keyof typeof actions]?.(shape, argument) }
       ), {}))
@@ -391,7 +390,9 @@ const Designer = ({ args, ...props }: any) => {
     console.log('handleRelease');
     setShapes(shapes => shapes.map(shape => shape.id === id ? {
       ...shape,
-      ...(actions[shape.events?.onRelease?.action as keyof typeof actions])?.(shape, shape.events?.onRelease?.argument)
+      ...(shape.events?.onRelease?.reduce((z, { action, argument }: any) => (
+        { ...z, ...actions[action as keyof typeof actions]?.(shape, argument) }
+      ), {}))
     } : shape));
   };
 
