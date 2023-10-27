@@ -122,7 +122,7 @@ const Item = React.memo(({
         horizontal
         align="left"
         padding="small"
-        style={{ paddingLeft: (filename.split('/').length - 2) * 20 + 8 }}
+        style={{ paddingLeft: (filename.split('/').length - 2) * 20 + 2 }}
         border={selectedItem === filename}
         borderColor="alpha-1"
         fillColor={selectedItem === filename ? 'blue-0' : undefined}
@@ -199,7 +199,10 @@ const Shape = ({ id, children, x, y, fill, selected, designMode, onShapeSelect, 
 
       firstEventRef.current = null;
 
-      onShapeUpdate(id, shapeMatrix.e, shapeMatrix.f);
+      onShapeUpdate(id, Math.floor(shapeMatrix.e), Math.floor(shapeMatrix.f), {
+        shiftKey: event.shiftKey,
+        altKey: event.altKey,
+      });
     } else {
       onRelease?.(id);
     }
@@ -289,6 +292,7 @@ const Designer = ({ args, ...props }: any) => {
   const [currentDirectory, setCurrentDirectory] = useState('/');
   const [selectedItem, setSelectedItem] = useState<string | null>(args);
 
+  const [nextShapeId, setNextShapeId] = useState(1000);
   const [shapes, setShapes] = useState<ShapeType[]>([
     // { id: 0, type: 'circle', x: 50, y: 50, diameter: 100, fill: 'white' },
     // { id: 1, type: 'circle', x: 250, y: 50, diameter: 100, fill: 'white' },
@@ -365,11 +369,17 @@ const Designer = ({ args, ...props }: any) => {
     setSelectedShapeId(id);
   };
 
-  const handleShapeUpdate = (id: number, x: number, y: number) => {
+  const handleShapeUpdate = (id: number, x: number, y: number, {
+    shiftKey, altKey
+  }: { shiftKey: boolean, altKey: boolean; }) => {
+    const scale = shiftKey && altKey ? 5 : shiftKey ? 20 : altKey ? 1 : 10;
+
+    console.log('>>>', x);
+
     setShapes(shapes => shapes.map(shape => shape.id === id ? {
       ...shape,
-      x: Math.round(x / 5) * 5,
-      y: Math.round(y / 5) * 5,
+      x: Math.round(x / scale) * scale,
+      y: Math.round(y / scale) * scale,
     } : shape));
   };
 
@@ -421,6 +431,40 @@ const Designer = ({ args, ...props }: any) => {
   const columns = Math.floor(window.innerWidth / 100);
   const rows = Math.floor(window.innerHeight / 100);
 
+  const handleCanvasDrop = (event) => {
+    event.preventDefault();
+
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    const shapeProps = (() => {
+      switch (event.dataTransfer.getData("text")) {
+        case 'rect': return {
+          x: event.clientX - rect.left - 50,
+          y: event.clientY - rect.top - 50,
+          width: 100, height: 100
+        };
+        case 'circle': return {
+          x: event.clientX - rect.left - 50,
+          y: event.clientY - rect.top - 50,
+          diameter: 100
+        };
+      }
+    })();
+
+    setShapes(shapes => [
+      ...shapes,
+      {
+        id: nextShapeId,
+        type: event.dataTransfer.getData("text"),
+        fill: 'white',
+        x: 0,
+        y: 0,
+        ...shapeProps
+      }
+    ]);
+    setNextShapeId(nextShapeId => nextShapeId + 1);
+  };
+
   return (
     <Splitter flex horizontal {...props}>
       {isLeftSidebarOpen && (
@@ -445,7 +489,7 @@ const Designer = ({ args, ...props }: any) => {
         </View>
       )}
       <View flex>
-        <View style={{ height: 400 }}>
+        <View flex>
           <View horizontal padding="small" fillColor="gray-1">
             <Button
               hover
@@ -456,18 +500,23 @@ const Designer = ({ args, ...props }: any) => {
           </View>
           <Divider />
           <View flex horizontal>
-            <View flex>
+
+            <View
+              flex
+              onDragOver={event => event.preventDefault()}
+              onDrop={handleCanvasDrop}
+            >
               <svg width="100%" height="100%" onPointerDown={handleSvgPointerDown}>
                 {Array.from({ length: rows }, (_, index) => (
                   <React.Fragment key={index}>
-                    <line x1={0} y1={index * 100 + 100.5} x2={columns * 100} y2={index * 100 + 100.5} stroke="hsl(0, 0%, 50%)" strokeDasharray="1 9" />
-                    <line x1={0} y1={index * 100 + 50.5} x2={columns * 100} y2={index * 100 + 50.5} stroke="hsl(0, 0%, 75%)" strokeDasharray="1 9" />
+                    <line x1={0} y1={index * 100 + 100.5} x2={columns * 100} y2={index * 100 + 100.5} stroke="hsl(0, 0%, 50%)" strokeDasharray="1 9" style={{ pointerEvents: 'none' }} />
+                    <line x1={0} y1={index * 100 + 50.5} x2={columns * 100} y2={index * 100 + 50.5} stroke="hsl(0, 0%, 75%)" strokeDasharray="1 9" style={{ pointerEvents: 'none' }} />
                   </React.Fragment>
                 ))}
                 {Array.from({ length: columns }, (_, index) => (
                   <React.Fragment key={index}>
-                    <line key={index} x1={index * 100 + 100.5} y1={0} x2={index * 100 + 100.5} y2={columns * 100} stroke="hsl(0, 0%, 50%)" strokeDasharray="1 9" />
-                    <line key={index * 2 + 1} x1={index * 100 + 50.5} y1={0} x2={index * 100 + 50.5} y2={columns * 100} stroke="hsl(0, 0%, 75%)" strokeDasharray="1 9" />
+                    <line key={index} x1={index * 100 + 100.5} y1={0} x2={index * 100 + 100.5} y2={columns * 100} stroke="hsl(0, 0%, 50%)" strokeDasharray="1 9" style={{ pointerEvents: 'none' }} />
+                    <line key={index * 2 + 1} x1={index * 100 + 50.5} y1={0} x2={index * 100 + 50.5} y2={columns * 100} stroke="hsl(0, 0%, 75%)" strokeDasharray="1 9" style={{ pointerEvents: 'none' }} />
                   </React.Fragment>
                 ))}
                 {shapes.map(({ type, id, ...props }) => (
@@ -483,6 +532,7 @@ const Designer = ({ args, ...props }: any) => {
                 ))}
               </svg>
             </View>
+
             <Divider />
             <View flex>
               <svg width="100%" height="100%">
@@ -500,6 +550,23 @@ const Designer = ({ args, ...props }: any) => {
           </View>
         </View>
         <Divider />
+
+        <View style={{ height: 300 }}>
+          <Text padding="small">Components</Text>
+          <Stack horizontal>
+            <View horizontal draggable padding="small" align="left" onDragStart={event => event.dataTransfer.setData("text", 'rect')}>
+              <Icon fixedWidth icon="square" size='2x' />
+              <Spacer size="xsmall" />
+              <Text>Rectangle</Text>
+            </View>
+            <View horizontal draggable padding="small" align="left" onDragStart={event => event.dataTransfer.setData("text", 'circle')}>
+              <Icon fixedWidth icon="circle" size='2x' />
+              <Spacer size="xsmall" />
+              <Text>Circle</Text>
+            </View>
+          </Stack>
+        </View>
+
       </View>
       {isRightSidebarOpen && (
         <View style={{ width: 278 }}>
