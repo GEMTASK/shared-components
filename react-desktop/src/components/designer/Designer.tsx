@@ -159,7 +159,7 @@ const Item = React.memo(({
 
 const Shape = ({ id, children, x, y, fill, selected, designMode, onShapeSelect, onShapeUpdate, onPress, onRelease }: any) => {
   const firstEventRef = useRef<React.PointerEvent<SVGElement> | null>(null);
-  const shapeMatrixRef = useRef<React.PointerEvent<DOMMatrix> | null>(null);
+  const shapeMatrixRef = useRef<DOMMatrix | null>(null);
 
   const handlePointerDown = (event: React.PointerEvent<SVGGElement>) => {
     if (designMode) {
@@ -390,7 +390,7 @@ const Designer = ({ args, ...props }: any) => {
   const handlePress = (id: number) => {
     setShapes(shapes => shapes.map(shape => shape.id === id ? {
       ...shape,
-      ...(shape.events?.onPress?.reduce((z, { action, argument }: any) => (
+      ...(shape.events?.onPress?.reduce((z: any, { action, argument }: any) => (
         { ...z, ...actions[action as keyof typeof actions]?.(shape, argument) }
       ), {}))
     } : shape));
@@ -400,7 +400,7 @@ const Designer = ({ args, ...props }: any) => {
     console.log('handleRelease');
     setShapes(shapes => shapes.map(shape => shape.id === id ? {
       ...shape,
-      ...(shape.events?.onRelease?.reduce((z, { action, argument }: any) => (
+      ...(shape.events?.onRelease?.reduce((z: any, { action, argument }: any) => (
         { ...z, ...actions[action as keyof typeof actions]?.(shape, argument) }
       ), {}))
     } : shape));
@@ -431,7 +431,7 @@ const Designer = ({ args, ...props }: any) => {
   const columns = Math.floor(window.innerWidth / 100);
   const rows = Math.floor(window.innerHeight / 100);
 
-  const handleCanvasDrop = (event) => {
+  const handleCanvasDrop = (event: React.DragEvent) => {
     event.preventDefault();
 
     const rect = event.currentTarget.getBoundingClientRect();
@@ -461,7 +461,7 @@ const Designer = ({ args, ...props }: any) => {
         y: 0,
         ...shapeProps
       }
-    ]);
+    ] as any);
     setNextShapeId(nextShapeId => nextShapeId + 1);
   };
 
@@ -520,7 +520,7 @@ const Designer = ({ args, ...props }: any) => {
                   </React.Fragment>
                 ))}
                 {shapes.map(({ type, id, ...props }) => (
-                  React.createElement(shapesMap[type], {
+                  React.createElement(shapesMap[type] as any, {
                     key: id,
                     id,
                     selected: id === selectedShapeId,
@@ -537,7 +537,7 @@ const Designer = ({ args, ...props }: any) => {
             <View flex>
               <svg width="100%" height="100%">
                 {shapes.map(({ type, id, ...props }) => (
-                  React.createElement(shapesMap[type], {
+                  React.createElement(shapesMap[type] as any, {
                     key: id,
                     id,
                     ...props,
@@ -582,7 +582,7 @@ const Designer = ({ args, ...props }: any) => {
               </View>
               <Divider />
               <View padding="large">
-                <Input value={selectedShape.x} />
+                <Input value={selectedShape.x.toString()} />
               </View>
               <Divider />
               <View fillColor="gray-1" padding="small large">
