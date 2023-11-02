@@ -218,7 +218,12 @@ const App = () => {
           const { icon, title, client, rect } = mapping;
           const titleArg = event.data.payload.split('/').at(-1);
 
-          addWindow(icon, `${title}${titleArg !== undefined ? ' — ' + titleArg : ''}`, React.cloneElement(client, { args: event.data.payload }), rect);
+          addWindow(
+            icon,
+            `${title}${titleArg !== undefined ? ' — ' + titleArg : ''}`,
+            React.cloneElement(client, { args: event.data.payload }),
+            rect
+          );
         }
       }
     }
@@ -230,6 +235,7 @@ const App = () => {
 
   useEffect(() => {
     const app = Applications[params.get('app') as keyof typeof Applications];
+    const args = params.get('args');
 
     if (app !== undefined) {
       const { icon, title, client, rect } = app;
@@ -237,7 +243,7 @@ const App = () => {
       setWindows([]);
       setWindowIdOrder([]);
 
-      addWindow(icon, title, client, rect);
+      addWindow(icon, title, React.cloneElement(client, { args }), rect);
     }
 
     window.addEventListener('message', handleWindowMessage);
