@@ -124,6 +124,25 @@ const useMarkdownStyles = createUseStyles({
   },
 });
 
+const engines = {
+  'language-kopi': async (code: string) => {
+    const value = await kopi.interpret(code);
+
+    if (value) {
+      return value.inspect();
+    }
+  },
+  'language-peggy': async (code: string) => {
+    var input = '';
+
+    const parser = peggy.generate(code);
+
+    const ast = parser.parse(input);
+
+    return JSON.stringify(ast, undefined, 2);
+  }
+};
+
 //
 // Code
 //
@@ -139,20 +158,20 @@ const Code = ({
   inline?: boolean,
   className?: string;
 }) => {
-  const textElementRef = useRef(null);
+  const textElementRef = useRef<HTMLSpanElement>(null);
   const observerRef = useRef<MutationObserver>();
   const [value, setValue] = useState<string | React.ReactElement>();
 
   useEffect(() => {
-    if (language?.includes('kopi')) {
+    if (language === 'language-kopi' || language === 'language-peggy') {
       (async () => {
         observerRef.current = new MutationObserver(async (mutationList) => {
           if (textElementRef.current) {
             try {
-              const value = await kopi.interpret(textElementRef.current.textContent);
+              const value = await engines[language](textElementRef.current.textContent);
 
               if (value) {
-                setValue(await value.inspect());
+                setValue(await value);
               }
             } catch (error) {
               setValue((error as Error).toString());
@@ -164,46 +183,20 @@ const Code = ({
           observerRef.current.observe(textElementRef.current, { characterData: true, subtree: true });
         }
 
-        const value = await kopi.interpret(children[0]);
+        try {
+          const value = await engines[language](children[0]);
 
-        if (value) {
-          setValue(await value.inspect());
+          if (value) {
+            setValue(await value);
+          }
+        } catch (error) {
+          setValue((error as Error).toString());
         }
       })();
 
       return () => {
         observerRef.current?.disconnect();
       };
-    } else if (language?.includes('peggy')) {
-      let input = '';
-
-      observerRef.current = new MutationObserver(async (mutationList) => {
-        if (textElementRef.current) {
-          try {
-            const parser = peggy.generate(textElementRef.current.textContent);
-
-            const ast = parser.parse(input);
-
-            setValue(JSON.stringify(ast, undefined, 2));
-          } catch (error) {
-            setValue((error as Error).toString());
-          }
-        }
-      });
-
-      if (textElementRef.current) {
-        observerRef.current.observe(textElementRef.current, { characterData: true, subtree: true });
-      }
-
-      try {
-        const parser = peggy.generate(children[0]);
-
-        const ast = parser.parse(input);
-
-        setValue(JSON.stringify(ast, undefined, 2));
-      } catch (error) {
-        setValue((error as Error).toString());
-      }
     }
   }, [children, className, inline, language]);
 
