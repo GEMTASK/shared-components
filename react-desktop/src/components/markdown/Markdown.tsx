@@ -147,9 +147,9 @@ const Code = ({
     if (language?.includes('kopi')) {
       (async () => {
         observerRef.current = new MutationObserver(async (mutationList) => {
-          if (mutationList[0].target.textContent) {
+          if (textElementRef.current) {
             try {
-              const value = await kopi.interpret(mutationList[0].target.textContent);
+              const value = await kopi.interpret(textElementRef.current.textContent);
 
               if (value) {
                 setValue(await value.inspect());
@@ -178,9 +178,9 @@ const Code = ({
       let input = '';
 
       observerRef.current = new MutationObserver(async (mutationList) => {
-        if (mutationList[0].target.textContent) {
+        if (textElementRef.current) {
           try {
-            const parser = peggy.generate(mutationList[0].target.textContent);
+            const parser = peggy.generate(textElementRef.current.textContent);
 
             const ast = parser.parse(input);
 
