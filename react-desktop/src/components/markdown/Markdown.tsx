@@ -168,7 +168,7 @@ const Code = ({
         observerRef.current = new MutationObserver(async (mutationList) => {
           if (textElementRef.current) {
             try {
-              const value = await engines[language](textElementRef.current.textContent);
+              const value = await engines[language](textElementRef.current.textContent as any);
 
               if (value) {
                 setValue(await value);
@@ -202,7 +202,7 @@ const Code = ({
 
   const innerProps = {
     ref: textElementRef,
-    contentEditable: language?.includes('kopi') || language?.includes('peggy'),
+    contentEditable: language === 'language-kopi' || language === 'language-peggy',
     suppressContentEditableWarning: true
   };
 
@@ -225,15 +225,8 @@ const Code = ({
     );
   }
 
-  const float = language?.includes('float') && {
-    float: 'right',
-    minWidth: 550,
-    marginTop: 0,
-    marginLeft: 32
-  } as const;
-
   return (
-    <View border fillColor="gray-1" className={className} style={{ ...float, clear: 'right' }}>
+    <View border fillColor="gray-1" className={className}>
       <Text innerProps={innerProps} padding="large" textColor="gray-9" style={{ fontFamily: 'Iosevka', whiteSpace: 'pre-wrap' }}>
         {children}
       </Text>
@@ -348,14 +341,6 @@ const Markdown = ({ args, ...props }: any) => {
 
       if (typeof markdown === 'string') {
         setMarkdown(markdown);
-      }
-
-      if (markdown.includes('-float')) {
-        const window = markdownElementRef.current?.parentElement?.parentElement?.parentElement;
-
-        if (window && window.offsetWidth === 1024) {
-          window.style.width = `${window.offsetWidth + 416}px`;
-        }
       }
     })();
   }, [args]);

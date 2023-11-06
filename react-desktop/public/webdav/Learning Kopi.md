@@ -376,7 +376,7 @@ program = "
 "
 
 indexOf (lineNo) = {
-  (Number lineNo) / 10 - 1
+  (Number.fromString lineNo) / 10 - 1
 }
 
 next = (index) => index + 1
