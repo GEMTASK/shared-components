@@ -287,6 +287,8 @@ const Markdown = ({ args, ...props }: any) => {
     ),
     code: () => null,
     pre: () => null,
+    ul: () => null,
+    li: () => null,
   }), [sidebarStyles.h2, sidebarStyles.h3]);
 
   const markdownComponents = React.useMemo(() => ({
@@ -337,7 +339,10 @@ const Markdown = ({ args, ...props }: any) => {
 
   useEffect(() => {
     (async () => {
-      const markdown = await (await fetch(`//webdav.mike-austin.com/${args}?${Date.now()}`)).text();
+      console.log(process.env.NODE_ENV);
+      const markdown = process.env.NODE_ENV === 'development'
+        ? await (await fetch(`/webdav/${args}?${Date.now()}`)).text()
+        : await (await fetch(`//webdav.mike-austin.com/${args}?${Date.now()}`)).text();
 
       if (typeof markdown === 'string') {
         setMarkdown(markdown);
