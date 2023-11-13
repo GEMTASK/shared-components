@@ -236,6 +236,8 @@ const App = () => {
   useEffect(() => {
     const app = Applications[params.get('app') as keyof typeof Applications];
     const args = params.get('args');
+    const width = params.get('width') !== null ? Number(params.get('width')) : undefined;
+    const height = params.get('height') !== null ? Number(params.get('height')) : undefined;
 
     if (app !== undefined) {
       const { icon, title, client, rect } = app;
@@ -243,7 +245,10 @@ const App = () => {
       setWindows([]);
       setWindowIdOrder([]);
 
-      addWindow(icon, title, React.cloneElement(client, { args }), rect);
+      addWindow(icon, title, React.cloneElement(client, { args }), {
+        width: width || rect?.width,
+        height: height || rect?.height
+      });
     }
 
     window.addEventListener('message', handleWindowMessage);

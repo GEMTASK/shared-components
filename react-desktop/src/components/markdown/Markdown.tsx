@@ -357,7 +357,7 @@ const Markdown = ({ args, ...props }: any) => {
           {markdown}
         </ReactMarkdown>
       </View>
-      <View ref={markdownElementRef} flex padding="xxlarge" style={{ display: 'block', overflow: 'auto' }}>
+      <View ref={markdownElementRef} tabIndex={0} flex padding="xxlarge" style={{ display: 'block', overflow: 'auto', outline: 'none' }}>
         <ReactMarkdown components={markdownComponents} remarkPlugins={[remarkGfm]}>
           {markdown}
         </ReactMarkdown>

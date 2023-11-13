@@ -1,21 +1,21 @@
 # Let's Build a Programming Language
 
+
 ## Introduction
 
 You might think that you’d need to be a ninja-level coder, with a myriad of tools and libraries by your side to create a programming language. In reality, if you just want to build a very simple, very basic language to learn how it’s done, it’s not difficult.
 
-This tutorial will guide you through the steps of creating a simple programming language, interactively. Even if you're not a developer, you can follow along and try the examples.
+This tutorial will guide you through the steps of creating a simple programming language, interactively. Even if you're not a software developer, you can follow along and try the examples.
 
 ### The Language
 
-The language we're going to build in this tutorial will be very simple, but it will support integers, variables and variable assignment, math operations, and defining and calling functions with one argument.
+The language we're going to build in this tutorial will support integers, mathematical operations with precedence, sub-expressions using parenthesis, and defining and calling functions with one argument.
 
-Our final program will look like this:
+Variables, other than function parameters, if/else conditions, loops, etc. are out of scope for this tutorial.
 
-```
-f = x => x + 1
-f 2
-```
+Examples of our language: `(2 + 3) * 4` &nbsp; `(x => y => x + y) 2 3`
+
+In the next section, **Syntax and Grammar**, we’ll talk about the building blocks of creating a language.
 
 ## Syntax and Grammar
 
@@ -23,30 +23,27 @@ One of the first things we need to think about when writing a programming langua
 
 The syntax of the languages defines all the symbols and special words used in the language, and the grammar defines how those symbols and words can be used together to make a program. Unlike written languages such as English, computer programs must be written very clearly, with no ambiguities.
 
-### Expressions
-
-A core concept of many programming languages is an expression. Anything that results in a value is considered an expression. The expression `5`, for example, results in the value `5`. The expression `2 + 3` also results in the value `5`.
-
-In the next section, Syntax and Grammar, we’ll talk about the building blocks of creating a language.
-
 ### The Parser
 
 A key concept in allowing the computer to run a program, is translating program text, which we call source code, into something the computer can understand. We call this parsing. The descrete items of text we parse, such as numbers and mathematical operators, are called tokens.
 
+### Expressions
+
+A core concept of many programming languages is an *expression*. Anything that results in a value is considered an expression. The expression `5`, for example, results in the value `5`. The expression `1 + 2 * 3` results in the value `7` (because of operator precedence).
+
 ### Tokens
 
 ```
-  b  +  1
-  \  \  \
-   \  \  a number token
-    \  an operator token
      an identifier token
+    /
+   /     a number token
+  /     /
+  b  +  1
+     \
+      an operator token
 ```
 
 In this example program, we have three types of tokens - an identifier, used for variable names, the + operator, and a number.
-
-
-Semantics
 
 ### Parser Rules
 
@@ -86,7 +83,7 @@ The `{ input = "5" }` section provides the source code for the parser. The `Expr
 
 ## Abstract Syntax Tree
 
-Returning just the value of a number when we encounter a number while parsing doesn't give us the flexability we need to run a larger program. What we need to do is provide details of what we parsed. While parsing, we may also build a hierarchy of these things. That's where an *Abstract Syntax Tree*, or *AST* comes into play.
+Returning just the value of a number when we encounter a number while parsing doesn't give us the flexability we need to run a larger program. What we need to do is provide details of what we parsed, so that we have more information when we interpret the program. While parsing, we may also build a hierarchy of these things. That's where an *Abstract Syntax Tree*, or *AST* comes into play.
 
 ### Nodes
 
@@ -106,11 +103,11 @@ NumericLiteral
     }
 ```
 
-Instead of returning the number 5 as we did in the previous example, we now create an *AST node* that represents the number in a consistent way. We return an object with a property `type`, which describes what kind of node it is, and a `value` property to store the number itself.
+So instead of returning the value 5 as we did in the previous example, we now return an *AST node* that represents the number in more details. We return an object with a property `type`, which describes what kind of node it is, and a `value` property to store the number itself.
 
 ### Visitors
 
-Now that our number rule returns an AST Node, we can run our program (which can only be a number) by implementing an *AST Visitor*. The visitor pattern, in programming terminology, allows us to define what we want to do when we traverse the syntax tree and encounter a node. We can map the visitor name directly to the AST type property.
+Now that our number rule returns an AST Node, we can run our program (which currently can only be a number) by implementing an AST Node *Visitor*. The visitor pattern, in programming terminology, allows us to define what we want to do when we traverse the syntax tree and encounter a node. We can map the visitor name directly to the AST `type` property.
 
 We first need to create a `visitors` object that contains our `NumericLiteral` visitor function. Next, we need to add a `Program` rule which is the core of the interpreter. It simply looks up the visitor by name using the node `type` property, and calls the visitor function. You'll see later that this pattern is very flexible, allowing us to add other types of nodes very easily.
 
@@ -143,11 +140,12 @@ NumericLiteral                    // Collapse
     }
 ```
 
-This is a complete interpreter, which parses input and returns the value of the text input. Of course, it's very limited because it only accepts numbers. Later we'll add support for mathematical operations such as addition and subtraction.
+This is a complete interpreter, which parses input and returns the value of the text input. Of course, it's very limited because it only accepts numbers. In the next section, **Math Operations**, we'll add support for mathematical operations such as addition and subtraction.
+
 
 ## Math Operations
 
-Parsing, interpreting, and returning a number is a great start. It sounds silly, but it helped us prepare for more complex rules.
+Parsing, interpreting, and returning a number is a great start. It helped us set up the visitor pattern which helps us prepare for more complex rules. Now we'll add support for adding two numbers.
 
 ### Addition
 
@@ -198,3 +196,12 @@ NumericLiteral
 ```
 
 Now we're cooking - we can add two numbers together! Ok, maybe not that exciting, but it shows that using the visitor pattern allows us to add new functionality without having to change much of the existing code.
+
+## Terminology
+
+### Syntax
+### Semantics
+### Expression
+### Closure
+### Currying
+### Precedence
