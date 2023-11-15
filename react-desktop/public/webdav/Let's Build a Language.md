@@ -197,6 +197,14 @@ NumericLiteral
 
 Now we're cooking - we can add two numbers together! Ok, maybe not that exciting, but it shows that using the visitor pattern allows us to add new functionality without having to change much of the existing code.
 
+### Precedence
+
+### Multiplication
+
+### Repeating
+
+So now we can write programs such as `1 + 2` or `5 * 5`, but we can't write something like `1 + 2 * 3` because our operator rules only know about numbers, not *other expressions*.
+
 ## Terminology
 
 ### Syntax
