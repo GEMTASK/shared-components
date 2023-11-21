@@ -1,4 +1,4 @@
-# Let's Build a Programming Language
+# [DRAFT] Let's Build a Programming Language
 
 
 ## Introduction
@@ -9,9 +9,7 @@ This tutorial will guide you through the steps of creating a simple programming 
 
 ### The Language
 
-The language we're going to build in this tutorial will support integers, mathematical operations with precedence, sub-expressions using parenthesis, and defining and calling functions with one argument.
-
-Variables, other than function parameters, if/else conditions, loops, etc. are out of scope for this tutorial.
+The language we're going to build in this tutorial will support integers, mathematical operations with precedence, sub-expressions using parenthesis, and defining and calling functions. Variables, other than function parameters, if/else conditions, loops, etc. are out of scope for this tutorial.
 
 Examples of our language: `(2 + 3) * 4` &nbsp; `(x => y => x + y) 2 3`
 
@@ -21,7 +19,7 @@ In the next section, **Syntax and Grammar**, we’ll talk about the building blo
 
 One of the first things we need to think about when writing a programming languages is "What does it look like?". We also need to think about how we can combine smaller pieces of code to create larger programs.
 
-The syntax of the languages defines all the symbols and special words used in the language, and the grammar defines how those symbols and words can be used together to make a program. Unlike written languages such as English, computer programs must be written very clearly, with no ambiguities.
+The syntax of a language defines all the symbols and special words used in that language, and the grammar defines how those symbols and words can be used together to make a program. Unlike written languages such as English, computer programs must be written very clearly, very precicely, with no ambiguities.
 
 ### The Parser
 
@@ -29,7 +27,7 @@ A key concept in allowing the computer to run a program, is translating program 
 
 ### Expressions
 
-A core concept of many programming languages is an *expression*. Anything that results in a value is considered an expression. The expression `5`, for example, results in the value `5`. The expression `1 + 2 * 3` results in the value `7` (because of operator precedence).
+A core concept of many programming languages is an *expression*. Anything that results in a value is considered an expression. The expression `5`, for example, results in the value `5`. The expression `1 + 2 * 3` results in the value `7` because of operator precedence.
 
 ### Tokens
 
@@ -80,6 +78,7 @@ NumericLiteral
 
 The `{ input = "5" }` section provides the source code for the parser. The `Expression` rule allows us to later write the interpreter. The first rule defined is the rule used to parse the source code.
 
+In the next section, **Abstract Syntax Tree**, we’ll talk about how to represent our program internally.
 
 ## Abstract Syntax Tree
 
@@ -140,12 +139,14 @@ NumericLiteral                    // Collapse
     }
 ```
 
-This is a complete interpreter, which parses input and returns the value of the text input. Of course, it's very limited because it only accepts numbers. In the next section, **Math Operations**, we'll add support for mathematical operations such as addition and subtraction.
+This is a complete interpreter, which parses input and returns the value of the text input. Of course, it's very limited because it only accepts numbers.
+
+In the next section, **Math Operations**, we'll add support for mathematical operations such as addition and subtraction.
 
 
 ## Math Operations
 
-Parsing, interpreting, and returning a number is a great start. It helped us set up the visitor pattern which helps us prepare for more complex rules. Now we'll add support for adding two numbers.
+Parsing, interpreting, and returning a number is a great start. It helped us set up the visitor pattern and prepare for more complex rules. Now we'll add support for adding two numbers.
 
 ### Addition
 
@@ -204,6 +205,19 @@ Now we're cooking - we can add two numbers together! Ok, maybe not that exciting
 ### Repeating
 
 So now we can write programs such as `1 + 2` or `5 * 5`, but we can't write something like `1 + 2 * 3` because our operator rules only know about numbers, not *other expressions*.
+
+```
+AdditionExpression
+  = head:NumericLiteral tail:("+" NumericLiteral)+ {
+      return tail.reduce((leftExpression, [operator, rightExpression]) => ({
+        type: 'OperatorExpression',
+        operator,
+        leftExpression,
+        rightExpression
+       }), head);
+    }
+  / NumericLiteral
+```
 
 ## Terminology
 
