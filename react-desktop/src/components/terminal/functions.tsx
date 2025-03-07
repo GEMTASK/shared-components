@@ -66,8 +66,8 @@ class KopiLs_ {
   }
 
   async inspect() {
-    const filename = this.args.at(-1) instanceof KopiString
-      ? '/' + this.args.at(-1).value
+    const filename = this.args[this.args.length - 1] instanceof KopiString
+      ? '/' + this.args[this.args.length - 1].value
       : '/';
 
     const directoryItems = await webdavClient.getDirectoryContents(filename);

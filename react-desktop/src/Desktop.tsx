@@ -216,7 +216,8 @@ const App = () => {
 
         if (mapping !== undefined) {
           const { icon, title, client, rect } = mapping;
-          const titleArg = event.data.payload.split('/').at(-1);
+          const array = event.data.payload.split('/');
+          const titleArg = array[array.length - 1];
 
           addWindow(
             icon,
@@ -296,7 +297,7 @@ const App = () => {
           <View fillColor="gray-1" style={{ borderRadius: 2.5, boxShadow: '0 0 0 1px hsla(0, 0%, 0%, 0.1)' }}>
             <Spacer size="small" />
             <Stack onClick={(event: React.PointerEvent) => event.stopPropagation()}>
-              {windows.map((window, index, _, isFocused = window.id === windowIdOrder.at(-1)) => (
+              {windows.map((window, index, _, isFocused = window.id === windowIdOrder[windowIdOrder.length - 1]) => (
                 <View key={index} horizontal hoverTarget='a' align="left" padding="small large" fillColor={isFocused ? 'gray-3' : undefined} onClick={() => handleWindowFocus(window.id)}>
                   <Icon fixedWidth icon={window?.icon as any} />
                   <Spacer size="small" />
