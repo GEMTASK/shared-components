@@ -50,12 +50,12 @@ const Eyes = ({ ...props }: any) => {
 
   const leftEye = {
     x: -Math.sin(leftEyeAngle) * Math.min(leftEyeLength, 10),
-    y: +Math.cos(leftEyeAngle) * Math.min(leftEyeLength, 10)
+    y: Math.cos(leftEyeAngle) * Math.min(leftEyeLength, 10)
   };
 
   const rightEye = {
     x: -Math.sin(rightEyeAngle) * Math.min(rightEyeLength, 10),
-    y: +Math.cos(rightEyeAngle) * Math.min(rightEyeLength, 10)
+    y: Math.cos(rightEyeAngle) * Math.min(rightEyeLength, 10)
   };
 
   return (

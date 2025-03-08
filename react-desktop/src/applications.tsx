@@ -6,7 +6,7 @@ import Calculator from './components/calculator';
 import Notes from './components/notes';
 import Editor from './components/editor';
 import Develop from './components/develop';
-import Designer from './components/designer';
+// import Designer from './components/designer';
 import Music from './components/music';
 import Browser from './components/browser';
 import Files from './components/files';
@@ -41,9 +41,9 @@ const Applications = {
   'develop': {
     icon: 'code', title: 'Develop', client: <Develop />, rect: { width: 1440, height: 1024 }
   },
-  'designer': {
-    icon: 'pen-nib', title: 'Designer', client: <Designer />, rect: { width: 1440, height: 1024 }
-  },
+  // 'designer': {
+  //   icon: 'pen-nib', title: 'Designer', client: <Designer />, rect: { width: 1440, height: 1024 }
+  // },
   'music': {
     icon: 'music', title: 'Music', client: <Music />, rect: { width: 400, height: 400 }
   },

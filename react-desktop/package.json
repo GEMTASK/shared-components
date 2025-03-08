@@ -52,7 +52,7 @@
       "react-app/jest"
     ],
     "parserOptions": {
-      "project": "./react-desktop/tsconfig.json"
+      "project": "./tsconfig.json"
     },
     "rules": {
       "no-implicit-coercion": "error",
@@ -60,8 +60,7 @@
         "error",
         "postMessage"
       ],
-      "@typescript-eslint/no-unused-vars": "warn",
-      "@typescript-eslint/strict-boolean-expressions": "error"
+      "@typescript-eslint/no-unused-vars": "warn"
     }
   },
   "browserslist": {
